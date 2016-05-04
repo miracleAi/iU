@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="main_yello">#FDF086</color>
+    <color name="main_green">#6cd1c9</color>
+    <color name="main_bg">#fcfcf4</color>
+    <color name="main_text_gray">#565656</color>
+    <color name="white">#FFFFFF</color>
+    <color name="black">#333333</color>
+    <color name="ruoqu">#1a000000</color>
+    <color name="gray">#cccccc</color>
+    <color name="gray_user_list">#e7eeed</color>
+    <color name="tablebar_check">#33c6e5</color>
+    <color name="tou">#00000000</color>
+    <color name="text_huise">#808080</color>
+    <color name="text_huise2">#565656</color>
+    <color name="home_txt_yello">#ffff8f</color>
+    <color name="pay_blue_txt">#4db8e8</color>
+    <color name="pay_green_txt">#93d287</color>
+    <!-- 特殊标识页面相关 -->
+    <color name="supenman_bg">#fcfcf4</color>
+    <color name="super_text_info">#a0a0a0</color>
+    <color name="super_text_orange">#ff9694</color>
+    <color name="super_text_black">#333333</color>
+    <!-- 关于 页面相关 -->
+     <color name="about_bg">#fcfcf4</color>
+    <color name="about_gray2_txt">#a0a0a0</color>
+    <color name="about_gray_txt">#999999</color>
+    <color name="about_darkgary_txt">#515151</color>
+    <!-- 自定义city 控件 上下划线 颜色 -->
+    <color name="province_line_border">#C7C7C7</color>
+    <!-- 首页 页面相关 -->
+    <color name="circle_strok">#33c6e5</color>
+    <color name="circle">#ffffac</color>
+    <color name="task_text">#33c6e5</color>
+    <!-- login or register 页面相关 -->
+    <color name="login_register_bg">#FCFCF4</color>
+    <color name="login_register_text1">#73747d</color>
+    <color name="login_register_text2">#bbbbb9</color>
+    <color name="login_register_text3">#73747d</color>
+    <color name="login_register_text4">#fcfcf4</color>
+    <color name="login_register_text_back">#929292</color>
+    <!-- login 页面相关 -->
+    <color name="login_title_text">#5d5d5b</color>
+    <color name="login_divider">#d2d2cd</color>
+    <color name="login_text_hint">#b0b0b0</color>
+    <color name="login_text1">#73747d</color>
+    <color name="login_text2">#9dc983</color>
+    <!-- menu 菜单 -->
+    <color name="left_menu_top_bg">#fdf086</color>
+    <color name="name_main">#3e3e3e</color>
+    <color name="left_menu_textColor">#3e3e3e</color>
+    <color name="left_menu_item_color">#c0c0c0</color>
+    <!-- register注册 -->
+    <color name="register_name_text">#565656</color>
+    <color name="register_view">#d2d2d2</color>
+    <color name="register_bg">#fcfcf4</color>
+    <color name="register_dialog_tv">#0070ff</color>
+    <!-- 个人主页 -->
+    <color name="page_text1">#808080</color>
+    <color name="page_text2">#a0a0a0</color>
+    <color name="page_text3">#6cd1c9</color>
+    <color name="page_text4">#565656</color>
+    <color name="page_text5">#b0b0b0</color>
+    <color name="page_tag_bg">#f8f6f4</color>
+
+    <!-- 个人相关 -->
+    <color name="mine_chird_top_bg">#6cd1c9</color>
+    <color name="mine_chird_view_bottom">#a0a0a0</color>
+
+    <!-- 设置 -->
+    <color name="set_tag_bg">#f8f6f4</color>
+    <color name="set_tag_text">#808080</color>
+    <color name="set_divider1">#6cd1c9</color>
+    <color name="set_divider2">#f8f6f4</color>
+    <color name="set_seek_sel">#6cc1ba</color>
+    <color name="set_seek_nosel">#7e7f7f</color>
+
+    <!-- 发biu -->
+    <color name="set_biu_bg">#efebe8</color>
+    <color name="hui">#e7eeed</color>
+
+</resources>

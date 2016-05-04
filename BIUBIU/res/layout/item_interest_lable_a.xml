@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/all_item_personality_tag"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    
+     >
+    <RelativeLayout 
+        android:id="@+id/layout_interest_lable_rl"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:gravity="center"
+
+        >
+    <TextView 
+        android:id="@+id/tag_item_personality_tag"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:textSize="12sp"
+        android:gravity="center"
+        android:text="111"/>
+    </RelativeLayout>
+    
+
+</RelativeLayout>

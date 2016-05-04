@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">iU</string>
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_biu_biu_send">BiuBiuSendActivity</string>
+    <string name="net_error">网络未连接</string>
+    <!-- 加载中提示相关 -->
+    <string name="logining">正在登录...</string>
+    <string name="loading">正在加载...</string>
+    <string name="registering">正在提交...</string>
+    <string name="uploading">正在上传...</string>
+    <string name="sending">正在发送...</string>
+    <string name="grabing">正在抢biu...</string>
+    <!-- login 页面相关 -->
+    <string name="login_title_text">注册</string>
+    <string name="login_phone_hint">手机号码</string>
+    <string name="login_password_hint">输入密码</string>
+    <string name="login_text">登录</string>
+    <string name="login_froget_psd">忘记密码?</string>
+    <string name="login_froget_psd_title">忘记密码</string>
+    <string name="login_bottom_text">注册和登录表示同意</string>
+    <string name="login_bottom_text2">用户协议</string>
+    <string name="right_menu_name">本宝宝的名字</string>
+    <string name="right_menu_slogou">从我到你，只有一个iU的距离</string>
+    <!-- menuleft 页面相关 -->
+    <string name="name_main">lucifer</string>
+    <string name="name_regist_hint">登录注册</string>
+    <string name="left_menu_biubiu">biubiu</string>
+    <string name="left_menu_message">消息</string>
+    <string name="left_menu_matchSetting">匹配设置</string>
+    <string name="left_menu_lead">新手引导</string>
+    <string name="left_menu_share">分享给好友</string>
+    <string name="title_activity_change_user_name">ChangeUserNameActivity</string>
+    <string name="hello_world">Hello world!</string>
+    <!-- register 页面相关 -->
+    <string name="register_one_hint_add">添加照片</string>
+    <string name="register_one_hint_name">填写昵称</string>
+    <string name="register_one_hint_sex">选择性别</string>
+    <string name="register_one_hint_brith">选择生日</string>
+    <string name="register_one_hint_next">下一步</string>
+    <string name="register_complete">完成</string>
+    <string name="upuserhead_texttop">请上传真实头像</string>
+    <string name="upuserhead_text1">iU提倡年轻人真诚互动交流，真实头像便与信任</string>
+    <string name="upuserhead_text2">多人合影、名人、背景、网图将可能审核不通过</string>
+    <string name="upuserhead_text3">新头像未审核通过，将显示原来的头像</string>
+    <string name="upuserhead_knew">我知道了</string>
+    <string name="register_one_sex_dralog_hint">注册成功后，性别将不能修改</string>
+    <string name="register_two_hint_next">下一页</string>
+    <string name="register_two_inschool">我还在读</string>
+    <string name="register_two_outschool">我已毕业</string>
+    <string name="register_two_selecter_school">选择学校</string>
+    <string name="register_two_selecter_job">选择职业</string>
+    <string name="register_two_select_city">选择城市</string>
+    <string name="register_three_phone">输入手机号</string>
+    <string name="register_three_verify">输入验证码</string>
+    <string name="register_three_send_verify">获取验证码</string>
+    <string name="register_three_psd">输入密码，6-16位数字、字母</string>
+    <string name="register_forget_psd">重置密码，6-16位数字、字母</string>
+    <string name="title_activity_change_school">ChangeSchoolActivity</string>
+    <string name="title_activity_change_brithday">ChangeBrithdayActivity</string>
+    <string name="title_activity_change_city_main">ChangeCityMainActivity</string>
+    <string name="title_activity_change_constellation">ChangeConstellationActivity</string>
+    <string name="title_activity_height_weight">HeightWeightActivity</string>
+
+    <!-- 我的页面相关 -->
+    <string name="mine_height_weight_height_weight">身高体重</string>
+    <string name="mine_height_weight_hint">选择身高体重</string>
+    <string name="title_activity_change_identity_profession">ChangeIdentityProfessionActivity</string>
+    <string name="personality_tag_hint">(最多选择10个标签)</string>
+    <string name="bottom_hint">从我到你，只有一个iU的距离</string>
+    <string name="mine_complete">完成</string>
+    <string name="mine_brithday_title">修改生日</string>
+    <string name="mine_city_title">修改城市</string>
+    <string name="mine_hometwon_title">修改家乡</string>
+    <string name="mine_constellation_title">修改星座</string>
+    <string name="mine_height_weight_title">修改身高体重</string>
+    <string name="mine_identity_profession_title">选择身份职业</string>
+    <string name="mine_selectoe_school_title">选择学校</string>
+    <string name="mine_selectoe_username_title">修改昵称</string>
+    <string name="mine_selectoe_company_title">修改公司</string>
+    <string name="mine_selectoe_city_title">选择你的城市</string>
+     <string name="mine_selectoe_birth_title">选择生日</string>
+
+    <!-- 个人主页 -->
+    <string name="page_aboutme">关于我</string>
+    <string name="page_no_aboutme">关于我的信息不能为空</string>
+    <string name="page_userinfo">基本信息</string>
+    <string name="page_school">学校</string>
+    <string name="page_identity">身份</string>
+    <string name="page_tall">身高体重</string>
+    <string name="page_nickname">昵称</string>
+    <string name="page_hometown">我的家乡</string>
+    <string name="page_city">所在城市</string>
+    <string name="page_star">星座</string>
+    <string name="page_birthday">生日</string>
+    <string name="page_sex">性别</string>
+    <string name="page_open">展开</string>
+    <string name="page_identity_job">身份职业</string>
+    <string name="page_personal">个性标签</string>
+    <string name="page_interest">兴趣爱好</string>
+    <string name="page_personal_tag">我的个性标签</string>
+    <string name="page_interest_tag">我的兴趣标签</string>
+    <string name="page_text_bottom">从我到你，只有一个iU的距离</string>
+    <string name="description_me">在这里介绍一下你自己咯，关于爱情，关于成长，关于生活的种种……你想着什么样的人，最终就会遇到什么样的人。So,给每一个来到这里的TA送上祝福。</string>
+    <string name="description_other">TA还没留下关于自己的只言片语呢</string>
+    <string name="title_activity_match_setting">MatchSettingActivity</string>
+
+    <!-- 设置相关 -->
+    <string name="setting_title">设置</string>
+    <string name="setting_setting">个性标签</string>
+    <string name="setting_show_to_me">向我显示:</string>
+    <string name="setting_boy">男生</string>
+    <string name="setting_gril">女生</string>
+    <string name="setting_city_common">同城</string>
+    <string name="setting_unlimited">不限</string>
+    <string name="setting_age_range_in">年龄范围</string>
+    <string name="setting_character_tags">个性标签</string>
+    <string name="setting_character_tags_her">Ta的个性标签</string>
+    <string name="setting_new_message_notice">新消息通知</string>
+    <string name="setting_voice">声音</string>
+    <string name="setting_shock">震动</string>
+    <string name="setting_exit">退出登录</string>
+    <string name="title_activity_personality_tag">PersonalityTagActivity</string>
+    <string name="title_activity_interest_label">InterestLabelActivity</string>
+    <!-- register 页面相关toast -->
+    <string name="reg_one_no_userhead">请上传头像</string>
+    <string name="reg_one_no_nickname">昵称不能为空</string>
+    <string name="reg_one_no_birth">生日不能为空</string>
+    <string name="reg_one_no_sex">生日不能为空</string>
+    <string name="reg_two_no_school">学校不能为空</string>
+    <string name="reg_two_no_city">城市不能为空</string>
+    <string name="reg_two_no_job">职业不能为空</string>
+    <string name="reg_three_no_phone">手机号不能为空</string>
+    <string name="reg_three_no_verify">验证码不能为空</string>
+    <string name="reg_three_no_password">密码不能为空</string>
+    <string name="reg_three_error_verify">验证码不正确</string>
+    <string name="reg_three_please_sel_city">请选择城市</string>
+    <string name="title_activity_change_home_twon">ChangeHomeTwonActivity</string>
+    <string name="title_activity_change_name">ChangeNameActivity</string>
+    <string name="title_activity_forget_password">ForgetPasswordActivity</string>
+
+    <!-- 发送biubiu -->
+    <string name="send_biu_title">发出我的biu</string>
+    <string name="send_biu_back">取消</string>
+    <string name="send_biu_add_topic_tags">添加话题标签</string>
+    <string name="send_biu_send">发送</string>
+    <string name="send_biu_number">0</string>
+    <string name="send_biu_allNumber">/50</string>
+    <string name="title_activity_biu_biu_receive">BiuBiuReceiveActivity</string>
+
+    <!-- 接收biubiu -->
+    <string name="receive_biu_title">收到的biu</string>
+    <string name="receive_biu_compatibility">匹配度</string>
+    <string name="receive_biu_topic">今天是个好日子</string>
+    <string name="receive_biu_tag">个命中标签</string>
+    <string name="receive_biu_interest_tag">个兴趣爱好</string>
+    <string name="receive_biu_grab">抢biu</string>
+    <string name="title_activity_chat">ChatActivity</string>
+    <string name="title_activity_user_list">UserListActivity</string>
+    <string name="title_activity_context_menu">ContextMenuActivity</string>
+    <string name="receive_biu_no_grab">不想见到TA</string>
+    <string name="receive_biu_no_biumoney_hint">你的biu币不足啦，发biu和兑换都能积攒biu币</string>
+    <string name="receive_biu_duihuan">兑换</string>
+    <string name="receive_biu_go_sendbiu">发biu</string>
+    <string name="dialog_dismiss">取消</string>
+    <string name="dialog_goLogin">登录</string>
+    <string name="dialog_hint_receivebiu">登陆后就能抢他的biu了</string>
+
+    <!-- chat 相关 -->
+    <string name="chat_userlist_title">biubiu的人</string>
+    <string name="chat_userlist_delete_hint">解除关系</string>
+    <string name="chat_userlist_delete_hint2">嗨~确定要解除和他的关系吗</string>
+    <string name="chat_userlist_delete_dismiss">取消</string>
+    <string name="chat_userlist_delete_ok">返回抢biu</string>
+    <string name="chat_item_go_userHome">查看个人主页</string>
+    <string name="chat_item_delete_messages">清空聊天记录</string>
+    <string name="chat_item_jubao">举报</string>
+    <string name="chat_item_delete_friends">解除关系</string>
+    <string name="chat_item_dismiss">取消</string>
+    <string name="title_activity_about_our">AboutOurActivity</string>
+
+    <!-- 关于我们 -->
+    <string name="abour_our_title">关于我们</string>
+    <string name="abour_our_welcome">欢迎来到iU的世界</string>
+    <string name="abour_our_topic1">小王子说：星星发亮是为了让每一个人有一天都能找到属于自己的星星，那么，每一个人 怎样才能找到属于自己的的TA呢？</string>
+    <string name="abour_our_topic2">iU 是 [我想认识你] 团队推出的一款年轻人恋爱社交产品，团队起源于清华大学，怀以恋爱与成长相结合的理念，围绕爱情线主题，陪伴你的整个青春感情生活。</string>
+    <string name="abour_our_bottom">从我到你，只有一个iU的距离</string>
+    <string name="about_our_update">版本更新</string>
+    <string name="about_our_update_number">v1.0</string>
+    <string name="about_our_pingjia_biubiu">评价biubiu</string>
+    <string name="about_our_pingjia_biubiu_hint">好评你就biubiu</string>
+    <string name="about_our_wechat_name">微信平台</string>
+    <string name="about_our_weChat_copy">[点击复制] 微信号：</string>
+    <string name="about_our_weChat_numer">meetubeijing</string>
+    <string name="about_our_lianxi_our">联系我们</string>
+    <string name="about_our_phone_name">电话：</string>
+    <string name="about_our_phone_number">010-66253598</string>
+    <string name="title_activity_user_agreement">UserAgreementActivity</string>
+    <!-- 标记说明相关 -->
+    <string name="super_man_title">标记说明</string>
+    <string name="super_man_topstr">在iU的世界里，有着三种代表特殊身份的标识：</string>
+    <string name="super_man_tagbig1">终极标识</string>
+    <string name="super_man_tagbig2">脑洞标识</string>
+    <string name="super_man_tagbig3">资深标识</string>
+    <string name="super_man_taginfo1">属于给iU提出最终名字和slogan的小伙伴,仅此两人!</string>
+    <string name="super_man_taginfo2">属于所有给iU起过名字和slogan的小伙伴,共150人!</string>
+    <string name="super_man_taginfo3">属于积极给iU反馈意见想法的资深用户,一定要资深哦,人数待定!</string>
+    <string name="super_man_tishi">iU提示：</string>
+    <string name="super_man_tishi_info1">1、iU欢迎所有小伙伴积极反馈意见，一起见证iU成长！</string>
+    <string name="super_man_tishi_info2">2、如果你想反馈意见或者索要特殊标记，请添加微信：！</string>
+    <!-- 头像审核相关 -->
+    <string name="head_no_egis">头像审核未通过</string>
+    <string name="head_egis">头像审核通过</string>
+    <string name="head_no_egis_info1">你的头像审核不通过，请上传能体现个人的真是头像哦！</string>
+    <string name="head_no_egis_info2">你修改的头像审核未通过，将恢复原来头像，点击重新上传更换头像</string>
+    <string name="head_egis_info">你的头像审核通过啦，可以愉快的玩耍了</string>
+
+</resources>

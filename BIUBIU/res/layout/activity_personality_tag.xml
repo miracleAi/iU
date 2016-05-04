@@ -1,0 +1,96 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/page_tag_bg"
+    android:orientation="vertical" >
+
+    <RelativeLayout
+        android:id="@+id/top_selector_personality_tag_rl"
+        android:layout_width="match_parent"
+        android:layout_height="44dp"
+        android:background="@color/mine_chird_top_bg" >
+
+        <RelativeLayout
+            android:id="@+id/back_personality_tag_mine_rl"
+            android:layout_width="50dp"
+            android:layout_height="44dp"
+            android:layout_centerVertical="true"
+            android:background="@drawable/kongjianruoqu_bg"
+            android:gravity="center" >
+
+            <ImageView
+                android:id="@+id/back_changexingzuo_mine"
+                android:layout_width="10dp"
+                android:layout_height="17dp"
+                android:src="@drawable/main_name_btn_back" />
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/textView1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:text="@string/setting_character_tags"
+            android:textColor="@color/white"
+            android:textSize="18sp" />
+
+        <RelativeLayout
+            android:id="@+id/complete_personality_tag_rl"
+            android:layout_width="65dp"
+            android:layout_height="44dp"
+            android:layout_alignParentRight="true"
+            android:background="@drawable/kongjianruoqu_bg"
+            android:gravity="center" >
+
+            <TextView
+                android:id="@+id/mine_changexingzuo_wancheng_bt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:text="@string/mine_complete"
+                android:textColor="@color/white"
+                android:textSize="15sp" />
+        </RelativeLayout>
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="#cccccc" />
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical" >
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/id_recyclerView_personality_tag"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:layout_below="@id/top_selector_personality_tag_rl"
+                
+                android:layout_marginTop="11dp" >
+            </android.support.v7.widget.RecyclerView>
+
+            <TextView
+                android:id="@+id/hint_personality_tag_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/id_recyclerView_personality_tag"
+                android:layout_marginLeft="40dp"
+                android:layout_marginTop="20dp"
+                android:text="@string/personality_tag_hint" />
+        </LinearLayout>
+
+        <include layout="@layout/loading_layout" />
+
+        <include layout="@layout/load_error_layout" />
+    </FrameLayout>
+
+</LinearLayout>
