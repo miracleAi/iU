@@ -18,3 +18,112 @@
 #-keepclassmembers class fqcn.of.javascript.interface.for.webview {
 #   public *;
 #}
+   #指定代码的压缩级别
+    -optimizationpasses 5
+
+    #包明不混合大小写
+    -dontusemixedcaseclassnames
+
+    #不去忽略非公共的库类
+    -dontskipnonpubliclibraryclasses
+
+     #优化  不优化输入的类文件
+    -dontoptimize
+
+     #预校验
+    -dontpreverify
+
+    -ignorewarnings
+     #混淆时是否记录日志
+    -verbose
+
+     # 混淆时所采用的算法
+    -optimizations !code/simplification/arithmetic,!field/*,!class/merging/*
+
+    #保护注解
+    -keepattributes *Annotation*
+
+     #百度云推送
+     -libraryjars libs/pushservice-VERSION.jar
+     -dontwarn com.baidu.**
+     -keep class com.baidu.**{*; }
+     #高德地图
+     -keep class com.amap.api.location.**{*;}
+     -keep class com.amap.api.fence.**{*;}
+     -keep class com.autonavi.aps.amapapi.model.**{*;}
+     -dontwarn com.amap.**{*;}
+     -dontwarn com.autonavi.aps.amapapi.model.**{*;}
+     #环信
+     -keep class com.hyphenate.** {*;}
+     -dontwarn  com.hyphenate.**
+     #表情包
+     -dontwarn com.melink.**
+     -dontwarn com.thirdparty.**
+     -keep class com.melink.** {*;}
+     -keep class com.thirdparty.* {*;}
+     #beecloud支付
+     -dontwarn com.paypal.**
+     -dontwarn io.card.payment.**
+     -dontwarn okhttp3.**
+     -dontwarn okio.**
+     -keep class com.paypal.** { *; }
+     -keep class io.card.payment.** { *; }
+     -keep interface okhttp3.** { *; }
+     -keep interface okio.** { *; }
+     -keep class okhttp3.** { *; }
+     -keep class okio.** { *; }
+     #友盟
+     -keepclassmembers class * {
+        public <init> (org.json.JSONObject);
+     }
+     -keep public class imeetu.cc.iu.R$*{
+     public static final int *;
+     }
+     -keepclassmembers enum * {
+         public static **[] values();
+         public static ** valueOf(java.lang.String);
+     }
+     # The support library contains references to newer platform versions.
+     # Don't warn about those in case this app is linking against an older
+     # platform version.  We know about them, and they are safe.
+
+     -keepclassmembers class * implements java.io.Serializable {
+         static final long serialVersionUID;
+         private static final java.io.ObjectStreamField[] serialPersistentFields;
+         private void writeObject(java.io.ObjectOutputStream);
+         private void readObject(java.io.ObjectInputStream);
+         java.lang.Object writeReplace();
+         java.lang.Object readResolve();
+     }
+     # Fixed proguard Unexpected error
+     -keep class android.support.**.AccessibilityDelegateCompat$AccessibilityDelegateJellyBeanImpl {
+         *** newAccessiblityDelegateBridge(***);
+     }
+     -dontwarn android.support.**
+     #android
+     -keep class * extends android.app.Activity
+     -keep class * extends android.webkit.WebChromeClient
+     -keep class * extends android.webkit.WebViewClient
+     -keep class * extends android.app.ActivityGroup
+     -keep class * extends android.app.Application
+     -keep class * extends android.app.Service
+     -keep class * extends android.app.backup.BackupAgentHelper
+     -keep class * extends android.content.BroadcastReceiver
+     -keep class * extends android.content.ContentProvider
+     -keep class * extends android.os.IInterface
+     -keep class * extends android.preference.Preference
+     -keep class * extends android.view.**{*;}
+     -keep class * extends android.widget.**{*;}
+     -keep class android.support.**{*;}
+     -keep interface android.support.v4.app.** { *; }
+     -keep public class * extends android.support.v4.**
+     #jar
+     -keep class org.xutils.**{ *; }
+     -keep class com.ant.liao.GifView.**{ *; }
+     -keep com.google.gson.**{ *; }
+     -keep class com.alibaba.sdk.android.oss.**{ *; }
+     -keep class com.avos.avoscloud.**{ *; }
+     -keep class cn.beecloud.**{ *; }
+     -keep class cn.sharesdk.**{ *; }
+     -keep class com.amap.**{ *; }
+     -keep class com.umeng.**{ *; }
