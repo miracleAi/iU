@@ -44,16 +44,16 @@
     -keepattributes *Annotation*
 
      #百度云推送
-     #-libraryjars libs/pushservice-4.6.2.39.jar
+     #-libraryjars libs/pushservice-VERSION.jar
      -dontwarn com.baidu.**
      -keep class com.baidu.**{*; }
      #高德地图
      -keep class com.amap.api.location.**{*;}
      -keep class com.amap.api.fence.**{*;}
      -keep class com.autonavi.aps.amapapi.model.**{*;}
-     -dontwarn com.aps.**
-     -dontwarn com.amap.api.**
+     -dontwarn com.amap.**
      -dontwarn com.autonavi.**
+     -dontwarn com.loc.**
      #环信
      -keep class com.hyphenate.** {*;}
      -dontwarn  com.hyphenate.**
@@ -122,10 +122,12 @@
      #jar
      -keep class org.xutils.**{ *; }
      -keep class com.ant.liao.GifView.**{ *; }
-     -keep class com.google.gson.**{*;}
+     -keep class com.google.gson.**{ *; }
      -keep class com.alibaba.sdk.android.oss.**{ *; }
      -keep class com.avos.avoscloud.**{ *; }
      -keep class cn.beecloud.**{ *; }
      -keep class cn.sharesdk.**{ *; }
      -keep class com.amap.**{ *; }
      -keep class com.umeng.**{ *; }
+     #bean
+     -keep class com.android.biubiu.bean.**{*;}
