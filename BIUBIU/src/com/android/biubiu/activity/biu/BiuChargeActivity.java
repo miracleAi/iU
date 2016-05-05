@@ -27,7 +27,6 @@ import cn.beecloud.async.BCResult;
 import cn.beecloud.entity.BCPayResult;
 
 import com.android.biubiu.BaseActivity;
-import com.android.biubiu.chat.Constant;
 import com.android.biubiu.utils.Constants;
 import com.android.biubiu.utils.HttpContants;
 import com.android.biubiu.utils.LogUtil;

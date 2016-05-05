@@ -1,7 +1,5 @@
 package com.android.biubiu.fragment;
 
-import java.util.Arrays;
-import java.util.List;
 
 import org.xutils.x;
 import org.xutils.image.ImageOptions;
@@ -14,10 +12,8 @@ import com.android.biubiu.AboutOurActivity;
 import com.android.biubiu.BeginGuiderActivity;
 import com.android.biubiu.MainActivity;
 import com.android.biubiu.MatchSettingActivity;
-import com.android.biubiu.activity.GuildActivity;
 import com.android.biubiu.activity.LoginOrRegisterActivity;
 import com.android.biubiu.activity.biu.MyPagerActivity;
-import com.android.biubiu.utils.LogUtil;
 import com.android.biubiu.utils.LoginUtils;
 import com.android.biubiu.utils.SharePreferanceUtils;
 
@@ -28,14 +24,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.webkit.WebView.FindListener;
-import android.widget.ArrayAdapter;
 import android.widget.ImageView;
-import android.widget.ListAdapter;
-import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class MenuLeftFragment extends Fragment implements OnClickListener {
 	private View mView;

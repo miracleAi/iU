@@ -211,7 +211,7 @@ public class EaseChatFragment extends EaseBaseFragment {
 
 			@Override
 			public void onTextChanged(CharSequence s, int start, int before, int count) {
-				BQMMPopupViewTask popupViewTask = BQMMPopupViewTask.create(getContext());
+				BQMMPopupViewTask popupViewTask = BQMMPopupViewTask.create(getActivity());
 				popupViewTask.setEmojiEmoText(s.toString());
 				popupViewTask.setPopupViewAnchor(inputMenu.getPrimaryMenu().getKeyboardToggleButton());
 				BQMM.getInstance().startEmojiPopupView(popupViewTask);

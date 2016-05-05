@@ -25,7 +25,7 @@ public class PushMatchDao {
 		db.close();
 	}
 	/**
-	 * 查询某用户
+	 * 查询
 	 * @param userCode 用户id
 	 * @return
 	 */

@@ -1,7 +1,5 @@
 package com.android.biubiu;
 import java.io.File;
-import java.util.Date;
-import java.util.List;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -16,13 +14,11 @@ import com.amap.api.location.AMapLocationClient;
 import com.amap.api.location.AMapLocationClientOption;
 import com.amap.api.location.AMapLocationClientOption.AMapLocationMode;
 import com.amap.api.location.AMapLocationListener;
-import com.android.biubiu.activity.LoginActivity;
 import com.android.biubiu.chat.DemoHelper;
 import com.android.biubiu.chat.LoadUserFriend;
 import com.android.biubiu.fragment.BiuFragment;
 import com.android.biubiu.fragment.MenuLeftFragment;
 import com.android.biubiu.fragment.MenuRightFragment;
-import com.android.biubiu.fragment.MenuRightFragment.ReceiveBroadCast;
 import com.android.biubiu.sqlite.PushMatchDao;
 import com.android.biubiu.utils.Constants;
 import com.android.biubiu.utils.HttpContants;
@@ -36,10 +32,7 @@ import com.baidu.android.pushservice.PushManager;
 import com.hyphenate.EMCallBack;
 import com.hyphenate.EMConnectionListener;
 import com.hyphenate.EMError;
-import com.hyphenate.EMMessageListener;
 import com.hyphenate.chat.EMClient;
-import com.hyphenate.chat.EMConversation;
-import com.hyphenate.chat.EMMessage;
 import com.hyphenate.util.NetUtils;
 import com.android.biubiu.slidingMenu.SlidingMenu;
 import com.android.biubiu.slidingMenu.SlidingFragmentActivity;
@@ -94,6 +87,8 @@ public class MainActivity extends SlidingFragmentActivity implements AMapLocatio
 		super.onCreate(savedInstanceState);
 		this.requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.activity_main);
+		//启动百度云推送
+		PushManager.startWork(getApplicationContext(),PushConstants.LOGIN_TYPE_API_KEY,"v3FkYC4w53w46uuvw9L6qBF1");
 		pushDao = new PushMatchDao(getApplicationContext());
 		if(!com.android.biubiu.utils.NetUtils.isNetworkConnected(getApplicationContext())){
 			Toast.makeText(getApplicationContext(), "网络未连接", Toast.LENGTH_SHORT).show();

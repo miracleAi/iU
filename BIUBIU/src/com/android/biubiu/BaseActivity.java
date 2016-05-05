@@ -3,14 +3,9 @@ package com.android.biubiu;
 import cc.imeetu.iu.R;
 
 import com.android.biubiu.utils.DensityUtil;
-import com.android.biubiu.utils.LogUtil;
-import com.android.biubiu.utils.NetUtils;
 import com.android.biubiu.utils.SharePreferanceUtils;
 import com.ant.liao.GifView;
 import com.ant.liao.GifView.GifImageType;
-import com.baidu.android.pushservice.PushConstants;
-import com.baidu.android.pushservice.PushManager;
-import com.google.android.gms.internal.er;
 import com.umeng.analytics.MobclickAgent;
 
 import android.app.Activity;
@@ -34,8 +29,6 @@ public class BaseActivity extends Activity{
 		super.requestWindowFeature(Window.FEATURE_NO_TITLE);
 		super.onCreate(savedInstanceState);
 		SharePreferanceUtils.getInstance().putShared(getApplicationContext(), SharePreferanceUtils.IS_APP_OPEN, true);
-		//启动百度云推送
-		PushManager.startWork(getApplicationContext(),PushConstants.LOGIN_TYPE_API_KEY,"v3FkYC4w53w46uuvw9L6qBF1");
 	}
 	@Override
 	protected void onResume() {
