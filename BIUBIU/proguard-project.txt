@@ -96,6 +96,7 @@
          java.lang.Object writeReplace();
          java.lang.Object readResolve();
      }
+
      # Fixed proguard Unexpected error
      -keep class android.support.**.AccessibilityDelegateCompat$AccessibilityDelegateJellyBeanImpl {
          *** newAccessiblityDelegateBridge(***);
