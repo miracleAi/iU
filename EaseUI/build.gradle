@@ -1,7 +1,7 @@
 apply plugin: 'com.android.library'
 
 dependencies {
-    compile fileTree(dir: 'libs', include: '*.jar')
+    compile fileTree(include: '*.jar', dir: 'libs')
     compile project(':BQMM_Lib')
     compile 'com.android.support:support-v4:22.2.0'
 }
@@ -24,6 +24,7 @@ android {
             renderscript.srcDirs = ['src']
             res.srcDirs = ['res']
             assets.srcDirs = ['assets']
+            jniLibs.srcDirs = ['libs']//用于copy so 文件
         }
 
         // Move the tests to tests/java, tests/res, etc...
