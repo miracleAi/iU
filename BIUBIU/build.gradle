@@ -1,9 +1,11 @@
+import com.android.builder.core.DefaultManifestParser
 apply plugin: 'com.android.application'
 
 dependencies {
     compile fileTree(include: '*.jar', dir: 'libs')
     compile project(':EaseUI')
-    
+//    compile 'com.android.support:multidex:1.0.0'
+    compile 'com.android.support:support-v4:22.2.0'
 }
 
 android {
@@ -33,4 +35,69 @@ android {
         release.setRoot('build-types/release')
     }
 
+    dexOptions {
+        incremental true
+        preDexLibraries = false
+        javaMaxHeapSize "2g"
+    }
+
+    defaultConfig {
+        //Enabling multidex support.
+//        multiDexEnabled true
+    }
+    apply plugin: 'com.getkeepsafe.dexcount'
+
+    lintOptions{
+        abortOnError false
+        checkReleaseBuilds false
+    }
+
+    android.applicationVariants.all { variant ->
+        variant.outputs.each { output ->
+            def file = output.outputFile
+            def today = new Date().format('MMdd')
+            output.outputFile = new File(file.parent, file.name.replace(".apk", "-" + today + "-v" + readVersion() + ".apk"))
+        }
+    }
+
+    signingConfigs {
+
+        myConfig {
+            storeFile file("biubiu.keystore")
+            //storePassword System.console().readLine("\n\$ Enter keystore password: ")
+            storePassword "meetu1992"
+            keyAlias "biubiu"
+            //keyPassword System.console().readLine("\n\$ Enter keyAlias password: ")
+            keyPassword "meetu1992"
+        }
+    }
+
+    buildTypes {
+
+        release {
+            // 不显示Log
+            buildConfigField "boolean", "LOG_DEBUG", "false"
+            // 移除无用的resource文件
+            shrinkResources true
+            signingConfig signingConfigs.myConfig
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-project.txt'
+        }
+
+        debug {
+            signingConfig signingConfigs.myConfig
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-project.txt'
+        }
+
+
+    }
+}
+
+/**
+ * 从Manifest.xml中读取版本号
+ **/
+def readVersion() {
+    def manifestParser = new DefaultManifestParser()
+    return manifestParser.getVersionName(android.sourceSets.main.manifest.srcFile);
 }
