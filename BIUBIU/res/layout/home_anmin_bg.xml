@@ -100,18 +100,19 @@
         <ImageView
             android:id="@+id/moon_imv"
             android:layout_width="35dp"
-            android:layout_height="33dp"
-            android:layout_marginTop="500dp"
+            android:layout_height="34dp"
+            android:layout_marginTop="480dp"
             android:layout_marginLeft="10dp"
-            android:src="@drawable/biu_moon" />
+            android:src="@drawable/moon" />
 
         <ImageView
             android:id="@+id/sun_imv"
-            android:layout_width="22dp"
-            android:layout_height="22dp"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:scaleType="fitXY"
             android:layout_marginLeft="144dp"
-            android:layout_marginTop="500dp"
-            android:src="@drawable/biu_sun" />
+            android:layout_marginTop="480dp"
+            android:src="@drawable/sun" />
     </RelativeLayout>
 
     <RelativeLayout
