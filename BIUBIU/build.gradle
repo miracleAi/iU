@@ -1,7 +1,9 @@
 import com.android.builder.core.DefaultManifestParser
+
 apply plugin: 'com.android.application'
 
 dependencies {
+    //只加入了jar包，需要在下面加入jniLibs.srcDirs = ['libs']来copy so 文件
     compile fileTree(include: '*.jar', dir: 'libs')
     compile project(':EaseUI')
     compile 'com.android.support:multidex:1.0.1'
@@ -50,11 +52,11 @@ android {
     }
     apply plugin: 'com.getkeepsafe.dexcount'
 
-    lintOptions{
+    lintOptions {
         abortOnError false
         checkReleaseBuilds false
     }
-
+    //打包命名相关
     android.applicationVariants.all { variant ->
         variant.outputs.each { output ->
             def file = output.outputFile

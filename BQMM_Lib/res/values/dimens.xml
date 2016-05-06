@@ -19,5 +19,6 @@
 
     <!-- 默认大表情包标题内容字体大小 -->
     <dimen name="bqmm_preload_package_name_text_size">18sp</dimen>
-
+    <!-- 我的表情排序按钮和完成按钮字体大小 -->
+    <dimen name="bqmm_sort_button_text_size">20sp</dimen>
 </resources>

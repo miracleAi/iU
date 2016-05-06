@@ -24,7 +24,9 @@ public class HttpUtils {
 			SharePreferanceUtils.getInstance().putShared(context, SharePreferanceUtils.IS_COMMIT_CHANNEL, false);
 			return;
 		}
+
 		String channelId = SharePreferanceUtils.getInstance().getChannelId(context, SharePreferanceUtils.CHANNEL_ID, "");
+		LogUtil.d("mytest","commit channelid"+channelId);
 		RequestParams params = new RequestParams(HttpContants.HTTP_ADDRESS+HttpContants.UPDATE_CHANNEL);
 		JSONObject requestObject = new JSONObject();
 		try {

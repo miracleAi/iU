@@ -99,8 +99,8 @@
 
         <ImageView
             android:id="@+id/moon_imv"
-            android:layout_width="40dp"
-            android:layout_height="38dp"
+            android:layout_width="32dp"
+            android:layout_height="30dp"
             android:layout_marginTop="500dp"
             android:layout_marginLeft="10dp"
             android:src="@drawable/biu_moon" />
@@ -172,5 +172,4 @@
             android:src="@drawable/biu_mountain_bottom"
            />
     </RelativeLayout>
-
 </FrameLayout>
