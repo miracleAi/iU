@@ -7,7 +7,16 @@ buildscript {
         classpath 'com.android.tools.build:gradle:2.1.0'
         classpath 'com.getkeepsafe.dexcount:dexcount-gradle-plugin:0.3.0'
     }
+    tasks.withType(JavaCompile) { options.encoding = "UTF-8" }
 }
+
+allprojects {
+    repositories {
+        jcenter()
+    }
+
+}
+
 afterEvaluate {
     tasks.matching {
         it.name.startsWith('dex')

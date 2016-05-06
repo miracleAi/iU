@@ -6,6 +6,7 @@ import org.xutils.x;
 import cn.beecloud.BCPay;
 import cn.beecloud.BeeCloud;
 
+import com.android.biubiu.crashhandle.UEHandler;
 import com.avos.avoscloud.AVOSCloud;
 import com.android.biubiu.chat.DemoHelper;
 import com.android.biubiu.utils.LogUtil;
@@ -70,6 +71,8 @@ public class BiubiuApplication extends Application {
         String initInfo = BCPay.initWechatPay(context, "wxc38cdfe5049cb17e");
         //表情云初始化
         BQMM.getInstance().initConfig(context, "5ca457f4bf624e31ac2dbc1ba3bc398e", "eafc5215121a4075927f4317e6ab67d5");
+        UEHandler handler = new UEHandler(context);
+        Thread.setDefaultUncaughtExceptionHandler(handler);
     }
 
     /*public static BiubiuApplication getInstance() {
