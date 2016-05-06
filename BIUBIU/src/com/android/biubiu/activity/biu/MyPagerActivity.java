@@ -337,13 +337,13 @@ public class MyPagerActivity extends BaseActivity implements OnClickListener{
 
 
 //		if(isMyself){
-
+		LogUtil.d("mytest","head status"+bean.getIconVerify());
 			iconVerify.setVisibility(View.VISIBLE);
 			if(bean.getIconVerify().equals("0")){
 				iconVerify.setText("待审核");
 			}else if(bean.getIconVerify().equals("1")){
 				iconVerify.setText("审核中");
-			}else if(bean.getIconVerify().equals("2")){
+			}else if(bean.getIconVerify().equals("2")||bean.getIconVerify().equals("3")){
 			//	iconVerify.setText("审核通过");
 				iconVerify.setVisibility(View.GONE);
 				
