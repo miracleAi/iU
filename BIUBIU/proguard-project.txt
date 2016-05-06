@@ -95,6 +95,19 @@
 -keep class u.upd.**{*;}
 -keep class android.backport.webp.**{*;}
 -keep class org.xutils.**{*;}
+#依赖工程 EaseUI jar
+-keep class com.hyphenate.**{*;}
+-keep class internal.org.apache.http.entity.mime.**{*;}
+-keep class vi.com.gdi.bgl.android.java.**{*;}
+-keep class com.bumptech.glide.**{*;}
+-keep class com.google.android.gms.**{*;}
+-keep class android.net.**{*;}
+-keep class com.android.internal.http.multipart.**{*;}
+-keep class org.apache.**{*;}
+#依赖工程 BQMM_Lib jar
+-keep class com.melink.**{*;}
+-keep class com.thirdparty.bumptech.glide.**{*;}
+
 
 -keepattributes *Annotation*
 -keepattributes *JavascriptInterface*
