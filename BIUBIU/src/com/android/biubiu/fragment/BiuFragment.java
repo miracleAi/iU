@@ -326,9 +326,9 @@ public class BiuFragment extends Fragment implements PushInterface{
 							//启动发送biubiu界面
 							if(null != headFlag && !"".equals(headFlag)){
 								switch (Integer.parseInt(headFlag)) {
-								case 2:
-								case 4:
-								case 6:
+								case Constants.HEAD_VERIFYSUC_UNREAD:
+								case Constants.HEAD_VERIFYFAIL_UNREAD:
+								case Constants.HEAD_VERIFYFAIL_UPDATE:
 									showShenHeDaiog("send",Integer.parseInt(headFlag));
 									break;
 								default:
@@ -347,9 +347,9 @@ public class BiuFragment extends Fragment implements PushInterface{
 						//启动发送biubiu界面
 						if(null != headFlag && !"".equals(headFlag)){
 							switch (Integer.parseInt(headFlag)) {
-							case 2:
-							case 4:
-							case 6:
+							case Constants.HEAD_VERIFYSUC_UNREAD:
+							case Constants.HEAD_VERIFYFAIL_UNREAD:
+							case Constants.HEAD_VERIFYFAIL_UPDATE:
 								showShenHeDaiog("send",Integer.parseInt(headFlag));
 								break;
 							default:
@@ -381,18 +381,18 @@ public class BiuFragment extends Fragment implements PushInterface{
 		String strBtn1 = "";
 		String strBtn2 = "";
 		switch (flag) {
-		case 2:
+		case Constants.HEAD_VERIFYSUC_UNREAD:
 			title = getResources().getString(R.string.head_egis);
 			msg = getResources().getString(R.string.head_egis_info);
 			strBtn1 = "我知道了";
 			break;
-		case 4:
+		case Constants.HEAD_VERIFYFAIL_UNREAD:
 			title = getResources().getString(R.string.head_no_egis);
 			msg = getResources().getString(R.string.head_no_egis_info1);
 			strBtn1 = "取消";
 			strBtn2 = "重新上传";
 			break;
-		case 6:
+		case Constants.HEAD_VERIFYFAIL_UPDATE:
 			title = getResources().getString(R.string.head_no_egis);
 			msg = getResources().getString(R.string.head_no_egis_info2);
 			strBtn1 = "取消";
@@ -402,7 +402,7 @@ public class BiuFragment extends Fragment implements PushInterface{
 			break;
 		}
 		HttpUtils.commitIconState(getActivity());
-		if(flag == 2){
+		if(flag == Constants.HEAD_VERIFYSUC_UNREAD){
 			CommonDialog.singleBtnDialog(getActivity(), title, msg, strBtn1, new DialogInterface.OnClickListener() {
 
 				@Override
@@ -439,10 +439,10 @@ public class BiuFragment extends Fragment implements PushInterface{
 				public void onClick(DialogInterface dialog, int which) {
 					// TODO Auto-generated method stub
 					switch (flag) {
-					case 4:
+					case Constants.HEAD_VERIFYFAIL_UNREAD:
 						showHeadDialog();
 						break;
-					case 6:
+					case Constants.HEAD_VERIFYFAIL_UPDATE:
 						showHeadDialog();
 						break;
 					default:
@@ -1259,9 +1259,9 @@ public class BiuFragment extends Fragment implements PushInterface{
 			public void onClick(View arg0) {
 				// TODO Auto-generated method stub
 				switch (flag) {
-				case 2:
-				case 4:
-				case 6:
+				case Constants.HEAD_VERIFYSUC_UNREAD:
+				case Constants.HEAD_VERIFYFAIL_UNREAD:
+				case Constants.HEAD_VERIFYFAIL_UPDATE:
 					showShenHeDaiog("msg",Integer.parseInt(headFlag));
 					break;
 				default:

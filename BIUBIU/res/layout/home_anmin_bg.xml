@@ -99,16 +99,16 @@
 
         <ImageView
             android:id="@+id/moon_imv"
-            android:layout_width="32dp"
-            android:layout_height="30dp"
+            android:layout_width="35dp"
+            android:layout_height="33dp"
             android:layout_marginTop="500dp"
             android:layout_marginLeft="10dp"
             android:src="@drawable/biu_moon" />
 
         <ImageView
             android:id="@+id/sun_imv"
-            android:layout_width="19dp"
-            android:layout_height="19dp"
+            android:layout_width="22dp"
+            android:layout_height="22dp"
             android:layout_marginLeft="144dp"
             android:layout_marginTop="500dp"
             android:src="@drawable/biu_sun" />
