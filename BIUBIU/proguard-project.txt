@@ -107,7 +107,9 @@
 #依赖工程 BQMM_Lib jar
 -keep class com.melink.**{*;}
 -keep class com.thirdparty.bumptech.glide.**{*;}
-
+#依赖工程 源码
+#-keep class com.hyphenate.easeui.**{*;}
+#-keep class com.melink.bqmmsdk.ui.keyboard.BQMMKeyboard
 
 -keepattributes *Annotation*
 -keepattributes *JavascriptInterface*
