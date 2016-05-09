@@ -10,6 +10,7 @@ import com.hyphenate.chat.EMMessage.Direct;
 import com.hyphenate.easeui.R;
 import com.hyphenate.easeui.adapter.EaseMessageAdapter;
 import com.hyphenate.easeui.utils.EaseUserUtils;
+import com.hyphenate.easeui.utils.EasyDateUtils;
 import com.hyphenate.easeui.widget.EaseChatMessageList;
 import com.hyphenate.easeui.widget.EaseChatMessageList.MessageListItemClickListener;
 import com.hyphenate.util.DateUtils;
@@ -109,7 +110,7 @@ public abstract class EaseChatRow extends LinearLayout {
                 if (prevMessage != null && DateUtils.isCloseEnough(message.getMsgTime(), prevMessage.getMsgTime())) {
                     timestamp.setVisibility(View.GONE);
                 } else {
-                    timestamp.setText(DateUtils.getTimestampString(new Date(message.getMsgTime())));
+                    timestamp.setText(EasyDateUtils.getFormattedTimeInterval(message.getMsgTime()));
                     timestamp.setVisibility(View.VISIBLE);
                 }
             }
