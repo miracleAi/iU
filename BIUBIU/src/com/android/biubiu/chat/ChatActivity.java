@@ -6,18 +6,13 @@ import com.android.biubiu.MainActivity;
 import cc.imeetu.iu.R;
 
 
-import com.android.biubiu.common.Constant;
 import com.avos.avoscloud.LogUtil.log;
-import com.hyphenate.easeui.EaseConstant;
 import com.hyphenate.easeui.ui.EaseBaseActivity;
 import com.hyphenate.easeui.ui.EaseChatFragment;
 import com.hyphenate.util.EasyUtils;
 
 import android.os.Bundle;
-import android.app.Activity;
 import android.content.Intent;
-import android.support.v4.app.FragmentActivity;
-import android.view.Menu;
 import android.view.Window;
 
 public class ChatActivity extends EaseBaseActivity {

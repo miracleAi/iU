@@ -107,15 +107,14 @@ public class MenuLeftFragment extends Fragment implements OnClickListener {
 		switch (v.getId()) {
 		case R.id.left_menu_item1_rl:
 			//	Toast.makeText(getActivity(), "biu", Toast.LENGTH_SHORT).show();
-			((MainActivity) getActivity()).closeMenu();
+//			((MainActivity) getActivity()).closeMenu();
 			break;
 		case R.id.left_menu_item2_rl:
 			//	Toast.makeText(getActivity(), "message", Toast.LENGTH_SHORT).show();
-			((MainActivity) getActivity()).showSecondaryMenu();
-			;
+//			((MainActivity) getActivity()).showSecondaryMenu();
 			break;
 		case R.id.left_menu_item3_rl:
-			((MainActivity) getActivity()).closeMenu();
+//			((MainActivity) getActivity()).closeMenu();
 			if(isLogin){
 				Intent intent=new Intent(getActivity(),MatchSettingActivity.class);
 				startActivity(intent);
@@ -126,7 +125,7 @@ public class MenuLeftFragment extends Fragment implements OnClickListener {
 			}	
 			break;
 		case R.id.left_menu_item4_rl:
-			((MainActivity) getActivity()).closeMenu();
+//			((MainActivity) getActivity()).closeMenu();
 			Intent intentGuid=new Intent(getActivity(),BeginGuiderActivity.class);
 			startActivity(intentGuid);
 			break;
@@ -135,7 +134,7 @@ public class MenuLeftFragment extends Fragment implements OnClickListener {
 			showShare();
 			break;
 		case R.id.main_touxiang_rl:
-			((MainActivity) getActivity()).closeMenu();
+//			((MainActivity) getActivity()).closeMenu();
 			if(isLogin){
 				Intent intent=new Intent(getActivity(),MyPagerActivity.class);
 				startActivity(intent);
@@ -146,7 +145,7 @@ public class MenuLeftFragment extends Fragment implements OnClickListener {
 			}	
 			break;
 		case R.id.aboutOur_left_rl:
-			((MainActivity) getActivity()).closeMenu();
+//			((MainActivity) getActivity()).closeMenu();
 			Intent intent=new Intent(getActivity(),AboutOurActivity.class);
 			startActivity(intent);
 			break;

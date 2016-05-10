@@ -80,4 +80,6 @@
     <color name="set_biu_bg">#efebe8</color>
     <color name="hui">#e7eeed</color>
 
+    <color name="red">#e62828</color>
+    <color name="tab_bg">#242628</color>
 </resources>

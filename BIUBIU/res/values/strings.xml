@@ -216,4 +216,5 @@
     <string name="head_no_egis_info2">你修改的头像审核未通过，将恢复原来头像，点击重新上传更换头像</string>
     <string name="head_egis_info">你的头像审核通过啦，可以愉快的玩耍了</string>
 
+    <string name="mine">我的</string>
 </resources>

@@ -6,5 +6,7 @@
      <dimen name="slidingmenu_offset">62dp</dimen>
     <dimen name="shadow_width">10dp</dimen>
     <dimen name="nornal_margin_top">16dp</dimen>
-
+    <dimen name="unread_msg_tip_margin">6dip</dimen>
+    <dimen name="tab_indicator_height">48dip</dimen>
+`   <dimen name="top_title_height">44dp</dimen>
 </resources>

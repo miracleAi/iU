@@ -2,24 +2,22 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/biu_bg"
-    android:orientation="vertical" >
+    android:background="@drawable/biu_bg">
 
     <com.android.biubiu.view.HomeBgView
         android:id="@+id/home_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" >
-    </com.android.biubiu.view.HomeBgView>
+        android:layout_height="match_parent" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical" >
+        android:orientation="vertical">
 
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1" >
+            android:layout_weight="1">
 
             <com.android.biubiu.view.BiuView
                 android:id="@+id/biu_view"
@@ -29,13 +27,12 @@
             <AbsoluteLayout
                 android:id="@+id/user_group_layout"
                 android:layout_width="fill_parent"
-                android:layout_height="fill_parent" >
-            </AbsoluteLayout>
+                android:layout_height="fill_parent" />
 
             <RelativeLayout
                 android:id="@+id/biu_layout"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" >
+                android:layout_height="wrap_content">
 
                 <ImageView
                     android:id="@+id/user_biu_bg"
@@ -74,12 +71,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:visibility="gone" >
+            android:visibility="gone">
 
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="20dp" >
+                android:layout_marginBottom="20dp">
 
                 <TextView
                     android:id="@+id/name_tv"
@@ -94,14 +91,14 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="44dp" >
+                android:layout_marginBottom="44dp">
 
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerHorizontal="true"
                     android:gravity="center_vertical"
-                    android:orientation="horizontal" >
+                    android:orientation="horizontal">
 
                     <ImageView
                         android:layout_width="5dp"
@@ -168,4 +165,11 @@
 
     <include layout="@layout/loading_layout" />
 
+    <RelativeLayout
+        android:id="@+id/top_title_layout"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/top_title_height"
+        android:layout_alignParentTop="true">
+
+    </RelativeLayout>
 </RelativeLayout>

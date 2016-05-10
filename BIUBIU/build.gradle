@@ -46,8 +46,8 @@ android {
     }
 
     defaultConfig {
-        versionCode 20160509
-        versionName "v1.1"
+        versionCode 20160507
+        versionName "1.1.0"
         //Enabling multidex support.
         multiDexEnabled true
     }

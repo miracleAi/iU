@@ -3,11 +3,6 @@ package com.android.biubiu.push;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.util.List;
-import java.util.Random;
-
-import org.xutils.x;
-import org.xutils.common.Callback.CommonCallback;
-import org.xutils.http.RequestParams;
 
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -34,12 +29,9 @@ import com.android.biubiu.bean.UserFriends;
 import com.android.biubiu.sqlite.PushMatchDao;
 import com.android.biubiu.sqlite.UserDao;
 import com.android.biubiu.utils.Constants;
-import com.android.biubiu.utils.HttpContants;
 import com.android.biubiu.utils.HttpUtils;
 import com.android.biubiu.utils.LogUtil;
-import com.android.biubiu.utils.LoginUtils;
 import com.android.biubiu.utils.SharePreferanceUtils;
-import com.android.biubiu.utils.Utils;
 import com.avos.avoscloud.LogUtil.log;
 import com.baidu.android.pushservice.PushMessageReceiver;
 

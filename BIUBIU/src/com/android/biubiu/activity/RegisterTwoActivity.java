@@ -2,14 +2,12 @@ package com.android.biubiu.activity;
 
 
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.xutils.x;
-import org.xutils.common.Callback.CancelledException;
 import org.xutils.common.Callback.CommonCallback;
 import org.xutils.http.RequestParams;
 
@@ -38,8 +36,6 @@ import com.alibaba.sdk.android.oss.model.PutObjectResult;
 import com.android.biubiu.MainActivity;
 
 
-import com.android.biubiu.activity.biu.BiuBiuReceiveActivity;
-import com.android.biubiu.activity.mine.ChangeIdentityProfessionActivity;
 import com.android.biubiu.activity.mine.ChangeSchoolActivity;
 import com.android.biubiu.bean.Citybean;
 import com.android.biubiu.bean.Schools;
@@ -47,7 +43,6 @@ import com.android.biubiu.bean.UserInfoBean;
 import com.android.biubiu.common.Umutils;
 import com.android.biubiu.common.city.ArrayWheelAdapter;
 import com.android.biubiu.common.city.BaseCityActivity;
-import com.android.biubiu.common.city.OnWheelChangedListener;
 import com.android.biubiu.common.city.OnWheelChangedListener2;
 import com.android.biubiu.common.city.WheelView2;
 
@@ -55,7 +50,6 @@ import com.android.biubiu.common.city.WheelView2;
 import com.android.biubiu.sqlite.CityDao;
 
 
-import com.android.biubiu.utils.CaculateDateUtils;
 import com.android.biubiu.utils.Constants;
 import com.android.biubiu.utils.HttpContants;
 import com.android.biubiu.utils.LogUtil;
@@ -74,9 +68,7 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.view.View.OnClickListener;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
