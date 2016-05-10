@@ -341,7 +341,7 @@ public class BiuFragment extends Fragment implements PushInterface{
 								startActivityForResult(intent, SEND_BIU_REQUEST);
 							}
 						}else{
-							Toast.makeText(getActivity(), "距离上次发biu还不到90秒哦！", 1000).show();
+							Toast.makeText(getActivity(), "距离上次发biu还不到90秒哦！", Toast.LENGTH_SHORT).show();
 						}	
 					}else{
 						//启动发送biubiu界面
@@ -1058,7 +1058,7 @@ public class BiuFragment extends Fragment implements PushInterface{
 				if(result){
 					dismissLoadingLayout();
 				}else{
-					Toast.makeText(getActivity(), "上传照片失败", 1000).show();
+					Toast.makeText(getActivity(), "上传照片失败", Toast.LENGTH_SHORT).show();
 					dismissLoadingLayout();
 				}
 			}
@@ -1173,7 +1173,7 @@ public class BiuFragment extends Fragment implements PushInterface{
 					jsons = new JSONObject(result);
 					String state = jsons.getString("state");
 					if(state.equals("303")){
-						Toast.makeText(getActivity(),"登录过期，请重新登录",1000).show();
+						Toast.makeText(getActivity(),"登录过期，请重新登录",Toast.LENGTH_SHORT).show();
 						SharePreferanceUtils.getInstance().putShared(getActivity(), SharePreferanceUtils.TOKEN, "");
 						SharePreferanceUtils.getInstance().putShared(getActivity(), SharePreferanceUtils.USER_NAME, "");
 						SharePreferanceUtils.getInstance().putShared(getActivity(), SharePreferanceUtils.USER_HEAD, "");

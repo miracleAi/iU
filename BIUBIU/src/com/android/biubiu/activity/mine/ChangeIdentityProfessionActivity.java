@@ -37,8 +37,9 @@ public class ChangeIdentityProfessionActivity extends BaseActivity implements
 	/**
 	 * 所有身份职业
 	 */
-	private String mIdentity[] = { "学生", "媒体/公关", "金融", "法律", "销售", "咨询",
-			"IT/互联网/通信", "文化/艺术", "影视/娱乐", "教育/科研", "医疗/健康", "房地产/建筑", "政府机构" };
+	/*private String mIdentity[] = { "学生", "媒体/公关", "金融", "法律", "销售", "咨询",
+			"IT/互联网/通信", "文化/艺术", "影视/娱乐", "教育/科研", "医疗/健康", "房地产/建筑", "政府机构" };*/
+	private String mIdentity[] = { "学生", "上班族" };
 	private TextView identity;
 	UserInfoBean infoBean;
 
@@ -59,9 +60,10 @@ public class ChangeIdentityProfessionActivity extends BaseActivity implements
 			if(infoBean.getIsStudent()!=null && infoBean.getIsStudent().equals(Constants.IS_STUDENT_FLAG)){
 				identity.setText("学生");
 			}else{
-				if(infoBean.getCareer() != null){
+				identity.setText("上班族");
+				/*if(infoBean.getCareer() != null){
 					identity.setText(infoBean.getCareer());
-				}
+				}*/
 			}
 		}
 		
@@ -85,17 +87,17 @@ public class ChangeIdentityProfessionActivity extends BaseActivity implements
 				}
 				if(identity.getText().equals("学生")){
 					infoBean.setIsStudent(Constants.IS_STUDENT_FLAG);
-					infoBean.setCareer("");
+					/*infoBean.setCareer("");
 					infoBean.setCompany("");
 					Intent intent=new Intent(ChangeIdentityProfessionActivity.this,ChangeSchoolActivity.class);
-					startActivityForResult(intent, 10);
+					startActivityForResult(intent, 10);*/
 				}else{
-					infoBean.setCareer(identity.getText().toString());
+					//infoBean.setCareer(identity.getText().toString());
 					infoBean.setIsStudent(Constants.HAS_GRADUATE);
-					infoBean.setSchool("");
-					updateInfo("career,school,isgraduated");
+					//infoBean.setSchool("");
+					//updateInfo("career,school,isgraduated");
 				}
-				
+				updateInfo("isgraduated");
 			}
 		});
 	}
@@ -191,7 +193,7 @@ public class ChangeIdentityProfessionActivity extends BaseActivity implements
 			}
 		});
 	}
-	@Override
+	/*@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		// TODO Auto-generated method stub
 		
@@ -206,6 +208,6 @@ public class ChangeIdentityProfessionActivity extends BaseActivity implements
 			
 		}
 		super.onActivityResult(requestCode, resultCode, data);
-	}
+	}*/
 
 }

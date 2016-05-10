@@ -16,6 +16,7 @@ import org.xutils.image.ImageOptions;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.ContentResolver;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.CompressFormat;
@@ -78,6 +79,7 @@ import com.android.biubiu.bean.UserInfoBean;
 import com.android.biubiu.bean.UserPhotoBean;
 import com.android.biubiu.chat.MyHintDialog;
 import com.android.biubiu.chat.MyHintDialog.OnDialogClick;
+import com.android.biubiu.common.CommonDialog;
 import com.android.biubiu.sqlite.CityDao;
 import com.android.biubiu.sqlite.SchoolDao;
 import com.android.biubiu.sqlite.UserDao;
@@ -309,7 +311,6 @@ public class MyPagerActivity extends BaseActivity implements OnClickListener{
 			}else{
 				locationTv.setText(bean.getDistance()+"m");
 			}
-			LogUtil.d("mytest", "time"+(System.currentTimeMillis()-bean.getActivityTime())/1000);
 			if(((System.currentTimeMillis()-bean.getActivityTime())/1000)>(24*60*60*1000)){
 				timeTv.setText(((System.currentTimeMillis()-bean.getActivityTime())/1000)/60%60%24+"day");
 			}else if(((System.currentTimeMillis()-bean.getActivityTime())/1000)>(60*60*1000)){
@@ -337,7 +338,6 @@ public class MyPagerActivity extends BaseActivity implements OnClickListener{
 
 
 //		if(isMyself){
-		LogUtil.d("mytest","head status"+bean.getIconVerify());
 			iconVerify.setVisibility(View.VISIBLE);
 			if(bean.getIconVerify().equals("0")){
 				iconVerify.setText("待审核");
@@ -375,20 +375,15 @@ public class MyPagerActivity extends BaseActivity implements OnClickListener{
 			heightWeightTv.setTextColor(getResources().getColor(R.color.about_gray2_txt));
 		}
 
-
 		if(bean.getIsStudent().equals(Constants.IS_STUDENT_FLAG)){
-			identityTagTv.setText("身份");
-			schoolTagTv.setText("学校");
 			identityTv.setText("学生");
-			if(bean.getSchool()!=null&&!bean.getSchool().equals("")){
-				schoolTv.setText(schoolDao.getschoolName(bean.getSchool()).get(0).getUnivsNameString());
-			}
-
 		}else{
-			identityTagTv.setText("职业");
-			schoolTagTv.setText("公司");
-			identityTv.setText(bean.getCareer());
-			schoolTv.setText(bean.getCompany());
+			identityTv.setText("上班族");
+		}
+		if(bean.getSchool()!=null&&!bean.getSchool().equals("")){
+			schoolTv.setText(schoolDao.getschoolName(bean.getSchool()).get(0).getUnivsNameString());
+		}else{
+			goCompleteSchool();
 		}
 		if(isMyself && bean.getAboutMe().equals("")){
 			userInfoTv.setText(getResources().getString(R.string.description_me));
@@ -438,6 +433,20 @@ public class MyPagerActivity extends BaseActivity implements OnClickListener{
 		}
 
 	}
+
+	private void goCompleteSchool() {
+		CommonDialog.singleBtnDialog(MyPagerActivity.this,"完善信息","你还没有学校哦","去设置",new DialogInterface.OnClickListener(){
+
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				dialog.dismiss();
+				Intent schoolIntent = new Intent(MyPagerActivity.this,ChangeSchoolActivity.class);
+				schoolIntent.putExtra("userInfoBean", infoBean);
+				startActivityForResult(schoolIntent, UPDATE_INFO);
+			}
+		});
+	}
+
 	private void setUserPhotos(ArrayList<UserPhotoBean> photos) {
 		// TODO Auto-generated method stub
 		photoAdapter = new UserPagerPhotoAdapter(getApplicationContext(), photos, imageOptions,isMyself);
@@ -647,15 +656,15 @@ public class MyPagerActivity extends BaseActivity implements OnClickListener{
 			startActivityForResult(identityIntent, UPDATE_INFO);
 			break;
 		case R.id.school_linear:
-			if(infoBean.getIsStudent().equals(Constants.IS_STUDENT_FLAG)){
+			//if(infoBean.getIsStudent().equals(Constants.IS_STUDENT_FLAG)){
 				Intent schoolIntent = new Intent(MyPagerActivity.this,ChangeSchoolActivity.class);
 				schoolIntent.putExtra("userInfoBean", infoBean);
 				startActivityForResult(schoolIntent, UPDATE_INFO);
-			}else{
+			/*}else{
 				Intent companyIntent = new Intent(MyPagerActivity.this,ChangeCompanyActivity.class);
 				companyIntent.putExtra("userInfoBean", infoBean);
 				startActivityForResult(companyIntent, UPDATE_INFO);
-			}
+			}*/
 			break;
 		case R.id.personal_tag_linear:
 			Intent personalTagIntent=new Intent(MyPagerActivity.this,PersonalityTagActivity.class);

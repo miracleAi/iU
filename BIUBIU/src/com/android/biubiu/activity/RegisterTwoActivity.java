@@ -117,7 +117,7 @@ public class RegisterTwoActivity extends BaseCityActivity implements OnClickList
 	/**
 	 * 所有身份职业
 	 */
-	private String mIdentity[]={
+	/*private String mIdentity[]={
 			"媒体/公关",
 			"金融",
 			"法律",
@@ -130,7 +130,7 @@ public class RegisterTwoActivity extends BaseCityActivity implements OnClickList
 			"医疗/健康",
 			"房地产/建筑",
 			"政府机构"
-	};
+	};*/
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
@@ -175,7 +175,7 @@ public class RegisterTwoActivity extends BaseCityActivity implements OnClickList
 
 
 	}
-	private PopupWindow popWindowProfession;
+	/*private PopupWindow popWindowProfession;
 	private void initPopupWindowProfession() {
 		if (popWindowProfession == null) {
 			View view = LayoutInflater.from(this).inflate(R.layout.professtion_popwindow,
@@ -216,7 +216,7 @@ public class RegisterTwoActivity extends BaseCityActivity implements OnClickList
 		//	Log.e("lucifer", "mProvinceDatas.length==" + mProvinceDatas.length);
 		// 设置可见条目数量
 		mViewProfesstion.setVisibleItems(7);
-	}
+	}*/
 	private PopupWindow popupWindowCity;
 
 	private void initPopupWindowCity() {
@@ -342,11 +342,11 @@ public class RegisterTwoActivity extends BaseCityActivity implements OnClickList
 	private void nextStep() {
 		// TODO Auto-generated method stub
 		if(null == schoolTv.getText() || schoolTv.getText().toString().equals("")){
-			if(isStudent){
+			//if(isStudent){
 				toastShort(getResources().getString(R.string.reg_two_no_school));
-			}else{
+			/*}else{
 				toastShort(getResources().getString(R.string.reg_two_no_job));
-			}
+			}*/
 			return;
 		}
 		if(null == cityTextView.getText() || cityTextView.getText().toString().equals("")){
@@ -399,14 +399,14 @@ public class RegisterTwoActivity extends BaseCityActivity implements OnClickList
 			popupWindowCity.dismiss();
 			break;
 		case R.id.registertwo_center3_rl:
-			if(isStudent){
+			//if(isStudent){
 				Intent intent=new Intent(this,ChangeSchoolActivity.class);
 				startActivityForResult(intent, SELECT_SCHOOL);
-			}else{
+		/*	}else{
 				//选择职业
 				initPopupWindowProfession();
 				popWindowProfession.showAsDropDown(cityTextView, 0, 200);
-			}
+			}*/
 			break;
 		case R.id.next_registertwo_rl:
 			nextStep();
@@ -414,7 +414,6 @@ public class RegisterTwoActivity extends BaseCityActivity implements OnClickList
 		case R.id.is_student_linear:
 			if(!isStudent){
 				isStudent = true;
-				schoolTv.setText("");
 				schoolTv.setHint(getResources().getString(R.string.register_two_selecter_school));
 				isStudentImv.setImageResource(R.drawable.register_shenfen_imageview_btn_light);
 				graduateImv.setImageResource(R.drawable.register_shenfen_imageview_normal);
@@ -423,8 +422,7 @@ public class RegisterTwoActivity extends BaseCityActivity implements OnClickList
 		case R.id.graduate_linear:
 			if(isStudent){
 				isStudent = false;
-				schoolTv.setText("");
-				schoolTv.setHint(getResources().getString(R.string.register_two_selecter_job));
+				schoolTv.setHint(getResources().getString(R.string.register_two_selecter_school));
 				isStudentImv.setImageResource(R.drawable.register_shenfen_imageview_normal);
 				graduateImv.setImageResource(R.drawable.register_shenfen_imageview_btn_light);
 			}
@@ -460,13 +458,13 @@ public class RegisterTwoActivity extends BaseCityActivity implements OnClickList
 			cityTextView.setText("" + mCurrentProviceName+" " + mCurrentCityName
 					);
 			changeNextBg();
-		}else if(wheel == mViewProfesstion){
+		}/*else if(wheel == mViewProfesstion){
 
 
 			int pCurrent = mViewProfesstion.getCurrentItem();
 
 			schoolTv.setText(mIdentity[pCurrent]);
-		}
+		}*/
 
 	}
 	@Override
