@@ -21,6 +21,8 @@ import cc.imeetu.iu.R;
 
 import com.android.biubiu.MainActivity;
 import com.android.biubiu.activity.LoginOrRegisterActivity;
+import com.android.biubiu.activity.activity.ActivityListActivity;
+import com.android.biubiu.activity.activity.WebviewActivity;
 import com.android.biubiu.activity.biu.BiuBiuReceiveActivity;
 import com.android.biubiu.activity.biu.BiuBiuSendActivity;
 import com.android.biubiu.activity.biu.BiuChargeActivity;
@@ -31,6 +33,7 @@ import com.android.biubiu.callback.BiuBooleanCallback;
 import com.android.biubiu.chat.ChatActivity;
 import com.android.biubiu.chat.Constant;
 import com.android.biubiu.common.CommonDialog;
+import com.android.biubiu.component.title.TopTitleView;
 import com.android.biubiu.push.MyPushReceiver;
 import com.android.biubiu.push.PushInterface;
 import com.android.biubiu.sqlite.SchoolDao;
@@ -66,6 +69,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.CompressFormat;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -74,6 +78,7 @@ import android.os.Handler;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -84,6 +89,7 @@ import android.widget.AbsoluteLayout;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -173,6 +179,7 @@ public class BiuFragment extends Fragment implements PushInterface {
     boolean isBiuState = true;
     private static final int SELECT_PHOTO = 1002;
     private static final int CROUP_PHOTO = 1003;
+    private static final int ACTIVITY_LIST = 1004;
     Bitmap userheadBitmap = null;
     String headPath = "";
     LinearLayout loadingLayout;
@@ -187,6 +194,11 @@ public class BiuFragment extends Fragment implements PushInterface {
     //默认头像列表
     ArrayList<BiuDefaultBean> defaultBeanList = new ArrayList<BiuDefaultBean>();
 
+    private TopTitleView mTopTitle;
+    private PopupWindow mAdPopup;
+    private String mAdUrl, mAdName, mAdCover;
+    private String mUserCode;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.biu_fragment_layout, null);
@@ -195,7 +207,98 @@ public class BiuFragment extends Fragment implements PushInterface {
         init();
         drawBiuView();
         setBiuLayout();
+        getAd();
         return view;
+    }
+
+    /**
+     * 获得广告
+     */
+    private void getAd() {
+        mUserCode = SharePreferanceUtils.getInstance().getUserCode(getActivity(), SharePreferanceUtils.USER_CODE, "");
+        RequestParams params = new RequestParams(HttpContants.ACTIVITY_GETTAGS);
+        JSONObject requestObject = new JSONObject();
+        try {
+            requestObject.put("device_code", SharePreferanceUtils.getInstance().getDeviceId(getActivity(), SharePreferanceUtils.DEVICE_ID, ""));
+            requestObject.put("token", SharePreferanceUtils.getInstance().getToken(getActivity(), SharePreferanceUtils.TOKEN, ""));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        params.addBodyParameter("data", requestObject.toString());
+        x.http().post(params, new CommonCallback<String>() {
+            @Override
+            public void onSuccess(String s) {
+                JSONObject jsons;
+                try {
+                    jsons = new JSONObject(s);
+                    String state = jsons.getString("state");
+                    if (state.equals("303")) {
+                        Toast.makeText(getActivity(), "登录过期，请重新登录", Toast.LENGTH_SHORT).show();
+                        SharePreferanceUtils.getInstance().putShared(getActivity(), SharePreferanceUtils.TOKEN, "");
+                        SharePreferanceUtils.getInstance().putShared(getActivity(), SharePreferanceUtils.USER_NAME, "");
+                        SharePreferanceUtils.getInstance().putShared(getActivity(), SharePreferanceUtils.USER_HEAD, "");
+                        SharePreferanceUtils.getInstance().putShared(getActivity(), SharePreferanceUtils.USER_CODE, "");
+                        LogUtil.d("mytest", "tok---" + SharePreferanceUtils.getInstance().getToken(getActivity(), SharePreferanceUtils.TOKEN, ""));
+                        exitHuanxin();
+                        return;
+                    }
+                    if (!state.equals("200")) {
+                        return;
+                    }
+                    JSONObject data = jsons.getJSONObject("data");
+                    JSONObject activity = data.getJSONObject("activity");
+                    int status = activity.getInt("status");
+                    if (status == 1) {
+                        mTopTitle.setRightLayoutVisible();
+                        mTopTitle.setRightImage(R.drawable.biu_btn_activity_nor);
+                        JSONObject dialog = activity.getJSONObject("dialog");
+                        mAdUrl = dialog.getString("url");
+                        mAdName = dialog.getString("name");
+                        mAdCover = dialog.getString("name");
+                        //判断是否弹出广告dialog
+                        String url = SharePreferanceUtils.getInstance().getAdUrl(getActivity(), mUserCode);
+                        if (TextUtils.isEmpty(url) || !url.equals(mAdUrl)) {//没弹过
+                            SharePreferanceUtils.getInstance().saveAdUrl(getActivity(), mUserCode, mAdUrl);
+                            showPopup();
+                        }
+
+                        int updateAt = activity.getInt("updateAt");
+                        int cacheUpdate = SharePreferanceUtils.getInstance().getUpdateAd(getActivity(), mUserCode);
+                        if (updateAt != cacheUpdate) {
+                            boolean haveView = SharePreferanceUtils.getInstance().getHaveToView(getActivity(), mUserCode);
+                            if (haveView) {
+                                SharePreferanceUtils.getInstance().saveHaveToView(getActivity(),mUserCode,false);
+                            }
+                            mTopTitle.setRightImage(R.drawable.biu_btn_activity_light);
+                            SharePreferanceUtils.getInstance().saveUpdateAd(getActivity(),mUserCode,updateAt);
+                        }else{
+                            boolean haveView = SharePreferanceUtils.getInstance().getHaveToView(getActivity(), mUserCode);
+                            if (!haveView) {
+                                mTopTitle.setRightImage(R.drawable.biu_btn_activity_light);
+                            }
+                        }
+
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onError(Throwable throwable, boolean b) {
+
+            }
+
+            @Override
+            public void onCancelled(CancelledException e) {
+
+            }
+
+            @Override
+            public void onFinished() {
+
+            }
+        });
     }
 
     private void initReceiver() {
@@ -227,7 +330,6 @@ public class BiuFragment extends Fragment implements PushInterface {
     }
 
     private void init() {
-        // TODO Auto-generated method stub
         width = getActivity().getWindowManager().getDefaultDisplay().getWidth();
         height = getActivity().getWindowManager().getDefaultDisplay().getHeight();
         loadingLayout = (LinearLayout) view.findViewById(R.id.loading_layout);
@@ -264,6 +366,51 @@ public class BiuFragment extends Fragment implements PushInterface {
                 .setFailureDrawableId(R.drawable.photo_fail)
                 .setIgnoreGif(true)
                 .build();
+
+        mTopTitle = (TopTitleView) view.findViewById(R.id.top_title_view);
+        mTopTitle.setRightOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent activities = new Intent(getActivity(), ActivityListActivity.class);
+                startActivityForResult(activities,ACTIVITY_LIST);
+            }
+        });
+    }
+
+    private void showPopup() {
+        if (mAdPopup == null) {
+            View contentView = LayoutInflater.from(getActivity()).inflate(R.layout.ad_layout, null);
+//            ImageOptions options = new ImageOptions.Builder()
+            x.image().bind((ImageView) contentView.findViewById(R.id.ad_imageview), mAdUrl);
+            contentView.findViewById(R.id.ad_imageview).setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent i = new Intent(getActivity(), WebviewActivity.class);
+                    i.putExtra(com.android.biubiu.common.Constant.ACTIVITY_NAME, mAdName);
+                    i.putExtra(com.android.biubiu.common.Constant.ACTIVITY_URL, mAdUrl);
+                    i.putExtra(com.android.biubiu.common.Constant.ACTIVITY_COVER, mAdCover);
+                    startActivity(i);
+                    mAdPopup.dismiss();
+                }
+            });
+            mAdPopup = new PopupWindow(contentView, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+            mAdPopup.setTouchable(true);
+            mAdPopup.setOutsideTouchable(true);
+            // 如果不设置PopupWindow的背景，无论是点击外部区域还是Back键都无法dismiss弹框
+            // 我觉得这里是API的一个bug
+            mAdPopup.setBackgroundDrawable(new ColorDrawable(0x88000000));
+            contentView.findViewById(R.id.close_imageview).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mAdPopup.dismiss();
+                }
+            });
+        }
+        if (!mAdPopup.isShowing()) {
+            mAdPopup.showAtLocation(view, Gravity.NO_GRAVITY, 0, 0);
+        } else {
+            mAdPopup.dismiss();
+        }
     }
 
     private void drawBiuView() {
@@ -316,11 +463,11 @@ public class BiuFragment extends Fragment implements PushInterface {
                 }
                 if (isBiuState) {
                     String sendTimeStr = SharePreferanceUtils.getInstance().getBiuTime(getActivity(), SharePreferanceUtils.SEND_BIU_TIME, "");
-                    if (!sendTimeStr.equals("")) {
+                    if (!TextUtils.isEmpty(sendTimeStr)) {
                         long time = System.currentTimeMillis() - Long.parseLong(sendTimeStr);
                         if (time / 1000 > 90) {
                             //启动发送biubiu界面
-                            if (null != headFlag && !"".equals(headFlag)) {
+                            if (!TextUtils.isEmpty(headFlag)) {
                                 switch (Integer.parseInt(headFlag)) {
                                     case Constants.HEAD_VERIFYSUC_UNREAD:
                                     case Constants.HEAD_VERIFYFAIL_UNREAD:
@@ -341,7 +488,7 @@ public class BiuFragment extends Fragment implements PushInterface {
                         }
                     } else {
                         //启动发送biubiu界面
-                        if (null != headFlag && !"".equals(headFlag)) {
+                        if (!TextUtils.isEmpty(headFlag)) {
                             switch (Integer.parseInt(headFlag)) {
                                 case Constants.HEAD_VERIFYSUC_UNREAD:
                                 case Constants.HEAD_VERIFYFAIL_UNREAD:
@@ -464,8 +611,8 @@ public class BiuFragment extends Fragment implements PushInterface {
                 } else {
                     intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                 }
-				/*Intent intent = new Intent(Intent.ACTION_PICK, null);
-				intent.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+                /*Intent intent = new Intent(Intent.ACTION_PICK, null);
+                intent.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
 						"image/*");*/
                 startActivityForResult(intent, SELECT_PHOTO);
                 dialog.dismiss();
@@ -846,8 +993,8 @@ public class BiuFragment extends Fragment implements PushInterface {
         imagePL.addRule(RelativeLayout.ALIGN_BOTTOM, imageView.getId());
         imagePL.addRule(RelativeLayout.ALIGN_RIGHT, imageViewbg.getId());
         rl.addView(imageViewL, imagePL);
-		/*TextView tv = new TextView(getActivity());
-		RelativeLayout.LayoutParams tvP = new RelativeLayout.LayoutParams(LayoutParams .WRAP_CONTENT,LayoutParams .WRAP_CONTENT);
+        /*TextView tv = new TextView(getActivity());
+        RelativeLayout.LayoutParams tvP = new RelativeLayout.LayoutParams(LayoutParams .WRAP_CONTENT,LayoutParams .WRAP_CONTENT);
 		tvP.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM); 
 		tvP.addRule(RelativeLayout.CENTER_HORIZONTAL); 
 		tv.setText("11%");
@@ -926,8 +1073,8 @@ public class BiuFragment extends Fragment implements PushInterface {
         animSet.setDuration(500);
         animSet.playTogether(anim1, anim2, anim3, anim4, anim5);
         animSet.start();
-		/*TextView tv = (TextView) rl.findViewWithTag(tvTag+userBean.getId());
-		tv.setVisibility(View.GONE);*/
+        /*TextView tv = (TextView) rl.findViewWithTag(tvTag+userBean.getId());
+        tv.setVisibility(View.GONE);*/
     }
 
     //加入所有list中的view
@@ -1054,6 +1201,9 @@ public class BiuFragment extends Fragment implements PushInterface {
                 if (data != null) {
                     cropPhoto(data.getData());// 裁剪图片
                 }
+                break;
+            case ACTIVITY_LIST:
+                mTopTitle.setRightImage(R.drawable.biu_btn_activity_nor);
                 break;
             default:
                 break;

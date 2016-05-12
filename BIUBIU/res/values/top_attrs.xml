@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <declare-styleable name="TopTitleView">
+        <attr name="title" format="reference" />
+        <attr name="topTitleColor" format="color" />
+        <attr name="topTitleSize" format="dimension" />
+        <attr name="leftDrawable" format="reference" />
+        <attr name="rightDrawable" format="reference" />
+        <attr name="leftText" format="reference" />
+        <attr name="rightText" format="reference" />
+        <attr name="rightTextColor" format="reference"/>
+        <attr name="centerText" format="reference" />
+        <attr name="centerDrawable" format="reference" />
+        <attr name="bothSideSize" format="dimension" />
+        <attr name="centerImage" format="reference"/>
+    </declare-styleable>
+
+</resources>

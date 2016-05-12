@@ -95,7 +95,12 @@ public class MainActivity extends FragmentActivity implements AMapLocationListen
             FragmentTransaction transaction = mFragmentManager.beginTransaction();
             for (Indicator i : mIndicators) {
                 if (id == i.getId()) {
-                    Fragment f = mFragmentManager.findFragmentByTag(getResources().getString(i.getTitle()));
+                    Fragment f = null;
+                    if(i.getTitle()==0){
+                        f = mFragmentManager.findFragmentByTag(getResources().getString(R.string.left_menu_biubiu));
+                    }else{
+                        f = mFragmentManager.findFragmentByTag(getResources().getString(i.getTitle()));
+                    }
                     if (f != null) {
                         transaction.show(i.getFragment());
                         i.setClickTime(i.getClickTime() + 1);
@@ -103,7 +108,12 @@ public class MainActivity extends FragmentActivity implements AMapLocationListen
                         transaction.add(R.id.layout_body, i.getFragment(), getResources().getString(i.getTitle()));
                     }
                 } else {
-                    Fragment f = mFragmentManager.findFragmentByTag(getResources().getString(i.getTitle()));
+                    Fragment f = null;
+                    if(i.getTitle()==0){
+                        f = mFragmentManager.findFragmentByTag(getResources().getString(R.string.left_menu_biubiu));
+                    }else{
+                        f = mFragmentManager.findFragmentByTag(getResources().getString(i.getTitle()));
+                    }
                     if (f != null) {
                         transaction.hide(i.getFragment());
                         i.setClickTime(0);
@@ -171,12 +181,12 @@ public class MainActivity extends FragmentActivity implements AMapLocationListen
     private void initFragments() {
         mFragmentManager = getSupportFragmentManager();
 
-        Indicator message = new Indicator(R.id.tab_message, R.string.left_menu_message, R.drawable.main_chose5_nomal_icon,
-                R.drawable.main_chose5_light_icon, new MenuRightFragment());
-        Indicator biu = new Indicator(R.id.tab_biu, R.string.left_menu_biubiu, R.drawable.main_chose5_nomal_icon,
-                R.drawable.main_chose5_light_icon, new BiuFragment());
-        Indicator mine = new Indicator(R.id.tab_mine, R.string.mine, R.drawable.main_chose5_nomal_icon,
-                R.drawable.main_chose5_light_icon, new MenuLeftFragment());
+        Indicator message = new Indicator(R.id.tab_message, R.string.left_menu_message, R.drawable.main_tab_icon_mes_nor,
+                R.drawable.main_tab_icon_mes_light, new MenuRightFragment());
+        Indicator biu = new Indicator(R.id.tab_biu, R.drawable.main_tab_icon_biu_nor,
+                R.drawable.main_tab_icon_biu_light, new BiuFragment());
+        Indicator mine = new Indicator(R.id.tab_mine, R.string.mine, R.drawable.main_tab_icon_mine_nor,
+                R.drawable.main_tab_icon_mine_light, new MenuLeftFragment());
 
         mIndicators.add(message);
         mIndicators.add(biu);

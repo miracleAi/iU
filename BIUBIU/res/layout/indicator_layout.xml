@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    style="@style/tab_lyt_style"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/tab_lyt_style">
 
     <FrameLayout
         android:id="@+id/pic_word_layout"
@@ -16,13 +15,11 @@
 
             <ImageView
                 android:id="@+id/ivIcon"
-                style="@style/tab_img_style"
-                />
+                style="@style/tab_img_style" />
 
             <TextView
                 android:id="@+id/tvText"
-                style="@style/tab_text_style"
-                android:textSize="12sp"/>
+                style="@style/tab_text_style" />
         </LinearLayout>
 
 
@@ -34,15 +31,15 @@
             android:layout_marginRight="20dip"
             android:layout_marginTop="@dimen/unread_msg_tip_margin"
             android:src="@drawable/unread_msg_tip_bg"
-            android:visibility="gone"/>
+            android:visibility="gone" />
     </FrameLayout>
 
     <ImageView
         android:id="@+id/extra_img"
-        android:layout_width="28dip"
-        android:layout_height="28dip"
-        android:layout_marginTop="10dip"
-        android:layout_marginBottom="10dip"
-        android:visibility="gone"/>
+        android:layout_width="31dp"
+        android:layout_height="27dip"
+        android:layout_marginTop="11dip"
+        android:layout_marginBottom="11dp"
+        android:visibility="gone" />
 
 </LinearLayout>

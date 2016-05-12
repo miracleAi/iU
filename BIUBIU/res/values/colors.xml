@@ -23,7 +23,7 @@
     <color name="super_text_orange">#ff9694</color>
     <color name="super_text_black">#333333</color>
     <!-- 关于 页面相关 -->
-     <color name="about_bg">#fcfcf4</color>
+    <color name="about_bg">#fcfcf4</color>
     <color name="about_gray2_txt">#a0a0a0</color>
     <color name="about_gray_txt">#999999</color>
     <color name="about_darkgary_txt">#515151</color>
@@ -81,5 +81,5 @@
     <color name="hui">#e7eeed</color>
 
     <color name="red">#e62828</color>
-    <color name="tab_bg">#242628</color>
+    <color name="tab_bg">#324047</color>
 </resources>
