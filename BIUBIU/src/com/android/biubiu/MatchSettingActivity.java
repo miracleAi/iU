@@ -62,9 +62,6 @@ public class MatchSettingActivity extends BaseActivity implements OnClickListene
 	private TextView ageMaxTv;
 	private RelativeLayout personalTagRl;
 	private MyGridView tagGv;
-	private ImageView newMsgToggle;
-	private ImageView voiceToggle;
-	private ImageView shockToggle;
 	private RelativeLayout logoutRl;
 	private LinearLayout seekLinear;
 	private UserPagerTagAdapter setTagAdapter;
@@ -72,16 +69,11 @@ public class MatchSettingActivity extends BaseActivity implements OnClickListene
 	private RelativeLayout girlLayout;
 	private RelativeLayout cityLayout;
 	private RelativeLayout unLimitLayout;
-	private RelativeLayout msgLayout;
-	private RelativeLayout voiceLayout;
-	private RelativeLayout shockLayout;
 	RangeSeekBar<Integer> seekBar;
 
 	private boolean isSelBoy = true;
 	private boolean isSameCity = true;
-	private boolean isRecvMsg = true;
-	private boolean isOpenVoice = true;
-	private boolean isOpenShck = true;
+
 	SettingBean setBean;
 	
 	/**
@@ -112,9 +104,6 @@ public class MatchSettingActivity extends BaseActivity implements OnClickListene
 		personalTagRl = (RelativeLayout) findViewById(R.id.personal_rl);
 		personalTagRl.setOnClickListener(this);
 		tagGv = (MyGridView) findViewById(R.id.interest_tag_gv);
-		newMsgToggle = (ImageView) findViewById(R.id.newmsg_toggle);
-		voiceToggle = (ImageView) findViewById(R.id.voice_toggle);
-		shockToggle = (ImageView) findViewById(R.id.shock_toggle);
 		logoutRl = (RelativeLayout) findViewById(R.id.logout_rl);
 		logoutRl.setOnClickListener(this);
 		seekLinear = (LinearLayout) findViewById(R.id.seek_linear);
@@ -126,12 +115,6 @@ public class MatchSettingActivity extends BaseActivity implements OnClickListene
 		cityLayout.setOnClickListener(this);
 		unLimitLayout = (RelativeLayout) findViewById(R.id.unlimit_layout);
 		unLimitLayout.setOnClickListener(this);
-		msgLayout = (RelativeLayout) findViewById(R.id.msg_layout);
-		msgLayout.setOnClickListener(this);
-		voiceLayout = (RelativeLayout) findViewById(R.id.voice_layout);
-		voiceLayout.setOnClickListener(this);
-		shockLayout = (RelativeLayout) findViewById(R.id.shock_layout);
-		shockLayout.setOnClickListener(this);
 
 		seekBar = new RangeSeekBar<Integer>(16, 40, this);
 
@@ -183,44 +166,6 @@ public class MatchSettingActivity extends BaseActivity implements OnClickListene
 			isSameCity = false;
 			cityToggle.setImageResource(R.drawable.setting_btn_yes);
 			unLimitToggle.setImageResource(R.drawable.setting_btn_no);
-		}
-		//声音 0--关闭 1--打开
-		if(setBean.getSound() == 0){
-			SharePreferanceUtils.getInstance().putShared(getApplicationContext(), SharePreferanceUtils.IS_OPEN_VOICE, false);
-			log.d("SharePreferanceUtils"+SharePreferanceUtils.getInstance().isOpenVoice(getApplicationContext(), SharePreferanceUtils.IS_OPEN_VOICE, true));
-			isOpenVoice = false;
-			voiceToggle.setImageResource(R.drawable.setting_btn_yes);
-		}else{
-			SharePreferanceUtils.getInstance().putShared(getApplicationContext(), SharePreferanceUtils.IS_OPEN_VOICE, true);
-			log.d("SharePreferanceUtils"+SharePreferanceUtils.getInstance().isOpenVoice(getApplicationContext(), SharePreferanceUtils.IS_OPEN_VOICE, false));
-			isOpenVoice = true;
-			voiceToggle.setImageResource(R.drawable.setting_btn_no);
-		}
-		//振动 0--关闭 1--打开
-		if(setBean.getVibration() == 0){
-			SharePreferanceUtils.getInstance().putShared(getApplicationContext(), SharePreferanceUtils.IS_SHOCK, false);
-			isOpenShck = false;
-			shockToggle.setImageResource(R.drawable.setting_btn_yes);
-		}else{
-			SharePreferanceUtils.getInstance().putShared(getApplicationContext(), SharePreferanceUtils.IS_SHOCK, true);
-			isOpenShck = true;
-			shockToggle.setImageResource(R.drawable.setting_btn_no);
-		}
-		//接收消息 0--关闭，不接收  1--打开，接收
-		if(setBean.getMessage() == 0){
-			SharePreferanceUtils.getInstance().putShared(getApplicationContext(), SharePreferanceUtils.IS_SHOCK, false);
-			SharePreferanceUtils.getInstance().putShared(getApplicationContext(), SharePreferanceUtils.IS_OPEN_VOICE, false);
-			SharePreferanceUtils.getInstance().putShared(getApplicationContext(), SharePreferanceUtils.IS_RECEIVE_MSG, false);
-			isRecvMsg = false;
-			newMsgToggle.setImageResource(R.drawable.setting_btn_yes);
-			isOpenVoice = false;
-			voiceToggle.setImageResource(R.drawable.setting_btn_yes);
-			isOpenShck = false;
-			shockToggle.setImageResource(R.drawable.setting_btn_yes);
-		}else{
-			SharePreferanceUtils.getInstance().putShared(getApplicationContext(), SharePreferanceUtils.IS_RECEIVE_MSG, true);
-			isRecvMsg = true;
-			newMsgToggle.setImageResource(R.drawable.setting_btn_no);
 		}
 	}
 	@Override
@@ -277,41 +222,6 @@ public class MatchSettingActivity extends BaseActivity implements OnClickListene
 				isSameCity = true;
 				cityToggle.setImageResource(R.drawable.setting_btn_no);
 				unLimitToggle.setImageResource(R.drawable.setting_btn_yes);
-			}
-			break;
-		case R.id.msg_layout:
-			if(isRecvMsg){
-				isRecvMsg = false;
-				newMsgToggle.setImageResource(R.drawable.setting_btn_yes);
-				isOpenVoice = false;
-				voiceToggle.setImageResource(R.drawable.setting_btn_yes);
-				isOpenShck = false;
-				shockToggle.setImageResource(R.drawable.setting_btn_yes);
-			}else{
-				isRecvMsg = true;
-				newMsgToggle.setImageResource(R.drawable.setting_btn_no);
-			}
-			break;
-		case R.id.voice_layout:
-			if(isOpenVoice){
-				isOpenVoice = false;
-				voiceToggle.setImageResource(R.drawable.setting_btn_yes);
-			}else{
-				isRecvMsg = true;
-				newMsgToggle.setImageResource(R.drawable.setting_btn_no);
-				isOpenVoice = true;
-				voiceToggle.setImageResource(R.drawable.setting_btn_no);
-			}
-			break;
-		case R.id.shock_layout:
-			if(isOpenShck){
-				isOpenShck = false;
-				shockToggle.setImageResource(R.drawable.setting_btn_yes);
-			}else{
-				isRecvMsg = true;
-				newMsgToggle.setImageResource(R.drawable.setting_btn_no);
-				isOpenShck = true;
-				shockToggle.setImageResource(R.drawable.setting_btn_no);
 			}
 			break;
 		case R.id.back_rl:
@@ -611,21 +521,6 @@ public class MatchSettingActivity extends BaseActivity implements OnClickListene
 			setBean.setCity(Constants.SAME_CITY);
 		}else{
 			setBean.setCity(Constants.UN_LIMIT);
-		}
-		if(isOpenVoice){
-			setBean.setSound(1);
-		}else{
-			setBean.setSound(0);
-		}
-		if(isRecvMsg){
-			setBean.setMessage(1);
-		}else{
-			setBean.setMessage(0);
-		}
-		if(isOpenShck){
-			setBean.setVibration(1);
-		}else{
-			setBean.setVibration(0);
 		}
 	}
 	/**

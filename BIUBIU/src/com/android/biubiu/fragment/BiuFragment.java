@@ -20,6 +20,7 @@ import org.xutils.image.ImageOptions;
 import cc.imeetu.iu.R;
 
 import com.android.biubiu.MainActivity;
+import com.android.biubiu.MatchSettingActivity;
 import com.android.biubiu.activity.LoginOrRegisterActivity;
 import com.android.biubiu.activity.activity.ActivityListActivity;
 import com.android.biubiu.activity.activity.WebviewActivity;
@@ -373,6 +374,13 @@ public class BiuFragment extends Fragment implements PushInterface {
             public void onClick(View v) {
                 Intent activities = new Intent(getActivity(), ActivityListActivity.class);
                 startActivityForResult(activities,ACTIVITY_LIST);
+            }
+        });
+        mTopTitle.setLeftOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent seting = new Intent(getActivity(), MatchSettingActivity.class);
+                startActivity(seting);
             }
         });
     }

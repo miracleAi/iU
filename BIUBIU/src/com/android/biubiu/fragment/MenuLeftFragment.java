@@ -14,6 +14,7 @@ import com.android.biubiu.MainActivity;
 import com.android.biubiu.MatchSettingActivity;
 import com.android.biubiu.activity.LoginOrRegisterActivity;
 import com.android.biubiu.activity.biu.MyPagerActivity;
+import com.android.biubiu.activity.mine.MainSetActivity;
 import com.android.biubiu.utils.LoginUtils;
 import com.android.biubiu.utils.SharePreferanceUtils;
 
@@ -116,7 +117,7 @@ public class MenuLeftFragment extends Fragment implements OnClickListener {
 		case R.id.left_menu_item3_rl:
 //			((MainActivity) getActivity()).closeMenu();
 			if(isLogin){
-				Intent intent=new Intent(getActivity(),MatchSettingActivity.class);
+				Intent intent=new Intent(getActivity(),MainSetActivity.class);
 				startActivity(intent);
 			}else{
 				Intent intent = new Intent(getActivity(),
