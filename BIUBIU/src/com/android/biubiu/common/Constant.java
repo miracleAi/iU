@@ -16,4 +16,5 @@ public class Constant extends EaseConstant {
     public static final String ACTIVITY_NAME = "act_name";
     public static final String ACTIVITY_URL = "act_url";
     public static final String ACTIVITY_COVER = "act_cover";
+    public static int biubiCnt;
 }
