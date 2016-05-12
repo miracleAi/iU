@@ -119,8 +119,7 @@ public class MenuLeftFragment extends Fragment implements OnClickListener {
 				Intent intent=new Intent(getActivity(),MatchSettingActivity.class);
 				startActivity(intent);
 			}else{
-				Intent intent = new Intent(getActivity(),
-						LoginOrRegisterActivity.class);
+				Intent intent = new Intent(getActivity(), LoginOrRegisterActivity.class);
 				startActivity(intent);
 			}	
 			break;
@@ -139,8 +138,7 @@ public class MenuLeftFragment extends Fragment implements OnClickListener {
 				Intent intent=new Intent(getActivity(),MyPagerActivity.class);
 				startActivity(intent);
 			}else{
-				Intent intent = new Intent(getActivity(),
-						LoginOrRegisterActivity.class);
+				Intent intent = new Intent(getActivity(), LoginOrRegisterActivity.class);
 				startActivity(intent);
 			}	
 			break;

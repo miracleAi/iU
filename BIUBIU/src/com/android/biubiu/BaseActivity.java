@@ -10,6 +10,7 @@ import com.umeng.analytics.MobclickAgent;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
@@ -17,7 +18,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class BaseActivity extends Activity{
+public class BaseActivity extends FragmentActivity{
 	private LinearLayout loadingLayout;
 	private GifView loadGif;
 	private TextView loadTv;

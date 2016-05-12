@@ -27,6 +27,7 @@ import cn.beecloud.async.BCResult;
 import cn.beecloud.entity.BCPayResult;
 
 import com.android.biubiu.BaseActivity;
+import com.android.biubiu.common.Constant;
 import com.android.biubiu.utils.Constants;
 import com.android.biubiu.utils.HttpContants;
 import com.android.biubiu.utils.LogUtil;
@@ -125,7 +126,8 @@ public class BiuChargeActivity extends BaseActivity implements OnClickListener{
 		this.requestWindowFeature(Window.FEATURE_NO_TITLE);
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.biu_charge_layout);
-		myUmCount = getIntent().getIntExtra("coin", 0);
+//		myUmCount = getIntent().getIntExtra("coin", 0);
+		myUmCount = Constant.biubiCnt;
 		initView();
 	}
 	private void initView() {

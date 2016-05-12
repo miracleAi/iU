@@ -29,6 +29,7 @@ import com.amap.api.location.AMapLocationClient;
 import com.amap.api.location.AMapLocationClientOption;
 import com.amap.api.location.AMapLocationClientOption.AMapLocationMode;
 import com.amap.api.location.AMapLocationListener;
+import com.android.biubiu.activity.biu.PagerFragment;
 import com.android.biubiu.chat.DemoHelper;
 import com.android.biubiu.chat.LoadUserFriend;
 import com.android.biubiu.component.indicator.FragmentIndicator;
@@ -186,7 +187,7 @@ public class MainActivity extends FragmentActivity implements AMapLocationListen
         Indicator biu = new Indicator(R.id.tab_biu, R.drawable.main_tab_icon_biu_nor,
                 R.drawable.main_tab_icon_biu_light, new BiuFragment());
         Indicator mine = new Indicator(R.id.tab_mine, R.string.mine, R.drawable.main_tab_icon_mine_nor,
-                R.drawable.main_tab_icon_mine_light, new MenuLeftFragment());
+                R.drawable.main_tab_icon_mine_light, new PagerFragment());
 
         mIndicators.add(message);
         mIndicators.add(biu);
@@ -347,6 +348,7 @@ public class MainActivity extends FragmentActivity implements AMapLocationListen
                         case 4:
                             SharePreferanceUtils.getInstance().putShared(getApplicationContext(), SharePreferanceUtils.IS_SCAN_BEGINGUID, true);
                             beginGuidLayout.setVisibility(View.GONE);
+                            ((BiuFragment)mIndicators.get(1).getFragment()).getAd();
                             break;
                         default:
                             break;

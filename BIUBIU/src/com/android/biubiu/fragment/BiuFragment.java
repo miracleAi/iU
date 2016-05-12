@@ -20,6 +20,7 @@ import org.xutils.image.ImageOptions;
 import cc.imeetu.iu.R;
 
 import com.android.biubiu.MainActivity;
+import com.android.biubiu.MatchSettingActivity;
 import com.android.biubiu.activity.LoginOrRegisterActivity;
 import com.android.biubiu.activity.activity.ActivityListActivity;
 import com.android.biubiu.activity.activity.WebviewActivity;
@@ -207,14 +208,16 @@ public class BiuFragment extends Fragment implements PushInterface {
         init();
         drawBiuView();
         setBiuLayout();
-        getAd();
+        if (SharePreferanceUtils.getInstance().isScanBeginGuid(getActivity(), SharePreferanceUtils.IS_SCAN_BEGINGUID, false)) {
+            getAd();
+        }
         return view;
     }
 
     /**
      * 获得广告
      */
-    private void getAd() {
+    public void getAd() {
         mUserCode = SharePreferanceUtils.getInstance().getUserCode(getActivity(), SharePreferanceUtils.USER_CODE, "");
         RequestParams params = new RequestParams(HttpContants.ACTIVITY_GETTAGS);
         JSONObject requestObject = new JSONObject();
@@ -254,7 +257,7 @@ public class BiuFragment extends Fragment implements PushInterface {
                         JSONObject dialog = activity.getJSONObject("dialog");
                         mAdUrl = dialog.getString("url");
                         mAdName = dialog.getString("name");
-                        mAdCover = dialog.getString("name");
+                        mAdCover = dialog.getString("cover");
                         //判断是否弹出广告dialog
                         String url = SharePreferanceUtils.getInstance().getAdUrl(getActivity(), mUserCode);
                         if (TextUtils.isEmpty(url) || !url.equals(mAdUrl)) {//没弹过
@@ -267,11 +270,11 @@ public class BiuFragment extends Fragment implements PushInterface {
                         if (updateAt != cacheUpdate) {
                             boolean haveView = SharePreferanceUtils.getInstance().getHaveToView(getActivity(), mUserCode);
                             if (haveView) {
-                                SharePreferanceUtils.getInstance().saveHaveToView(getActivity(),mUserCode,false);
+                                SharePreferanceUtils.getInstance().saveHaveToView(getActivity(), mUserCode, false);
                             }
                             mTopTitle.setRightImage(R.drawable.biu_btn_activity_light);
-                            SharePreferanceUtils.getInstance().saveUpdateAd(getActivity(),mUserCode,updateAt);
-                        }else{
+                            SharePreferanceUtils.getInstance().saveUpdateAd(getActivity(), mUserCode, updateAt);
+                        } else {
                             boolean haveView = SharePreferanceUtils.getInstance().getHaveToView(getActivity(), mUserCode);
                             if (!haveView) {
                                 mTopTitle.setRightImage(R.drawable.biu_btn_activity_light);
@@ -372,7 +375,19 @@ public class BiuFragment extends Fragment implements PushInterface {
             @Override
             public void onClick(View v) {
                 Intent activities = new Intent(getActivity(), ActivityListActivity.class);
-                startActivityForResult(activities,ACTIVITY_LIST);
+                startActivityForResult(activities, ACTIVITY_LIST);
+            }
+        });
+        mTopTitle.setLeftOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (LoginUtils.isLogin(getActivity())) {
+                    Intent intent = new Intent(getActivity(), MatchSettingActivity.class);
+                    startActivity(intent);
+                } else {
+                    Intent intent = new Intent(getActivity(), LoginOrRegisterActivity.class);
+                    startActivity(intent);
+                }
             }
         });
     }
@@ -380,8 +395,8 @@ public class BiuFragment extends Fragment implements PushInterface {
     private void showPopup() {
         if (mAdPopup == null) {
             View contentView = LayoutInflater.from(getActivity()).inflate(R.layout.ad_layout, null);
-//            ImageOptions options = new ImageOptions.Builder()
-            x.image().bind((ImageView) contentView.findViewById(R.id.ad_imageview), mAdUrl);
+            ImageView iv = (ImageView) contentView.findViewById(R.id.ad_imageview);
+            x.image().bind(iv, mAdCover);
             contentView.findViewById(R.id.ad_imageview).setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -1363,6 +1378,7 @@ public class BiuFragment extends Fragment implements PushInterface {
 
                     JSONArray userArray = data.getJSONArray("users");
                     int biuCoin = data.getInt("virtual_currency");
+                    com.android.biubiu.common.Constant.biubiCnt = biuCoin;
                     initBiuView(biuCoin);
                     headFlag = data.getString("iconStatus");
                     if (!TextUtils.isEmpty(headFlag)) {
@@ -1386,7 +1402,7 @@ public class BiuFragment extends Fragment implements PushInterface {
                     }.getType());
                     if (null != list && list.size() > 0) {
                         addAllView(list, true);
-                    }else{
+                    } else {
                         isDefaultUserShow = true;
                         showDefaultUsers();
                     }
@@ -1660,7 +1676,7 @@ public class BiuFragment extends Fragment implements PushInterface {
         x.http().post(params, new CommonCallback<String>() {
             @Override
             public void onSuccess(String s) {
-                LogUtil.d("mytest","default"+s);
+                LogUtil.d("mytest", "default" + s);
                 JSONObject jsons;
                 try {
                     jsons = new JSONObject(s);
@@ -1669,24 +1685,24 @@ public class BiuFragment extends Fragment implements PushInterface {
                     Gson gson = new Gson();
                     ArrayList<BiuDefaultBean> list = gson.fromJson(contents, new TypeToken<List<BiuDefaultBean>>() {
                     }.getType());
-                    log.d("mytest","default1 show"+list.size());
-                    if (list != null && list.size()>0){
+                    log.d("mytest", "default1 show" + list.size());
+                    if (list != null && list.size() > 0) {
                         defaultBeanList.addAll(list);
-                        log.d("mytest","default2 show"+defaultBeanList.size());
+                        log.d("mytest", "default2 show" + defaultBeanList.size());
                     }
-                    if(isDefaultUserShow){
+                    if (isDefaultUserShow) {
                         showDefaultUsers();
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
-                    log.d("mytest","e==="+e);
+                    log.d("mytest", "e===" + e);
                 }
             }
 
             @Override
             public void onError(Throwable ex, boolean b) {
-                log.d("mytest", "error--"+ex.getMessage());
-                log.d("mytest", "error--"+ex.getCause());
+                log.d("mytest", "error--" + ex.getMessage());
+                log.d("mytest", "error--" + ex.getCause());
             }
 
             @Override
@@ -1715,7 +1731,7 @@ public class BiuFragment extends Fragment implements PushInterface {
     //显示默认头像
     private void showDefaultUsers() {
         ArrayList<UserBean> userDefaultList = new ArrayList<UserBean>();
-        log.d("mytest","default show"+defaultBeanList.size());
+        log.d("mytest", "default show" + defaultBeanList.size());
         if (null != defaultBeanList && defaultBeanList.size() > 0) {
             for (int i = 0; i < defaultBeanList.size(); i++) {
                 BiuDefaultBean defaultBean = defaultBeanList.get(i);
@@ -1727,7 +1743,7 @@ public class BiuFragment extends Fragment implements PushInterface {
                 bean.setWebUrl(defaultBean.getUrl());
                 userDefaultList.add(bean);
             }
-            log.d("mytest","defau ltuser show"+userDefaultList.size());
+            log.d("mytest", "defau ltuser show" + userDefaultList.size());
             addAllView(userDefaultList, true);
         }
     }
