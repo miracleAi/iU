@@ -132,4 +132,9 @@ public class HttpContants {
 	 * 查询订单是否成功
 	 */
 	public static final String QUERY_PAY="app/biubiu/checkBill";
+	/**
+	 * 查询订单是否成功
+	 */
+	public static final String GET_DEFAULT_USERS="activity/getContents";
+
 }

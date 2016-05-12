@@ -22,7 +22,8 @@ public class EasyDateUtils {
 		Date date = new Date(time);
 		Calendar cal = Calendar.getInstance();
 		int year = cal.get(Calendar.YEAR);
-		int hour = cal.get(Calendar.HOUR);// 小时
+		//Calendar.HOUR获取的是12小时制
+		int hour = cal.get(Calendar.HOUR_OF_DAY);// 小时
 		int minute = cal.get(Calendar.MINUTE);// 分
 		int second = cal.get(Calendar.SECOND);// 秒
 		Calendar calMsg = Calendar.getInstance();

@@ -11,6 +11,7 @@ import java.util.List;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.xutils.common.Callback;
 import org.xutils.x;
 import org.xutils.common.Callback.CommonCallback;
 import org.xutils.http.RequestParams;
@@ -23,6 +24,7 @@ import com.android.biubiu.activity.LoginOrRegisterActivity;
 import com.android.biubiu.activity.biu.BiuBiuReceiveActivity;
 import com.android.biubiu.activity.biu.BiuBiuSendActivity;
 import com.android.biubiu.activity.biu.BiuChargeActivity;
+import com.android.biubiu.bean.BiuDefaultBean;
 import com.android.biubiu.bean.DotBean;
 import com.android.biubiu.bean.UserBean;
 import com.android.biubiu.callback.BiuBooleanCallback;
@@ -132,7 +134,7 @@ public class BiuFragment extends Fragment implements PushInterface {
     ArrayList<Double> edgeAngleList = new ArrayList<Double>();
     //标识viewTag
     /*private String retivTag = "relative";
-	private String tvTag = "textview";
+    private String tvTag = "textview";
 	private String gifvTag = "gifview";
 	private String imvHeadTag = "imvhead";
 	private String imvDotTag = "imvdot";*/
@@ -180,6 +182,10 @@ public class BiuFragment extends Fragment implements PushInterface {
     RemoveReceiver removeReceiver;
     //头像审核状态标记
     String headFlag = "";
+    //标记当前页面是否显示默认头像
+    boolean isDefaultUserShow = false;
+    //默认头像列表
+    ArrayList<BiuDefaultBean> defaultBeanList = new ArrayList<BiuDefaultBean>();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -209,6 +215,7 @@ public class BiuFragment extends Fragment implements PushInterface {
         }
         initUserGroup();
         if (LoginUtils.isLogin(getActivity())) {
+            getBiuDefaultList();
             //执行加载页面所有信息的请求
             getAllUser();
 //			MainActivity.biuCoinLayout.setVisibility(View.VISIBLE);
@@ -1229,6 +1236,9 @@ public class BiuFragment extends Fragment implements PushInterface {
                     }.getType());
                     if (null != list && list.size() > 0) {
                         addAllView(list, true);
+                    }else{
+                        isDefaultUserShow = true;
+                        showDefaultUsers();
                     }
                 } catch (JSONException e) {
                     // TODO Auto-generated catch block
@@ -1427,6 +1437,12 @@ public class BiuFragment extends Fragment implements PushInterface {
         @Override
         public void run() {
             long current = System.currentTimeMillis();
+            if (null == user1List || user1List.size() == 0) {
+                //显示默认头像
+                isDefaultUserShow = true;
+                showDefaultUsers();
+                return;
+            }
             if (null != user1List && user1List.size() > 0) {
                 Collections.sort(user1List, new SorByTime());
                 UserBean bean = user1List.get(0);
@@ -1449,6 +1465,7 @@ public class BiuFragment extends Fragment implements PushInterface {
                 }
                 removeHandler.removeCallbacks(removeR);
             }
+
             removeHandler.postDelayed(removeR, 1000);
         }
     };
@@ -1458,6 +1475,7 @@ public class BiuFragment extends Fragment implements PushInterface {
         // TODO Auto-generated method stub
         switch (type) {
             case 0:
+                clearDefaultUsers();
                 //有新的匹配消息
                 newUserBean = userBean;
                 addCircle1View(userBean);
@@ -1475,6 +1493,92 @@ public class BiuFragment extends Fragment implements PushInterface {
                 break;
             default:
                 break;
+        }
+    }
+
+    private void getBiuDefaultList() {
+        RequestParams params = new RequestParams(HttpContants.HTTP_ADDRESS + HttpContants.GET_DEFAULT_USERS);
+        JSONObject requestObject = new JSONObject();
+        try {
+            requestObject.put("device_code", SharePreferanceUtils.getInstance().getDeviceId(getActivity(), SharePreferanceUtils.DEVICE_ID, ""));
+            requestObject.put("token", SharePreferanceUtils.getInstance().getToken(getActivity(), SharePreferanceUtils.TOKEN, ""));
+        } catch (JSONException e) {
+
+            e.printStackTrace();
+        }
+        params.addBodyParameter("data", requestObject.toString());
+        x.http().post(params, new CommonCallback<String>() {
+            @Override
+            public void onSuccess(String s) {
+                LogUtil.d("mytest","default"+s);
+                JSONObject jsons;
+                try {
+                    jsons = new JSONObject(s);
+                    JSONObject data = jsons.getJSONObject("data");
+                    String contents = data.getString("contents");
+                    Gson gson = new Gson();
+                    ArrayList<BiuDefaultBean> list = gson.fromJson(contents, new TypeToken<List<BiuDefaultBean>>() {
+                    }.getType());
+                    log.d("mytest","default1 show"+list.size());
+                    if (list != null && list.size()>0){
+                        defaultBeanList.addAll(list);
+                        log.d("mytest","default2 show"+defaultBeanList.size());
+                    }
+                    if(isDefaultUserShow){
+                        showDefaultUsers();
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    log.d("mytest","e==="+e);
+                }
+            }
+
+            @Override
+            public void onError(Throwable ex, boolean b) {
+                log.d("mytest", "error--"+ex.getMessage());
+                log.d("mytest", "error--"+ex.getCause());
+            }
+
+            @Override
+            public void onCancelled(CancelledException e) {
+
+            }
+
+            @Override
+            public void onFinished() {
+
+            }
+        });
+    }
+
+    //清除默认头像
+    private void clearDefaultUsers() {
+        if (isDefaultUserShow) {
+            user1List.clear();
+            user2List.clear();
+            user3List.clear();
+            userGroupLayout.removeAllViews();
+            isDefaultUserShow = false;
+        }
+    }
+
+    //显示默认头像
+    private void showDefaultUsers() {
+        ArrayList<UserBean> userDefaultList = new ArrayList<UserBean>();
+        log.d("mytest","default show"+defaultBeanList.size());
+        if (null != defaultBeanList && defaultBeanList.size() > 0) {
+            for (int i = 0; i < defaultBeanList.size(); i++) {
+                BiuDefaultBean defaultBean = defaultBeanList.get(i);
+                UserBean bean = new UserBean();
+                bean.setId("1000" + 1);
+                bean.setDefaultUser(true);
+                bean.setUserHead(defaultBean.getImgUrl());
+                bean.setWebTitle(defaultBean.getTitle());
+                bean.setWebUrl(defaultBean.getUrl());
+                userDefaultList.add(bean);
+            }
+            log.d("mytest","defau ltuser show"+userDefaultList.size());
+            addAllView(userDefaultList, true);
         }
     }
 }
