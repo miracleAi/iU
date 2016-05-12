@@ -19,6 +19,7 @@ import com.android.biubiu.bean.SettingBean;
 import com.android.biubiu.bean.UserInfoBean;
 import com.android.biubiu.chat.MyHintDialog;
 import com.android.biubiu.chat.MyHintDialog.OnDialogClick;
+import com.android.biubiu.common.Constant;
 import com.android.biubiu.utils.Constants;
 import com.android.biubiu.utils.HttpContants;
 import com.android.biubiu.utils.LogUtil;
@@ -605,6 +606,8 @@ public class MatchSettingActivity extends BaseActivity implements OnClickListene
 				SharePreferanceUtils.getInstance().putShared(getApplicationContext(), SharePreferanceUtils.USER_CODE, "");
 				LogUtil.d("mytest", "tok---"+SharePreferanceUtils.getInstance().getToken(getApplicationContext(), SharePreferanceUtils.TOKEN, ""));
 				finish();
+                Intent i = new Intent(Constant.EXIT_APP_BROADCAST);
+				sendBroadcast(i,Constant.RECEIVE_EXIT_APP_PERMISSION);
 			}
 
 			@Override

@@ -3,9 +3,12 @@ package com.android.biubiu.activity.biu;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.BroadcastReceiver;
 import android.content.ContentResolver;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
@@ -21,6 +24,7 @@ import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.view.Window;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -69,6 +73,7 @@ import com.android.biubiu.bean.UserInfoBean;
 import com.android.biubiu.bean.UserPhotoBean;
 import com.android.biubiu.chat.MyHintDialog;
 import com.android.biubiu.common.CommonDialog;
+import com.android.biubiu.common.Constant;
 import com.android.biubiu.component.title.TopTitleView;
 import com.android.biubiu.sqlite.CityDao;
 import com.android.biubiu.sqlite.SchoolDao;
@@ -186,8 +191,15 @@ public class PagerFragment extends BaseFragment implements View.OnClickListener 
 
     private TopTitleView mTopTitle;
     private LinearLayout mLoginView;
-    private RelativeLayout mLoginedView;
-    private Button register,login;
+    private FrameLayout mLoginedView;
+    private Button register, login;
+
+    private BroadcastReceiver mReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            switchView();
+        }
+    };
     public PagerFragment() {
     }
 
@@ -201,11 +213,11 @@ public class PagerFragment extends BaseFragment implements View.OnClickListener 
 
     private void initView() {
         mLoginView = (LinearLayout) mRootview.findViewById(R.id.login_view);
-        register=(Button) mRootview.findViewById(R.id.register_item_btn);
-        login=(Button) mRootview.findViewById(R.id.login_item_btn);
+        register = (Button) mRootview.findViewById(R.id.register_item_btn);
+        login = (Button) mRootview.findViewById(R.id.login_item_btn);
         register.setOnClickListener(this);
         login.setOnClickListener(this);
-        mLoginedView = (RelativeLayout) mRootview.findViewById(R.id.logined_view);
+        mLoginedView = (FrameLayout) mRootview.findViewById(R.id.logined_view);
 
         mTopTitle = (TopTitleView) mRootview.findViewById(R.id.top_title_view);
         moreLayout = (RelativeLayout) mRootview.findViewById(R.id.more_right_rl);
@@ -283,21 +295,28 @@ public class PagerFragment extends BaseFragment implements View.OnClickListener 
         mTopTitle.setLeftOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(getActivity(),BiuChargeActivity.class);
-                startActivity(i);
+                if (LoginUtils.isLogin(getActivity())) {
+                    Intent i = new Intent(getActivity(), BiuChargeActivity.class);
+                    startActivity(i);
+                }
             }
         });
 
         mTopTitle.setRightOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent setIntent = new Intent(getActivity(),MainSetActivity.class);
-                startActivity(setIntent);
+                if (LoginUtils.isLogin(getActivity())) {
+                    Intent setIntent = new Intent(getActivity(), MainSetActivity.class);
+                    startActivity(setIntent);
+                }
             }
         });
     }
 
     private void initData() {
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(Constant.EXIT_APP_BROADCAST);
+        getActivity().registerReceiver(mReceiver,filter);
         userDao = new UserDao(getActivity());
         Bundle b = getArguments();
         if (b == null) {
@@ -307,7 +326,7 @@ public class PagerFragment extends BaseFragment implements View.OnClickListener 
             userCode = SharePreferanceUtils.getInstance().getUserCode(getActivity(), SharePreferanceUtils.USER_CODE, "");
             initOnclick();
             switchView();
-        }else{
+        } else {
             userCode = b.getString("userCode");
             if (userCode.equals(SharePreferanceUtils.getInstance().getUserCode(getActivity(), SharePreferanceUtils.USER_CODE, ""))) {
                 isMyself = true;
@@ -321,10 +340,10 @@ public class PagerFragment extends BaseFragment implements View.OnClickListener 
     }
 
     private void switchView() {
-        if(!LoginUtils.isLogin(getActivity())){
+        if (!LoginUtils.isLogin(getActivity())) {
             mLoginView.setVisibility(View.VISIBLE);
             mLoginedView.setVisibility(View.GONE);
-        }else{
+        } else {
             mLoginView.setVisibility(View.GONE);
             mLoginedView.setVisibility(View.VISIBLE);
             getUserInfo();
@@ -333,7 +352,7 @@ public class PagerFragment extends BaseFragment implements View.OnClickListener 
 
     private void getUserInfo() {
         showLoadingLayout(getResources().getString(R.string.loading));
-        if(!NetUtils.isNetworkConnected(getActivity())){
+        if (!NetUtils.isNetworkConnected(getActivity())) {
             dismissLoadingLayout();
             showErrorLayout(new View.OnClickListener() {
 
@@ -346,17 +365,17 @@ public class PagerFragment extends BaseFragment implements View.OnClickListener 
             toastShort(getResources().getString(R.string.net_error));
             return;
         }
-        RequestParams params = new RequestParams(HttpContants.HTTP_ADDRESS+HttpContants.MY_PAGER_INFO);
+        RequestParams params = new RequestParams(HttpContants.HTTP_ADDRESS + HttpContants.MY_PAGER_INFO);
         JSONObject requestObject = new JSONObject();
         try {
-            requestObject.put("device_code",SharePreferanceUtils.getInstance().getDeviceId(getActivity(), SharePreferanceUtils.DEVICE_ID, ""));
-            requestObject.put("code",userCode);
-            requestObject.put("token",SharePreferanceUtils.getInstance().getToken(getActivity(), SharePreferanceUtils.TOKEN, ""));
+            requestObject.put("device_code", SharePreferanceUtils.getInstance().getDeviceId(getActivity(), SharePreferanceUtils.DEVICE_ID, ""));
+            requestObject.put("code", userCode);
+            requestObject.put("token", SharePreferanceUtils.getInstance().getToken(getActivity(), SharePreferanceUtils.TOKEN, ""));
         } catch (JSONException e) {
 
             e.printStackTrace();
         }
-        params.addBodyParameter("data",requestObject.toString());
+        params.addBodyParameter("data", requestObject.toString());
         x.http().post(params, new Callback.CommonCallback<String>() {
 
             @Override
@@ -376,8 +395,8 @@ public class PagerFragment extends BaseFragment implements View.OnClickListener 
                         getUserInfo();
                     }
                 });
-                Log.d("mytest", "error--pp"+ex.getMessage());
-                Log.d("mytest", "error--pp"+ex.getCause());
+                Log.d("mytest", "error--pp" + ex.getMessage());
+                Log.d("mytest", "error--pp" + ex.getCause());
             }
 
             @Override
@@ -394,7 +413,7 @@ public class PagerFragment extends BaseFragment implements View.OnClickListener 
                 try {
                     JSONObject jsons = new JSONObject(result);
                     String state = jsons.getString("state");
-                    if(!state.equals("200")){
+                    if (!state.equals("200")) {
                         toastShort("获取数据失败");
                         return;
                     }
@@ -404,7 +423,7 @@ public class PagerFragment extends BaseFragment implements View.OnClickListener 
                     //					SharePreferanceUtils.getInstance().putShared(getApplicationContext(), SharePreferanceUtils.TOKEN, token);
                     Gson gson = new Gson();
                     UserInfoBean bean = gson.fromJson(info, UserInfoBean.class);
-                    if(bean == null){
+                    if (bean == null) {
                         toastShort("获取数据失败");
                         return;
                     }
@@ -413,9 +432,9 @@ public class PagerFragment extends BaseFragment implements View.OnClickListener 
                     ArrayList<UserPhotoBean> phos = infoBean.getUserPhotos();
                     ArrayList<InterestByCateBean> cates = infoBean.getInterestCates();
 
-                    if(phos.size() == 0 && !isMyself){
+                    if (phos.size() == 0 && !isMyself) {
                         noPhotoTv.setVisibility(View.VISIBLE);
-                    }else{
+                    } else {
                         noPhotoTv.setVisibility(View.GONE);
                     }
 
@@ -423,7 +442,7 @@ public class PagerFragment extends BaseFragment implements View.OnClickListener 
                     setInterestTags(cates);
                     setUserInfoView(bean);
                     setUserPhotos(phos);
-                    saveUserFriend(infoBean.getUserCode(),infoBean.getNickname(),infoBean.getIconCircle());
+                    saveUserFriend(infoBean.getUserCode(), infoBean.getNickname(), infoBean.getIconCircle());
 
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -433,7 +452,7 @@ public class PagerFragment extends BaseFragment implements View.OnClickListener 
     }
 
     private void saveUserFriend(String userCode, String nickname, String iconCircle) {
-        UserFriends item=new UserFriends();
+        UserFriends item = new UserFriends();
         item.setUserCode(userCode);
         item.setIcon_thumbnailUrl(iconCircle);
         item.setNickname(nickname);
@@ -441,13 +460,13 @@ public class PagerFragment extends BaseFragment implements View.OnClickListener 
     }
 
     private void setUserPhotos(ArrayList<UserPhotoBean> phos) {
-        photoAdapter = new UserPagerPhotoAdapter(getActivity(), phos, imageOptions,isMyself);
+        photoAdapter = new UserPagerPhotoAdapter(getActivity(), phos, imageOptions, isMyself);
         photoPager.setAdapter(photoAdapter);
     }
 
     private void setUserInfoView(UserInfoBean bean) {
         mTopTitle.setTitle(bean.getNickname());
-        if(isMyself){
+        if (isMyself) {
             addPhotoImv.setVisibility(View.VISIBLE);
             otherInfoLayout.setVisibility(View.GONE);
             aboutMeArrow.setVisibility(View.VISIBLE);
@@ -462,20 +481,20 @@ public class PagerFragment extends BaseFragment implements View.OnClickListener 
             personalArrow.setVisibility(View.VISIBLE);
             interestArrow.setVisibility(View.VISIBLE);
 
-        }else{
-            if(bean.getDistance()>1000){
-                locationTv.setText(Math.round(bean.getDistance()/1000)/10.0+"km");
-            }else{
-                locationTv.setText(bean.getDistance()+"m");
+        } else {
+            if (bean.getDistance() > 1000) {
+                locationTv.setText(Math.round(bean.getDistance() / 1000) / 10.0 + "km");
+            } else {
+                locationTv.setText(bean.getDistance() + "m");
             }
-            if(((System.currentTimeMillis()-bean.getActivityTime())/1000)>(24*60*60*1000)){
-                timeTv.setText(((System.currentTimeMillis()-bean.getActivityTime())/1000)/60%60%24+"day");
-            }else if(((System.currentTimeMillis()-bean.getActivityTime())/1000)>(60*60*1000)){
-                timeTv.setText(((System.currentTimeMillis()-bean.getActivityTime())/1000)/60%60+"h");
-            }else{
-                timeTv.setText(((System.currentTimeMillis()-bean.getActivityTime())/1000)%60+"min");
+            if (((System.currentTimeMillis() - bean.getActivityTime()) / 1000) > (24 * 60 * 60 * 1000)) {
+                timeTv.setText(((System.currentTimeMillis() - bean.getActivityTime()) / 1000) / 60 % 60 % 24 + "day");
+            } else if (((System.currentTimeMillis() - bean.getActivityTime()) / 1000) > (60 * 60 * 1000)) {
+                timeTv.setText(((System.currentTimeMillis() - bean.getActivityTime()) / 1000) / 60 % 60 + "h");
+            } else {
+                timeTv.setText(((System.currentTimeMillis() - bean.getActivityTime()) / 1000) % 60 + "min");
             }
-            matchTv.setText(""+bean.getMatchScore()+"%");
+            matchTv.setText("" + bean.getMatchScore() + "%");
             addPhotoImv.setVisibility(View.GONE);
             otherInfoLayout.setVisibility(View.VISIBLE);
             aboutMeArrow.setVisibility(View.GONE);
@@ -496,15 +515,15 @@ public class PagerFragment extends BaseFragment implements View.OnClickListener 
 
 //		if(isMyself){
         iconVerify.setVisibility(View.VISIBLE);
-        if(bean.getIconVerify().equals("0")){
+        if (bean.getIconVerify().equals("0")) {
             iconVerify.setText("待审核");
-        }else if(bean.getIconVerify().equals("1")){
+        } else if (bean.getIconVerify().equals("1")) {
             iconVerify.setText("审核中");
-        }else if(bean.getIconVerify().equals("2")||bean.getIconVerify().equals("3")){
+        } else if (bean.getIconVerify().equals("2") || bean.getIconVerify().equals("3")) {
             //	iconVerify.setText("审核通过");
             iconVerify.setVisibility(View.GONE);
 
-        }else {
+        } else {
             iconVerify.setText("未通过");
         }
 
@@ -518,37 +537,37 @@ public class PagerFragment extends BaseFragment implements View.OnClickListener 
         sexTv.setText(bean.getSexStr(bean.getSex()));
         birthdayTv.setText(bean.getBirthday());
         starSignTv.setText(bean.getStar());
-        cityTv.setText(cityDao.getCity(bean.getCity()).get(0).getPrivance()+"  "+cityDao.getCity(bean.getCity()).get(0).getCity());
-        if(bean.getHomeTown()!=null && !bean.getHomeTown().equals("")){
-            hometownTv.setText(cityDao.getCity(bean.getHomeTown()).get(0).getPrivance()+"  "+cityDao.getCity(bean.getHomeTown()).get(0).getCity());
-        }else{
+        cityTv.setText(cityDao.getCity(bean.getCity()).get(0).getPrivance() + "  " + cityDao.getCity(bean.getCity()).get(0).getCity());
+        if (bean.getHomeTown() != null && !bean.getHomeTown().equals("")) {
+            hometownTv.setText(cityDao.getCity(bean.getHomeTown()).get(0).getPrivance() + "  " + cityDao.getCity(bean.getHomeTown()).get(0).getCity());
+        } else {
             hometownTv.setText("世界很大，你的家在哪儿");
             hometownTv.setTextColor(getResources().getColor(R.color.about_gray2_txt));
         }
-        if(bean.getHeight()!=0&&bean.getWeight()!=0){
-            heightWeightTv.setText(bean.getHeight()+"cm  "+bean.getWeight()+"kg");
-        }else{
+        if (bean.getHeight() != 0 && bean.getWeight() != 0) {
+            heightWeightTv.setText(bean.getHeight() + "cm  " + bean.getWeight() + "kg");
+        } else {
             heightWeightTv.setText("茁壮成长中");
             heightWeightTv.setTextColor(getResources().getColor(R.color.about_gray2_txt));
         }
 
-        if(bean.getIsStudent().equals(Constants.IS_STUDENT_FLAG)){
+        if (bean.getIsStudent().equals(Constants.IS_STUDENT_FLAG)) {
             identityTv.setText("学生");
-        }else{
+        } else {
             identityTv.setText("上班族");
         }
-        if(bean.getSchool()!=null&&!bean.getSchool().equals("")){
+        if (bean.getSchool() != null && !bean.getSchool().equals("")) {
             schoolTv.setText(schoolDao.getschoolName(bean.getSchool()).get(0).getUnivsNameString());
-        }else{
+        } else {
             goCompleteSchool();
         }
-        if(isMyself && bean.getAboutMe().equals("")){
+        if (isMyself && bean.getAboutMe().equals("")) {
             userInfoTv.setText(getResources().getString(R.string.description_me));
             userInfoBigTv.setText(getResources().getString(R.string.description_me));
-        }else if(!isMyself && bean.getAboutMe().equals("")){
+        } else if (!isMyself && bean.getAboutMe().equals("")) {
             userInfoTv.setText(getResources().getString(R.string.description_other));
             userInfoBigTv.setText(getResources().getString(R.string.description_other));
-        }else{
+        } else {
             userInfoTv.setText(bean.getAboutMe());
             userInfoBigTv.setText(bean.getAboutMe());
         }
@@ -559,10 +578,10 @@ public class PagerFragment extends BaseFragment implements View.OnClickListener 
             @Override
             public void onGlobalLayout() {
                 userInfoBigTv.getViewTreeObserver().removeGlobalOnLayoutListener(this);
-                Log.d("mytest", "hh"+userInfoBigTv.getMeasuredHeight());
-                if(userInfoBigTv.getMeasuredHeight()>DensityUtil.dip2px(getActivity(), 50)){
+                Log.d("mytest", "hh" + userInfoBigTv.getMeasuredHeight());
+                if (userInfoBigTv.getMeasuredHeight() > DensityUtil.dip2px(getActivity(), 50)) {
                     userOpenTv.setVisibility(View.VISIBLE);
-                }else{
+                } else {
                     userOpenTv.setVisibility(View.GONE);
                 }
                 userInfoBigTv.setVisibility(View.GONE);
@@ -591,12 +610,12 @@ public class PagerFragment extends BaseFragment implements View.OnClickListener 
     }
 
     private void goCompleteSchool() {
-        CommonDialog.singleBtnDialog(getActivity(),"完善信息","你还没有学校哦","去设置",new DialogInterface.OnClickListener(){
+        CommonDialog.singleBtnDialog(getActivity(), "完善信息", "你还没有学校哦", "去设置", new DialogInterface.OnClickListener() {
 
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
-                Intent schoolIntent = new Intent(getActivity(),ChangeSchoolActivity.class);
+                Intent schoolIntent = new Intent(getActivity(), ChangeSchoolActivity.class);
                 schoolIntent.putExtra("userInfoBean", infoBean);
                 startActivityForResult(schoolIntent, UPDATE_INFO);
             }
@@ -605,9 +624,9 @@ public class PagerFragment extends BaseFragment implements View.OnClickListener 
 
     private void setInterestTags(ArrayList<InterestByCateBean> cates) {
         ArrayList<InterestTagBean> inters = new ArrayList<InterestTagBean>();
-        if(cates != null && cates.size()>0){
-            for(int i=0;i<cates.size();i++){
-                for(int j=0;j<cates.get(i).getmInterestList().size();j++){
+        if (cates != null && cates.size() > 0) {
+            for (int i = 0; i < cates.size(); i++) {
+                for (int j = 0; j < cates.get(i).getmInterestList().size(); j++) {
                     InterestTagBean tagBean = cates.get(i).getmInterestList().get(j);
                     tagBean.setTagType(cates.get(i).getTypename());
                     inters.add(tagBean);
@@ -740,12 +759,12 @@ public class PagerFragment extends BaseFragment implements View.OnClickListener 
                 startActivity(superIntent);
                 break;
             case R.id.register_item_btn:
-                Intent register=new Intent(getActivity(),RegisterThreeActivity.class);
-                startActivityForResult(register,TO_REGISTER);
+                Intent register = new Intent(getActivity(), RegisterThreeActivity.class);
+                startActivityForResult(register, TO_REGISTER);
                 break;
             case R.id.login_item_btn:
-                Intent login=new Intent(getActivity(),LoginActivity.class);
-                startActivityForResult(login,TO_LOGIN);
+                Intent login = new Intent(getActivity(), LoginActivity.class);
+                startActivityForResult(login, TO_LOGIN);
                 break;
             default:
                 break;
@@ -876,10 +895,10 @@ public class PagerFragment extends BaseFragment implements View.OnClickListener 
         super.onActivityResult(requestCode, resultCode, data);
         switch (requestCode) {
             case UPDATE_INFO:
-                if(resultCode != Activity.RESULT_OK){
+                if (resultCode != Activity.RESULT_OK) {
                     return;
                 }
-                if(data == null ){
+                if (data == null) {
                     return;
                 }
                 UserInfoBean bean = (UserInfoBean) data.getSerializableExtra("userInfoBean");
@@ -887,7 +906,7 @@ public class PagerFragment extends BaseFragment implements View.OnClickListener 
                 setUserInfoView(bean);
                 break;
             case UPDATE_PHOTOS:
-                if(null == data){
+                if (null == data) {
                     return;
                 }
                 Bitmap bm = null;
@@ -898,7 +917,7 @@ public class PagerFragment extends BaseFragment implements View.OnClickListener 
                     Uri originalUri = data.getData();
                     bm = MediaStore.Images.Media.getBitmap(resolver, originalUri);
                     String filePath = saveHeadImg(bm);
-				/*String[] proj = {MediaStore.Images.Media.DATA};
+                /*String[] proj = {MediaStore.Images.Media.DATA};
 				//好像是android多媒体数据库的封装接口，具体的看Android文档
 				Cursor cursor = managedQuery(originalUri, proj, null, null, null);
 				//按我个人理解 这个是获得用户选择的图片的索引值
@@ -908,7 +927,7 @@ public class PagerFragment extends BaseFragment implements View.OnClickListener 
 				//最后根据索引值获取图片路径
 				String path = cursor.getString(column_index);*/
                     showLoadingLayout(getResources().getString(R.string.uploading));
-                    if(!NetUtils.isNetworkConnected(getActivity())){
+                    if (!NetUtils.isNetworkConnected(getActivity())) {
                         dismissLoadingLayout();
                         toastShort(getResources().getString(R.string.net_error));
                         return;
@@ -919,15 +938,15 @@ public class PagerFragment extends BaseFragment implements View.OnClickListener 
                     e.printStackTrace();
                 } catch (IOException e) {
                     e.printStackTrace();
-                }catch (NullPointerException e) {
+                } catch (NullPointerException e) {
                     // TODO: handle exception
                 }
                 break;
             case UPDATE_HEAD:
-                if(resultCode != Activity.RESULT_OK){
+                if (resultCode != Activity.RESULT_OK) {
                     return;
                 }
-                if(null == data){
+                if (null == data) {
                     return;
                 }
                 String headUrl = data.getStringExtra("headUrl");
@@ -937,10 +956,10 @@ public class PagerFragment extends BaseFragment implements View.OnClickListener 
                 x.image().bind(userheadImv, thumUrl, imageOptions);
                 break;
             case UPDATE_INTEREST_TAG:
-                if(resultCode != Activity.RESULT_OK){
+                if (resultCode != Activity.RESULT_OK) {
                     return;
                 }
-                if(null == data){
+                if (null == data) {
                     return;
                 }
                 ArrayList<InterestByCateBean> listIn = (ArrayList<InterestByCateBean>) data.getSerializableExtra("interestTags");
@@ -949,10 +968,10 @@ public class PagerFragment extends BaseFragment implements View.OnClickListener 
                 setInterestTags(listIn);
                 break;
             case UPDATE_PERSONAL_TAG:
-                if(resultCode != Activity.RESULT_OK){
+                if (resultCode != Activity.RESULT_OK) {
                     return;
                 }
-                if(null == data){
+                if (null == data) {
                     return;
                 }
                 ArrayList<PersonalTagBean> listPa = (ArrayList<PersonalTagBean>) data.getSerializableExtra("personalTags");
@@ -973,7 +992,7 @@ public class PagerFragment extends BaseFragment implements View.OnClickListener 
         FileOutputStream fos = null;
         String path = "";
         path = Environment.getExternalStorageDirectory()
-                + "/biubiu/"+System.currentTimeMillis()+".png";
+                + "/biubiu/" + System.currentTimeMillis() + ".png";
         File file = new File(path);
         file.getParentFile().mkdirs();
         try {
@@ -990,13 +1009,13 @@ public class PagerFragment extends BaseFragment implements View.OnClickListener 
     }
 
     //鉴权
-    public void getOssToken(final String path){
-        RequestParams params = new RequestParams(HttpContants.HTTP_ADDRESS+HttpContants.REGISTER_OSS_TOKEN);
+    public void getOssToken(final String path) {
+        RequestParams params = new RequestParams(HttpContants.HTTP_ADDRESS + HttpContants.REGISTER_OSS_TOKEN);
         String token = SharePreferanceUtils.getInstance().getToken(getActivity(), SharePreferanceUtils.TOKEN, "");
         String deviceId = SharePreferanceUtils.getInstance().getDeviceId(getActivity(), SharePreferanceUtils.DEVICE_ID, "");
         JSONObject requestObject = new JSONObject();
         try {
-            requestObject.put("token",token);
+            requestObject.put("token", token);
             requestObject.put("device_code", deviceId);
         } catch (JSONException e1) {
             // TODO Auto-generated catch block
@@ -1014,8 +1033,8 @@ public class PagerFragment extends BaseFragment implements View.OnClickListener 
             @Override
             public void onError(Throwable ex, boolean arg1) {
                 dismissLoadingLayout();
-                LogUtil.d("mytest", "error--"+ex.getMessage());
-                LogUtil.d("mytest", "error--"+ex.getCause());
+                LogUtil.d("mytest", "error--" + ex.getMessage());
+                LogUtil.d("mytest", "error--" + ex.getCause());
             }
 
             @Override
@@ -1026,11 +1045,11 @@ public class PagerFragment extends BaseFragment implements View.OnClickListener 
 
             @Override
             public void onSuccess(String arg0) {
-                LogUtil.d("mytest", "userphotoTok=="+arg0);
+                LogUtil.d("mytest", "userphotoTok==" + arg0);
                 try {
                     JSONObject jsonObjs = new JSONObject(arg0);
                     String state = jsonObjs.getString("state");
-                    if(!state.equals("200")){
+                    if (!state.equals("200")) {
                         dismissLoadingLayout();
                         toastShort("上传照片失败");
                         return;
@@ -1051,6 +1070,7 @@ public class PagerFragment extends BaseFragment implements View.OnClickListener 
             }
         });
     }
+
     // 从本地文件上传，使用非阻塞的异步接口
     public void asyncPutObjectFromLocalFile(String path) {
         String endpoint = HttpContants.A_LI_YUN;
@@ -1070,9 +1090,9 @@ public class PagerFragment extends BaseFragment implements View.OnClickListener 
         OSSLog.enableLog();
         OSS oss = new OSSClient(getActivity(), endpoint, credentialProvider, conf);
         String deviceId = SharePreferanceUtils.getInstance().getDeviceId(getActivity(), SharePreferanceUtils.DEVICE_ID, "");
-        final String fileName = "photos/"+System.currentTimeMillis()+deviceId+".jpeg";
+        final String fileName = "photos/" + System.currentTimeMillis() + deviceId + ".jpeg";
         // 构造上传请求
-        PutObjectRequest put = new PutObjectRequest("protect-app",fileName, path);
+        PutObjectRequest put = new PutObjectRequest("protect-app", fileName, path);
 
         // 异步上传时可以设置进度回调
         put.setProgressCallback(new OSSProgressCallback<PutObjectRequest>() {
@@ -1090,6 +1110,7 @@ public class PagerFragment extends BaseFragment implements View.OnClickListener 
                 //上传照片成功，调用修改头像接口
                 uploadPhoto(fileName);
             }
+
             @Override
             public void onFailure(PutObjectRequest request, ClientException clientExcepion, ServiceException serviceException) {
                 dismissLoadingLayout();
@@ -1108,22 +1129,23 @@ public class PagerFragment extends BaseFragment implements View.OnClickListener 
             }
         });
     }
+
     //将图片上传到后台
     protected void uploadPhoto(String fileName) {
         // 上传成功后更新界面
         String token = SharePreferanceUtils.getInstance().getToken(getActivity(), SharePreferanceUtils.TOKEN, "");
         String deviceId = SharePreferanceUtils.getInstance().getDeviceId(getActivity(), SharePreferanceUtils.DEVICE_ID, "");
-        RequestParams params = new RequestParams(HttpContants.HTTP_ADDRESS+HttpContants.UPLOAD_PHOTO);
+        RequestParams params = new RequestParams(HttpContants.HTTP_ADDRESS + HttpContants.UPLOAD_PHOTO);
         JSONObject requestObject = new JSONObject();
         try {
-            requestObject.put("token",token);
+            requestObject.put("token", token);
             requestObject.put("device_code", deviceId);
             requestObject.put("photo", fileName);
         } catch (JSONException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-        params.addBodyParameter("data",requestObject.toString());
+        params.addBodyParameter("data", requestObject.toString());
         x.http().post(params, new Callback.CommonCallback<String>() {
 
             @Override
@@ -1135,8 +1157,8 @@ public class PagerFragment extends BaseFragment implements View.OnClickListener 
             @Override
             public void onError(Throwable ex, boolean arg1) {
                 dismissLoadingLayout();
-                LogUtil.d("mytest", "error--"+ex.getMessage());
-                LogUtil.d("mytest", "error--"+ex.getCause());
+                LogUtil.d("mytest", "error--" + ex.getMessage());
+                LogUtil.d("mytest", "error--" + ex.getCause());
             }
 
             @Override
@@ -1148,14 +1170,14 @@ public class PagerFragment extends BaseFragment implements View.OnClickListener 
             @Override
             public void onSuccess(String result) {
                 dismissLoadingLayout();
-                LogUtil.d("mutest", "uploadph=="+result);
+                LogUtil.d("mutest", "uploadph==" + result);
                 JSONObject jsons;
                 try {
                     jsons = new JSONObject(result);
                     String state = jsons.getString("state");
-                    if(!state.equals("200")){
+                    if (!state.equals("200")) {
                         toastShort("上传照片失败");
-                        return ;
+                        return;
                     }
                     JSONObject data = jsons.getJSONObject("data");
                     //					String token = data.getString("token");

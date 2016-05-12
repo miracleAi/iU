@@ -35,6 +35,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -53,88 +54,97 @@ import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.AdapterView.OnItemClickListener;
 
 
-public class MenuRightFragment extends EaseConversationListFragment{
-	private View mView;
-	
-	 private TextView errorText;
-	 private Button register,login;
-	 private String TAG="MenuRightFragment";
-	 private ReceiveBroadCast receiveBroadCast;  //广播实例
+public class MenuRightFragment extends EaseConversationListFragment {
+    private View mView;
 
-	@Override
+    private TextView errorText;
+    private Button register, login;
+    private String TAG = "MenuRightFragment";
+    private ReceiveBroadCast receiveBroadCast;  //广播实例
+    private View errorView,noLoginView;
+    private static final int TO_LOGIN = 1007;
+    private static final int TO_REGISTER = 1008;
+    @Override
     protected void initView() {
         super.initView();
-        View errorView = (LinearLayout) View.inflate(getActivity(),R.layout.right_menu, null);
-        View noLoginView= (LinearLayout) View.inflate(getActivity(),R.layout.item_right_no_rigister, null);
-        
-        if(!LoginUtils.isLogin(getActivity())){
-        	 errorItemContainer.addView(noLoginView);
-        	 register=(Button) noLoginView.findViewById(R.id.register_item_btn);
-        	 login=(Button) noLoginView.findViewById(R.id.login_item_btn);
-        	 register.setOnClickListener(new OnClickListener() {
-				
-				@Override
-				public void onClick(View arg0) {
-					// TODO Auto-generated method stub
-					Intent intent=new Intent(getActivity(),RegisterThreeActivity.class);
-					startActivity(intent);
-				}
-			});
-        	 login.setOnClickListener(new OnClickListener() {
-				
-				@Override
-				public void onClick(View arg0) {
-					// TODO Auto-generated method stub
-					Intent intent=new Intent(getActivity(),LoginActivity.class);
-					startActivity(intent);
-				}
-			});
-        }else{
-        	errorItemContainer.addView(errorView);
-        	 errorText = (TextView) errorView.findViewById(R.id.tv_connect_errormsg); 
+        errorView = (LinearLayout) View.inflate(getActivity(), R.layout.right_menu, null);
+        noLoginView = (LinearLayout) View.inflate(getActivity(), R.layout.item_right_no_rigister, null);
+
+        if (!LoginUtils.isLogin(getActivity())) {
+            errorItemContainer.addView(noLoginView);
+            register = (Button) noLoginView.findViewById(R.id.register_item_btn);
+            login = (Button) noLoginView.findViewById(R.id.login_item_btn);
+            register.setOnClickListener(new OnClickListener() {
+
+                @Override
+                public void onClick(View arg0) {
+                    // TODO Auto-generated method stub
+                    Intent intent = new Intent(getActivity(), RegisterThreeActivity.class);
+                    startActivityForResult(intent,TO_REGISTER);
+                }
+            });
+            login.setOnClickListener(new OnClickListener() {
+
+                @Override
+                public void onClick(View arg0) {
+                    // TODO Auto-generated method stub
+                    Intent intent = new Intent(getActivity(), LoginActivity.class);
+                    startActivityForResult(intent,TO_LOGIN);
+                }
+            });
+        } else {
+            errorItemContainer.addView(errorView);
+            errorText = (TextView) errorView.findViewById(R.id.tv_connect_errormsg);
         }
-        
+
         // 注册广播接收
         receiveBroadCast = new ReceiveBroadCast();
         IntentFilter filter = new IntentFilter();
         filter.addAction(Constants.FLAG_RECEIVE);    //只有持有相同的action的接受者才能接收此广播
+        filter.addAction(com.android.biubiu.common.Constant.EXIT_APP_BROADCAST);
         getActivity().registerReceiver(receiveBroadCast, filter);
 
     }
-	public class ReceiveBroadCast extends BroadcastReceiver
-	{
-	 
-	        @Override
-	        public void onReceive(Context context, Intent intent)
-	        {
 
-	        	LogUtil.e(TAG, "收到刷新广播");
-	        	handler.sendEmptyMessage(2);
-	        	refresh();
-	        }
-	 
-	}
-    
+    public class ReceiveBroadCast extends BroadcastReceiver {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String action = intent.getAction();
+            if(!TextUtils.isEmpty(action)){
+                if(action.equals(Constants.FLAG_RECEIVE)){
+                    LogUtil.e(TAG, "收到刷新广播");
+                    handler.sendEmptyMessage(2);
+                    refresh();
+                }else if(action.equals(Constant.EXIT_APP_BROADCAST)){
+                    errorItemContainer.removeView(errorView);
+                    errorItemContainer.addView(noLoginView);
+                }
+            }
+        }
+
+    }
+
     @Override
     protected void setUpView() {
-    	 super.setUpView();
-    	 titleBar.setTitle("biubiu消息");
-    	 titleBar.setBackgroundColor(getResources().getColor(R.color.main_green)); 
-    	 titleBar.setRightImageResource(R.drawable.mes_btn_people);
-    	 titleBar.setRightLayoutClickListener(new OnClickListener() {
-		
-		@Override
-		public void onClick(View v) {
-			
-			 if(!LoginUtils.isLogin(getActivity())){
-		        	 Intent intent=new Intent(getActivity(),LoginOrRegisterActivity.class);
-		        	 startActivity(intent);
-		        	 }else{
-		        		 startActivity(new Intent(getActivity(), UserListActivity.class));
-		        	 }
-			
-		}
-	});
+        super.setUpView();
+        titleBar.setTitle("biubiu消息");
+        titleBar.setBackgroundColor(getResources().getColor(R.color.main_green));
+        titleBar.setRightImageResource(R.drawable.mes_btn_people);
+        titleBar.setRightLayoutClickListener(new OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+
+                if (!LoginUtils.isLogin(getActivity())) {
+                    Intent intent = new Intent(getActivity(), LoginOrRegisterActivity.class);
+                    startActivity(intent);
+                } else {
+                    startActivity(new Intent(getActivity(), UserListActivity.class));
+                }
+
+            }
+        });
 //    	 if(DemoHelper.getInstance().isLoggedIn()==true){
 //    		 log.e(TAG, "注册接收消息监听");
 // 			EMClient.getInstance().chatManager().addMessageListener(msgListener);
@@ -149,10 +159,10 @@ public class MenuRightFragment extends EaseConversationListFragment{
                 EMConversation conversation = conversationListView.getItem(position);
                 String username = conversation.getUserName();
                 if (username.equals(EMClient.getInstance().getCurrentUser()))
-                    Toast.makeText(getActivity(), R.string.Cant_chat_with_yourself, 0).show();
+                    Toast.makeText(getActivity(), R.string.Cant_chat_with_yourself, Toast.LENGTH_SHORT).show();
                 else {
                     // 进入聊天页面
-                    Intent intent = new Intent(getActivity(), ChatActivity.class); 
+                    Intent intent = new Intent(getActivity(), ChatActivity.class);
                     intent.putExtra(Constant.EXTRA_USER_ID, username);
                     startActivity(intent);
                 }
@@ -160,48 +170,48 @@ public class MenuRightFragment extends EaseConversationListFragment{
         });
         conversationListView.setOnItemLongClickListener(new OnItemLongClickListener() {
 
-			@Override
-			public boolean onItemLongClick(AdapterView<?> arg0, View arg1,
-					int position, long arg3) {
-				// TODO Auto-generated method stub
-	               EMConversation conversation = conversationListView.getItem(position);
-	                final String username = conversation.getUserName();
-				MyHintDialog.getDialog(getActivity(), "删除会话", "嗨~确定要删除会话吗", "确定", new OnDialogClick() {
-					
-					@Override
-					public void onOK() {
-						// TODO Auto-generated method stub
-						       // 删除此会话
-				        EMClient.getInstance().chatManager().deleteConversation(username, true);
-				      
-				        refresh();
-						Toast.makeText(getActivity(), "删除成功", Toast.LENGTH_SHORT).show();
-					}
-					
-					@Override
-					public void onDismiss() {
-						// TODO Auto-generated method stub
-						
-					}
-				});
-				return true;
-			}
-		});
-       
+            @Override
+            public boolean onItemLongClick(AdapterView<?> arg0, View arg1,
+                                           int position, long arg3) {
+                // TODO Auto-generated method stub
+                EMConversation conversation = conversationListView.getItem(position);
+                final String username = conversation.getUserName();
+                MyHintDialog.getDialog(getActivity(), "删除会话", "嗨~确定要删除会话吗", "确定", new OnDialogClick() {
+
+                    @Override
+                    public void onOK() {
+                        // TODO Auto-generated method stub
+                        // 删除此会话
+                        EMClient.getInstance().chatManager().deleteConversation(username, true);
+
+                        refresh();
+                        Toast.makeText(getActivity(), "删除成功", Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onDismiss() {
+                        // TODO Auto-generated method stub
+
+                    }
+                });
+                return true;
+            }
+        });
+
     }
 
     @Override
     protected void onConnectionDisconnected() {
         super.onConnectionDisconnected();
-    	
-    
+
+
 //        if (NetUtils.hasNetwork(getActivity())){
 //         errorText.setText(R.string.can_not_connect_chat_server_connection);
 //        } else {
 //          errorText.setText(R.string.the_current_network);
 //        }
     }
-    
+
 //	/**
 //	 * 会话消息监听
 //	 */
@@ -242,6 +252,6 @@ public class MenuRightFragment extends EaseConversationListFragment{
 //			//消息状态变动
 //		}
 //	};
-    
+
 
 }
