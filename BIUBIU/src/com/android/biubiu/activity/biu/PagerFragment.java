@@ -54,6 +54,7 @@ import com.android.biubiu.activity.mine.ChangeIdentityProfessionActivity;
 import com.android.biubiu.activity.mine.ChangeNameActivity;
 import com.android.biubiu.activity.mine.ChangeSchoolActivity;
 import com.android.biubiu.activity.mine.InterestLabelActivity;
+import com.android.biubiu.activity.mine.MainSetActivity;
 import com.android.biubiu.activity.mine.PersonalityTagActivity;
 import com.android.biubiu.activity.mine.ScanUserHeadActivity;
 import com.android.biubiu.activity.mine.SuperMainInfoActivity;
@@ -290,7 +291,8 @@ public class PagerFragment extends BaseFragment implements View.OnClickListener 
         mTopTitle.setRightOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Intent setIntent = new Intent(getActivity(),MainSetActivity.class);
+                startActivity(setIntent);
             }
         });
     }
