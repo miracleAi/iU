@@ -3,10 +3,13 @@
     <!-- Default screen margins, per the Android Design guidelines. -->
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
-     <dimen name="slidingmenu_offset">62dp</dimen>
+    <dimen name="slidingmenu_offset">62dp</dimen>
     <dimen name="shadow_width">10dp</dimen>
     <dimen name="nornal_margin_top">16dp</dimen>
     <dimen name="unread_msg_tip_margin">6dip</dimen>
-    <dimen name="tab_indicator_height">48dip</dimen>
-`   <dimen name="top_title_height">44dp</dimen>
+    <dimen name="tab_indicator_height">49dip</dimen>
+    `
+    <dimen name="top_title_height">44dp</dimen>
+
+    <dimen name="top_title_size">18sp</dimen>
 </resources>

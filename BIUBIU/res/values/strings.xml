@@ -80,7 +80,7 @@
     <string name="mine_selectoe_username_title">修改昵称</string>
     <string name="mine_selectoe_company_title">修改公司</string>
     <string name="mine_selectoe_city_title">选择你的城市</string>
-     <string name="mine_selectoe_birth_title">选择生日</string>
+    <string name="mine_selectoe_birth_title">选择生日</string>
 
     <!-- 个人主页 -->
     <string name="page_aboutme">关于我</string>
@@ -217,4 +217,8 @@
     <string name="head_egis_info">你的头像审核通过啦，可以愉快的玩耍了</string>
 
     <string name="mine">我的</string>
+    <string name="sort">筛选</string>
+    <string name="title_activity_activity_list">ActivityListActivity</string>
+    <string name="title_activity_webview">WebviewActivity</string>
+    <string name="act_center">活动中心</string>
 </resources>

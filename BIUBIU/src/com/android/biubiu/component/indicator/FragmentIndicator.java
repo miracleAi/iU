@@ -19,8 +19,8 @@ import cc.imeetu.iu.R;
 public class FragmentIndicator extends LinearLayout implements OnClickListener {
     private int mPreViewId;
     private OnIndicateListener mOnIndicateListener;
-    private static final int COLOR_UNSELECT = Color.argb(255, 0x92, 0x98, 0x9d);
-    private static final int COLOR_SELECT = Color.argb(255, 0xff, 0xcb, 0x05);
+    private static final int COLOR_UNSELECT = Color.argb(255, 0xcc, 0xcc, 0xcc);
+    private static final int COLOR_SELECT = Color.argb(255, 0xff, 0xff, 0x8f);
 
     private Context mCon;
     private Indicator mCurrIndicator;
