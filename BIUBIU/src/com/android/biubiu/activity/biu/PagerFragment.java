@@ -166,7 +166,6 @@ public class PagerFragment extends BaseFragment implements View.OnClickListener 
     private ImageView interestArrow;
     private ImageView sexArrow;
     private TextView noPhotoTv;
-    private RelativeLayout moreLayout;
     private ImageView superManIv;
     private UserInfoBean infoBean;
     ImageOptions imageOptions;
@@ -193,7 +192,7 @@ public class PagerFragment extends BaseFragment implements View.OnClickListener 
     private LinearLayout mLoginView;
     private FrameLayout mLoginedView;
     private Button register, login;
-
+    Bundle b;
     private BroadcastReceiver mReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -207,6 +206,7 @@ public class PagerFragment extends BaseFragment implements View.OnClickListener 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         mRootview = inflater.inflate(R.layout.fragment_pager, container, false);
+        b = getArguments();
         initView();
         initData();
         return mRootview;
@@ -221,8 +221,6 @@ public class PagerFragment extends BaseFragment implements View.OnClickListener 
         mLoginedView = (FrameLayout) mRootview.findViewById(R.id.logined_view);
 
         mTopTitle = (TopTitleView) mRootview.findViewById(R.id.top_title_view);
-        moreLayout = (RelativeLayout) mRootview.findViewById(R.id.more_right_rl);
-        moreLayout.setOnClickListener(this);
         userheadImv = (ImageView) mRootview.findViewById(R.id.userhead_imv);
         userheadImv.setOnClickListener(this);
         //解决scrollview初始在顶部
@@ -297,8 +295,12 @@ public class PagerFragment extends BaseFragment implements View.OnClickListener 
             @Override
             public void onClick(View v) {
                 if (LoginUtils.isLogin(getActivity())) {
-                    Intent i = new Intent(getActivity(), BiuChargeActivity.class);
-                    startActivity(i);
+                    if(null != b){
+                        getActivity().finish();
+                    }else{
+                        Intent i = new Intent(getActivity(), BiuChargeActivity.class);
+                        startActivity(i);
+                    }
                 }
             }
         });
@@ -307,8 +309,12 @@ public class PagerFragment extends BaseFragment implements View.OnClickListener 
             @Override
             public void onClick(View v) {
                 if (LoginUtils.isLogin(getActivity())) {
-                    Intent setIntent = new Intent(getActivity(), MainSetActivity.class);
-                    startActivity(setIntent);
+                    if(isMyself){
+                        Intent setIntent = new Intent(getActivity(), MainSetActivity.class);
+                        startActivity(setIntent);
+                    }else{
+                        getMosterDialog();
+                    }
                 }
             }
         });
@@ -320,23 +326,27 @@ public class PagerFragment extends BaseFragment implements View.OnClickListener 
         getActivity().registerReceiver(mReceiver, filter);
 
         userDao = new UserDao(getActivity());
-        Bundle b = getArguments();
         if (b == null) {
-            mTopTitle.setVisibility(View.VISIBLE);
+            mTopTitle.setLeftImage(R.drawable.main_nav_bar_icon_left);
+            mTopTitle.setRightImage(R.drawable.main_nav_bar_icon_right);
+           // mTopTitle.setVisibility(View.VISIBLE);
             backRl.setVisibility(View.GONE);
             isMyself = true;
             userCode = SharePreferanceUtils.getInstance().getUserCode(getActivity(), SharePreferanceUtils.USER_CODE, "");
             initOnclick();
             switchView();
         } else {
+            mTopTitle.setLeftImage(R.drawable.back_main);
             userCode = b.getString("userCode");
             if (userCode.equals(SharePreferanceUtils.getInstance().getUserCode(getActivity(), SharePreferanceUtils.USER_CODE, ""))) {
+                mTopTitle.setRightImage(R.drawable.main_nav_bar_icon_right);
                 isMyself = true;
                 initOnclick();
                 switchView();
             } else {
+                mTopTitle.setRightImage(R.drawable.mes_btn_right);
                 isMyself = false;
-                moreLayout.setVisibility(View.VISIBLE);
+                switchView();
             }
         }
     }
@@ -754,9 +764,6 @@ public class PagerFragment extends BaseFragment implements View.OnClickListener 
                 break;
             case R.id.back_rl:
                 getActivity().finish();
-                break;
-            case R.id.more_right_rl:
-                getMosterDialog();
                 break;
             case R.id.super_man_iv:
                 Intent superIntent = new Intent(getActivity(), SuperMainInfoActivity.class);

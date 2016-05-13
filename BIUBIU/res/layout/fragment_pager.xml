@@ -15,7 +15,7 @@
         top:rightDrawable="@drawable/main_nav_bar_icon_right"
         top:topTitleColor="@android:color/white"
         top:topTitleSize="@dimen/top_title_size"
-        android:visibility="gone"/>
+        />
 
     <include
         android:id="@+id/login_view"
@@ -55,7 +55,8 @@
                         android:layout_width="52dp"
                         android:layout_height="44dp"
                         android:layout_alignParentLeft="true"
-                        android:background="@drawable/kongjianruoqu_bg">
+                        android:background="@drawable/kongjianruoqu_bg"
+                        android:visibility="gone">
 
                         <ImageView
                             android:id="@+id/title_left_imv"
