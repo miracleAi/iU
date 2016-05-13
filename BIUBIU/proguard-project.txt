@@ -212,3 +212,4 @@
 -dontwarn  u.upd.**
 -dontwarn  android.backport.webp.**
 -dontwarn  org.xutils.**
+-dontwarn  com.hyphenate.**
