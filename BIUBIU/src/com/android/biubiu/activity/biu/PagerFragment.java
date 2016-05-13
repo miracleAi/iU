@@ -329,7 +329,7 @@ public class PagerFragment extends BaseFragment implements View.OnClickListener 
         if (b == null) {
             mTopTitle.setLeftImage(R.drawable.main_nav_bar_icon_left);
             mTopTitle.setRightImage(R.drawable.main_nav_bar_icon_right);
-           // mTopTitle.setVisibility(View.VISIBLE);
+            // mTopTitle.setVisibility(View.VISIBLE);
             backRl.setVisibility(View.GONE);
             isMyself = true;
             userCode = SharePreferanceUtils.getInstance().getUserCode(getActivity(), SharePreferanceUtils.USER_CODE, "");
@@ -573,7 +573,9 @@ public class PagerFragment extends BaseFragment implements View.OnClickListener 
         if (bean.getSchool() != null && !bean.getSchool().equals("")) {
             schoolTv.setText(schoolDao.getschoolName(bean.getSchool()).get(0).getUnivsNameString());
         } else {
-            goCompleteSchool();
+            if(isMyself){
+                goCompleteSchool();
+            }
         }
         if (isMyself && bean.getAboutMe().equals("")) {
             userInfoTv.setText(getResources().getString(R.string.description_me));
@@ -622,7 +624,21 @@ public class PagerFragment extends BaseFragment implements View.OnClickListener 
                 break;
         }
     }
-
+    public void updateHeadStatus(){
+        String flag = Constant.headState;
+        if(null != iconVerify && !TextUtils.isEmpty(flag)){
+            if (flag.equals("0")) {
+                iconVerify.setText("待审核");
+            } else if (flag.equals("1")) {
+                iconVerify.setText("审核中");
+            } else if (flag.equals("2") ||flag.equals("3")) {
+                //	iconVerify.setText("审核通过");
+                iconVerify.setVisibility(View.GONE);
+            } else {
+                iconVerify.setText("未通过");
+            }
+        }
+    }
     private void goCompleteSchool() {
         CommonDialog.singleBtnDialog(getActivity(), "完善信息", "你还没有学校哦", "去设置", new DialogInterface.OnClickListener() {
 

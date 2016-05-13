@@ -188,8 +188,6 @@ public class BiuFragment extends Fragment implements PushInterface {
     TextView loadTv;
     public static boolean isUploadingPhoto = false;
     RemoveReceiver removeReceiver;
-    //头像审核状态标记
-    String headFlag = "";
     //标记当前页面是否显示默认头像
     boolean isDefaultUserShow = false;
     //默认头像列表
@@ -475,6 +473,7 @@ public class BiuFragment extends Fragment implements PushInterface {
             public void onClick(View v) {
                 // TODO Auto-generated method stub
                 int flag = 0;
+                String headFlag = com.android.biubiu.common.Constant.headState;
                 if (!LoginUtils.isLogin(getActivity())) {
                     Intent intent = new Intent(getActivity(), LoginOrRegisterActivity.class);
                     startActivity(intent);
@@ -493,8 +492,9 @@ public class BiuFragment extends Fragment implements PushInterface {
                                 switch (Integer.parseInt(headFlag)) {
                                     case Constants.HEAD_VERIFYSUC_UNREAD:
                                     case Constants.HEAD_VERIFYFAIL_UNREAD:
+                                    case Constants.HEAD_VERIFYFAIL:
                                     case Constants.HEAD_VERIFYFAIL_UPDATE:
-                                        showShenHeDaiog("send", Integer.parseInt(headFlag));
+                                        showShenHeDaiog(Integer.parseInt(headFlag));
                                         break;
                                     default:
                                         Intent intent = new Intent(getActivity(), BiuBiuSendActivity.class);
@@ -514,8 +514,9 @@ public class BiuFragment extends Fragment implements PushInterface {
                             switch (Integer.parseInt(headFlag)) {
                                 case Constants.HEAD_VERIFYSUC_UNREAD:
                                 case Constants.HEAD_VERIFYFAIL_UNREAD:
+                                case Constants.HEAD_VERIFYFAIL:
                                 case Constants.HEAD_VERIFYFAIL_UPDATE:
-                                    showShenHeDaiog("send", Integer.parseInt(headFlag));
+                                    showShenHeDaiog( Integer.parseInt(headFlag));
                                     break;
                                 default:
                                     Intent intent = new Intent(getActivity(), BiuBiuSendActivity.class);
@@ -541,7 +542,7 @@ public class BiuFragment extends Fragment implements PushInterface {
         });
     }
 
-    private void showShenHeDaiog(final String actyStr, final int flag) {
+    private void showShenHeDaiog( final int flag) {
         String title = "";
         String msg = "";
         String strBtn1 = "";
@@ -553,6 +554,7 @@ public class BiuFragment extends Fragment implements PushInterface {
                 strBtn1 = "我知道了";
                 break;
             case Constants.HEAD_VERIFYFAIL_UNREAD:
+            case Constants.HEAD_VERIFYFAIL:
                 title = getResources().getString(R.string.head_no_egis);
                 msg = getResources().getString(R.string.head_no_egis_info1);
                 strBtn1 = "取消";
@@ -567,20 +569,15 @@ public class BiuFragment extends Fragment implements PushInterface {
             default:
                 break;
         }
-        HttpUtils.commitIconState(getActivity());
         if (flag == Constants.HEAD_VERIFYSUC_UNREAD) {
             CommonDialog.singleBtnDialog(getActivity(), title, msg, strBtn1, new DialogInterface.OnClickListener() {
 
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     dialog.dismiss();
-                    if (actyStr.equals("send")) {
-                        Intent intent = new Intent(getActivity(), BiuBiuSendActivity.class);
-                        startActivityForResult(intent, SEND_BIU_REQUEST);
-                    } else {
-//                        ((MainActivity) getActivity()).showRightMenu();
-//                        MainActivity.newMessage.setVisibility(View.GONE);
-                    }
+                    HttpUtils.commitIconState(getActivity(),flag);
+                    Intent intent = new Intent(getActivity(), BiuBiuSendActivity.class);
+                    startActivityForResult(intent, SEND_BIU_REQUEST);
                 }
             });
         } else {
@@ -590,12 +587,17 @@ public class BiuFragment extends Fragment implements PushInterface {
                 public void onClick(DialogInterface dialog, int which) {
                     // TODO Auto-generated method stub
                     dialog.dismiss();
-                    if (actyStr.equals("send")) {
-                        Intent intent = new Intent(getActivity(), BiuBiuSendActivity.class);
-                        startActivityForResult(intent, SEND_BIU_REQUEST);
-                    } else {
-//                        ((MainActivity) getActivity()).showRightMenu();
-//                        MainActivity.newMessage.setVisibility(View.GONE);
+                    switch (flag) {
+                        case Constants.HEAD_VERIFYFAIL_UNREAD:
+                            HttpUtils.commitIconState(getActivity(),flag);
+                            break;
+                        case Constants.HEAD_VERIFYFAIL_UPDATE:
+                            HttpUtils.commitIconState(getActivity(),flag);
+                            Intent intent = new Intent(getActivity(), BiuBiuSendActivity.class);
+                            startActivityForResult(intent, SEND_BIU_REQUEST);
+                            break;
+                        default:
+                            break;
                     }
                 }
             }, new DialogInterface.OnClickListener() {
@@ -605,6 +607,9 @@ public class BiuFragment extends Fragment implements PushInterface {
                     // TODO Auto-generated method stub
                     switch (flag) {
                         case Constants.HEAD_VERIFYFAIL_UNREAD:
+                            showHeadDialog();
+                            break;
+                        case Constants.HEAD_VERIFYFAIL:
                             showHeadDialog();
                             break;
                         case Constants.HEAD_VERIFYFAIL_UPDATE:
@@ -1249,6 +1254,7 @@ public class BiuFragment extends Fragment implements PushInterface {
                 // TODO Auto-generated method stub
                 isUploadingPhoto = false;
                 if (result) {
+                    com.android.biubiu.common.Constant.headState = "3";
                     dismissLoadingLayout();
                 } else {
                     Toast.makeText(getActivity(), "上传照片失败", Toast.LENGTH_SHORT).show();
@@ -1392,10 +1398,10 @@ public class BiuFragment extends Fragment implements PushInterface {
                     JSONArray userArray = data.getJSONArray("users");
                     int biuCoin = data.getInt("virtual_currency");
                     com.android.biubiu.common.Constant.biubiCnt = biuCoin;
-                    initBiuView(biuCoin);
-                    headFlag = data.getString("iconStatus");
-                    if (!TextUtils.isEmpty(headFlag)) {
-                        initMsgView(Integer.parseInt(headFlag));
+                   String  headFlag = data.getString("iconStatus");
+                    com.android.biubiu.common.Constant.headState = headFlag;
+                    if(headFlag.equals("2") || headFlag.equals("4")){
+                        showShenHeDaiog(Integer.parseInt(headFlag));
                     }
                     Gson gson = new Gson();
                     JSONObject biuObject = data.optJSONObject("mylatestbiu");

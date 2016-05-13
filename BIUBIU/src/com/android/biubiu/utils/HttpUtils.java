@@ -15,6 +15,7 @@ import android.util.Log;
 import com.android.biubiu.bean.InterestTagBean;
 import com.android.biubiu.bean.PersonalTagBean;
 import com.android.biubiu.bean.UserInfoBean;
+import com.android.biubiu.common.Constant;
 
 public class HttpUtils {
 	
@@ -82,7 +83,7 @@ public class HttpUtils {
 			}
 		});
 	}
-	public static void commitIconState(final Context context) {
+	public static void commitIconState(final Context context, final int headState) {
 		// TODO Auto-generated method stub
 		RequestParams params = new RequestParams(HttpContants.HTTP_ADDRESS+HttpContants.UPDATE_HEAD_STATE);
 		JSONObject requestObject = new JSONObject();
@@ -123,6 +124,11 @@ public class HttpUtils {
 					jsons = new JSONObject(result);
 					String state = jsons.getString("state");
 					if(!state.equals("200")){
+						if(headState == 2||headState == 6){
+							Constant.headState = "3";
+						}else if(headState == 4){
+							Constant.headState = "5";
+						}
 						return;
 					}
 				} catch (JSONException e) {

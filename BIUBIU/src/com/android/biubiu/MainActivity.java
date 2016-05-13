@@ -105,8 +105,14 @@ public class MainActivity extends FragmentActivity implements AMapLocationListen
                     if (f != null) {
                         transaction.show(i.getFragment());
                         i.setClickTime(i.getClickTime() + 1);
+                        if(id == R.id.tab_mine){
+                            ((PagerFragment)f).updateHeadStatus();
+                        }
                     } else {
                         transaction.add(R.id.layout_body, i.getFragment(), getResources().getString(i.getTitle()));
+                        if(id == R.id.tab_mine){
+                            ((PagerFragment)i.getFragment()).updateHeadStatus();
+                        }
                     }
                 } else {
                     Fragment f = null;
