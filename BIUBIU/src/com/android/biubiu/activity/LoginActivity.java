@@ -14,6 +14,7 @@ import cc.imeetu.iu.R;
 import com.android.biubiu.BaseActivity;
 import com.android.biubiu.MainActivity;
 import com.android.biubiu.UserAgreementActivity;
+import com.android.biubiu.common.Constant;
 import com.android.biubiu.utils.HttpContants;
 import com.android.biubiu.utils.LogUtil;
 import com.android.biubiu.utils.NetUtils;
@@ -236,6 +237,8 @@ public class LoginActivity extends BaseActivity{
 					MobclickAgent.onProfileSignIn(userCode);
 					
 					setResult(RESULT_OK);
+                    Intent i = new Intent(Constant.EXIT_APP_BROADCAST);
+                    sendBroadcast(i,Constant.RECEIVE_EXIT_APP_PERMISSION);
 					finish();
 					/*Intent intent=new Intent(LoginActivity.this,MainActivity.class);
 					intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);

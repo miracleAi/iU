@@ -578,9 +578,12 @@ public class MainActivity extends FragmentActivity implements AMapLocationListen
 
         @Override
         public void onReceive(Context context, Intent intent) {
-            //tab上显示未读消息红点
-            mIndicator.setUnReadVisible(R.id.tab_message, true);
+            setUnReadVisible(true);
         }
+    }
+
+    public void setUnReadVisible(boolean visible){
+        mIndicator.setUnReadVisible(R.id.tab_message, visible);
     }
 
     @Override

@@ -4,6 +4,7 @@ import cc.imeetu.iu.R;
 
 import java.util.List;
 
+import com.android.biubiu.MainActivity;
 import com.android.biubiu.MatchSettingActivity;
 import com.android.biubiu.activity.LoginActivity;
 import com.android.biubiu.activity.LoginOrRegisterActivity;
@@ -55,15 +56,14 @@ import android.widget.AdapterView.OnItemClickListener;
 
 
 public class MenuRightFragment extends EaseConversationListFragment {
-    private View mView;
-
     private TextView errorText;
     private Button register, login;
     private String TAG = "MenuRightFragment";
     private ReceiveBroadCast receiveBroadCast;  //广播实例
     private View errorView, noLoginView;
     private static final int TO_LOGIN = 1007;
-    private static final int TO_REGISTER = 1008;
+    private static final int TO_REGISTER = TO_LOGIN + 1;
+    private static final int TO_CHATPAGE = TO_REGISTER + 1;
 
     @Override
     protected void initView() {
@@ -71,35 +71,30 @@ public class MenuRightFragment extends EaseConversationListFragment {
         errorView = (LinearLayout) View.inflate(getActivity(), R.layout.right_menu, null);
         noLoginView = (LinearLayout) View.inflate(getActivity(), R.layout.item_right_no_rigister, null);
 
-        if (!LoginUtils.isLogin(getActivity())) {
-            //errorItemContainer.addView(noLoginView);
-            loginLayout.setVisibility(View.VISIBLE);
-            loginLayout.addView(noLoginView);
-            register = (Button) noLoginView.findViewById(R.id.register_item_btn);
-            login = (Button) noLoginView.findViewById(R.id.login_item_btn);
-            register.setOnClickListener(new OnClickListener() {
+//        if (!LoginUtils.isLogin(getActivity())) {
+        errorItemContainer.addView(noLoginView);
+        register = (Button) noLoginView.findViewById(R.id.register_item_btn);
+        login = (Button) noLoginView.findViewById(R.id.login_item_btn);
+        register.setOnClickListener(new OnClickListener() {
 
-                @Override
-                public void onClick(View arg0) {
-                    // TODO Auto-generated method stub
-                    Intent intent = new Intent(getActivity(), RegisterThreeActivity.class);
-                    startActivityForResult(intent, TO_REGISTER);
-                }
-            });
-            login.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View arg0) {
+                Intent intent = new Intent(getActivity(), RegisterThreeActivity.class);
+                startActivityForResult(intent, TO_REGISTER);
+            }
+        });
+        login.setOnClickListener(new OnClickListener() {
 
-                @Override
-                public void onClick(View arg0) {
-                    // TODO Auto-generated method stub
-                    Intent intent = new Intent(getActivity(), LoginActivity.class);
-                    startActivityForResult(intent, TO_LOGIN);
-                }
-            });
-        } else {
-            errorItemContainer.addView(errorView);
-            errorText = (TextView) errorView.findViewById(R.id.tv_connect_errormsg);
-        }
-
+            @Override
+            public void onClick(View arg0) {
+                Intent intent = new Intent(getActivity(), LoginActivity.class);
+                startActivityForResult(intent, TO_LOGIN);
+            }
+        });
+//        } else {
+        errorItemContainer.addView(errorView);
+        errorText = (TextView) errorView.findViewById(R.id.tv_connect_errormsg);
+//        }
         // 注册广播接收
         receiveBroadCast = new ReceiveBroadCast();
         IntentFilter filter = new IntentFilter();
@@ -117,12 +112,10 @@ public class MenuRightFragment extends EaseConversationListFragment {
             if (!TextUtils.isEmpty(action)) {
                 if (action.equals(Constants.FLAG_RECEIVE)) {
                     LogUtil.e(TAG, "收到刷新广播");
-                    handler.sendEmptyMessage(2);
-                    refresh();
+                    handler.sendEmptyMessage(MSG_REFRESH);
+//                    refresh();
                 } else if (action.equals(Constant.EXIT_APP_BROADCAST)) {
-                    errorItemContainer.removeView(errorView);
-                    errorItemContainer.removeView(noLoginView);
-                    errorItemContainer.addView(noLoginView);
+                    judgeVisibleGone();
                 }
             }
         }
@@ -132,30 +125,22 @@ public class MenuRightFragment extends EaseConversationListFragment {
     @Override
     protected void setUpView() {
         super.setUpView();
-        titleBar.setTitle("biubiu消息");
+        titleBar.setTitle(getResources().getString(R.string.biu_msg));
         titleBar.setBackgroundColor(getResources().getColor(R.color.main_green));
         titleBar.setRightImageResource(R.drawable.mes_btn_people);
         titleBar.setRightLayoutClickListener(new OnClickListener() {
 
             @Override
             public void onClick(View v) {
-
-                if (!LoginUtils.isLogin(getActivity())) {
-                    Intent intent = new Intent(getActivity(), LoginOrRegisterActivity.class);
-                    startActivity(intent);
-                } else {
+                if (LoginUtils.isLogin(getActivity())) {
                     startActivity(new Intent(getActivity(), UserListActivity.class));
                 }
 
             }
         });
-//    	 if(DemoHelper.getInstance().isLoggedIn()==true){
-//    		 log.e(TAG, "注册接收消息监听");
-// 			EMClient.getInstance().chatManager().addMessageListener(msgListener);
-//    	 }
 
         // 注册上下文菜单
-        registerForContextMenu(conversationListView);
+        registerForContextMenu(conversationListView);// why to do this?
         conversationListView.setOnItemClickListener(new OnItemClickListener() {
 
             @Override
@@ -168,7 +153,7 @@ public class MenuRightFragment extends EaseConversationListFragment {
                     // 进入聊天页面
                     Intent intent = new Intent(getActivity(), ChatActivity.class);
                     intent.putExtra(Constant.EXTRA_USER_ID, username);
-                    startActivity(intent);
+                    startActivityForResult(intent, TO_CHATPAGE);
                 }
             }
         });
@@ -184,78 +169,85 @@ public class MenuRightFragment extends EaseConversationListFragment {
 
                     @Override
                     public void onOK() {
-                        // TODO Auto-generated method stub
                         // 删除此会话
                         EMClient.getInstance().chatManager().deleteConversation(username, true);
-
                         refresh();
+                        ((MainActivity) getActivity()).setUnReadVisible(showUnread());
                         Toast.makeText(getActivity(), "删除成功", Toast.LENGTH_SHORT).show();
                     }
 
                     @Override
                     public void onDismiss() {
-                        // TODO Auto-generated method stub
 
                     }
                 });
                 return true;
             }
         });
+        judgeVisibleGone();
+    }
 
+    /**
+     * 判断显示隐藏
+     */
+    private void judgeVisibleGone() {
+        if (!LoginUtils.isLogin(getActivity())) {
+            if (errorItemContainer.getVisibility() == View.GONE) {
+                errorItemContainer.setVisibility(View.VISIBLE);
+            }
+            if (errorView.getVisibility() == View.VISIBLE) {
+                errorView.setVisibility(View.GONE);
+            }
+            if (noLoginView.getVisibility() == View.GONE) {
+                noLoginView.setVisibility(View.VISIBLE);
+            }
+        } else {
+            errorItemContainer.setVisibility(View.GONE);
+            refresh();
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch (requestCode) {
+            case TO_CHATPAGE:
+                ((MainActivity) getActivity()).setUnReadVisible(showUnread());
+                break;
+            case TO_LOGIN:
+                judgeVisibleGone();
+                break;
+            case TO_REGISTER:
+                judgeVisibleGone();
+                break;
+            default:
+                break;
+        }
+    }
+
+    private boolean showUnread() {
+        int unread = EMClient.getInstance().chatManager().getUnreadMsgsCount();
+        if (unread > 0) {
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    protected void onConnectionConnected() {
+        super.onConnectionConnected();
+        if (LoginUtils.isLogin(getActivity())) {
+            errorItemContainer.setVisibility(View.GONE);
+        }
     }
 
     @Override
     protected void onConnectionDisconnected() {
         super.onConnectionDisconnected();
-
-
-//        if (NetUtils.hasNetwork(getActivity())){
-//         errorText.setText(R.string.can_not_connect_chat_server_connection);
-//        } else {
-//          errorText.setText(R.string.the_current_network);
-//        }
+        if (LoginUtils.isLogin(getActivity())) {
+            errorItemContainer.setVisibility(View.VISIBLE);
+            noLoginView.setVisibility(View.GONE);
+            errorView.setVisibility(View.VISIBLE);
+        }
     }
-
-//	/**
-//	 * 会话消息监听
-//	 */
-//	EMMessageListener msgListener = new EMMessageListener() {
-//
-//
-//		@Override
-//		public void onMessageReceived(List<EMMessage> messages) {
-//			//收到消息
-//			
-//			log.e(TAG, "收到消息");
-//			refresh();
-//			handler.sendEmptyMessage(2);
-//			
-//		}
-//
-//		@Override
-//		public void onCmdMessageReceived(List<EMMessage> messages) {
-//			//收到透传消息
-//			//收到消息
-//			
-//			log.e(TAG, "收到透传消息");
-//			refresh();
-//		}
-//
-//		@Override
-//		public void onMessageReadAckReceived(List<EMMessage> messages) {
-//			//收到已读回执
-//		}
-//
-//		@Override
-//		public void onMessageDeliveryAckReceived(List<EMMessage> message) {
-//			//收到已送达回执
-//		}
-//
-//		@Override
-//		public void onMessageChanged(EMMessage message, Object change) {
-//			//消息状态变动
-//		}
-//	};
-
-
 }
