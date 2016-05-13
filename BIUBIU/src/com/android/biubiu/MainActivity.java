@@ -536,6 +536,7 @@ public class MainActivity extends FragmentActivity implements AMapLocationListen
             locationOption = null;
         }
         pushDao.deleteAllPush();
+        unregisterReceiver(receiveBroadCast);
 //		EMClient.getInstance().chatManager().removeMessageListener(msgListener);
     }
 

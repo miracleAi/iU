@@ -605,9 +605,9 @@ public class MatchSettingActivity extends BaseActivity implements OnClickListene
 				SharePreferanceUtils.getInstance().putShared(getApplicationContext(), SharePreferanceUtils.USER_HEAD, "");
 				SharePreferanceUtils.getInstance().putShared(getApplicationContext(), SharePreferanceUtils.USER_CODE, "");
 				LogUtil.d("mytest", "tok---"+SharePreferanceUtils.getInstance().getToken(getApplicationContext(), SharePreferanceUtils.TOKEN, ""));
-				finish();
-                Intent i = new Intent(Constant.EXIT_APP_BROADCAST);
+				Intent i = new Intent(Constant.EXIT_APP_BROADCAST);
 				sendBroadcast(i,Constant.RECEIVE_EXIT_APP_PERMISSION);
+				finish();
 			}
 
 			@Override
