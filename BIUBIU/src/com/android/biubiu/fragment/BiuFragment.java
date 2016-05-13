@@ -425,6 +425,7 @@ public class BiuFragment extends Fragment implements PushInterface {
                     mAdPopup.dismiss();
                 }
             });
+            mAdPopup.setAnimationStyle(R.style.popwin_anim_style);
         }
         if (!mAdPopup.isShowing()) {
             mAdPopup.showAtLocation(view, Gravity.NO_GRAVITY, 0, 0);
@@ -1064,12 +1065,12 @@ public class BiuFragment extends Fragment implements PushInterface {
                 // TODO Auto-generated method stub
                 if (LoginUtils.isLogin(getActivity())) {
                     imageViewL.setVisibility(View.GONE);
-                    if(bean.isDefaultUser()){
+                    if (bean.isDefaultUser()) {
                         Intent intent = new Intent(getActivity(), WebviewActivity.class);
                         intent.putExtra(com.android.biubiu.common.Constant.ACTIVITY_NAME, bean.getWebTitle());
                         intent.putExtra(com.android.biubiu.common.Constant.ACTIVITY_URL, bean.getWebUrl());
                         startActivity(intent);
-                    }else{
+                    } else {
                         Intent intent = new Intent(getActivity(), BiuBiuReceiveActivity.class);
                         intent.putExtra("referenceId", bean.getReferenceId());
                         intent.putExtra("userCode", bean.getId());
@@ -1631,7 +1632,7 @@ public class BiuFragment extends Fragment implements PushInterface {
             if (null != user1List && user1List.size() > 0) {
                 Collections.sort(user1List, new SorByTime());
                 UserBean bean = user1List.get(0);
-                if(!bean.isDefaultUser()){
+                if (!bean.isDefaultUser()) {
                     if ((current - bean.getTime()) > 1000 * 60 * 60) {
                         removeView(bean.getId());
                     }
@@ -1641,7 +1642,7 @@ public class BiuFragment extends Fragment implements PushInterface {
                 Collections.sort(user2List, new SorByTime());
                 UserBean bean = user2List.get(0);
                 if ((current - bean.getTime()) > 1000 * 60 * 60) {
-                    if(!bean.isDefaultUser()) {
+                    if (!bean.isDefaultUser()) {
                         removeView(bean.getId());
                     }
                 }
@@ -1649,7 +1650,7 @@ public class BiuFragment extends Fragment implements PushInterface {
             if (null != user3List && user3List.size() > 0) {
                 Collections.sort(user3List, new SorByTime());
                 UserBean bean = user3List.get(0);
-                if(!bean.isDefaultUser()) {
+                if (!bean.isDefaultUser()) {
                     if ((current - bean.getTime()) > 1000 * 60 * 60) {
                         removeView(bean.getId());
                     }
@@ -1710,7 +1711,7 @@ public class BiuFragment extends Fragment implements PushInterface {
                     Gson gson = new Gson();
                     ArrayList<BiuDefaultBean> list = gson.fromJson(contents.toString(), new TypeToken<List<BiuDefaultBean>>() {
                     }.getType());
-                    if (list != null && list.size()>0){
+                    if (list != null && list.size() > 0) {
                         defaultBeanList.clear();
                         defaultBeanList.addAll(list);
                     }

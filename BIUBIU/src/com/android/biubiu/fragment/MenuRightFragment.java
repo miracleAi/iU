@@ -7,6 +7,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.List;
 
+import com.android.biubiu.MainActivity;
 import com.android.biubiu.MatchSettingActivity;
 import com.android.biubiu.activity.LoginActivity;
 import com.android.biubiu.activity.LoginOrRegisterActivity;
@@ -70,15 +71,12 @@ import android.widget.AdapterView.OnItemClickListener;
 
 
 public class MenuRightFragment extends EaseConversationListFragment {
-    private View mView;
-
     private TextView errorText;
     private Button register, login;
     private String TAG = "MenuRightFragment";
     private ReceiveBroadCast receiveBroadCast;  //广播实例
     private View errorView, noLoginView;
     private static final int TO_LOGIN = 1007;
-    private static final int TO_REGISTER = 1008;
     private static final int SELECT_PHOTO = 1002;
     private static final int CROUP_PHOTO = 1003;
     Bitmap userheadBitmap = null;
@@ -90,6 +88,8 @@ public class MenuRightFragment extends EaseConversationListFragment {
     private static final int TO_CHAT = 0;
     private static final int TO_FRIENG = 1;
     private static final int DELETE_CHAT = 2;
+    private static final int TO_REGISTER = TO_LOGIN + 1;
+    private static final int TO_CHATPAGE = TO_REGISTER + 1;
 
     @Override
     protected void initView() {
@@ -97,35 +97,30 @@ public class MenuRightFragment extends EaseConversationListFragment {
         errorView = (LinearLayout) View.inflate(getActivity(), R.layout.right_menu, null);
         noLoginView = (LinearLayout) View.inflate(getActivity(), R.layout.item_right_no_rigister, null);
 
-        if (!LoginUtils.isLogin(getActivity())) {
-            //errorItemContainer.addView(noLoginView);
-            loginLayout.setVisibility(View.VISIBLE);
-            loginLayout.addView(noLoginView);
-            register = (Button) noLoginView.findViewById(R.id.register_item_btn);
-            login = (Button) noLoginView.findViewById(R.id.login_item_btn);
-            register.setOnClickListener(new OnClickListener() {
+//        if (!LoginUtils.isLogin(getActivity())) {
+        errorItemContainer.addView(noLoginView);
+        register = (Button) noLoginView.findViewById(R.id.register_item_btn);
+        login = (Button) noLoginView.findViewById(R.id.login_item_btn);
+        register.setOnClickListener(new OnClickListener() {
 
-                @Override
-                public void onClick(View arg0) {
-                    // TODO Auto-generated method stub
-                    Intent intent = new Intent(getActivity(), RegisterThreeActivity.class);
-                    startActivityForResult(intent, TO_REGISTER);
-                }
-            });
-            login.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View arg0) {
+                Intent intent = new Intent(getActivity(), RegisterThreeActivity.class);
+                startActivityForResult(intent, TO_REGISTER);
+            }
+        });
+        login.setOnClickListener(new OnClickListener() {
 
-                @Override
-                public void onClick(View arg0) {
-                    // TODO Auto-generated method stub
-                    Intent intent = new Intent(getActivity(), LoginActivity.class);
-                    startActivityForResult(intent, TO_LOGIN);
-                }
-            });
-        } else {
-            errorItemContainer.addView(errorView);
-            errorText = (TextView) errorView.findViewById(R.id.tv_connect_errormsg);
-        }
-
+            @Override
+            public void onClick(View arg0) {
+                Intent intent = new Intent(getActivity(), LoginActivity.class);
+                startActivityForResult(intent, TO_LOGIN);
+            }
+        });
+//        } else {
+        errorItemContainer.addView(errorView);
+        errorText = (TextView) errorView.findViewById(R.id.tv_connect_errormsg);
+//        }
         // 注册广播接收
         receiveBroadCast = new ReceiveBroadCast();
         IntentFilter filter = new IntentFilter();
@@ -143,12 +138,10 @@ public class MenuRightFragment extends EaseConversationListFragment {
             if (!TextUtils.isEmpty(action)) {
                 if (action.equals(Constants.FLAG_RECEIVE)) {
                     LogUtil.e(TAG, "收到刷新广播");
-                    handler.sendEmptyMessage(2);
-                    refresh();
+                    handler.sendEmptyMessage(MSG_REFRESH);
+//                    refresh();
                 } else if (action.equals(Constant.EXIT_APP_BROADCAST)) {
-                    errorItemContainer.removeView(errorView);
-                    errorItemContainer.removeView(noLoginView);
-                    errorItemContainer.addView(noLoginView);
+                    judgeVisibleGone();
                 }
             }
         }
@@ -158,7 +151,7 @@ public class MenuRightFragment extends EaseConversationListFragment {
     @Override
     protected void setUpView() {
         super.setUpView();
-        titleBar.setTitle("biubiu消息");
+        titleBar.setTitle(getResources().getString(R.string.biu_msg));
         titleBar.setBackgroundColor(getResources().getColor(R.color.main_green));
         titleBar.setRightImageResource(R.drawable.mes_btn_people);
         titleBar.setRightLayoutClickListener(new OnClickListener() {
@@ -170,18 +163,14 @@ public class MenuRightFragment extends EaseConversationListFragment {
                     Intent intent = new Intent(getActivity(), LoginOrRegisterActivity.class);
                     startActivity(intent);
                 } else {
-                    headStateCharge(TO_FRIENG,"");
+                    headStateCharge(TO_FRIENG, "");
                 }
 
             }
         });
-//    	 if(DemoHelper.getInstance().isLoggedIn()==true){
-//    		 log.e(TAG, "注册接收消息监听");
-// 			EMClient.getInstance().chatManager().addMessageListener(msgListener);
-//    	 }
 
         // 注册上下文菜单
-        registerForContextMenu(conversationListView);
+        registerForContextMenu(conversationListView);// why to do this?
         conversationListView.setOnItemClickListener(new OnItemClickListener() {
 
             @Override
@@ -191,7 +180,7 @@ public class MenuRightFragment extends EaseConversationListFragment {
                 if (username.equals(EMClient.getInstance().getCurrentUser()))
                     Toast.makeText(getActivity(), R.string.Cant_chat_with_yourself, Toast.LENGTH_SHORT).show();
                 else {
-                    headStateCharge(TO_CHAT,username);
+                    headStateCharge(TO_CHAT, username);
                 }
             }
         });
@@ -203,23 +192,31 @@ public class MenuRightFragment extends EaseConversationListFragment {
                 // TODO Auto-generated method stub
                 EMConversation conversation = conversationListView.getItem(position);
                 final String username = conversation.getUserName();
-                headStateCharge(DELETE_CHAT,username);
+                headStateCharge(DELETE_CHAT, username);
                 return true;
             }
         });
-
+        judgeVisibleGone();
     }
 
-    @Override
-    protected void onConnectionDisconnected() {
-        super.onConnectionDisconnected();
-
-
-//        if (NetUtils.hasNetwork(getActivity())){
-//         errorText.setText(R.string.can_not_connect_chat_server_connection);
-//        } else {
-//          errorText.setText(R.string.the_current_network);
-//        }
+    /**
+     * 判断显示隐藏
+     */
+    private void judgeVisibleGone() {
+        if (!LoginUtils.isLogin(getActivity())) {
+            if (errorItemContainer.getVisibility() == View.GONE) {
+                errorItemContainer.setVisibility(View.VISIBLE);
+            }
+            if (errorView.getVisibility() == View.VISIBLE) {
+                errorView.setVisibility(View.GONE);
+            }
+            if (noLoginView.getVisibility() == View.GONE) {
+                noLoginView.setVisibility(View.VISIBLE);
+            }
+        } else {
+            errorItemContainer.setVisibility(View.GONE);
+            refresh();
+        }
     }
 
     public void headStateCharge(int toflag, final String userName) {
@@ -242,7 +239,7 @@ public class MenuRightFragment extends EaseConversationListFragment {
                         startActivity(intent);
                     } else if (toflag == TO_FRIENG) {
                         startActivity(new Intent(getActivity(), UserListActivity.class));
-                    }else if(toflag == DELETE_CHAT){
+                    } else if (toflag == DELETE_CHAT) {
                         MyHintDialog.getDialog(getActivity(), "删除会话", "嗨~确定要删除会话吗", "确定", new OnDialogClick() {
 
                             @Override
@@ -386,6 +383,17 @@ public class MenuRightFragment extends EaseConversationListFragment {
                     cropPhoto(data.getData());// 裁剪图片
                 }
                 break;
+            case TO_CHATPAGE:
+                ((MainActivity) getActivity()).setUnReadVisible(showUnread());
+                break;
+            case TO_LOGIN:
+                judgeVisibleGone();
+                break;
+            case TO_REGISTER:
+                judgeVisibleGone();
+                break;
+            default:
+                break;
         }
     }
 
@@ -448,6 +456,7 @@ public class MenuRightFragment extends EaseConversationListFragment {
         return path;
 
     }
+
     //	/**
 //	 * 会话消息监听
 //	 */
@@ -488,6 +497,29 @@ public class MenuRightFragment extends EaseConversationListFragment {
 //			//消息状态变动
 //		}
 //	};
+    private boolean showUnread() {
+        int unread = EMClient.getInstance().chatManager().getUnreadMsgsCount();
+        if (unread > 0) {
+            return true;
+        }
+        return false;
+    }
 
+    @Override
+    protected void onConnectionConnected() {
+        super.onConnectionConnected();
+        if (LoginUtils.isLogin(getActivity())) {
+            errorItemContainer.setVisibility(View.GONE);
+        }
+    }
 
+    @Override
+    protected void onConnectionDisconnected() {
+        super.onConnectionDisconnected();
+        if (LoginUtils.isLogin(getActivity())) {
+            errorItemContainer.setVisibility(View.VISIBLE);
+            noLoginView.setVisibility(View.GONE);
+            errorView.setVisibility(View.VISIBLE);
+        }
+    }
 }
