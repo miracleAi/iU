@@ -11,7 +11,7 @@
         android:layout_height="@dimen/top_title_height"
         android:background="@color/main_green"
         top:bothSideSize="@dimen/top_title_height"
-        top:leftDrawable="@drawable/main_name_btn_back"
+        top:leftDrawable="@drawable/back_main"
         top:title="@string/title_activity_main_set"
         top:topTitleColor="@android:color/white"
         top:topTitleSize="@dimen/top_title_size" />
@@ -142,4 +142,20 @@
         android:layout_width="match_parent"
         android:layout_height="1px"
         android:background="@color/set_divider2" />
+    <RelativeLayout
+        android:id="@+id/logout_rl"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/set_tag_bg"
+        android:paddingBottom="50dp"
+        android:paddingTop="100dp" >
+
+        <TextView
+            android:layout_width="250dp"
+            android:layout_height="40dp"
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/setting_btn_nologin"
+            android:gravity="center"
+            android:text="@string/setting_exit" />
+    </RelativeLayout>
 </LinearLayout>

@@ -345,23 +345,6 @@
                         android:stretchMode="columnWidth"
                         android:verticalSpacing="13dp" />
                 </LinearLayout>
-
-                <RelativeLayout
-                    android:id="@+id/logout_rl"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@color/set_tag_bg"
-                    android:paddingBottom="50dp"
-                    android:paddingTop="100dp" >
-
-                    <TextView
-                        android:layout_width="250dp"
-                        android:layout_height="40dp"
-                        android:layout_centerHorizontal="true"
-                        android:background="@drawable/setting_btn_nologin"
-                        android:gravity="center"
-                        android:text="@string/setting_exit" />
-                </RelativeLayout>
             </LinearLayout>
         </ScrollView>
 

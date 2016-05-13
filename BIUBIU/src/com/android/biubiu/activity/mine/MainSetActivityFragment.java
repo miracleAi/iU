@@ -1,21 +1,28 @@
 package com.android.biubiu.activity.mine;
 
 import android.app.Fragment;
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.android.biubiu.bean.PersonalTagBean;
 import com.android.biubiu.bean.SettingBean;
+import com.android.biubiu.common.Constant;
 import com.android.biubiu.component.title.TopTitleView;
 import com.android.biubiu.utils.HttpContants;
 import com.android.biubiu.utils.NetUtils;
 import com.android.biubiu.utils.SharePreferanceUtils;
 import com.avos.avoscloud.LogUtil;
+import com.baidu.android.pushservice.PushManager;
 import com.google.gson.Gson;
+import com.hyphenate.EMCallBack;
+import com.hyphenate.chat.EMClient;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -39,7 +46,11 @@ public class MainSetActivityFragment extends Fragment implements View.OnClickLis
     private ImageView newMsgToggle;
     private ImageView voiceToggle;
     private ImageView shockToggle;
+    private RelativeLayout msgLayout;
+    private RelativeLayout voiceLayout;
+    private RelativeLayout shockLayout;
     SettingBean setBean;
+    private RelativeLayout logoutRl;
 
     public MainSetActivityFragment() {
     }
@@ -49,6 +60,7 @@ public class MainSetActivityFragment extends Fragment implements View.OnClickLis
                              Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.fragment_main_set, container, false);
         initView();
+        initlodo();
         return rootView;
     }
 
@@ -56,7 +68,15 @@ public class MainSetActivityFragment extends Fragment implements View.OnClickLis
         newMsgToggle = (ImageView) rootView.findViewById(R.id.newmsg_toggle);
         voiceToggle = (ImageView) rootView.findViewById(R.id.voice_toggle);
         shockToggle = (ImageView) rootView.findViewById(R.id.shock_toggle);
+        msgLayout = (RelativeLayout) rootView.findViewById(R.id.msg_layout);
+        msgLayout.setOnClickListener(this);
+        voiceLayout = (RelativeLayout) rootView.findViewById(R.id.voice_layout);
+        voiceLayout.setOnClickListener(this);
+        shockLayout = (RelativeLayout) rootView.findViewById(R.id.shock_layout);
+        shockLayout.setOnClickListener(this);
         mTopTitle = (TopTitleView) rootView.findViewById(R.id.top_title_view);
+        logoutRl = (RelativeLayout) rootView.findViewById(R.id.logout_rl);
+        logoutRl.setOnClickListener(this);
         mTopTitle.setLeftOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -144,6 +164,7 @@ public class MainSetActivityFragment extends Fragment implements View.OnClickLis
                             if(!code.equals("200")){
                                 if(code.equals("303")){
                                     Toast.makeText(x.app(), "登录过期，请重新登录", Toast.LENGTH_SHORT).show();
+                                    exitHuanxin();
                                     return;
                                 }
                                 return;
@@ -173,7 +194,7 @@ public class MainSetActivityFragment extends Fragment implements View.OnClickLis
     /**
      * 保存设置信息
      */
-    private void saveSetInfo() {
+    public void saveSetInfo() {
         if(setBean==null){
             getActivity().finish();
             return;
@@ -280,7 +301,106 @@ public class MainSetActivityFragment extends Fragment implements View.OnClickLis
             setBean.setVibration(0);
         }
     }
+    /**
+     * 退出登录
+     */
+    private void exitApp() {
+        if(!NetUtils.isNetworkConnected(getActivity())){
+            Toast.makeText(getActivity(), getResources().getString(R.string.net_error), Toast.LENGTH_SHORT).show();
+            return;
+        }
+        RequestParams params = new RequestParams(""+HttpContants.HTTP_ADDRESS+HttpContants.EXIT);
+        JSONObject requestObject = new JSONObject();
+        try {
+            requestObject.put("token", SharePreferanceUtils.getInstance().getToken(getActivity(), SharePreferanceUtils.TOKEN, ""));
+            requestObject.put("device_code", SharePreferanceUtils.getInstance().getDeviceId(getActivity(), SharePreferanceUtils.DEVICE_ID, ""));
+            requestObject.put("user_code", SharePreferanceUtils.getInstance().getUserCode(getActivity(), SharePreferanceUtils.USER_CODE, ""));
+        } catch (JSONException e) {
 
+            e.printStackTrace();
+        }
+        params.addBodyParameter("data",requestObject.toString());
+        x.http().post(params, new Callback.CommonCallback<String>() {
+
+            @Override
+            public void onCancelled(CancelledException arg0) {
+                // TODO Auto-generated method stub
+
+            }
+
+            @Override
+            public void onError(Throwable arg0, boolean arg1) {
+                // TODO Auto-generated method stub
+                Toast.makeText(x.app(), arg0.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onFinished() {
+                // TODO Auto-generated method stub
+
+            }
+
+            @Override
+            public void onSuccess(String arg0) {
+                PushManager.stopWork(getActivity());
+                JSONObject jsons;
+                try {
+                    jsons = new JSONObject(arg0);
+                    String code = jsons.getString("state");
+                    com.android.biubiu.utils.LogUtil.d("set", ""+code);
+                    if(!code.equals("200")){
+                        String error=jsons.getString("error");
+                        Toast.makeText(x.app(),error,Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+//					SharePreferanceUtils.getInstance().putShared(getApplicationContext(), SharePreferanceUtils.TOKEN, "");
+                    exitHuanxin();
+                } catch (JSONException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+
+            }
+        });
+
+    }
+    /**
+     * 退出环信登录
+     */
+    public void exitHuanxin(){
+        EMClient.getInstance().logout(true ,new EMCallBack() {
+
+            @Override
+            public void onSuccess() {
+                // TODO Auto-generated method stub
+                com.android.biubiu.utils.LogUtil.e("set", "环信退出成功");
+                //清空本地token
+                SharePreferanceUtils.getInstance().putShared(getActivity(), SharePreferanceUtils.TOKEN, "");
+                SharePreferanceUtils.getInstance().putShared(getActivity(), SharePreferanceUtils.HX_USER_NAME, "");
+                SharePreferanceUtils.getInstance().putShared(getActivity(), SharePreferanceUtils.HX_USER_PASSWORD, "");
+                SharePreferanceUtils.getInstance().putShared(getActivity(), SharePreferanceUtils.USER_NAME, "");
+                SharePreferanceUtils.getInstance().putShared(getActivity(), SharePreferanceUtils.USER_HEAD, "");
+                SharePreferanceUtils.getInstance().putShared(getActivity(), SharePreferanceUtils.USER_CODE, "");
+                com.android.biubiu.utils.LogUtil.d("mytest", "tok---"+SharePreferanceUtils.getInstance().getToken(getActivity(), SharePreferanceUtils.TOKEN, ""));
+                getActivity().finish();
+                Intent i = new Intent(Constant.EXIT_APP_BROADCAST);
+                getActivity().sendBroadcast(i,Constant.RECEIVE_EXIT_APP_PERMISSION);
+            }
+
+            @Override
+            public void onProgress(int arg0, String arg1) {
+                // TODO Auto-generated method stub
+
+            }
+
+            @Override
+            public void onError(int arg0, String arg1) {
+                // TODO Auto-generated method stub
+                com.android.biubiu.utils.LogUtil.e("set", "环信退出失败"+arg1);
+            }
+        });
+
+    }
     @Override
     public void onClick(View v) {
         switch (v.getId()){
@@ -318,6 +438,10 @@ public class MainSetActivityFragment extends Fragment implements View.OnClickLis
                     isOpenShck = true;
                     shockToggle.setImageResource(R.drawable.setting_btn_no);
                 }
+                break;
+            case R.id.logout_rl:
+                //退出
+                exitApp();
                 break;
         }
     }

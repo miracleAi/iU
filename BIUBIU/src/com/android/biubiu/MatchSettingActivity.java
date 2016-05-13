@@ -63,7 +63,6 @@ public class MatchSettingActivity extends BaseActivity implements OnClickListene
 	private TextView ageMaxTv;
 	private RelativeLayout personalTagRl;
 	private MyGridView tagGv;
-	private RelativeLayout logoutRl;
 	private LinearLayout seekLinear;
 	private UserPagerTagAdapter setTagAdapter;
 	private RelativeLayout boyLayout;
@@ -105,8 +104,6 @@ public class MatchSettingActivity extends BaseActivity implements OnClickListene
 		personalTagRl = (RelativeLayout) findViewById(R.id.personal_rl);
 		personalTagRl.setOnClickListener(this);
 		tagGv = (MyGridView) findViewById(R.id.interest_tag_gv);
-		logoutRl = (RelativeLayout) findViewById(R.id.logout_rl);
-		logoutRl.setOnClickListener(this);
 		seekLinear = (LinearLayout) findViewById(R.id.seek_linear);
 		boyLayout = (RelativeLayout) findViewById(R.id.boy_layout);
 		boyLayout.setOnClickListener(this);
@@ -259,10 +256,6 @@ public class MatchSettingActivity extends BaseActivity implements OnClickListene
 			}
 	
 			break;
-		case R.id.logout_rl:
-			//退出
-			exitApp();
-			break;
 		default:
 			break;
 		}
@@ -337,11 +330,6 @@ public class MatchSettingActivity extends BaseActivity implements OnClickListene
 					jsons = new JSONObject(arg0);
 					String code = jsons.getString("state");
 					if(!code.equals("200")){
-						if(code.equals("303")){
-							toastShort("登录过期，请重新登录");
-							exitHuanxin();
-							return;
-						}
 //						showErrorLayout(new OnClickListener() {
 //
 //							@Override
@@ -524,106 +512,7 @@ public class MatchSettingActivity extends BaseActivity implements OnClickListene
 			setBean.setCity(Constants.UN_LIMIT);
 		}
 	}
-	/**
-	 * 退出登录
-	 */
-	private void exitApp() {
-		if(!NetUtils.isNetworkConnected(getApplicationContext())){
-			toastShort(getResources().getString(R.string.net_error));
-			return;
-		}
-		RequestParams params = new RequestParams(""+HttpContants.HTTP_ADDRESS+HttpContants.EXIT);
-		JSONObject requestObject = new JSONObject();
-		try {
-			requestObject.put("token", SharePreferanceUtils.getInstance().getToken(this, SharePreferanceUtils.TOKEN, ""));
-			requestObject.put("device_code", SharePreferanceUtils.getInstance().getDeviceId(this, SharePreferanceUtils.DEVICE_ID, ""));
-			requestObject.put("user_code", SharePreferanceUtils.getInstance().getUserCode(getApplicationContext(), SharePreferanceUtils.USER_CODE, ""));
-		} catch (JSONException e) {
 
-			e.printStackTrace();
-		}
-		params.addBodyParameter("data",requestObject.toString());
-		x.http().post(params, new CommonCallback<String>() {
-
-			@Override
-			public void onCancelled(CancelledException arg0) {
-				// TODO Auto-generated method stub
-
-			}
-
-			@Override
-			public void onError(Throwable arg0, boolean arg1) {
-				// TODO Auto-generated method stub
-				Toast.makeText(x.app(), arg0.getMessage(), Toast.LENGTH_SHORT).show();
-			}
-
-			@Override
-			public void onFinished() {
-				// TODO Auto-generated method stub
-
-			}
-
-			@Override
-			public void onSuccess(String arg0) {
-				PushManager.stopWork(getApplicationContext());
-				JSONObject jsons;
-				try {
-					jsons = new JSONObject(arg0);
-					String code = jsons.getString("state");
-					LogUtil.d(TAG, ""+code);
-					if(!code.equals("200")){
-						String error=jsons.getString("error");
-						toastShort(error);
-						return;
-					}
-//					SharePreferanceUtils.getInstance().putShared(getApplicationContext(), SharePreferanceUtils.TOKEN, "");
-					exitHuanxin();
-				} catch (JSONException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-
-			}
-		});
-
-	}
-	/**
-	 * 退出环信登录
-	 */
-	public void exitHuanxin(){
-		EMClient.getInstance().logout(true ,new EMCallBack() {
-
-			@Override
-			public void onSuccess() {
-				// TODO Auto-generated method stub
-				LogUtil.e(TAG, "环信退出成功");
-				//清空本地token
-				SharePreferanceUtils.getInstance().putShared(getApplicationContext(), SharePreferanceUtils.TOKEN, "");
-				SharePreferanceUtils.getInstance().putShared(getApplicationContext(), SharePreferanceUtils.HX_USER_NAME, "");
-				SharePreferanceUtils.getInstance().putShared(getApplicationContext(), SharePreferanceUtils.HX_USER_PASSWORD, "");
-				SharePreferanceUtils.getInstance().putShared(getApplicationContext(), SharePreferanceUtils.USER_NAME, "");
-				SharePreferanceUtils.getInstance().putShared(getApplicationContext(), SharePreferanceUtils.USER_HEAD, "");
-				SharePreferanceUtils.getInstance().putShared(getApplicationContext(), SharePreferanceUtils.USER_CODE, "");
-				LogUtil.d("mytest", "tok---"+SharePreferanceUtils.getInstance().getToken(getApplicationContext(), SharePreferanceUtils.TOKEN, ""));
-				finish();
-                Intent i = new Intent(Constant.EXIT_APP_BROADCAST);
-				sendBroadcast(i,Constant.RECEIVE_EXIT_APP_PERMISSION);
-			}
-
-			@Override
-			public void onProgress(int arg0, String arg1) {
-				// TODO Auto-generated method stub
-
-			}
-
-			@Override
-			public void onError(int arg0, String arg1) {
-				// TODO Auto-generated method stub
-				LogUtil.e(TAG, "环信退出失败"+arg1);
-			}
-		});
-		
-	}
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		// TODO Auto-generated method stub
@@ -649,13 +538,5 @@ public class MatchSettingActivity extends BaseActivity implements OnClickListene
 		default:
 			break;
 		}
-	}
-	@Override
-	public boolean onKeyDown(int keyCode, KeyEvent event) {
-		// TODO Auto-generated method stub
-		if(keyCode == KeyEvent.KEYCODE_BACK){
-			saveSetInfo();
-		}
-		return super.onKeyDown(keyCode, event);
 	}
 }

@@ -71,7 +71,9 @@ public class MenuRightFragment extends EaseConversationListFragment {
         noLoginView = (LinearLayout) View.inflate(getActivity(), R.layout.item_right_no_rigister, null);
 
         if (!LoginUtils.isLogin(getActivity())) {
-            errorItemContainer.addView(noLoginView);
+            //errorItemContainer.addView(noLoginView);
+            loginLayout.setVisibility(View.VISIBLE);
+            loginLayout.addView(noLoginView);
             register = (Button) noLoginView.findViewById(R.id.register_item_btn);
             login = (Button) noLoginView.findViewById(R.id.login_item_btn);
             register.setOnClickListener(new OnClickListener() {

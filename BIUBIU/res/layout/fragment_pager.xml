@@ -14,14 +14,17 @@
         top:leftDrawable="@drawable/main_nav_bar_icon_left"
         top:rightDrawable="@drawable/main_nav_bar_icon_right"
         top:topTitleColor="@android:color/white"
-        top:topTitleSize="@dimen/top_title_size" />
+        top:topTitleSize="@dimen/top_title_size"
+        android:visibility="gone"/>
 
     <include
         android:id="@+id/login_view"
         layout="@layout/item_right_no_rigister"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/top_title_view" />
+        android:layout_below="@+id/top_title_view"
+        android:visibility="gone"
+        />
 
 
     <FrameLayout
@@ -29,7 +32,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/top_title_view"
-        android:visibility="gone">
+       >
 
         <ScrollView
             android:layout_width="match_parent"

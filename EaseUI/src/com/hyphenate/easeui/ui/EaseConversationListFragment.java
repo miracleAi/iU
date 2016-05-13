@@ -36,6 +36,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 
 /**
  * 会话列表fragment
@@ -49,6 +50,7 @@ public class EaseConversationListFragment extends EaseBaseFragment{
     protected List<EMConversation> conversationList = new ArrayList<EMConversation>();
     protected EaseConversationList conversationListView;
     protected FrameLayout errorItemContainer;
+    protected LinearLayout loginLayout;
 
     protected boolean isConflict;
     protected SwipeRefreshLayout swipeRefreshLayout;
@@ -86,7 +88,8 @@ public class EaseConversationListFragment extends EaseBaseFragment{
         clearSearch = (ImageButton) getView().findViewById(R.id.search_clear);
         errorItemContainer = (FrameLayout) getView().findViewById(R.id.fl_error_item);
         swipeRefreshLayout=(SwipeRefreshLayout) getView().findViewById(R.id.conversation_swipe_layout);
-        
+        //未登录时放置登录view，自己添加
+        loginLayout = (LinearLayout) getView().findViewById(R.id.login_layout);
     }
     
     @Override
@@ -230,7 +233,6 @@ public class EaseConversationListFragment extends EaseBaseFragment{
     /**
      * 获取会话列表
      * 
-     * @param context
      * @return
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         +    */
     protected List<EMConversation> loadConversationList(){
@@ -268,8 +270,7 @@ public class EaseConversationListFragment extends EaseBaseFragment{
 
     /**
      * 根据最后一条消息的时间排序
-     * 
-     * @param usernames
+     *
      */
     private void sortConversationByLastChatTime(List<Pair<Long, EMConversation>> conversationList) {
         Collections.sort(conversationList, new Comparator<Pair<Long, EMConversation>>() {
