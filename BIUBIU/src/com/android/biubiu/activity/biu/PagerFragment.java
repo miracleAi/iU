@@ -200,6 +200,7 @@ public class PagerFragment extends BaseFragment implements View.OnClickListener 
             switchView();
         }
     };
+
     public PagerFragment() {
     }
 
@@ -316,7 +317,8 @@ public class PagerFragment extends BaseFragment implements View.OnClickListener 
     private void initData() {
         IntentFilter filter = new IntentFilter();
         filter.addAction(Constant.EXIT_APP_BROADCAST);
-        getActivity().registerReceiver(mReceiver,filter);
+        getActivity().registerReceiver(mReceiver, filter);
+
         userDao = new UserDao(getActivity());
         Bundle b = getArguments();
         if (b == null) {
@@ -369,7 +371,9 @@ public class PagerFragment extends BaseFragment implements View.OnClickListener 
         JSONObject requestObject = new JSONObject();
         try {
             requestObject.put("device_code", SharePreferanceUtils.getInstance().getDeviceId(getActivity(), SharePreferanceUtils.DEVICE_ID, ""));
-            requestObject.put("code", userCode);
+            requestObject.put("code", TextUtils.isEmpty(userCode) ?
+                    SharePreferanceUtils.getInstance().getUserCode(getActivity(), SharePreferanceUtils.USER_CODE, "") :
+                    userCode);
             requestObject.put("token", SharePreferanceUtils.getInstance().getToken(getActivity(), SharePreferanceUtils.TOKEN, ""));
         } catch (JSONException e) {
 
@@ -918,7 +922,7 @@ public class PagerFragment extends BaseFragment implements View.OnClickListener 
                     bm = MediaStore.Images.Media.getBitmap(resolver, originalUri);
                     String filePath = saveHeadImg(bm);
                 /*String[] proj = {MediaStore.Images.Media.DATA};
-				//好像是android多媒体数据库的封装接口，具体的看Android文档
+                //好像是android多媒体数据库的封装接口，具体的看Android文档
 				Cursor cursor = managedQuery(originalUri, proj, null, null, null);
 				//按我个人理解 这个是获得用户选择的图片的索引值
 				int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
@@ -1204,4 +1208,9 @@ public class PagerFragment extends BaseFragment implements View.OnClickListener 
         });
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        getActivity().unregisterReceiver(mReceiver);
+    }
 }

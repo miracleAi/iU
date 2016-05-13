@@ -61,9 +61,10 @@ public class MenuRightFragment extends EaseConversationListFragment {
     private Button register, login;
     private String TAG = "MenuRightFragment";
     private ReceiveBroadCast receiveBroadCast;  //广播实例
-    private View errorView,noLoginView;
+    private View errorView, noLoginView;
     private static final int TO_LOGIN = 1007;
     private static final int TO_REGISTER = 1008;
+
     @Override
     protected void initView() {
         super.initView();
@@ -82,7 +83,7 @@ public class MenuRightFragment extends EaseConversationListFragment {
                 public void onClick(View arg0) {
                     // TODO Auto-generated method stub
                     Intent intent = new Intent(getActivity(), RegisterThreeActivity.class);
-                    startActivityForResult(intent,TO_REGISTER);
+                    startActivityForResult(intent, TO_REGISTER);
                 }
             });
             login.setOnClickListener(new OnClickListener() {
@@ -91,7 +92,7 @@ public class MenuRightFragment extends EaseConversationListFragment {
                 public void onClick(View arg0) {
                     // TODO Auto-generated method stub
                     Intent intent = new Intent(getActivity(), LoginActivity.class);
-                    startActivityForResult(intent,TO_LOGIN);
+                    startActivityForResult(intent, TO_LOGIN);
                 }
             });
         } else {
@@ -113,13 +114,14 @@ public class MenuRightFragment extends EaseConversationListFragment {
         @Override
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
-            if(!TextUtils.isEmpty(action)){
-                if(action.equals(Constants.FLAG_RECEIVE)){
+            if (!TextUtils.isEmpty(action)) {
+                if (action.equals(Constants.FLAG_RECEIVE)) {
                     LogUtil.e(TAG, "收到刷新广播");
                     handler.sendEmptyMessage(2);
                     refresh();
-                }else if(action.equals(Constant.EXIT_APP_BROADCAST)){
+                } else if (action.equals(Constant.EXIT_APP_BROADCAST)) {
                     errorItemContainer.removeView(errorView);
+                    errorItemContainer.removeView(noLoginView);
                     errorItemContainer.addView(noLoginView);
                 }
             }
