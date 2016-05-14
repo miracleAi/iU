@@ -14,6 +14,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.android.biubiu.bean.Act;
+import com.android.biubiu.common.Umutils;
 import com.android.biubiu.component.title.TopTitleView;
 import com.android.biubiu.utils.HttpContants;
 import com.android.biubiu.utils.LogUtil;
@@ -75,6 +76,7 @@ public class ActivityListActivityFragment extends Fragment {
                     i.putExtra(com.android.biubiu.common.Constant.ACTIVITY_NAME, act.getName());
                     i.putExtra(com.android.biubiu.common.Constant.ACTIVITY_URL, act.getUrl());
                     i.putExtra(com.android.biubiu.common.Constant.ACTIVITY_COVER, act.getCover());
+                    Umutils.count(getActivity(),Umutils.ACTY_LIST_OPEN_TOTAL);
                     startActivity(i);
                 }
             }

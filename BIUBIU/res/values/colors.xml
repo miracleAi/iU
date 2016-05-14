@@ -72,7 +72,7 @@
     <color name="set_tag_bg">#f8f6f4</color>
     <color name="set_tag_text">#808080</color>
     <color name="set_divider1">#6cd1c9</color>
-    <color name="set_divider2">#f8f6f4</color>
+    <color name="set_divider2">#ececec</color>
     <color name="set_seek_sel">#6cc1ba</color>
     <color name="set_seek_nosel">#7e7f7f</color>
 

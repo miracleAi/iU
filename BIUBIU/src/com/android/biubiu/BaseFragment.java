@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import com.android.biubiu.utils.DensityUtil;
 import com.ant.liao.GifView;
+import com.umeng.analytics.MobclickAgent;
 
 import cc.imeetu.iu.R;
 
@@ -86,4 +87,15 @@ public class BaseFragment extends Fragment {
         errorLayout.setVisibility(View.GONE);
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        MobclickAgent.onResume(getActivity());
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        MobclickAgent.onPause(getActivity());
+    }
 }

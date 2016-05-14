@@ -118,6 +118,7 @@
     <string name="setting_character_tags">个性标签</string>
     <string name="setting_character_tags_her">Ta的个性标签</string>
     <string name="setting_new_message_notice">新消息通知</string>
+    <string name="setting_page_title">biubiu消息通知</string>
     <string name="setting_voice">声音</string>
     <string name="setting_shock">震动</string>
     <string name="setting_exit">退出登录</string>
@@ -226,4 +227,7 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="biu_msg">biubiu消息</string>
+    <string name="other">其它</string>
+    <string name="about_iu">关于iU</string>
+    <string name="share_content">分享带来满天繁星</string>
 </resources>

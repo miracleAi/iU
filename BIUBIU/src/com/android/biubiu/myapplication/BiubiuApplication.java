@@ -84,4 +84,5 @@ public class BiubiuApplication extends Application {
         super.attachBaseContext(base);
         MultiDex.install(this);
     }
+
 }

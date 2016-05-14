@@ -102,12 +102,15 @@ public class EaseChatInputMenu extends LinearLayout {
          }
          ((EaseEmojiconMenu)emojiconMenu).init(emojiconGroupList);*/
         // 表情栏，使用表情MM的键盘
-        emojiconMenu = (BQMMKeyboard) layoutInflater.inflate(R.layout.ease_layout_emojicon_menu, null);
+        if (emojiconMenu == null) {
+            emojiconMenu = (BQMMKeyboard) layoutInflater.inflate(R.layout.ease_layout_emojicon_menu, null);
+        }
+        emojiconMenuContainer.addView(emojiconMenu);
+
         if (emojiconGroupList == null) {
             emojiconGroupList = new ArrayList<EaseEmojiconGroupEntity>();
             emojiconGroupList.add(new EaseEmojiconGroupEntity(R.drawable.ee_1, Arrays.asList(EaseDefaultEmojiconDatas.getData())));
         }
-        emojiconMenuContainer.addView(emojiconMenu);
 
         processChatMenu();
         // 初始化extendmenu
@@ -126,7 +129,7 @@ public class EaseChatInputMenu extends LinearLayout {
      * @param customEmojiconMenu
      */
     /*public void setCustomEmojiconMenu(EaseEmojiconMenuBase customEmojiconMenu){
-		this.emojiconMenu = customEmojiconMenu;
+        this.emojiconMenu = customEmojiconMenu;
 	}*/
 
     /**

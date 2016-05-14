@@ -34,6 +34,7 @@ import com.android.biubiu.callback.BiuBooleanCallback;
 import com.android.biubiu.chat.ChatActivity;
 import com.android.biubiu.chat.Constant;
 import com.android.biubiu.common.CommonDialog;
+import com.android.biubiu.common.Umutils;
 import com.android.biubiu.component.title.TopTitleView;
 import com.android.biubiu.push.MyPushReceiver;
 import com.android.biubiu.push.PushInterface;
@@ -262,6 +263,7 @@ public class BiuFragment extends Fragment implements PushInterface {
                         if (TextUtils.isEmpty(url) || !url.equals(mAdUrl)) {//没弹过
                             SharePreferanceUtils.getInstance().saveAdUrl(getActivity(), mUserCode, mAdUrl);
                             showPopup();
+                            Umutils.count(getActivity(), Umutils.ACTY_DIALOG_POP);
                         }
 
                         int updateAt = activity.getInt("updateAt");
@@ -400,8 +402,13 @@ public class BiuFragment extends Fragment implements PushInterface {
     private void showPopup() {
         if (mAdPopup == null) {
             View contentView = LayoutInflater.from(getActivity()).inflate(R.layout.ad_layout, null);
+            ImageOptions imageOptions = new ImageOptions.Builder()
+                    .setImageScaleType(ImageView.ScaleType.CENTER_CROP)
+                    .setLoadingDrawableId(R.drawable.biu_banner)
+                    .setFailureDrawableId(R.drawable.biu_banner)
+                    .build();
             ImageView iv = (ImageView) contentView.findViewById(R.id.ad_imageview);
-            x.image().bind(iv, mAdCover);
+            x.image().bind(iv, mAdCover, imageOptions);
             contentView.findViewById(R.id.ad_imageview).setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -410,6 +417,7 @@ public class BiuFragment extends Fragment implements PushInterface {
                     i.putExtra(com.android.biubiu.common.Constant.ACTIVITY_URL, mAdUrl);
                     i.putExtra(com.android.biubiu.common.Constant.ACTIVITY_COVER, mAdCover);
                     startActivity(i);
+                    Umutils.count(getActivity(), Umutils.ACTY_DIALOG_OPEN);
                     mAdPopup.dismiss();
                 }
             });
@@ -422,6 +430,7 @@ public class BiuFragment extends Fragment implements PushInterface {
             contentView.findViewById(R.id.close_imageview).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    Umutils.count(getActivity(), Umutils.ACTY_DIALOG_CLOSE);
                     mAdPopup.dismiss();
                 }
             });
@@ -517,7 +526,7 @@ public class BiuFragment extends Fragment implements PushInterface {
                                 case Constants.HEAD_VERIFYFAIL_UNREAD:
                                 case Constants.HEAD_VERIFYFAIL:
                                 case Constants.HEAD_VERIFYFAIL_UPDATE:
-                                    showShenHeDaiog( Integer.parseInt(headFlag));
+                                    showShenHeDaiog(Integer.parseInt(headFlag));
                                     break;
                                 default:
                                     Intent intent = new Intent(getActivity(), BiuBiuSendActivity.class);
@@ -543,7 +552,7 @@ public class BiuFragment extends Fragment implements PushInterface {
         });
     }
 
-    private void showShenHeDaiog( final int flag) {
+    private void showShenHeDaiog(final int flag) {
         String title = "";
         String msg = "";
         String strBtn1 = "";
@@ -576,7 +585,7 @@ public class BiuFragment extends Fragment implements PushInterface {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     dialog.dismiss();
-                    HttpUtils.commitIconState(getActivity(),flag);
+                    HttpUtils.commitIconState(getActivity(), flag);
                     Intent intent = new Intent(getActivity(), BiuBiuSendActivity.class);
                     startActivityForResult(intent, SEND_BIU_REQUEST);
                 }
@@ -590,10 +599,10 @@ public class BiuFragment extends Fragment implements PushInterface {
                     dialog.dismiss();
                     switch (flag) {
                         case Constants.HEAD_VERIFYFAIL_UNREAD:
-                            HttpUtils.commitIconState(getActivity(),flag);
+                            HttpUtils.commitIconState(getActivity(), flag);
                             break;
                         case Constants.HEAD_VERIFYFAIL_UPDATE:
-                            HttpUtils.commitIconState(getActivity(),flag);
+                            HttpUtils.commitIconState(getActivity(), flag);
                             Intent intent = new Intent(getActivity(), BiuBiuSendActivity.class);
                             startActivityForResult(intent, SEND_BIU_REQUEST);
                             break;
@@ -769,9 +778,11 @@ public class BiuFragment extends Fragment implements PushInterface {
         if (!haveSpace) {
             //将内圈中的用户按照时间顺序排列
             Collections.sort(user1List, new SorByTime());
-            UserBean moveBean = user1List.get(0);
-            user1List.remove(0);
-            moveOneToTwo(moveBean);
+            if (user1List.size() > 0) {
+                UserBean moveBean = user1List.get(0);
+                user1List.remove(0);
+                moveOneToTwo(moveBean);
+            }
         }
     }
 
@@ -1070,6 +1081,7 @@ public class BiuFragment extends Fragment implements PushInterface {
                         intent.putExtra(com.android.biubiu.common.Constant.ACTIVITY_NAME, bean.getWebTitle());
                         intent.putExtra(com.android.biubiu.common.Constant.ACTIVITY_URL, bean.getWebUrl());
                         startActivity(intent);
+                        Umutils.count(getActivity(), Umutils.PROFILE_CON_OPEN_TOTAL);
                     } else {
                         Intent intent = new Intent(getActivity(), BiuBiuReceiveActivity.class);
                         intent.putExtra("referenceId", bean.getReferenceId());
@@ -1399,9 +1411,9 @@ public class BiuFragment extends Fragment implements PushInterface {
                     JSONArray userArray = data.getJSONArray("users");
                     int biuCoin = data.getInt("virtual_currency");
                     com.android.biubiu.common.Constant.biubiCnt = biuCoin;
-                   String  headFlag = data.getString("iconStatus");
+                    String headFlag = data.getString("iconStatus");
                     com.android.biubiu.common.Constant.headState = headFlag;
-                    if(headFlag.equals("2") || headFlag.equals("4")){
+                    if (headFlag.equals("2") || headFlag.equals("4")) {
                         showShenHeDaiog(Integer.parseInt(headFlag));
                     }
                     Gson gson = new Gson();
@@ -1779,6 +1791,7 @@ public class BiuFragment extends Fragment implements PushInterface {
             }
             log.d("mytest", "defau ltuser show" + userDefaultList.size());
             addAllView(userDefaultList, true);
+            Umutils.count(getActivity(), Umutils.PROFILE_CON_OPEN_TOTAL);
         }
     }
 }

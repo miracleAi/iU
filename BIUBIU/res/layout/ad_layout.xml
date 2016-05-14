@@ -7,7 +7,7 @@
     <ImageView
         android:id="@+id/ad_imageview"
         android:layout_width="298dp"
-        android:layout_height="298dp"
+        android:layout_height="396dp"
         android:scaleType="centerCrop"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="120dp"
