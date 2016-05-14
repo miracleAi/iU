@@ -2,44 +2,41 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     style="@style/tab_lyt_style">
 
-    <FrameLayout
+
+    <RelativeLayout
         android:id="@+id/pic_word_layout"
+        style="@style/tab_lyt_style"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:gravity="center">
 
-        <LinearLayout
-            style="@style/tab_lyt_style"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center">
+        <ImageView
+            android:id="@+id/ivIcon"
+            style="@style/tab_img_style" />
 
-            <ImageView
-                android:id="@+id/ivIcon"
-                style="@style/tab_img_style" />
-
-            <TextView
-                android:id="@+id/tvText"
-                style="@style/tab_text_style" />
-        </LinearLayout>
-
+        <TextView
+            android:id="@+id/tvText"
+            style="@style/tab_text_style"
+            android:layout_below="@+id/ivIcon" />
 
         <ImageView
             android:id="@+id/unread_image"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="top|right"
-            android:layout_marginRight="20dip"
-            android:layout_marginTop="@dimen/unread_msg_tip_margin"
+            android:layout_alignRight="@+id/ivIcon"
+            android:layout_alignTop="@+id/ivIcon"
+            android:layout_marginRight="-8dp"
             android:src="@drawable/unread_msg_tip_bg"
             android:visibility="gone" />
-    </FrameLayout>
+    </RelativeLayout>
+
 
     <ImageView
         android:id="@+id/extra_img"
         android:layout_width="31dp"
         android:layout_height="27dip"
-        android:layout_marginTop="11dip"
         android:layout_marginBottom="11dp"
+        android:layout_marginTop="11dip"
         android:visibility="gone" />
 
 </LinearLayout>

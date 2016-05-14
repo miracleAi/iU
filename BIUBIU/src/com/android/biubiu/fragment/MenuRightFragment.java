@@ -5,18 +5,12 @@ import cc.imeetu.iu.R;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.List;
 
 import com.android.biubiu.MainActivity;
-import com.android.biubiu.MatchSettingActivity;
 import com.android.biubiu.activity.LoginActivity;
-import com.android.biubiu.activity.LoginOrRegisterActivity;
-import com.android.biubiu.activity.RegisterOneActivity;
 import com.android.biubiu.activity.RegisterThreeActivity;
-import com.android.biubiu.activity.biu.BiuBiuSendActivity;
 import com.android.biubiu.callback.BiuBooleanCallback;
 import com.android.biubiu.chat.ChatActivity;
-import com.android.biubiu.chat.DemoHelper;
 import com.android.biubiu.chat.MyHintDialog;
 import com.android.biubiu.chat.MyHintDialog.OnDialogClick;
 import com.android.biubiu.chat.UserListActivity;
@@ -26,18 +20,11 @@ import com.android.biubiu.utils.Constants;
 import com.android.biubiu.utils.HttpUtils;
 import com.android.biubiu.utils.LogUtil;
 import com.android.biubiu.utils.LoginUtils;
-import com.android.biubiu.utils.SharePreferanceUtils;
 import com.android.biubiu.utils.UploadImgUtils;
 import com.ant.liao.GifView;
-import com.avos.avoscloud.LogUtil.log;
-import com.hyphenate.EMMessageListener;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMConversation;
-import com.hyphenate.chat.EMMessage;
-import com.hyphenate.chat.EMConversation.EMConversationType;
 import com.hyphenate.easeui.ui.EaseConversationListFragment;
-import com.hyphenate.easeui.widget.EaseTitleBar;
-import com.hyphenate.util.NetUtils;
 
 import android.content.DialogInterface;
 import android.graphics.Bitmap;
@@ -45,28 +32,20 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
 import android.provider.MediaStore;
-import android.support.v4.app.Fragment;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.view.ContextMenu;
-import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.ViewGroup;
-import android.view.ContextMenu.ContextMenuInfo;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.Button;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.AdapterView.OnItemClickListener;
 
 
@@ -86,7 +65,7 @@ public class MenuRightFragment extends EaseConversationListFragment {
     TextView loadTv;
     public static boolean isUploadingPhoto = false;
     private static final int TO_CHAT = 0;
-    private static final int TO_FRIENG = 1;
+    private static final int TO_FRIENDS = 1;
     private static final int DELETE_CHAT = 2;
     private static final int TO_REGISTER = TO_LOGIN + 1;
     private static final int TO_CHATPAGE = TO_REGISTER + 1;
@@ -159,11 +138,8 @@ public class MenuRightFragment extends EaseConversationListFragment {
             @Override
             public void onClick(View v) {
 
-                if (!LoginUtils.isLogin(getActivity())) {
-                    Intent intent = new Intent(getActivity(), LoginOrRegisterActivity.class);
-                    startActivity(intent);
-                } else {
-                    headStateCharge(TO_FRIENG, "");
+                if (LoginUtils.isLogin(getActivity())) {
+                    headStateCharge(TO_FRIENDS, "");
                 }
 
             }
@@ -216,6 +192,7 @@ public class MenuRightFragment extends EaseConversationListFragment {
         } else {
             errorItemContainer.setVisibility(View.GONE);
             refresh();
+            ((MainActivity) getActivity()).setUnReadVisible(showUnread());
         }
     }
 
@@ -236,8 +213,8 @@ public class MenuRightFragment extends EaseConversationListFragment {
                         // 进入聊天页面
                         Intent intent = new Intent(getActivity(), ChatActivity.class);
                         intent.putExtra(Constant.EXTRA_USER_ID, userName);
-                        startActivity(intent);
-                    } else if (toflag == TO_FRIENG) {
+                        startActivityForResult(intent,TO_CHATPAGE);
+                    } else if (toflag == TO_FRIENDS) {
                         startActivity(new Intent(getActivity(), UserListActivity.class));
                     } else if (toflag == DELETE_CHAT) {
                         MyHintDialog.getDialog(getActivity(), "删除会话", "嗨~确定要删除会话吗", "确定", new OnDialogClick() {
@@ -248,6 +225,7 @@ public class MenuRightFragment extends EaseConversationListFragment {
                                 // 删除此会话
                                 EMClient.getInstance().chatManager().deleteConversation(userName, true);
                                 refresh();
+                                ((MainActivity) getActivity()).setUnReadVisible(showUnread());
                                 Toast.makeText(getActivity(), "删除成功", Toast.LENGTH_SHORT).show();
                             }
 

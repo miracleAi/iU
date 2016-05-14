@@ -204,6 +204,7 @@ public class MainActivity extends FragmentActivity implements AMapLocationListen
         }
 
         mFragmentManager.beginTransaction()
+                .add(R.id.layout_body,message.getFragment(),getResources().getString(R.string.left_menu_message))
                 .add(R.id.layout_body, biu.getFragment(), getResources().getString(R.string.left_menu_biubiu))
                 .commit();
         mFragmentManager.executePendingTransactions();
