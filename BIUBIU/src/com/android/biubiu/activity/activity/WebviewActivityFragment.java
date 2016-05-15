@@ -1,10 +1,12 @@
 package com.android.biubiu.activity.activity;
 
 import android.app.Fragment;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
@@ -47,6 +49,19 @@ public class WebviewActivityFragment extends Fragment {
             mWebview.getSettings().setJavaScriptEnabled(true);
             mWebview.getSettings().setUseWideViewPort(true);
             mWebview.getSettings().setLoadWithOverviewMode(true);
+            // 开启支持视频
+            mWebview.getSettings().setPluginState(WebSettings.PluginState.ON);
+            mWebview.getSettings().setGeolocationEnabled(true);
+            // 开启DOM缓存。
+            mWebview.getSettings().setDomStorageEnabled(true);
+            mWebview.getSettings().setDatabaseEnabled(true);
+            mWebview.getSettings().setDatabasePath(getActivity().getApplicationContext().getCacheDir()
+                    .getAbsolutePath());
+            mWebview.getSettings().setAppCacheEnabled(true);
+            mWebview.getSettings().setAppCachePath(getActivity().getApplicationContext().getCacheDir()
+                    .getAbsolutePath());
+            mWebview.getSettings().setAppCacheMaxSize(Integer.MAX_VALUE);
+            mWebview.requestFocus();
             mWebview.loadUrl(mAdUrl);
             mWebview.setWebViewClient(new WebViewClient() {
                 @Override
@@ -64,5 +79,23 @@ public class WebviewActivityFragment extends Fragment {
 
         }
         return mRootview;
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+            mWebview.onPause(); // 暂停网页中正在播放的视频
+        }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mWebview.loadUrl("about:blank");
+        mWebview.stopLoading();
+        mWebview.setWebViewClient(null);
+        mWebview.destroy();
+        mWebview = null;
     }
 }
