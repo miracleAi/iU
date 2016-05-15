@@ -231,6 +231,7 @@ public class BiuFragment extends Fragment implements PushInterface {
         x.http().post(params, new CommonCallback<String>() {
             @Override
             public void onSuccess(String s) {
+                LogUtil.e("mytest","s = "+s);
                 JSONObject jsons;
                 try {
                     jsons = new JSONObject(s);
@@ -253,6 +254,13 @@ public class BiuFragment extends Fragment implements PushInterface {
                     int status = activity.getInt("status");
                     if (status == 1) {
                         mTopTitle.setRightLayoutVisible();
+                        mTopTitle.setRightOnClickListener(new OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                Intent activities = new Intent(getActivity(), ActivityListActivity.class);
+                                startActivityForResult(activities, ACTIVITY_LIST);
+                            }
+                        });
                         mTopTitle.setRightImage(R.drawable.biu_btn_activity_nor);
                         JSONObject dialog = activity.getJSONObject("dialog");
                         mAdUrl = dialog.getString("url");
@@ -371,13 +379,6 @@ public class BiuFragment extends Fragment implements PushInterface {
                 .build();
 
         mTopTitle = (TopTitleView) view.findViewById(R.id.top_title_view);
-        mTopTitle.setRightOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent activities = new Intent(getActivity(), ActivityListActivity.class);
-                startActivityForResult(activities, ACTIVITY_LIST);
-            }
-        });
         mTopTitle.setLeftOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -388,13 +389,6 @@ public class BiuFragment extends Fragment implements PushInterface {
                     Intent intent = new Intent(getActivity(), LoginOrRegisterActivity.class);
                     startActivity(intent);
                 }
-            }
-        });
-        mTopTitle.setLeftOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent seting = new Intent(getActivity(), MatchSettingActivity.class);
-                startActivity(seting);
             }
         });
     }
