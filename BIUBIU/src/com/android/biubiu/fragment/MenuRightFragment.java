@@ -199,8 +199,10 @@ public class MenuRightFragment extends EaseConversationListFragment {
     public void headStateCharge(int toflag, final String userName) {
         // 头像审核flag：0：待审核  1：审核中 2：审核成功未读 3：审核成功已读  4:审核失败（第一次）未读 5：审核失败已读 6：审核失败 (未回滚)
         String headFlag = Constant.headState;
+        int flag = 0;
         if (!TextUtils.isEmpty(headFlag)) {
-            int flag = Integer.parseInt(headFlag);
+            flag =  Integer.parseInt(headFlag);
+        }
             switch (flag) {
                 case Constants.HEAD_VERIFYSUC_UNREAD:
                 case Constants.HEAD_VERIFYFAIL_UNREAD:
@@ -238,7 +240,6 @@ public class MenuRightFragment extends EaseConversationListFragment {
                     }
                     break;
             }
-        }
     }
 
     private void showShenHeDaiog(final int flag) {

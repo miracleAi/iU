@@ -189,11 +189,6 @@ public class BiuFragment extends Fragment implements PushInterface {
     TextView loadTv;
     public static boolean isUploadingPhoto = false;
     RemoveReceiver removeReceiver;
-    //标记当前页面是否显示默认头像
-    boolean isDefaultUserShow = false;
-    //默认头像列表
-    ArrayList<BiuDefaultBean> defaultBeanList = new ArrayList<BiuDefaultBean>();
-
     private TopTitleView mTopTitle;
     private PopupWindow mAdPopup;
     private String mAdUrl, mAdName, mAdCover;
@@ -207,7 +202,6 @@ public class BiuFragment extends Fragment implements PushInterface {
         init();
         drawBiuView();
         setBiuLayout();
-        getBiuDefaultList();
         if (SharePreferanceUtils.getInstance().isScanBeginGuid(getActivity(), SharePreferanceUtils.IS_SCAN_BEGINGUID, false)) {
             getAd();
         }
@@ -1426,12 +1420,7 @@ public class BiuFragment extends Fragment implements PushInterface {
                     }
                     ArrayList<UserBean> list = gson.fromJson(userArray.toString(), new TypeToken<List<UserBean>>() {
                     }.getType());
-                    if (null != list && list.size() > 0) {
                         addAllView(list, true);
-                    } else {
-                        isDefaultUserShow = true;
-                        showDefaultUsers();
-                    }
                 } catch (JSONException e) {
                     // TODO Auto-generated catch block
                     e.printStackTrace();
@@ -1629,12 +1618,6 @@ public class BiuFragment extends Fragment implements PushInterface {
         @Override
         public void run() {
             long current = System.currentTimeMillis();
-            if (null == user1List || user1List.size() == 0 && isDefaultUserShow == false) {
-                //显示默认头像
-                isDefaultUserShow = true;
-                showDefaultUsers();
-                return;
-            }
             if (null != user1List && user1List.size() > 0) {
                 Collections.sort(user1List, new SorByTime());
                 UserBean bean = user1List.get(0);
@@ -1673,7 +1656,6 @@ public class BiuFragment extends Fragment implements PushInterface {
         // TODO Auto-generated method stub
         switch (type) {
             case 0:
-                clearDefaultUsers();
                 //有新的匹配消息
                 newUserBean = userBean;
                 addCircle1View(userBean);
@@ -1691,101 +1673,6 @@ public class BiuFragment extends Fragment implements PushInterface {
                 break;
             default:
                 break;
-        }
-    }
-
-    private void getBiuDefaultList() {
-        RequestParams params = new RequestParams(HttpContants.HTTP_ADDRESS + HttpContants.GET_DEFAULT_USERS);
-        JSONObject requestObject = new JSONObject();
-        try {
-            requestObject.put("device_code", SharePreferanceUtils.getInstance().getDeviceId(getActivity(), SharePreferanceUtils.DEVICE_ID, ""));
-            requestObject.put("token", SharePreferanceUtils.getInstance().getToken(getActivity(), SharePreferanceUtils.TOKEN, ""));
-        } catch (JSONException e) {
-
-            e.printStackTrace();
-        }
-        params.addBodyParameter("data", requestObject.toString());
-        x.http().post(params, new CommonCallback<String>() {
-            @Override
-            public void onSuccess(String s) {
-                LogUtil.d("mytest", "default" + s);
-                JSONObject jsons;
-                try {
-                    jsons = new JSONObject(s);
-                    JSONObject data = jsons.getJSONObject("data");
-                    JSONArray contents = data.getJSONArray("contents");
-                    Gson gson = new Gson();
-                    ArrayList<BiuDefaultBean> list = gson.fromJson(contents.toString(), new TypeToken<List<BiuDefaultBean>>() {
-                    }.getType());
-                    if (list != null && list.size() > 0) {
-                        defaultBeanList.clear();
-                        defaultBeanList.addAll(list);
-                    }
-                    log.d("mytest", "default1 show" + list.size());
-                    if (list != null && list.size() > 0) {
-                        defaultBeanList.addAll(list);
-                        log.d("mytest", "default2 show" + defaultBeanList.size());
-                    }
-                    if (isDefaultUserShow) {
-                        showDefaultUsers();
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-
-            @Override
-            public void onError(Throwable ex, boolean b) {
-                log.d("mytest", "error--" + ex.getMessage());
-                log.d("mytest", "error--" + ex.getCause());
-            }
-
-            @Override
-            public void onCancelled(CancelledException e) {
-
-            }
-
-            @Override
-            public void onFinished() {
-
-            }
-        });
-    }
-
-    //清除默认头像
-    private void clearDefaultUsers() {
-        if (isDefaultUserShow) {
-            user1List.clear();
-            user2List.clear();
-            user3List.clear();
-            userGroupLayout.removeAllViews();
-            isDefaultUserShow = false;
-        }
-    }
-
-    //显示默认头像
-    private void showDefaultUsers() {
-        user1List.clear();
-        user2List.clear();
-        user3List.clear();
-        userGroupLayout.removeAllViews();
-        ArrayList<UserBean> userDefaultList = new ArrayList<UserBean>();
-        log.d("mytest", "default show" + defaultBeanList.size());
-        if (null != defaultBeanList && defaultBeanList.size() > 0) {
-            for (int i = 0; i < defaultBeanList.size(); i++) {
-                BiuDefaultBean defaultBean = defaultBeanList.get(i);
-                UserBean bean = new UserBean();
-                bean.setId("1000" + 1);
-                bean.setDefaultUser(true);
-                bean.setUserHead(defaultBean.getImgUrl());
-                bean.setWebTitle(defaultBean.getTitle());
-                bean.setWebUrl(defaultBean.getUrl());
-                bean.setAlreadSeen(Constants.ALREADY_SEEN);
-                userDefaultList.add(bean);
-            }
-            log.d("mytest", "defau ltuser show" + userDefaultList.size());
-            addAllView(userDefaultList, true);
-            Umutils.count(getActivity(), Umutils.PROFILE_CON_OPEN_TOTAL);
         }
     }
 }
