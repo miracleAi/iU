@@ -67,7 +67,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class BiuBiuReceiveActivity extends BaseActivity {
-    private static final int GO_CHARGE = 1001;
     private RelativeLayout backLayout;
     private GridView mGridViewTag, mGridViewInterestTag;
     private SeetingUserPagerTagAdapter personalAdapter;
@@ -81,7 +80,7 @@ public class BiuBiuReceiveActivity extends BaseActivity {
     private Button grabBT;
     private RelativeLayout neverGrab;
     private String TAG = "BiuBiuReceiveActivity";
-    private String referenceId, userCode, chatId;
+    private String userCode;
 
     private BiuDetialBean biuDEtialBean = new BiuDetialBean();
 
@@ -90,16 +89,8 @@ public class BiuBiuReceiveActivity extends BaseActivity {
     private ImageView userPhoto;
     private ImageView superManiv;
 
-    /**
-     * 表示 biu是否已经被抢了
-     */
-    private Boolean isGrab = false;
-
-    private int biubiuMoney = 0;
-    private int spentBiuMoney = 0;
-
-    private RelativeLayout noBiuMoneyLayout, isGrabLayout;
-    private RelativeLayout chongzhiLayout, goSendBiuLayout;
+    private RelativeLayout /*noBiuMoneyLayout,*/ isGrabLayout;
+    // private RelativeLayout chongzhiLayout, goSendBiuLayout;
     private UserDao userDao;
     private String userCodeString, userNameString, userUrlString;
 
@@ -115,9 +106,7 @@ public class BiuBiuReceiveActivity extends BaseActivity {
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_biu_biu_receive);
-        referenceId = getIntent().getStringExtra("referenceId");
         userCode = getIntent().getStringExtra("userCode");
-        chatId = getIntent().getStringExtra("chatId");
         headFlag = getIntent().getStringExtra("headFlag");
         //		LogUtil.e(TAG, "referenceId==" + referenceId + "||userCode=="
         //				+ userCode + "||chatId==" + chatId);
@@ -129,9 +118,9 @@ public class BiuBiuReceiveActivity extends BaseActivity {
 
     private void initView() {
         // TODO Auto-generated method stub
-        chongzhiLayout = (RelativeLayout) findViewById(R.id.receive_biu_duihuan_rl);
-        goSendBiuLayout = (RelativeLayout) findViewById(R.id.receive_biu_go_sendbiu_rl);
-        noBiuMoneyLayout = (RelativeLayout) findViewById(R.id.no_biuMoney_receive_biu_rl);
+        // chongzhiLayout = (RelativeLayout) findViewById(R.id.receive_biu_duihuan_rl);
+        //goSendBiuLayout = (RelativeLayout) findViewById(R.id.receive_biu_go_sendbiu_rl);
+        //noBiuMoneyLayout = (RelativeLayout) findViewById(R.id.no_biuMoney_receive_biu_rl);
         isGrabLayout = (RelativeLayout) findViewById(R.id.grab_biu_receive_biu_rl);
         backLayout = (RelativeLayout) findViewById(R.id.back_receive_biu_mine_rl);
         mGridViewTag = (GridView) findViewById(R.id.gridview_receive_biubiu_tag);
@@ -151,7 +140,27 @@ public class BiuBiuReceiveActivity extends BaseActivity {
         numberInInterestTag = (TextView) findViewById(R.id.number_interestTag_receive_biu_tv);
         userPhoto = (ImageView) findViewById(R.id.photo_head_senbiu_img);
         superManiv = (ImageView) findViewById(R.id.super_man_iv);
+        tagLayout = (LinearLayout) findViewById(R.id.all_tag_layout);
+        showTagLayout = (RelativeLayout) findViewById(R.id.show_tag_layout);
+        showTagImv = (ImageView) findViewById(R.id.show_tag_imv);
+        tagLayout.setVisibility(View.GONE);
+        showTagImv.setImageResource(R.drawable.biu_receive_btn_down);
+        isTagShow = false;
 
+        showTagLayout.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(isTagShow){
+                    tagLayout.setVisibility(View.GONE);
+                    showTagImv.setImageResource(R.drawable.biu_receive_btn_down);
+                    isTagShow = false;
+                }else{
+                    tagLayout.setVisibility(View.VISIBLE);
+                    showTagImv.setImageResource(R.drawable.biu_receive_btn_up);
+                    isTagShow = true;
+                }
+            }
+        });
         userPhoto.setOnClickListener(new OnClickListener() {
 
             @Override
@@ -212,14 +221,13 @@ public class BiuBiuReceiveActivity extends BaseActivity {
 
             }
         });
-        chongzhiLayout.setOnClickListener(new OnClickListener() {
+       /* chongzhiLayout.setOnClickListener(new OnClickListener() {
 
             @Override
             public void onClick(View arg0) {
                 // TODO Auto-generated method stub
                 Intent intent = new Intent(BiuBiuReceiveActivity.this, BiuChargeActivity.class);
-                intent.putExtra("coin", biubiuMoney);
-                startActivityForResult(intent, GO_CHARGE);
+                startActivity(intent);
             }
         });
         goSendBiuLayout.setOnClickListener(new OnClickListener() {
@@ -231,7 +239,7 @@ public class BiuBiuReceiveActivity extends BaseActivity {
                 startActivity(intent);
                 finish();
             }
-        });
+        });*/
         superManiv.setOnClickListener(new OnClickListener() {
 
             @Override
@@ -387,13 +395,11 @@ public class BiuBiuReceiveActivity extends BaseActivity {
         }
         showLoadingLayout(getResources().getString(R.string.loading));
         //初始化页面
-        RequestParams params = new RequestParams(HttpContants.HTTP_ADDRESS + HttpContants.BIU_DETIAL);
+        RequestParams params = new RequestParams(HttpContants.HTTP_ADDRESS + HttpContants.GET_BIU_DETAIL_NEW);
         JSONObject requestObject = new JSONObject();
         try {
             requestObject.put("token", SharePreferanceUtils.getInstance().getToken(this, SharePreferanceUtils.TOKEN, ""));
             requestObject.put("device_code", SharePreferanceUtils.getInstance().getDeviceId(this, SharePreferanceUtils.DEVICE_ID, ""));
-//            requestObject.put("chat_id", chatId);
-//            requestObject.put("reference_id", referenceId);
             requestObject.put("user_code", userCode);
         } catch (Exception e) {
             // TODO: handle exception
@@ -456,12 +462,15 @@ public class BiuBiuReceiveActivity extends BaseActivity {
                     Gson gson = new Gson();
                     biuDEtialBean = gson.fromJson(jsons.getJSONObject("data")
                             .toString(), BiuDetialBean.class);
-                    if (biuDEtialBean.getIsGrabed() == 1) {
-                        grabBT.setText("该biu已经被抢了");
-                        grabBT.setBackgroundResource(R.drawable.biu_btn_disabled);
-                    } else {
+                    if (biuDEtialBean.getBiuState().equals(Constants.BIU_GRAB)) {
                         grabBT.setText(getResources().getString(R.string.receive_biu_grab));
                         grabBT.setBackgroundResource(R.drawable.biu_btn_normal);
+                    } else if (biuDEtialBean.getBiuState().equals(Constants.BIU_END)) {
+                        grabBT.setText(getResources().getString(R.string.biu_end));
+                        grabBT.setBackgroundResource(R.drawable.biu_btn_disabled);
+                    } else {
+                        grabBT.setText(getResources().getString(R.string.biu_receive));
+                        grabBT.setBackgroundResource(R.drawable.biu_btn_disabled);
                     }
 
                     personalTagList.clear();
@@ -472,25 +481,20 @@ public class BiuBiuReceiveActivity extends BaseActivity {
                     setInterestTags(biuDEtialBean.getInterested_tags());
 
                     userName.setText("" + biuDEtialBean.getNickname());
-                    //		distance.setText(biuDEtialBean.getDistance() + "m");
                     matchingScore.setText(""
                             + biuDEtialBean.getMatching_score() + "%");
-
-                    //		timeBefore.setText(biuDEtialBean.getTimebefore() + "分钟");
-
-
                     if (biuDEtialBean.getDistance() > 1000) {
                         distance.setText(Math.round(biuDEtialBean.getDistance() / 1000) / 10.0 + "km");
                     } else {
                         distance.setText(biuDEtialBean.getDistance() + "m");
                     }
 
-                    if (biuDEtialBean.getTimebefore() > (24 * 60 * 60)) {
-                        timeBefore.setText(biuDEtialBean.getTimebefore() + "day");
-                    } else if (biuDEtialBean.getTimebefore() > (60 * 60)) {
-                        timeBefore.setText(biuDEtialBean.getTimebefore() + "h");
+                    if (biuDEtialBean.getTime() > (24 * 60 * 60)) {
+                        timeBefore.setText(biuDEtialBean.getTime() + "day");
+                    } else if (biuDEtialBean.getTime() > (60 * 60)) {
+                        timeBefore.setText(biuDEtialBean.getTime() + "h");
                     } else {
-                        timeBefore.setText(biuDEtialBean.getTimebefore() + "min");
+                        timeBefore.setText(biuDEtialBean.getTime() + "min");
                     }
 
 
@@ -499,17 +503,14 @@ public class BiuBiuReceiveActivity extends BaseActivity {
                     numberInInterestTag.setText("["
                             + biuDEtialBean.getInterested_tags_num() + "]");
                     age.setText(biuDEtialBean.getAge() + "岁");
-                    description.setText(biuDEtialBean.getChat_tags());
+                    description.setText(biuDEtialBean.getChatTags());
                     if (biuDEtialBean.getSex().equals("1")) {
                         sex.setText("男生");
                     } else {
                         sex.setText("女生");
                     }
-                    if (biuDEtialBean.getIsgraduated().equals("2")) {
-                        school.setText(biuDEtialBean.getCarrer() + "");
-                    } else {
+                    if (biuDEtialBean.getSchool() != null && !"".equals(biuDEtialBean.getSchool())) {
                         SchoolDao schoolDao = new SchoolDao();
-
                         school.setText(schoolDao
                                 .getschoolName(biuDEtialBean.getSchool())
                                 .get(0).getUnivsNameString());
@@ -518,15 +519,6 @@ public class BiuBiuReceiveActivity extends BaseActivity {
                     starsign.setText(biuDEtialBean.getStarsign() + "");
                     x.image().bind(userPhoto,
                             biuDEtialBean.getIcon_thumbnailUrl());
-                    biubiuMoney = biuDEtialBean.getHavevc();
-                    spentBiuMoney = biuDEtialBean.getNeedvc();
-                    if ((biubiuMoney - spentBiuMoney) < 0) {
-                        isGrabLayout.setVisibility(View.GONE);
-                        noBiuMoneyLayout.setVisibility(View.VISIBLE);
-                    } else {
-                        isGrabLayout.setVisibility(View.VISIBLE);
-                        noBiuMoneyLayout.setVisibility(View.GONE);
-                    }
                     userCodeString = biuDEtialBean.getUser_code();
                     userNameString = biuDEtialBean.getNickname();
                     userUrlString = biuDEtialBean.getIcon_thumbnailUrl();
@@ -634,16 +626,22 @@ public class BiuBiuReceiveActivity extends BaseActivity {
      * 抢biu
      */
     public void grabBiu() {
-        if (biuDEtialBean.getIsGrabed() == 1) {
-            toastShort("该biu已经被抢了");
+        if (biuDEtialBean.getBiuState().equals(Constants.BIU_GRAB)) {
             return;
         }
         if (!NetUtils.isNetworkConnected(getApplicationContext())) {
             toastShort(getResources().getString(R.string.net_error));
             return;
         }
+        grabBiuRequest("0", 0);
+    }
+
+    /**
+     * 执行抢biu请求
+     */
+    public void grabBiuRequest(String coinState, int coinCount) {
         showLoadingLayout(getResources().getString(R.string.grabing));
-        RequestParams params = new RequestParams(HttpContants.HTTP_ADDRESS + HttpContants.GRAB_BIU);
+        RequestParams params = new RequestParams(HttpContants.HTTP_ADDRESS + HttpContants.GRAB_BIU_NEW);
         JSONObject requestObject = new JSONObject();
         try {
             requestObject.put(
@@ -656,8 +654,9 @@ public class BiuBiuReceiveActivity extends BaseActivity {
                     SharePreferanceUtils.getInstance().getDeviceId(
                             getApplicationContext(),
                             SharePreferanceUtils.DEVICE_ID, ""));
-            requestObject.put("chat_id", chatId);
-            requestObject.put("user_code", userCode);
+            requestObject.put("send_user_code", userCode);
+            requestObject.put("take_status", coinState);
+            requestObject.put("virtual_currency", coinCount);
         } catch (Exception e) {
             // TODO: handle exception
         }
@@ -700,35 +699,73 @@ public class BiuBiuReceiveActivity extends BaseActivity {
                         return;
                     }
                     JSONObject obj = jsons.getJSONObject("data");
-                    //					String token=obj.getString("token");
-                    //					if(token!=null&&!token.equals("")){
-                    //						SharePreferanceUtils.getInstance().putShared(getApplicationContext(), SharePreferanceUtils.TOKEN, token);
-                    //					}
-                    //					saveUserFriend(userCodeString,userNameString,userUrlString);
                     String message = obj.getString("message");
-                    if (message.equals("0")) {
-                        toastShort("biu币不足");
-                    } else if (message.equals("1")) {
-                        toastShort("抢中了啊");
-                        Intent broadIntent = new Intent();
-                        broadIntent.putExtra("user_code", userCodeString);
-                        sendBroadcast(broadIntent, Constants.GRAB_BIU);
-                        Umutils.count(BiuBiuReceiveActivity.this, Umutils.GRAB_BIU_SUCCESS);
-                        Intent intent = new Intent(BiuBiuReceiveActivity.this, ChatActivity.class);
-                        intent.putExtra(Constant.EXTRA_USER_ID, userCodeString);
-                        startActivity(intent);
-                        finish();
-                    } else {
-                        toastShort("该biu已被抢");
+                    int umCount = obj.getInt("virtual_currency");
+                    if (null != message && !"".equals(message)) {
+                        int biuResult = Integer.parseInt(message);
+                        switch (biuResult) {
+                            case Constants.GRAB_BIU_END:
+                                toastShort(getResources().getString(R.string.biu_end));
+                                break;
+                            case Constants.GRAB_BIU_SUC:
+                                toastShort("抢中了啊");
+                                Umutils.count(BiuBiuReceiveActivity.this, Umutils.GRAB_BIU_SUCCESS);
+                                finish();
+                                break;
+                            case Constants.GRAB_BIU_RECEIVE:
+                                toastShort(getResources().getString(R.string.biu_receive));
+                                break;
+                            case Constants.GRAB_COIN_LESS:
+                                showUmLessDialog();
+                                break;
+                            case Constants.GRAB_NEED_COIN:
+                                showNeedCoinDialog(umCount);
+                                break;
+                        }
                     }
-
                 } catch (Exception e) {
                     // TODO: handle exception
                 }
 
             }
         });
+    }
 
+    //抢biu将消耗U米对话框提示
+    private void showNeedCoinDialog(final int umCount) {
+        String msg = "已经有" + umCount * 10 + "个人收了TA的biubiu继续收TA的biu将消耗" + umCount + "U米";
+        CommonDialog.doubleBtnDialog(BiuBiuReceiveActivity.this, "收biu", msg, "取消", "确定", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        }, new DialogInterface.OnClickListener() {
+
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                grabBiuRequest("1", umCount);
+                dialog.dismiss();
+            }
+        });
+    }
+
+    //U米不足对话框提示
+    private void showUmLessDialog() {
+        String msg = "U米不够啦，先去U米中心兑换吧";
+        CommonDialog.doubleBtnDialog(BiuBiuReceiveActivity.this, "U米不足", msg, "取消", "兑换U米", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        }, new DialogInterface.OnClickListener() {
+
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+                Intent intent = new Intent(BiuBiuReceiveActivity.this, BiuChargeActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     /**
@@ -766,7 +803,7 @@ public class BiuBiuReceiveActivity extends BaseActivity {
         Window window = mAlertDialog.getWindow();
         window.setContentView(R.layout.grab_biu_receive_no_login_dialog);
         RelativeLayout dismissLayout = (RelativeLayout) window.findViewById(R.id.dismiss_dialog_receive_biu_rl);
-        RelativeLayout ogLoginLayout = (RelativeLayout) window.findViewById(R.id.goLogin_dialog_receive_biu_rl);
+        RelativeLayout logLoginLayout = (RelativeLayout) window.findViewById(R.id.goLogin_dialog_receive_biu_rl);
         dismissLayout.setOnClickListener(new OnClickListener() {
 
             @Override
@@ -775,7 +812,7 @@ public class BiuBiuReceiveActivity extends BaseActivity {
                 mAlertDialog.dismiss();
             }
         });
-        ogLoginLayout.setOnClickListener(new OnClickListener() {
+        logLoginLayout.setOnClickListener(new OnClickListener() {
 
             @Override
             public void onClick(View arg0) {
@@ -882,12 +919,6 @@ public class BiuBiuReceiveActivity extends BaseActivity {
         // TODO Auto-generated method stub
         super.onActivityResult(requestCode, resultCode, data);
         switch (requestCode) {
-            case GO_CHARGE:
-                if (resultCode == RESULT_OK) {
-                    noBiuMoneyLayout.setVisibility(View.GONE);
-                    isGrabLayout.setVisibility(View.VISIBLE);
-                }
-                break;
             case CROUP_PHOTO:
                 try {
                     if (data != null) {
