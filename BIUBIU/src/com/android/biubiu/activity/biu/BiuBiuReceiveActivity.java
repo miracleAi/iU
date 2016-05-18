@@ -43,6 +43,7 @@ import com.android.biubiu.utils.UploadImgUtils;
 import com.avos.avoscloud.LogUtil.log;
 import com.google.gson.Gson;
 
+import android.media.Image;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -73,6 +74,10 @@ public class BiuBiuReceiveActivity extends BaseActivity {
     private SeetingUserInterestAdapter interestAdapter;
     ArrayList<PersonalTagBean> personalTagList = new ArrayList<PersonalTagBean>();
     ArrayList<InterestTagBean> interestTagList = new ArrayList<InterestTagBean>();
+    private LinearLayout tagLayout;
+    private RelativeLayout showTagLayout;
+    private ImageView showTagImv;
+    private boolean isTagShow = false;
     private Button grabBT;
     private RelativeLayout neverGrab;
     private String TAG = "BiuBiuReceiveActivity";

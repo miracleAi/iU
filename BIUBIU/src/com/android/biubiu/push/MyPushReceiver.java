@@ -79,7 +79,7 @@ public class MyPushReceiver extends PushMessageReceiver{
 		String messageString = "透传消息 message=\"" + message
 				+ "\" customContentString=" + customContentString;
 		Log.d("mytest", messageString);
-		boolean isOpen = SharePreferanceUtils.getInstance().isAppOpen(context, SharePreferanceUtils.IS_APP_OPEN, true);
+		boolean isOpen = SharePreferanceUtils.getInstance().isAppOpen(context, SharePreferanceUtils.IS_APP_OPEN, false);
 		boolean isOpenVoice = SharePreferanceUtils.getInstance().isOpenVoice(context, SharePreferanceUtils.IS_OPEN_VOICE, true);
 		boolean isShock = SharePreferanceUtils.getInstance().isOpenVoice(context, SharePreferanceUtils.IS_SHOCK, true);
 		String lastSound = SharePreferanceUtils.getInstance().getBiuSoundTime(context, SharePreferanceUtils.BIU_SOUND_TIME, "0");

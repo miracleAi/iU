@@ -392,10 +392,9 @@ public class MainSetActivityFragment extends Fragment implements View.OnClickLis
                 SharePreferanceUtils.getInstance().putShared(getActivity(), SharePreferanceUtils.USER_NAME, "");
                 SharePreferanceUtils.getInstance().putShared(getActivity(), SharePreferanceUtils.USER_HEAD, "");
                 SharePreferanceUtils.getInstance().putShared(getActivity(), SharePreferanceUtils.USER_CODE, "");
-                com.android.biubiu.utils.LogUtil.d("mytest", "tok---" + SharePreferanceUtils.getInstance().getToken(getActivity(), SharePreferanceUtils.TOKEN, ""));
-                getActivity().finish();
                 Intent i = new Intent(Constant.EXIT_APP_BROADCAST);
                 getActivity().sendBroadcast(i, Constant.RECEIVE_EXIT_APP_PERMISSION);
+                getActivity().finish();
             }
 
             @Override

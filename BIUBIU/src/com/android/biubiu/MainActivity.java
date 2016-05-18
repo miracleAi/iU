@@ -38,6 +38,7 @@ import com.android.biubiu.fragment.BiuFragment;
 import com.android.biubiu.fragment.MenuLeftFragment;
 import com.android.biubiu.fragment.MenuRightFragment;
 import com.android.biubiu.sqlite.PushMatchDao;
+import com.android.biubiu.utils.CommonUtils;
 import com.android.biubiu.utils.Constants;
 import com.android.biubiu.utils.HttpContants;
 import com.android.biubiu.utils.LocationUtils;
@@ -376,7 +377,11 @@ public class MainActivity extends FragmentActivity implements AMapLocationListen
     protected void onPause() {
         super.onPause();
         MobclickAgent.onPause(this);
-        SharePreferanceUtils.getInstance().putShared(getApplicationContext(), SharePreferanceUtils.IS_APP_OPEN, false);
+        if (CommonUtils.isAppOnForeground(getApplicationContext())) {
+            SharePreferanceUtils.getInstance().putShared(getApplicationContext(), SharePreferanceUtils.IS_APP_OPEN, true);
+        }else{
+            SharePreferanceUtils.getInstance().putShared(getApplicationContext(), SharePreferanceUtils.IS_APP_OPEN, false);
+        }
 
     }
 
@@ -384,7 +389,7 @@ public class MainActivity extends FragmentActivity implements AMapLocationListen
         locationClient = new AMapLocationClient(this.getApplicationContext());
         locationOption = new AMapLocationClientOption();
         //设置定位模式为    高精度模式Hight_Accuracy，Battery_Saving为低功耗模式，Device_Sensors是仅设备模式
-        if (SharePreferanceUtils.getInstance().isAppOpen(getApplicationContext(), SharePreferanceUtils.IS_APP_OPEN, true)) {
+        if (SharePreferanceUtils.getInstance().isAppOpen(getApplicationContext(), SharePreferanceUtils.IS_APP_OPEN, false)) {
             locationOption.setLocationMode(AMapLocationMode.Hight_Accuracy);
         } else {
             locationOption.setLocationMode(AMapLocationMode.Battery_Saving);

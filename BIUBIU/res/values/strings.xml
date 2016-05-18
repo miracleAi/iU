@@ -167,6 +167,8 @@
     <string name="dialog_dismiss">取消</string>
     <string name="dialog_goLogin">登录</string>
     <string name="dialog_hint_receivebiu">登陆后就能抢他的biu了</string>
+    <string name="chat_tag">TA的话题</string>
+    <string name="interest_tag">兴趣爱好</string>
 
     <!-- chat 相关 -->
     <string name="chat_userlist_title">biubiu的人</string>

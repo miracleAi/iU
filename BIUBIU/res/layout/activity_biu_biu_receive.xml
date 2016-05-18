@@ -2,21 +2,20 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/set_biu_bg"
-    tools:context=".BiuBiuSendActivity" >
+    android:background="@color/set_biu_bg">
 
     <RelativeLayout
         android:id="@+id/top__receive_biu_rl"
         android:layout_width="match_parent"
         android:layout_height="44dp"
-        android:background="@color/mine_chird_top_bg" >
+        android:background="@color/mine_chird_top_bg">
 
         <RelativeLayout
             android:id="@+id/back_receive_biu_mine_rl"
             android:layout_width="65dp"
             android:layout_height="44dp"
             android:background="@drawable/kongjianruoqu_bg"
-            android:gravity="center" >
+            android:gravity="center">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -40,18 +39,17 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/top__receive_biu_rl" >
+        android:layout_below="@id/top__receive_biu_rl">
 
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_below="@id/top__receive_biu_rl" >
+            android:layout_below="@id/top__receive_biu_rl">
 
             <RelativeLayout
                 android:id="@+id/top_all_send_biu_rl"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" 
-                >
+                android:layout_height="match_parent">
 
                 <LinearLayout
                     android:id="@+id/center_receive_biubiu_ll"
@@ -61,13 +59,13 @@
                     android:layout_marginRight="37dp"
                     android:layout_marginTop="77dp"
                     android:background="@drawable/biu_imageview_bg"
-                    android:orientation="vertical" >
+                    android:orientation="vertical">
 
                     <RelativeLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="51dp"
-                        android:gravity="center" >
+                        android:gravity="center">
 
                         <TextView
                             android:id="@+id/name_receive_biu_tv"
@@ -81,17 +79,17 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="13dp"
-                        android:gravity="center" >
+                        android:gravity="center">
 
                         <LinearLayout
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:orientation="horizontal" >
+                            android:orientation="horizontal">
 
                             <LinearLayout
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_weight="1" >
+                                android:layout_weight="1">
 
                                 <TextView
                                     android:id="@+id/distanse_receive_biu_tv"
@@ -113,7 +111,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginLeft="11dp"
-                                android:orientation="horizontal" >
+                                android:orientation="horizontal">
 
                                 <TextView
                                     android:layout_width="wrap_content"
@@ -153,32 +151,15 @@
                     <RelativeLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="20dp"
-                        android:layout_marginRight="20dp"
-                        android:layout_marginTop="13dp"
-                        android:gravity="center" >
-
-                        <TextView
-                            android:id="@+id/description_receive_biu_tv"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/receive_biu_topic"
-                            android:textColor="@color/text_huise"
-                            android:textSize="11sp" />
-                    </RelativeLayout>
-
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
                         android:layout_marginLeft="16dp"
                         android:layout_marginRight="16dp"
                         android:layout_marginTop="24dp"
-                        android:gravity="center" >
+                        android:gravity="center">
 
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:orientation="horizontal" >
+                            android:orientation="horizontal">
 
                             <TextView
                                 android:id="@+id/sex_receive_biu_tv"
@@ -235,139 +216,235 @@
                         </LinearLayout>
                     </RelativeLayout>
 
-                    <RelativeLayout
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="20dp"
-                        android:layout_marginRight="20dp"
-                        android:layout_marginTop="24dp"
-                        android:orientation="horizontal" >
-
-                        <LinearLayout
-                            android:id="@+id/tag_number_center_receive_biu_ll"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_centerInParent="true"
-                            android:orientation="horizontal" >
-
-                            <TextView
-                                android:id="@+id/number_in_personalTag_tv"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:textColor="#565656"
-                                android:textSize="13sp" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="@string/receive_biu_tag" />
-                        </LinearLayout>
+                        android:layout_marginLeft="35dp"
+                        android:layout_marginRight="35dp"
+                        android:layout_marginTop="32dp"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
 
                         <View
-                            android:layout_width="match_parent"
+                            android:layout_width="0dp"
                             android:layout_height="1px"
                             android:layout_centerVertical="true"
-                            android:layout_marginLeft="6dp"
-                            android:layout_toRightOf="@id/tag_number_center_receive_biu_ll"
+                            android:layout_marginRight="10dp"
+                            android:layout_weight="1"
                             android:background="@color/gray" />
+
+                        <TextView
+                            android:layout_width="63dp"
+                            android:layout_height="18dp"
+                            android:background="@drawable/receivebiu_tag_bg"
+                            android:gravity="center"
+                            android:text="@string/chat_tag"
+                            android:textColor="#fd9426"
+                            android:textSize="11sp" />
 
                         <View
-                            android:layout_width="match_parent"
+                            android:layout_width="0dp"
                             android:layout_height="1px"
                             android:layout_centerVertical="true"
-                            android:layout_marginRight="6dp"
-                            android:layout_toLeftOf="@id/tag_number_center_receive_biu_ll"
+                            android:layout_marginLeft="10dp"
+                            android:layout_weight="1"
                             android:background="@color/gray" />
-                    </RelativeLayout>
-
-                    <GridView
-                        android:id="@+id/gridview_receive_biubiu_tag"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="20dp"
-                        android:layout_marginRight="20dp"
-                        android:layout_marginTop="14dp"
-                        android:fadingEdge="none"
-                        android:gravity="center"
-                        android:listSelector="#00000000"
-                        android:numColumns="4"
-                        android:stretchMode="columnWidth"
-                        android:verticalSpacing="14dp"
-                         />
+                    </LinearLayout>
 
                     <RelativeLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="20dp"
-                        android:layout_marginRight="20dp"
-                        android:layout_marginTop="14dp"
-                        android:orientation="horizontal" >
+                        android:layout_height="115dp"
+                        android:layout_marginLeft="35dp"
+                        android:layout_marginRight="35dp"
+                        android:gravity="center">
 
-                        <LinearLayout
-                            android:id="@+id/tag_interest_number_center_receive_biu_ll"
+                        <TextView
+                            android:id="@+id/description_receive_biu_tv"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_centerInParent="true"
-                            android:orientation="horizontal" >
-
-                            <TextView
-                                android:id="@+id/number_interestTag_receive_biu_tv"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:textColor="#565656"
-                                android:textSize="13sp" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="@string/receive_biu_interest_tag"
-                                android:textColor="#565656"
-                                android:textSize="13sp" />
-                        </LinearLayout>
-
-                        <View
-                            android:layout_width="match_parent"
-                            android:layout_height="1px"
-                            android:layout_centerVertical="true"
-                            android:layout_marginLeft="6dp"
-                            android:layout_toRightOf="@id/tag_interest_number_center_receive_biu_ll"
-                            android:background="@color/gray" />
-
-                        <View
-                            android:layout_width="match_parent"
-                            android:layout_height="1px"
-                            android:layout_centerVertical="true"
-                            android:layout_marginRight="6dp"
-                            android:layout_toLeftOf="@id/tag_interest_number_center_receive_biu_ll"
-                            android:background="@color/gray" />
+                            android:text="@string/receive_biu_topic"
+                            android:textColor="@color/text_huise"
+                            android:textSize="11sp" />
                     </RelativeLayout>
 
-                    <GridView
-                        android:id="@+id/gridview_receive_biubiu_interest_tag"
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="20dp"
-                        android:layout_marginRight="20dp"
-                        android:layout_marginTop="14dp"
-                        android:fadingEdge="none"
-                        android:gravity="center"
-                        android:listSelector="#00000000"
-                        android:numColumns="4"
-                        android:stretchMode="columnWidth"
-                        android:verticalSpacing="14dp" />
+                        android:layout_marginLeft="35dp"
+                        android:layout_marginRight="35dp"
+                        android:layout_marginTop="32dp"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
 
-                    <View
+                        <View
+                            android:layout_width="0dp"
+                            android:layout_height="1px"
+                            android:layout_centerVertical="true"
+                            android:layout_marginRight="10dp"
+                            android:layout_weight="1"
+                            android:background="@color/gray" />
+
+                        <TextView
+                            android:layout_width="63dp"
+                            android:layout_height="18dp"
+                            android:background="@drawable/receivebiu_tag_bg"
+                            android:gravity="center"
+                            android:text="@string/interest_tag"
+                            android:textColor="#fd9426"
+                            android:textSize="11sp" />
+
+                        <View
+                            android:layout_width="0dp"
+                            android:layout_height="1px"
+                            android:layout_centerVertical="true"
+                            android:layout_marginLeft="10dp"
+                            android:layout_weight="1"
+                            android:background="@color/gray" />
+                    </LinearLayout>
+                    <RelativeLayout
+                        android:id="@+id/show_tag_layout"
+                        android:layout_width="45dp"
+                        android:layout_height="30dp"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginBottom="22dp">
+                        <ImageView
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:layout_centerInParent="true"
+                            android:src="@drawable/biu_receive_btn_down"
+                            />
+                    </RelativeLayout>
+
+                    <LinearLayout
+                        android:id="@+id/all_tag_layout"
                         android:layout_width="match_parent"
-                        android:layout_height="24dp"
-                        android:background="@color/white" >
-                    </View>
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:visibility="gone">
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="35dp"
+                            android:layout_marginRight="35dp"
+                            android:layout_marginTop="24dp"
+                            android:orientation="horizontal">
+
+                            <LinearLayout
+                                android:id="@+id/tag_number_center_receive_biu_ll"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerVertical="true"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:id="@+id/number_in_personalTag_tv"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:drawableLeft="@drawable/biu_receive_imageview_dian2"
+                                    android:textColor="#999999"
+                                    android:textSize="13sp" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="@string/receive_biu_tag"
+                                    android:textColor="#999999"
+                                    android:textSize="11sp" />
+                            </LinearLayout>
+
+                            <View
+                                android:layout_width="match_parent"
+                                android:layout_height="1px"
+                                android:layout_centerVertical="true"
+                                android:layout_marginLeft="6dp"
+                                android:layout_toRightOf="@id/tag_number_center_receive_biu_ll"
+                                android:background="@color/gray" />
+
+                        </RelativeLayout>
+
+                        <GridView
+                            android:id="@+id/gridview_receive_biubiu_tag"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="20dp"
+                            android:layout_marginRight="20dp"
+                            android:layout_marginTop="15dp"
+                            android:fadingEdge="none"
+                            android:gravity="center"
+                            android:listSelector="#00000000"
+                            android:numColumns="4"
+                            android:stretchMode="columnWidth"
+                            android:verticalSpacing="14dp" />
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="35dp"
+                            android:layout_marginRight="35dp"
+                            android:layout_marginTop="14dp"
+                            android:orientation="horizontal">
+
+                            <LinearLayout
+                                android:id="@+id/tag_interest_number_center_receive_biu_ll"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerVertical="true"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:id="@+id/number_interestTag_receive_biu_tv"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:drawableLeft="@drawable/biu_receive_imageview_dian2"
+                                    android:textColor="#999999"
+                                    android:textSize="13sp" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="@string/receive_biu_interest_tag"
+                                    android:textColor="#999999"
+                                    android:textSize="11sp" />
+                            </LinearLayout>
+
+                            <View
+                                android:layout_width="match_parent"
+                                android:layout_height="1px"
+                                android:layout_centerVertical="true"
+                                android:layout_marginLeft="6dp"
+                                android:layout_toRightOf="@id/tag_interest_number_center_receive_biu_ll"
+                                android:background="@color/gray" />
+
+                        </RelativeLayout>
+
+                        <GridView
+                            android:id="@+id/gridview_receive_biubiu_interest_tag"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="20dp"
+                            android:layout_marginRight="20dp"
+                            android:layout_marginTop="15dp"
+                            android:fadingEdge="none"
+                            android:gravity="center"
+                            android:listSelector="#00000000"
+                            android:numColumns="4"
+                            android:stretchMode="columnWidth"
+                            android:verticalSpacing="14dp" />
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="24dp"
+                            android:background="@color/white"></View>
+                    </LinearLayout>
                 </LinearLayout>
 
                 <RelativeLayout
                     android:id="@+id/grab_biu_receive_biu_rl"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/center_receive_biubiu_ll" >
+                    android:layout_below="@id/center_receive_biubiu_ll">
 
                     <Button
                         android:id="@+id/grab_biu_receive_biu_bt"
@@ -387,7 +464,7 @@
                         android:layout_below="@id/grab_biu_receive_biu_bt"
                         android:layout_centerHorizontal="true"
                         android:background="@drawable/kongjianruoqu_bg"
-                        android:gravity="center" >
+                        android:gravity="center">
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -407,7 +484,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/center_receive_biubiu_ll"
-                    android:visibility="gone" >
+                    android:visibility="gone">
 
                     <TextView
                         android:id="@+id/bint_no_biuMoney_receive_biu_tv"
@@ -426,14 +503,14 @@
                         android:layout_below="@id/bint_no_biuMoney_receive_biu_tv"
                         android:layout_centerHorizontal="true"
                         android:layout_marginTop="24dp"
-                        android:orientation="horizontal" >
+                        android:orientation="horizontal">
 
                         <RelativeLayout
                             android:id="@+id/receive_biu_duihuan_rl"
                             android:layout_width="100dp"
                             android:layout_height="35dp"
                             android:background="@drawable/biu_receive_btn_bottom"
-                            android:gravity="center" >
+                            android:gravity="center">
 
                             <TextView
                                 android:layout_width="wrap_content"
@@ -449,7 +526,7 @@
                             android:layout_height="35dp"
                             android:layout_marginLeft="55dp"
                             android:background="@drawable/biu_receive_btn_bottom"
-                            android:gravity="center" >
+                            android:gravity="center">
 
                             <TextView
                                 android:layout_width="wrap_content"
@@ -470,13 +547,13 @@
                     android:layout_width="82dp"
                     android:layout_height="105dp"
                     android:layout_centerHorizontal="true"
-                    android:layout_marginTop="11dp" >
+                    android:layout_marginTop="11dp">
 
                     <RelativeLayout
                         android:id="@+id/userhead_layout"
                         android:layout_width="82dp"
                         android:layout_height="82dp"
-                        android:layout_alignParentBottom="true" >
+                        android:layout_alignParentBottom="true">
 
                         <ImageView
                             android:id="@+id/photo_head_senbiu_img_bg"
@@ -499,8 +576,7 @@
                         android:layout_height="29dp"
                         android:layout_centerHorizontal="true"
                         android:padding="3dp"
-                        android:scaleType="fitXY"
-                         />
+                        android:scaleType="fitXY" />
                 </RelativeLayout>
             </RelativeLayout>
         </ScrollView>

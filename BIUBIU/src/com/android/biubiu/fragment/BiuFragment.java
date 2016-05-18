@@ -198,12 +198,15 @@ public class BiuFragment extends Fragment implements PushInterface {
     private boolean isBiuLoading = false;
     private int inveralTime = 1;
     private Handler showBiuHandler;
+    //biu 列表是否还有数据需要请求
+    private boolean isBiuHasNext = false;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.biu_fragment_layout, null);
         schoolDao = new SchoolDao();
         biuDao = new BiubiuDao(getActivity());
+        SharePreferanceUtils.getInstance().putShared(getActivity(),SharePreferanceUtils.EXCHANGE_FROUNT,true);
         init();
         drawBiuView();
         setBiuLayout();
@@ -315,7 +318,7 @@ public class BiuFragment extends Fragment implements PushInterface {
     @Override
     public void onResume() {
         super.onResume();
-        if (CommonUtils.isAppOnForeground(getActivity())) {
+        if (SharePreferanceUtils.getInstance().isExchange(getActivity(),SharePreferanceUtils.EXCHANGE_FROUNT,true)) {
             //接口通信赋值
             MyPushReceiver.setUpdateBean(this);
             showBiuHandler.post(shouBiuR);
@@ -329,7 +332,7 @@ public class BiuFragment extends Fragment implements PushInterface {
                 getBiuList(0);
             } else {
                 //获取未登录时的biubiu列表
-               // getBiuListUnlogin();
+                // getBiuListUnlogin();
             }
         }
     }
@@ -658,28 +661,6 @@ public class BiuFragment extends Fragment implements PushInterface {
         taskView.setTotal(totalTime);
     }
 
-    //倒计时线程
-    Runnable taskR = new Runnable() {
-
-        @Override
-        public void run() {
-            taskView.updeteTask(currentTime--);
-            if (currentTime <= 0) {
-                if (getActivity() != null) {
-                    Toast.makeText(getActivity().getApplicationContext(), "你的biubiu暂时无人应答，请重新发送", Toast.LENGTH_SHORT).show();
-                }
-                isBiuState = true;
-                taskView.setVisibility(View.GONE);
-                userBiuImv.setImageResource(R.drawable.biu_btn_biu);
-                userBiuImv.setVisibility(View.VISIBLE);
-                currentTime = 0;
-                taskHandler.removeCallbacks(taskR);
-                return;
-            }
-            taskHandler.postDelayed(taskR, 1000);
-        }
-    };
-
     //放置接收到的用户
     private void initUserGroup() {
         //给三个头像layout赋值
@@ -721,7 +702,7 @@ public class BiuFragment extends Fragment implements PushInterface {
     //往第一个圈上放view
     private void addCircle1View(BiuBean userBean) {
         //如果数据库取到的biu屏幕上已存在 则舍弃
-        if(allUserCodeList.contains(userBean.getUserCode())){
+        if(isOnCircle(userBean)){
             return ;
         }
         boolean haveSpace = false;
@@ -1099,7 +1080,7 @@ public class BiuFragment extends Fragment implements PushInterface {
     }
 
     //新的获取biu列表
-    private void getBiuList(long requestTime) {
+    private void getBiuList(final long requestTime) {
         isBiuLoading = true;
         isBiuLoaded = false;
         RequestParams params = new RequestParams(HttpContants.HTTP_ADDRESS + HttpContants.GET_BIU_LIST_NEW);
@@ -1133,13 +1114,21 @@ public class BiuFragment extends Fragment implements PushInterface {
                         showShenHeDaiog(Integer.parseInt(headFlag));
                     }
                     inveralTime = data.getInt("biu_time_interval");
+                    String next = data.getString("has_next");
+                    if(next.equals("0")){
+                        isBiuHasNext = false;
+                    }else{
+                        isBiuHasNext = true;
+                    }
                     JSONArray userArray = data.getJSONArray("users");
                     Gson gson = new Gson();
                     ArrayList<BiuBean> list = gson.fromJson(userArray.toString(), new TypeToken<List<BiuBean>>() {
                     }.getType());
                     if (null != list) {
                         if(list.size() > 0){
-                            biuDao.deleteAll();
+                            if(requestTime == 0){
+                                biuDao.deleteAll();
+                            }
                             biuDao.addBiuList(list);
                             isBiuLoaded = true;
                         }else{
@@ -1266,7 +1255,10 @@ public class BiuFragment extends Fragment implements PushInterface {
     public void onPause() {
         // TODO Auto-generated method stub
         super.onPause();
-        if (CommonUtils.isAppOnForeground(getActivity())) {
+        if(CommonUtils.isAppOnForeground(getActivity())){
+            SharePreferanceUtils.getInstance().putShared(getActivity(),SharePreferanceUtils.EXCHANGE_FROUNT,false);
+        }else{
+            SharePreferanceUtils.getInstance().putShared(getActivity(),SharePreferanceUtils.EXCHANGE_FROUNT,true);
             userGroupLayout.removeAllViews();
             user1List.clear();
             user2List.clear();
@@ -1277,6 +1269,13 @@ public class BiuFragment extends Fragment implements PushInterface {
             isBiuLoading = false;
             isBiuLoaded = false;
         }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        SharePreferanceUtils.getInstance().putShared(getActivity(),SharePreferanceUtils.EXCHANGE_FROUNT,true);
+        biuDao.deleteAll();
     }
 
     @Override
@@ -1409,7 +1408,27 @@ public class BiuFragment extends Fragment implements PushInterface {
         return path;
 
     }
+    //倒计时线程
+    Runnable taskR = new Runnable() {
 
+        @Override
+        public void run() {
+            taskView.updeteTask(currentTime--);
+            if (currentTime <= 0) {
+                if (getActivity() != null) {
+                    Toast.makeText(getActivity().getApplicationContext(), "你的biubiu暂时无人应答，请重新发送", Toast.LENGTH_SHORT).show();
+                }
+                isBiuState = true;
+                taskView.setVisibility(View.GONE);
+                userBiuImv.setImageResource(R.drawable.biu_btn_biu);
+                userBiuImv.setVisibility(View.VISIBLE);
+                currentTime = 0;
+                taskHandler.removeCallbacks(taskR);
+                return;
+            }
+            taskHandler.postDelayed(taskR, 1000);
+        }
+    };
     Runnable shouBiuR = new Runnable() {
         @Override
         public void run() {
@@ -1424,9 +1443,11 @@ public class BiuFragment extends Fragment implements PushInterface {
             if (!isBiuLoading && isBiuLoaded) {
                 int biuCount = biuDao.getBiuListUnread();
                 //数目小于5 则去网上继续请求
-                if(biuCount<5){
-                    long requestTime = biuDao.getBiuListUnread();
-                    getBiuList(requestTime);
+                if(biuCount<5 && isBiuHasNext){
+                    if(isBiuHasNext){
+                        long requestTime = biuDao.getBiuListUnread();
+                        getBiuList(requestTime);
+                    }
                 }
                 newUserBean = biuDao.getBiuToShow();
                 if(null != newUserBean){
@@ -1434,9 +1455,11 @@ public class BiuFragment extends Fragment implements PushInterface {
                     addCircle1View(newUserBean);
                 }
             }else{
-                getBiuList(0);
+                if(!isBiuLoading){
+                    getBiuList(0);
+                }
             }
-            showBiuHandler.postDelayed(shouBiuR,time);
+            showBiuHandler.postDelayed(shouBiuR,time*1000);
         }
     };
 

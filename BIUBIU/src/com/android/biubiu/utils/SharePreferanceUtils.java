@@ -29,6 +29,8 @@ public class SharePreferanceUtils {
     private static final String SHOW_AD = "show_ad";
     private static final String UPDATE_AD = "update_ad";
     private static final String HAVE_TO_VIEW = "have_to_view";
+    //标记程序前后台切换
+    public static String EXCHANGE_FROUNT = "exchange_frount";
 
     public static SharePreferanceUtils shareUtils;
 
@@ -105,6 +107,10 @@ public class SharePreferanceUtils {
 
     //获取是否打开应用程序
     public boolean isAppOpen(Context context, String prefKey, boolean defValue) {
+        return getShared(context, prefKey, defValue);
+    }
+    //获取应用是否从后台进入前台
+    public boolean isExchange(Context context, String prefKey, boolean defValue) {
         return getShared(context, prefKey, defValue);
     }
 
