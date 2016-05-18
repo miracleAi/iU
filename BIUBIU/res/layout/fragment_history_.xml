@@ -1,0 +1,38 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:top="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#f8f6f4">
+
+    <com.android.biubiu.component.title.TopTitleView
+        android:id="@+id/top_title_view"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/top_title_height"
+        android:layout_alignParentTop="true"
+        android:background="@color/main_green"
+        top:bothSideSize="68dp"
+        top:leftDrawable="@drawable/biu_btn_choose" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/id_recyclerview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/top_title_view"
+        android:layout_marginLeft="10dp"
+        android:scrollbars="none"
+        android:visibility="gone" />
+
+    <com.android.biubiu.component.stagger.PullToRefreshStaggeredGridView
+        android:id="@+id/pull_grid_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/top_title_view"
+        android:background="#F0F0F0"
+        android:cacheColorHint="#00000000"
+        android:fadingEdge="none"
+        android:overScrollMode="never"
+        android:scrollbars="none"
+        app:column_count="2"
+        app:item_margin="10dp" />
+</RelativeLayout>

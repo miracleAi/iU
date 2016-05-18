@@ -1,12 +1,38 @@
 package com.android.biubiu.utils;
 
+import android.content.Context;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
+
+import cc.imeetu.iu.R;
 
 public class DateUtils {
+    private static final SimpleDateFormat DATE_FORMAT_ALL = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss",
+            Locale.getDefault());
+    private static final SimpleDateFormat DATE_FORMAT_YEAR = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+    private static final SimpleDateFormat DATE_FORMAT_MONTH = new SimpleDateFormat("MM-dd", Locale.getDefault());
 	private static SimpleDateFormat sf = null;
 
+    private static String sSoon = null, sMin = null, sHour = null, sDay = null;
+
+    private static void init(Context context) {
+        if (sSoon == null) {
+            sSoon = context.getResources().getString(R.string.date_soon);
+        }
+        if (sMin == null) {
+            sMin = context.getResources().getString(R.string.date_min);
+        }
+        if (sHour == null) {
+            sHour = context.getResources().getString(R.string.date_hour);
+        }
+        if (sDay == null) {
+            sDay = context.getResources().getString(R.string.date_day);
+        }
+    }
 	/* 获取系统时间 格式为："yyyy/MM/dd " */
 	public static String getCurrentDate() {
 		Date d = new Date();
@@ -49,6 +75,47 @@ public class DateUtils {
 		Date d = new Date(time);
 		sf = new SimpleDateFormat("HH:mm:ss");
 		return sf.format(d);
+	}
+
+	public static String getDateFormatInList(Context context, long time) {
+		init(context);
+		String result = "";
+		try {
+			Date date = DATE_FORMAT_ALL.parse(getActivityTimeStart(time));
+			long now = System.currentTimeMillis();
+			long other = date.getTime();
+			long l = now - other;
+			long day = l / (24 * 60 * 60 * 1000);
+			long hour = (l / (60 * 60 * 1000) - day * 24);
+			long min = ((l / (60 * 1000)) - day * 24 * 60 - hour * 60);
+			long s = (l / 1000 - day * 24 * 60 * 60 - hour * 60 * 60 - min * 60);
+			// System.out.println(""+day+"天"+hour+"小时"+min+"分"+s+"秒");
+			if (day >= 7) {
+				Calendar cal = Calendar.getInstance();
+				cal.setTime(date);
+				int other_year = cal.get(Calendar.YEAR);
+				cal.setTime(new Date(now));
+				int now_year = cal.get(Calendar.YEAR);
+				// System.out.println(other_year + "---" + now_year);
+				if (now_year > other_year) {
+					result = DATE_FORMAT_YEAR.format(date);
+				} else {
+					result = DATE_FORMAT_MONTH.format(date);
+				}
+			} else if (day <= 6 && day > 0) {
+				result = day + sDay;
+			} else if (hour > 0) {
+				result = hour + sHour;
+			} else if (min > 0) {
+				result = min + sMin;
+			} else {
+				result = sSoon;
+			}
+
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		return result;
 	}
 
 }

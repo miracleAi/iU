@@ -122,7 +122,6 @@ public class Utils {
 				context.getPackageName()) != 0) {
 			return false;
 		}
-
 		return true;
 	}
 }

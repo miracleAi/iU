@@ -9,6 +9,7 @@
     <uses-sdk
         android:minSdkVersion="17"
         android:targetSdkVersion="21" />
+
     <permission android:name="cc.imeetu.iu.RECEIVE_EXIT_LOGIN_APP_PERMISSION" />
     <!-- oss文件上传相关权限 -->
     <uses-permission android:name="android.permission.INTERNET" />
@@ -75,9 +76,8 @@
     <!-- 蓝牙分享所需的权限 -->
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
-
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="cc.imeetu.iu.RECEIVE_EXIT_LOGIN_APP_PERMISSION"/>
+    <uses-permission android:name="cc.imeetu.iu.RECEIVE_EXIT_LOGIN_APP_PERMISSION" />
 
     <application
         android:name="com.android.biubiu.myapplication.BiubiuApplication"
@@ -555,11 +555,14 @@
             android:name="com.android.biubiu.UserAgreementActivity"
             android:label="@string/title_activity_user_agreement" />
         <activity
-            android:name="com.android.biubiu.activity.activity.ActivityListActivity"
+            android:name="com.android.biubiu.activity.act.ActivityListActivity"
             android:label="@string/title_activity_activity_list" />
         <activity
-            android:name="com.android.biubiu.activity.activity.WebviewActivity"
+            android:name="com.android.biubiu.activity.act.WebviewActivity"
             android:label="@string/title_activity_webview" />
+        <activity
+            android:name="com.android.biubiu.activity.history.History_Activity"
+            android:label="@string/title_activity_history_"></activity>
     </application>
 
 </manifest>

@@ -5,4 +5,5 @@
     <item name="tab_message" type="id" />
     <item name="tab_biu" type="id" />
     <item name="tab_mine" type="id" />
+    <item name="tab_history" type="id" />
 </resources>

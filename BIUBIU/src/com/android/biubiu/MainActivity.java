@@ -1,5 +1,6 @@
 package com.android.biubiu;
 
+import android.animation.ObjectAnimator;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.BroadcastReceiver;
@@ -30,6 +31,7 @@ import com.amap.api.location.AMapLocationClientOption;
 import com.amap.api.location.AMapLocationClientOption.AMapLocationMode;
 import com.amap.api.location.AMapLocationListener;
 import com.android.biubiu.activity.biu.PagerFragment;
+import com.android.biubiu.activity.history.HistoryActivityFragment;
 import com.android.biubiu.chat.DemoHelper;
 import com.android.biubiu.chat.LoadUserFriend;
 import com.android.biubiu.component.indicator.FragmentIndicator;
@@ -89,7 +91,7 @@ public class MainActivity extends FragmentActivity implements AMapLocationListen
     private FragmentIndicator mIndicator;
     private FragmentManager mFragmentManager;
     private List<Indicator> mIndicators = new ArrayList<Indicator>();
-
+    private boolean mReverse;
     OnIndicateListener mOnIndicateListener = new OnIndicateListener() {
         @Override
         public void onIndicate(int id) {
@@ -97,33 +99,49 @@ public class MainActivity extends FragmentActivity implements AMapLocationListen
             for (Indicator i : mIndicators) {
                 if (id == i.getId()) {
                     Fragment f = null;
-                    if(i.getTitle()==0){
-                        f = mFragmentManager.findFragmentByTag(getResources().getString(R.string.left_menu_biubiu));
-                    }else{
+                    if (i.getTitle() == 0) {
+                        if (mReverse) {
+                            f = mFragmentManager.findFragmentByTag(getResources().getString(R.string.tab_history));
+                        } else {
+                            f = mFragmentManager.findFragmentByTag(getResources().getString(R.string.left_menu_biubiu));
+                        }
+                    } else {
                         f = mFragmentManager.findFragmentByTag(getResources().getString(i.getTitle()));
                     }
                     if (f != null) {
-                        transaction.show(i.getFragment());
-                        i.setClickTime(i.getClickTime() + 1);
-                        if(id == R.id.tab_mine){
-                            ((PagerFragment)f).updateHeadStatus();
+                        if (mReverse && id == R.id.tab_biu) {
+                            transaction.show(f);
+                        } else {
+                            transaction.show(i.getFragment());
+                            i.setClickTime(i.getClickTime() + 1);
+                        }
+                        if (id == R.id.tab_mine) {
+                            ((PagerFragment) f).updateHeadStatus();
                         }
                     } else {
                         transaction.add(R.id.layout_body, i.getFragment(), getResources().getString(i.getTitle()));
-                        if(id == R.id.tab_mine){
-                            ((PagerFragment)i.getFragment()).updateHeadStatus();
+                        if (id == R.id.tab_mine) {
+                            ((PagerFragment) i.getFragment()).updateHeadStatus();
                         }
                     }
                 } else {
                     Fragment f = null;
-                    if(i.getTitle()==0){
-                        f = mFragmentManager.findFragmentByTag(getResources().getString(R.string.left_menu_biubiu));
-                    }else{
+                    if (i.getTitle() == 0) {
+                        if (mReverse && i.getId() == R.id.tab_biu) {
+                            f = mFragmentManager.findFragmentByTag(getResources().getString(R.string.tab_history));
+                        } else {
+                            f = mFragmentManager.findFragmentByTag(getResources().getString(R.string.left_menu_biubiu));
+                        }
+                    } else {
                         f = mFragmentManager.findFragmentByTag(getResources().getString(i.getTitle()));
                     }
                     if (f != null) {
-                        transaction.hide(i.getFragment());
-                        i.setClickTime(0);
+                        if(mReverse && i.getId() == R.id.tab_biu){
+                            transaction.hide(f);
+                        }else{
+                            transaction.hide(i.getFragment());
+                            i.setClickTime(0);
+                        }
                     }
                 }
             }
@@ -204,7 +222,7 @@ public class MainActivity extends FragmentActivity implements AMapLocationListen
         }
 
         mFragmentManager.beginTransaction()
-                .add(R.id.layout_body,message.getFragment(),getResources().getString(R.string.left_menu_message))
+                .add(R.id.layout_body, message.getFragment(), getResources().getString(R.string.left_menu_message))
                 .add(R.id.layout_body, biu.getFragment(), getResources().getString(R.string.left_menu_biubiu))
                 .commit();
         mFragmentManager.executePendingTransactions();
@@ -355,7 +373,7 @@ public class MainActivity extends FragmentActivity implements AMapLocationListen
                         case 4:
                             SharePreferanceUtils.getInstance().putShared(getApplicationContext(), SharePreferanceUtils.IS_SCAN_BEGINGUID, true);
                             beginGuidLayout.setVisibility(View.GONE);
-                            ((BiuFragment)mIndicators.get(1).getFragment()).getAd();
+                            ((BiuFragment) mIndicators.get(1).getFragment()).getAd();
                             break;
                         default:
                             break;
@@ -589,7 +607,7 @@ public class MainActivity extends FragmentActivity implements AMapLocationListen
         }
     }
 
-    public void setUnReadVisible(boolean visible){
+    public void setUnReadVisible(boolean visible) {
         mIndicator.setUnReadVisible(R.id.tab_message, visible);
     }
 
@@ -600,5 +618,31 @@ public class MainActivity extends FragmentActivity implements AMapLocationListen
         }
         SharePreferanceUtils.getInstance().putShared(getApplicationContext(), SharePreferanceUtils.IS_APP_OPEN, false);
         this.moveTaskToBack(true);
+    }
+
+    public void reverse() {
+        Fragment fragment = mFragmentManager.findFragmentByTag(getResources().getString(R.string.tab_history));
+        FragmentTransaction transaction = mFragmentManager.beginTransaction();
+        transaction.setCustomAnimations(R.anim.rotate_enter_anim, R.anim.rotate_exit_anim);
+        if (fragment != null) {
+            transaction.show(fragment);
+        } else {
+            fragment = new HistoryActivityFragment();
+            transaction.add(R.id.layout_body, fragment, getResources().getString(R.string.tab_history));
+        }
+        transaction.hide(mIndicators.get(1).getFragment());
+        transaction.commit();
+        mReverse = true;
+    }
+
+    public void reverseBack() {
+        Fragment fragment = mFragmentManager.findFragmentByTag(getResources().getString(R.string.tab_history));
+        Fragment biuFragment = mFragmentManager.findFragmentByTag(getResources().getString(R.string.left_menu_biubiu));
+        FragmentTransaction transaction = mFragmentManager.beginTransaction();
+        transaction.setCustomAnimations(R.anim.rotate_enter_anim, R.anim.rotate_exit_anim);
+        transaction.show(biuFragment);
+        transaction.hide(fragment);
+        transaction.commit();
+        mReverse = false;
     }
 }

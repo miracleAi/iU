@@ -18,12 +18,11 @@ import org.xutils.common.Callback.CommonCallback;
 import org.xutils.http.RequestParams;
 import org.xutils.image.ImageOptions;
 
-import cc.imeetu.iu.R;
-
+import com.android.biubiu.MainActivity;
 import com.android.biubiu.MatchSettingActivity;
 import com.android.biubiu.activity.LoginOrRegisterActivity;
-import com.android.biubiu.activity.activity.ActivityListActivity;
-import com.android.biubiu.activity.activity.WebviewActivity;
+import com.android.biubiu.activity.act.ActivityListActivity;
+import com.android.biubiu.activity.act.WebviewActivity;
 import com.android.biubiu.activity.biu.BiuBiuReceiveActivity;
 import com.android.biubiu.activity.biu.BiuBiuSendActivity;
 import com.android.biubiu.bean.BiuBean;
@@ -97,6 +96,8 @@ import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import cc.imeetu.iu.R;
 
 @SuppressLint("NewApi")
 public class BiuFragment extends Fragment implements PushInterface {
@@ -318,7 +319,7 @@ public class BiuFragment extends Fragment implements PushInterface {
         if (CommonUtils.isAppOnForeground(getActivity())) {
             //接口通信赋值
             MyPushReceiver.setUpdateBean(this);
-            showBiuHandler.post(shouBiuR);
+//            showBiuHandler.post(shouBiuR);
             //检查是否提交了channelID
             if (!SharePreferanceUtils.getInstance().getShared(getActivity(), SharePreferanceUtils.IS_COMMIT_CHANNEL, false)) {
                 HttpUtils.commitChannelId(getActivity());
@@ -383,6 +384,13 @@ public class BiuFragment extends Fragment implements PushInterface {
                     Intent intent = new Intent(getActivity(), LoginOrRegisterActivity.class);
                     startActivity(intent);
                 }
+            }
+        });
+
+        mTopTitle.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((MainActivity)getActivity()).reverse();
             }
         });
     }
@@ -985,7 +993,7 @@ public class BiuFragment extends Fragment implements PushInterface {
                 if (LoginUtils.isLogin(getActivity())) {
                     imageViewL.setVisibility(View.GONE);
                     Intent intent = new Intent(getActivity(), BiuBiuReceiveActivity.class);
-                    intent.putExtra("userCode", bean.getUserCode());
+                    intent.putExtra("userCode", String.valueOf(bean.getUserCode()));
                     startActivity(intent);
                 } else {
                     Intent intent = new Intent(getActivity(), LoginOrRegisterActivity.class);

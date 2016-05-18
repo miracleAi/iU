@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white">
+
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="6dp"
+        android:layout_marginTop="6dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/biu_compatibility"
+            android:textColor="#6cd1c9"
+            android:textSize="8sp" />
+
+        <TextView
+            android:id="@+id/compatibility_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="90%"
+            android:textColor="#b0b0b0"
+            android:textSize="8sp" />
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/head_imageview"
+        android:layout_width="98dp"
+        android:layout_height="98dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="8dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/main_imageview_photo2" />
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginRight="6dp"
+        android:layout_marginTop="6dp"
+        >
+
+        <TextView
+            android:id="@+id/time_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:text="@string/biu_time"
+            android:textColor="#b0b0b0"
+            android:textSize="8sp" />
+
+        <TextView
+            android:id="@+id/distance_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/time_textview"
+            android:text="@string/biu_distance"
+            android:textColor="#b0b0b0"
+            android:textSize="8sp" />
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/nickname_textview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/head_imageview"
+        android:layout_marginTop="8dp"
+        android:gravity="center"
+        android:text="刘三妹"
+        android:textColor="#808080"
+        android:textSize="12sp" />
+
+    <TextView
+        android:id="@+id/school_age_textview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/nickname_textview"
+        android:layout_marginTop="8dp"
+        android:gravity="center"
+        android:text="@string/school_age"
+        android:textColor="#6cd1c9"
+        android:textSize="11sp" />
+
+    <View
+        android:id="@+id/divide_line"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@+id/school_age_textview"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="6dp"
+        android:background="#dcdcdc" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/divide_line"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp">
+
+        <TextView
+            android:id="@+id/tag_textview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:drawablePadding="8dp"
+            android:text="\u3000\u3000在那遥远的地方有个好姑娘，她的名字就叫好股来那个在那遥远的地方有个好姑娘，她的名字就叫好股来那个" />
+
+        <ImageView
+            android:id="@+id/sex_imageview"
+            android:layout_width="10dp"
+            android:layout_height="14dp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignTop="@+id/tag_textview"
+            android:src="@drawable/biu_ago_icon_sex_girl" />
+    </RelativeLayout>
+
+</RelativeLayout>
