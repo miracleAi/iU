@@ -79,5 +79,23 @@ public class Constants {
 	 * */
 	public static final String BIU_UNREAD = "0";
 	public static final String BIU_READ = "1";
-
+	/**
+	 * 标记biubiu的状态
+	 * */
+	public static final String BIU_GRAB = "1";
+	public static final String BIU_END = "0";
+	public static final String BIU_RECEIVE = "2";
+	/**
+	 * 是否需要扣除biu币
+	 * */
+	public static final String NEED_COIN = "1";
+	public static final String NEED_NOT_COIN = "2";
+	/**
+	 * 抢biu结果
+	 * */
+	public static final int GRAB_BIU_END = 0;
+	public static final int GRAB_BIU_SUC = 1;
+	public static final int GRAB_BIU_RECEIVE = 3;
+	public static final int GRAB_NEED_COIN = 4;
+	public static final int GRAB_COIN_LESS = 2;
 }

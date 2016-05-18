@@ -309,6 +309,7 @@
                         android:layout_gravity="center_horizontal"
                         android:layout_marginBottom="22dp">
                         <ImageView
+                            android:id="@+id/show_tag_imv"
                             android:layout_width="20dp"
                             android:layout_height="20dp"
                             android:layout_centerInParent="true"

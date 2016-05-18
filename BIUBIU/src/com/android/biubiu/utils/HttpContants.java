@@ -152,4 +152,12 @@ public class HttpContants {
      * 新的获取biubiu列表
      */
     public static final String GET_BIU_LIST_NEW = "app/biu/getTargetBiuList";
+    /**
+     * 新的获取biubiu详情
+     */
+    public static final String GET_BIU_DETAIL_NEW = "app/biu/getBiuDetails";
+    /**
+     * 抢biu
+     */
+    public static final String GRAB_BIU_NEW = "app/biu/grabBiu";
 }
