@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Random;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -19,15 +20,13 @@ import org.xutils.image.ImageOptions;
 
 import cc.imeetu.iu.R;
 
-import com.android.biubiu.MainActivity;
 import com.android.biubiu.MatchSettingActivity;
 import com.android.biubiu.activity.LoginOrRegisterActivity;
 import com.android.biubiu.activity.activity.ActivityListActivity;
 import com.android.biubiu.activity.activity.WebviewActivity;
 import com.android.biubiu.activity.biu.BiuBiuReceiveActivity;
 import com.android.biubiu.activity.biu.BiuBiuSendActivity;
-import com.android.biubiu.activity.biu.BiuChargeActivity;
-import com.android.biubiu.bean.BiuDefaultBean;
+import com.android.biubiu.bean.BiuBean;
 import com.android.biubiu.bean.DotBean;
 import com.android.biubiu.bean.UserBean;
 import com.android.biubiu.callback.BiuBooleanCallback;
@@ -38,8 +37,10 @@ import com.android.biubiu.common.Umutils;
 import com.android.biubiu.component.title.TopTitleView;
 import com.android.biubiu.push.MyPushReceiver;
 import com.android.biubiu.push.PushInterface;
+import com.android.biubiu.sqlite.BiubiuDao;
 import com.android.biubiu.sqlite.SchoolDao;
 import com.android.biubiu.utils.BiuUtil;
+import com.android.biubiu.utils.CommonUtils;
 import com.android.biubiu.utils.Constants;
 import com.android.biubiu.utils.DensityUtil;
 import com.android.biubiu.utils.HttpContants;
@@ -78,6 +79,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.provider.MediaStore;
+import android.provider.Settings;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
 import android.view.Gravity;
@@ -106,9 +108,8 @@ public class BiuFragment extends Fragment implements PushInterface {
     int height = 0;
     Handler taskHandler;
     Handler infoHandler;
-    Handler removeHandler;
     //抢biubiu的用户，有则显示 没有则不显示
-    UserBean userBiuBean;
+    BiuBean userBiuBean;
     //圆心坐标
     float x0 = 0;
     float y0 = 0;
@@ -133,19 +134,16 @@ public class BiuFragment extends Fragment implements PushInterface {
     ArrayList<DotBean> c2DotList = new ArrayList<DotBean>();
     ArrayList<DotBean> c3DotList = new ArrayList<DotBean>();
     //存放三个圈上的用户列表
-    ArrayList<UserBean> user1List = new ArrayList<UserBean>();
-    ArrayList<UserBean> user2List = new ArrayList<UserBean>();
-    ArrayList<UserBean> user3List = new ArrayList<UserBean>();
+    ArrayList<BiuBean> user1List = new ArrayList<BiuBean>();
+    ArrayList<BiuBean> user2List = new ArrayList<BiuBean>();
+    ArrayList<BiuBean> user3List = new ArrayList<BiuBean>();
+    //屏幕上所有用户
+    ArrayList<Integer> allUserCodeList = new ArrayList<Integer>();
     //新增用户
-    UserBean newUserBean;
+    BiuBean newUserBean;
     //存放外圈临界角度
     ArrayList<Double> edgeAngleList = new ArrayList<Double>();
     //标识viewTag
-    /*private String retivTag = "relative";
-    private String tvTag = "textview";
-	private String gifvTag = "gifview";
-	private String imvHeadTag = "imvhead";
-	private String imvDotTag = "imvdot";*/
     private int retivIdTag = 1;
     private int tvIdTag = 2;
     private int gifvIdTag = 3;
@@ -188,17 +186,24 @@ public class BiuFragment extends Fragment implements PushInterface {
     GifView loadGif;
     TextView loadTv;
     public static boolean isUploadingPhoto = false;
-    RemoveReceiver removeReceiver;
     private TopTitleView mTopTitle;
     private PopupWindow mAdPopup;
     private String mAdUrl, mAdName, mAdCover;
     private String mUserCode;
 
+    BiubiuDao biuDao;
+    //请求biu列表是否成功
+    private boolean isBiuLoaded = false;
+    //是否正在请求biu列表
+    private boolean isBiuLoading = false;
+    private int inveralTime = 1;
+    private Handler showBiuHandler;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.biu_fragment_layout, null);
         schoolDao = new SchoolDao();
-        initReceiver();
+        biuDao = new BiubiuDao(getActivity());
         init();
         drawBiuView();
         setBiuLayout();
@@ -225,7 +230,7 @@ public class BiuFragment extends Fragment implements PushInterface {
         x.http().post(params, new CommonCallback<String>() {
             @Override
             public void onSuccess(String s) {
-                LogUtil.e("mytest","s = "+s);
+                LogUtil.e("mytest", "s = " + s);
                 JSONObject jsons;
                 try {
                     jsons = new JSONObject(s);
@@ -307,34 +312,30 @@ public class BiuFragment extends Fragment implements PushInterface {
         });
     }
 
-    private void initReceiver() {
-        removeReceiver = new RemoveReceiver();
-        IntentFilter filter = new IntentFilter(Constants.GRAB_BIU);
-        getActivity().registerReceiver(removeReceiver, filter);
-    }
-
     @Override
     public void onResume() {
         super.onResume();
-        //接口通信赋值
-        MyPushReceiver.setUpdateBean(this);
-        //检查是否提交了channelID
-        if (!SharePreferanceUtils.getInstance().getShared(getActivity(), SharePreferanceUtils.IS_COMMIT_CHANNEL, false)) {
-            HttpUtils.commitChannelId(getActivity());
-        }
-        initUserGroup();
-        if (LoginUtils.isLogin(getActivity())) {
-            //执行加载页面所有信息的请求
-            getAllUser();
-//			MainActivity.biuCoinLayout.setVisibility(View.VISIBLE);
-        } else {
-            //获取未登录时的biubiu列表
-            getBiuListUnlogin();
-//			MainActivity.biuCoinLayout.setVisibility(View.GONE);
+        if (CommonUtils.isAppOnForeground(getActivity())) {
+            //接口通信赋值
+            MyPushReceiver.setUpdateBean(this);
+            showBiuHandler.post(shouBiuR);
+            //检查是否提交了channelID
+            if (!SharePreferanceUtils.getInstance().getShared(getActivity(), SharePreferanceUtils.IS_COMMIT_CHANNEL, false)) {
+                HttpUtils.commitChannelId(getActivity());
+            }
+            initUserGroup();
+            if (LoginUtils.isLogin(getActivity())) {
+                //执行加载biu列表 抢biu人列表 各种状态
+                getBiuList(0);
+            } else {
+                //获取未登录时的biubiu列表
+               // getBiuListUnlogin();
+            }
         }
     }
 
     private void init() {
+        showBiuHandler = new Handler();
         width = getActivity().getWindowManager().getDefaultDisplay().getWidth();
         height = getActivity().getWindowManager().getDefaultDisplay().getHeight();
         loadingLayout = (LinearLayout) view.findViewById(R.id.loading_layout);
@@ -342,7 +343,6 @@ public class BiuFragment extends Fragment implements PushInterface {
         loadTv = (TextView) view.findViewById(R.id.loading_tv);
         taskHandler = new Handler();
         infoHandler = new Handler();
-        removeHandler = new Handler();
         x0 = width / 2;
         y0 = width * 417 / 720;
 
@@ -529,11 +529,9 @@ public class BiuFragment extends Fragment implements PushInterface {
                 } else {
                     isBiuState = true;
                     userBiuImv.setImageResource(R.drawable.biu_btn_biu);
-                    //标记抢我biubiu的人为已读
-                    updateBiuState();
                     //进入聊天界面
                     Intent intent = new Intent(getActivity(), ChatActivity.class);
-                    intent.putExtra(Constant.EXTRA_USER_ID, userBiuBean.getId());
+                    intent.putExtra(Constant.EXTRA_USER_ID, userBiuBean.getUserCode());
                     startActivity(intent);
                 }
             }
@@ -713,35 +711,18 @@ public class BiuFragment extends Fragment implements PushInterface {
     }
 
     //判断是否存在
-    private boolean isOnCircle(UserBean userBean) {
-        if (user3List.size() > 0) {
-            for (int i3 = 0; i3 < user3List.size(); i3++) {
-                if (userBean.getId().equals(user3List.get(i3).getId())) {
-                    return true;
-                }
-            }
-        }
-        if (user2List.size() > 0) {
-            for (int i2 = 0; i2 < user2List.size(); i2++) {
-                if (userBean.getId().equals(user2List.get(i2).getId())) {
-                    return true;
-                }
-            }
-        }
-        if (user1List.size() > 0) {
-            for (int i1 = 0; i1 < user1List.size(); i1++) {
-                if (userBean.getId().equals(user1List.get(i1).getId())) {
-                    return true;
-                }
-            }
+    private boolean isOnCircle(BiuBean userBean) {
+        if (allUserCodeList.contains(userBean.getUserCode())) {
+            return true;
         }
         return false;
     }
 
     //往第一个圈上放view
-    private void addCircle1View(UserBean userBean) {
-        if (isOnCircle(userBean)) {
-            return;
+    private void addCircle1View(BiuBean userBean) {
+        //如果数据库取到的biu屏幕上已存在 则舍弃
+        if(allUserCodeList.contains(userBean.getUserCode())){
+            return ;
         }
         boolean haveSpace = false;
         for (int i = 0; i < n1; i++) {
@@ -758,7 +739,8 @@ public class BiuFragment extends Fragment implements PushInterface {
                 userBean.setX(xLocation);
                 userBean.setY(yLocation);
                 user1List.add(userBean);
-                createCir1NewView(xLocation, yLocation, (int) userD1, (int) userD1, userBean, false);
+                allUserCodeList.add(userBean.getUserCode());
+                createCir1NewView(xLocation, yLocation, (int) userD1, (int) userD1, userBean);
                 showInfoLayout(userBean);
                 break;
             }
@@ -767,7 +749,7 @@ public class BiuFragment extends Fragment implements PushInterface {
             //将内圈中的用户按照时间顺序排列
             Collections.sort(user1List, new SorByTime());
             if (user1List.size() > 0) {
-                UserBean moveBean = user1List.get(0);
+                BiuBean moveBean = user1List.get(0);
                 user1List.remove(0);
                 moveOneToTwo(moveBean);
             }
@@ -775,7 +757,7 @@ public class BiuFragment extends Fragment implements PushInterface {
     }
 
     //从第1个圈移到第2个圈
-    private void moveOneToTwo(UserBean oneUserBean) {
+    private void moveOneToTwo(BiuBean oneUserBean) {
         boolean haveSpace = false;
         for (int i = 0; i < n2; i++) {
             DotBean dotBean = c2DotList.get(i);
@@ -795,20 +777,21 @@ public class BiuFragment extends Fragment implements PushInterface {
                 //移动后改变区域标记
                 oneUserBean.setIndex(i);
                 user2List.add(oneUserBean);
+                allUserCodeList.add(oneUserBean.getUserCode());
                 addCircle1View(newUserBean);
                 break;
             }
         }
         if (!haveSpace) {
             Collections.sort(user2List, new SorByTime());
-            UserBean twoUserBean = user2List.get(0);
+            BiuBean twoUserBean = user2List.get(0);
             user2List.remove(0);
             moveTwoToThree(oneUserBean, twoUserBean);
         }
     }
 
     //从第2个圈移到第3个圈
-    private void moveTwoToThree(UserBean oneUserBean, UserBean twoUserBean) {
+    private void moveTwoToThree(BiuBean oneUserBean, BiuBean twoUserBean) {
         boolean haveSpace = false;
         for (int i = 0; i < n3; i++) {
             DotBean dotBean = c3DotList.get(i);
@@ -830,6 +813,7 @@ public class BiuFragment extends Fragment implements PushInterface {
                 //移动后改变区域标记
                 twoUserBean.setIndex(i);
                 user3List.add(twoUserBean);
+                allUserCodeList.add(twoUserBean.getUserCode());
                 moveOneToTwo(oneUserBean);
                 break;
             }
@@ -837,9 +821,9 @@ public class BiuFragment extends Fragment implements PushInterface {
         if (!haveSpace) {
             //移除外圈最早的
             Collections.sort(user3List, new SorByTime());
-            UserBean delBean = user3List.get(0);
+            BiuBean delBean = user3List.get(0);
             //RelativeLayout rl = (RelativeLayout) userGroupLayout.findViewWithTag(retivTag+delBean.getId());
-            RelativeLayout rl = (RelativeLayout) userGroupLayout.findViewById(retivIdTag + Integer.parseInt(delBean.getId()));
+            RelativeLayout rl = (RelativeLayout) userGroupLayout.findViewById(retivIdTag + delBean.getUserCode());
             userGroupLayout.removeView(rl);
             //改变空闲标记，第二圈移到外圈
             c3DotList.get(delBean.getIndex()).setAdd(false);
@@ -849,17 +833,17 @@ public class BiuFragment extends Fragment implements PushInterface {
     }
 
     //biubiu被抢后显示view
-    private void updateBiuView(UserBean bean) {
+    private void updateBiuView(BiuBean bean) {
         currentTime = 0;
         taskHandler.removeCallbacks(taskR);
         taskView.setVisibility(View.GONE);
         userBiuImv.setImageResource(R.drawable.photo_fail);
         userBiuImv.setVisibility(View.VISIBLE);
-        x.image().bind(userBiuImv, bean.getUserHead(), imageOptions);
+        x.image().bind(userBiuImv, bean.getIconUrl(), imageOptions);
     }
 
     //显示底部的信息view
-    private void showInfoLayout(UserBean bean) {
+    private void showInfoLayout(BiuBean bean) {
         // TODO Auto-generated method stub
         infoHandler.removeCallbacks(infoR);
         infoLayout.setVisibility(View.VISIBLE);
@@ -871,18 +855,12 @@ public class BiuFragment extends Fragment implements PushInterface {
             sexTv.setText("女生");
         }
         ageTv.setText(bean.getAge() + "岁");
-        starTv.setText(bean.getStar());
-        LogUtil.e("503 行", "" + bean.getIsStudent() + "||" + bean.getSchool() + "||" + bean.getCareer());
-        if (bean.getIsStudent().equals(Constants.IS_STUDENT_FLAG)) {
-
-            if (bean.getSchool() != null && !bean.getSchool().equals("")) {
-                if (schoolDao.getschoolName(bean.getSchool()) != null) {
-                    schoolTv.setText(schoolDao.getschoolName(bean.getSchool()).get(0).getUnivsNameString());
-                }
-
+        starTv.setText(bean.getStarsign());
+        if (bean.getSchool() != null && !bean.getSchool().equals("")) {
+            if (schoolDao.getschoolName(bean.getSchool()) != null) {
+                schoolTv.setText(schoolDao.getschoolName(bean.getSchool()).get(0).getUnivsNameString());
             }
-        } else {
-            schoolTv.setText(bean.getCareer());
+
         }
         infoHandler.postDelayed(infoR, 5000);
     }
@@ -896,63 +874,12 @@ public class BiuFragment extends Fragment implements PushInterface {
         }
     };
 
-    class RemoveReceiver extends BroadcastReceiver {
-
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            if (null != intent && null != intent.getStringExtra("user_code")) {
-                String userCode = intent.getStringExtra("user_code");
-                removeView(userCode);
-            }
-        }
-
-    }
-
-    //删除被抢的view
-    private void removeView(String userCode) {
-        if (user3List.size() > 0) {
-            for (int i = 0; i < user3List.size(); i++) {
-                if (userCode.equals(user3List.get(i).getId())) {
-                    //RelativeLayout rl = (RelativeLayout) userGroupLayout.findViewWithTag(retivTag+userCode);
-                    RelativeLayout rl = (RelativeLayout) userGroupLayout.findViewById(retivIdTag + Integer.parseInt(userCode));
-                    userGroupLayout.removeView(rl);
-                    c1DotList.get(user3List.get(i).getIndex()).setAdd(false);
-                    user3List.remove(i);
-                    return;
-                }
-            }
-        }
-        if (user2List.size() > 0) {
-            for (int i = 0; i < user2List.size(); i++) {
-                if (userCode.equals(user2List.get(i).getId())) {
-                    //RelativeLayout rl = (RelativeLayout) userGroupLayout.findViewWithTag(retivTag+userCode);
-                    RelativeLayout rl = (RelativeLayout) userGroupLayout.findViewById(retivIdTag + Integer.parseInt(userCode));
-                    userGroupLayout.removeView(rl);
-                    c2DotList.get(user2List.get(i).getIndex()).setAdd(false);
-                    user2List.remove(i);
-                    return;
-                }
-            }
-        }
-        if (user1List.size() > 0) {
-            for (int i = 0; i < user1List.size(); i++) {
-                if (userCode.equals(user1List.get(i).getId())) {
-                    //RelativeLayout rl = (RelativeLayout) userGroupLayout.findViewWithTag(retivTag+userCode);
-                    RelativeLayout rl = (RelativeLayout) userGroupLayout.findViewById(retivIdTag + Integer.parseInt(userCode));
-                    userGroupLayout.removeView(rl);
-                    c1DotList.get(user1List.get(i).getIndex()).setAdd(false);
-                    user1List.remove(i);
-                    return;
-                }
-            }
-        }
-    }
 
     //按照时间排序
     class SorByTime implements Comparator {
         public int compare(Object o1, Object o2) {
-            UserBean s1 = (UserBean) o1;
-            UserBean s2 = (UserBean) o2;
+            BiuBean s1 = (BiuBean) o1;
+            BiuBean s2 = (BiuBean) o2;
             if (s1.getTime() < s2.getTime())
                 return 1;
             return 0;
@@ -960,10 +887,10 @@ public class BiuFragment extends Fragment implements PushInterface {
     }
 
     //创建第一圈上新的view,宽高为要创建view的宽高
-    private void createCir1NewView(int xLocation, int yLocation, int lWidth, int lHeight, final UserBean bean, boolean isFirst) {
+    private void createCir1NewView(int xLocation, int yLocation, int lWidth, int lHeight, final BiuBean bean) {
         final RelativeLayout rl = new RelativeLayout(getActivity());
         //rl.setTag(retivTag+bean.getId());
-        rl.setId(retivIdTag + Integer.parseInt(bean.getId()));
+        rl.setId(retivIdTag + bean.getUserCode());
         AbsoluteLayout.LayoutParams llParams = new AbsoluteLayout.LayoutParams(
                 lWidth,
                 lHeight, xLocation, yLocation);
@@ -983,10 +910,10 @@ public class BiuFragment extends Fragment implements PushInterface {
         RelativeLayout.LayoutParams imagebg = new RelativeLayout.LayoutParams(
                 lWidth - margin,
                 lHeight - margin);
-        imageViewbg.setId(Integer.parseInt(bean.getId()));
+        imageViewbg.setId(bean.getUserCode());
 
         //imageViewbg.setTag(imvHeadTag+bean.getId());
-        imageViewbg.setId(imvHeadIdTag + Integer.parseInt(bean.getId()));
+        imageViewbg.setId(imvHeadIdTag + bean.getUserCode());
 
         imagebg.addRule(RelativeLayout.CENTER_IN_PARENT);
         rl.addView(imageViewbg, imagebg);
@@ -999,7 +926,7 @@ public class BiuFragment extends Fragment implements PushInterface {
         RelativeLayout.LayoutParams imageP = new RelativeLayout.LayoutParams(
                 lWidth - margin,
                 lHeight - margin);
-        imageView.setId(imvHeadIdTag + Integer.parseInt(bean.getId()));
+        imageView.setId(imvHeadIdTag + bean.getUserCode());
         //imageView.setTag(imvHeadTag+bean.getId());
         imageP.addRule(RelativeLayout.CENTER_IN_PARENT);
         rl.addView(imageView, imageP);
@@ -1015,7 +942,7 @@ public class BiuFragment extends Fragment implements PushInterface {
         imagePL.rightMargin = DensityUtil.dip2px(getActivity(), 0);
         imagePL.bottomMargin = DensityUtil.dip2px(getActivity(), 2);
         //imageViewL.setTag(imvDotTag+bean.getId());
-        imageViewL.setId(imvDotIdTag + Integer.parseInt(bean.getId()));
+        imageViewL.setId(imvDotIdTag + bean.getUserCode());
         imagePL.addRule(RelativeLayout.ALIGN_BOTTOM, imageView.getId());
         imagePL.addRule(RelativeLayout.ALIGN_RIGHT, imageViewbg.getId());
         rl.addView(imageViewL, imagePL);
@@ -1035,18 +962,11 @@ public class BiuFragment extends Fragment implements PushInterface {
 		}*/
         imageViewbg.setImageResource(R.drawable.biu_imageview_photo_s);
         imageView.setImageResource(R.drawable.photo_fail);
-        x.image().bind(imageView, bean.getUserHead(), imageOptions);
+        x.image().bind(imageView, bean.getIconUrl(), imageOptions);
         gifIv.setImageResource(R.drawable.biu_imageview_photo_circle);
         gifIv.startAnimation(animationUserBg);
-        if (isFirst) {
-            gifIv.setVisibility(View.GONE);
-        }
         imageViewL.setImageResource(R.drawable.biu_imageview_photo_news_s);
-        if (isFirst && bean.getAlreadSeen().equals(Constants.ALREADY_SEEN)) {
-            imageViewL.setVisibility(View.GONE);
-        } else {
-            imageViewL.setVisibility(View.VISIBLE);
-        }
+        imageViewL.setVisibility(View.VISIBLE);
         rl.setBackgroundResource(0);
         new Handler().postDelayed(new Runnable() {
 
@@ -1064,31 +984,22 @@ public class BiuFragment extends Fragment implements PushInterface {
                 // TODO Auto-generated method stub
                 if (LoginUtils.isLogin(getActivity())) {
                     imageViewL.setVisibility(View.GONE);
-                    if (bean.isDefaultUser()) {
-                        Intent intent = new Intent(getActivity(), WebviewActivity.class);
-                        intent.putExtra(com.android.biubiu.common.Constant.ACTIVITY_NAME, bean.getWebTitle());
-                        intent.putExtra(com.android.biubiu.common.Constant.ACTIVITY_URL, bean.getWebUrl());
-                        startActivity(intent);
-                        Umutils.count(getActivity(), Umutils.PROFILE_CON_OPEN_TOTAL);
-                    } else {
-                        Intent intent = new Intent(getActivity(), BiuBiuReceiveActivity.class);
-                        intent.putExtra("referenceId", bean.getReferenceId());
-                        intent.putExtra("userCode", bean.getId());
-                        intent.putExtra("chatId", bean.getChatId());
-                        startActivity(intent);
-                    }
+                    Intent intent = new Intent(getActivity(), BiuBiuReceiveActivity.class);
+                    intent.putExtra("userCode", bean.getUserCode());
+                    startActivity(intent);
                 } else {
                     Intent intent = new Intent(getActivity(), LoginOrRegisterActivity.class);
                     startActivity(intent);
                 }
             }
         });
+
     }
 
     //移动view
-    public void moveUserView(double startX, double startY, double endX, double endY, UserBean userBean, float viewD, float viewD1, float viewD2) {
+    public void moveUserView(double startX, double startY, double endX, double endY, BiuBean userBean, float viewD, float viewD1, float viewD2) {
         //final RelativeLayout rl = (RelativeLayout) userGroupLayout.findViewWithTag(retivTag+userBean.getId());
-        final RelativeLayout rl = (RelativeLayout) userGroupLayout.findViewById(retivIdTag + Integer.parseInt(userBean.getId()));
+        final RelativeLayout rl = (RelativeLayout) userGroupLayout.findViewById(retivIdTag + userBean.getUserCode());
         float scale = 0;
         float d = 0;
         if (rl.getWidth() == viewD2) {
@@ -1112,7 +1023,7 @@ public class BiuFragment extends Fragment implements PushInterface {
     }
 
     //加入所有list中的view
-    protected void addAllView(ArrayList<UserBean> list, boolean isLogin) {
+    protected void addAllView(ArrayList<BiuBean> list, boolean isLogin) {
         int length = 0;
         if (list.size() > 25) {
             length = 25;
@@ -1120,7 +1031,7 @@ public class BiuFragment extends Fragment implements PushInterface {
             length = list.size();
         }
         for (int i = 0; i < length; i++) {
-            UserBean userBean = list.get(i);
+            BiuBean userBean = list.get(i);
             boolean haveOneSpace = false;
             boolean haveTwoSpace = false;
             for (int j = i; j < n1; j++) {
@@ -1135,7 +1046,7 @@ public class BiuFragment extends Fragment implements PushInterface {
                     int yLocation = BiuUtil.getLocationY(randomAngle, userD1, circleR1, y0);
                     userBean.setX(xLocation);
                     userBean.setY(yLocation);
-                    createCir1NewView(xLocation, yLocation, (int) userD1, (int) userD1, userBean, true);
+                    createCir1NewView(xLocation, yLocation, (int) userD1, (int) userD1, userBean);
                     c1DotList.get(i).setAdd(true);
                     user1List.add(userBean);
                     break;
@@ -1154,7 +1065,7 @@ public class BiuFragment extends Fragment implements PushInterface {
                     int y2 = BiuUtil.getLocationY(randomAngle, userD2, circleR2, y0);
                     userBean.setX(x2);
                     userBean.setY(y2);
-                    createCir1NewView(x2, y2, (int) userD2, (int) userD2, userBean, true);
+                    createCir1NewView(x2, y2, (int) userD2, (int) userD2, userBean);
                     userBean.setIndex(k);
                     c2DotList.get(k).setAdd(true);
                     user2List.add(userBean);
@@ -1173,7 +1084,7 @@ public class BiuFragment extends Fragment implements PushInterface {
                     double randomAngle = BiuUtil.getRandomAngleBig(edgeAngleList, n3, l, userD1, circleR3);
                     int x3 = BiuUtil.getLocationX(randomAngle, userD3, circleR3, x0);
                     int y3 = BiuUtil.getLocationY(randomAngle, userD3, circleR3, y0);
-                    createCir1NewView(x3, y3, (int) userD3, (int) userD3, userBean, true);
+                    createCir1NewView(x3, y3, (int) userD3, (int) userD3, userBean);
                     userBean.setX(x3);
                     userBean.setY(y3);
                     c3DotList.get(l).setAdd(true);
@@ -1185,20 +1096,187 @@ public class BiuFragment extends Fragment implements PushInterface {
 
             }
         }
-        if (isLogin) {
-            removeHandler.post(removeR);
+    }
+
+    //新的获取biu列表
+    private void getBiuList(long requestTime) {
+        isBiuLoading = true;
+        isBiuLoaded = false;
+        RequestParams params = new RequestParams(HttpContants.HTTP_ADDRESS + HttpContants.GET_BIU_LIST_NEW);
+        JSONObject requestObject = new JSONObject();
+        try {
+            requestObject.put("device_code", SharePreferanceUtils.getInstance().getDeviceId(getActivity(), SharePreferanceUtils.DEVICE_ID, ""));
+            requestObject.put("token", SharePreferanceUtils.getInstance().getToken(getActivity(), SharePreferanceUtils.TOKEN, ""));
+            requestObject.put("num", 20);
+            requestObject.put("last_date", requestTime);
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
+        params.addBodyParameter("data", requestObject.toString());
+        x.http().post(params, new CommonCallback<String>() {
+            @Override
+            public void onSuccess(String result) {
+                log.d("mytest","suc"+result);
+                isBiuLoading = false;
+                JSONObject jsons;
+                try {
+                    jsons = new JSONObject(result);
+                    String state = jsons.getString("state");
+                    if (!state.equals("200")) {
+                        isBiuLoaded = false;
+                        return;
+                    }
+                    JSONObject data = jsons.getJSONObject("data");
+                    String headFlag = data.getString("iconStatus");
+                    com.android.biubiu.common.Constant.headState = headFlag;
+                    if (headFlag.equals("2") || headFlag.equals("4")) {
+                        showShenHeDaiog(Integer.parseInt(headFlag));
+                    }
+                    inveralTime = data.getInt("biu_time_interval");
+                    JSONArray userArray = data.getJSONArray("users");
+                    Gson gson = new Gson();
+                    ArrayList<BiuBean> list = gson.fromJson(userArray.toString(), new TypeToken<List<BiuBean>>() {
+                    }.getType());
+                    if (null != list) {
+                        if(list.size() > 0){
+                            biuDao.deleteAll();
+                            biuDao.addBiuList(list);
+                            isBiuLoaded = true;
+                        }else{
+                            biuDao.updateAllBiuState();
+                        }
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onError(Throwable throwable, boolean b) {
+                log.d("mytest","error");
+            }
+
+            @Override
+            public void onCancelled(CancelledException e) {
+                log.d("mytest","cancel");
+            }
+
+            @Override
+            public void onFinished() {
+                log.d("mytest","finish");
+            }
+        });
+    }
+
+    /**
+     * 退出环信登录
+     */
+    public void exitHuanxin() {
+        EMClient.getInstance().logout(true, new EMCallBack() {
+
+            @Override
+            public void onSuccess() {
+                // TODO Auto-generated method stub
+                //清空本地token
+                SharePreferanceUtils.getInstance().putShared(getActivity(), SharePreferanceUtils.HX_USER_NAME, "");
+                SharePreferanceUtils.getInstance().putShared(getActivity(), SharePreferanceUtils.HX_USER_PASSWORD, "");
+            }
+
+            @Override
+            public void onProgress(int arg0, String arg1) {
+                // TODO Auto-generated method stub
+
+            }
+
+            @Override
+            public void onError(int arg0, String arg1) {
+                // TODO Auto-generated method stub
+            }
+        });
+
+    }
+
+
+    //获取未登录时的biubiu列表
+    private void getBiuListUnlogin() {
+        // TODO Auto-generated method stub
+        user1List.clear();
+        user2List.clear();
+        user3List.clear();
+        allUserCodeList.clear();
+        userGroupLayout.removeAllViews();
+        RequestParams params = new RequestParams(HttpContants.HTTP_ADDRESS + HttpContants.GET_UNLOGIN_BIU_LIST);
+        JSONObject requestObject = new JSONObject();
+        try {
+            requestObject.put("device_code", SharePreferanceUtils.getInstance().getDeviceId(getActivity(), SharePreferanceUtils.DEVICE_ID, ""));
+            requestObject.put("token", SharePreferanceUtils.getInstance().getToken(getActivity(), SharePreferanceUtils.TOKEN, ""));
+        } catch (JSONException e) {
+
+            e.printStackTrace();
+        }
+        params.addBodyParameter("data", requestObject.toString());
+        x.http().post(params, new CommonCallback<String>() {
+
+            @Override
+            public void onCancelled(CancelledException arg0) {
+                // TODO Auto-generated method stub
+
+            }
+
+            @Override
+            public void onError(Throwable arg0, boolean arg1) {
+                // TODO Auto-generated method stub
+
+            }
+
+            @Override
+            public void onFinished() {
+                // TODO Auto-generated method stub
+
+            }
+
+            @Override
+            public void onSuccess(String result) {
+                // TODO Auto-generated method stub
+                LogUtil.d("mytest", "getall--" + result);
+                JSONObject jsons;
+                try {
+                    jsons = new JSONObject(result);
+                    String state = jsons.getString("state");
+                    if (!state.equals("200")) {
+                        return;
+                    }
+                    JSONObject data = jsons.getJSONObject("data");
+                    JSONArray userArray = data.getJSONArray("users");
+                    Gson gson = new Gson();
+                    ArrayList<BiuBean> list = gson.fromJson(userArray.toString(), new TypeToken<List<BiuBean>>() {
+                    }.getType());
+                    if (null != list && list.size() > 0) {
+                        addAllView(list, false);
+                    }
+                } catch (JSONException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 
     @Override
     public void onPause() {
         // TODO Auto-generated method stub
         super.onPause();
-        removeHandler.removeCallbacks(removeR);
-        userGroupLayout.removeAllViews();
-        user1List.clear();
-        user2List.clear();
-        user3List.clear();
+        if (CommonUtils.isAppOnForeground(getActivity())) {
+            userGroupLayout.removeAllViews();
+            user1List.clear();
+            user2List.clear();
+            user3List.clear();
+            allUserCodeList.clear();
+            biuDao.deleteAll();
+            showBiuHandler.removeCallbacks(shouBiuR);
+            isBiuLoading = false;
+            isBiuLoaded = false;
+        }
     }
 
     @Override
@@ -1332,344 +1410,51 @@ public class BiuFragment extends Fragment implements PushInterface {
 
     }
 
-    //获取biubiu列表
-    private void getAllUser() {
-        user1List.clear();
-        user2List.clear();
-        user3List.clear();
-        userGroupLayout.removeAllViews();
-        RequestParams params = new RequestParams(HttpContants.HTTP_ADDRESS + HttpContants.GET_BIU_LIST);
-        JSONObject requestObject = new JSONObject();
-        try {
-            requestObject.put("device_code", SharePreferanceUtils.getInstance().getDeviceId(getActivity(), SharePreferanceUtils.DEVICE_ID, ""));
-            requestObject.put("token", SharePreferanceUtils.getInstance().getToken(getActivity(), SharePreferanceUtils.TOKEN, ""));
-            log.d("mytest", "request tok==" + SharePreferanceUtils.getInstance().getToken(getActivity(), SharePreferanceUtils.TOKEN, ""));
-        } catch (JSONException e) {
-
-            e.printStackTrace();
-        }
-        params.addBodyParameter("data", requestObject.toString());
-        x.http().post(params, new CommonCallback<String>() {
-
-            @Override
-            public void onCancelled(CancelledException arg0) {
-                // TODO Auto-generated method stub
-
-            }
-
-            @Override
-            public void onError(Throwable arg0, boolean arg1) {
-                // TODO Auto-generated method stub
-
-            }
-
-            @Override
-            public void onFinished() {
-                // TODO Auto-generated method stub
-
-            }
-
-            @Override
-            public void onSuccess(String result) {
-                // TODO Auto-generated method stub
-                LogUtil.d("mytest", "getall--" + result);
-                JSONObject jsons;
-                try {
-                    jsons = new JSONObject(result);
-                    String state = jsons.getString("state");
-                    if (state.equals("303")) {
-                        Toast.makeText(getActivity(), "登录过期，请重新登录", Toast.LENGTH_SHORT).show();
-                        SharePreferanceUtils.getInstance().putShared(getActivity(), SharePreferanceUtils.TOKEN, "");
-                        SharePreferanceUtils.getInstance().putShared(getActivity(), SharePreferanceUtils.USER_NAME, "");
-                        SharePreferanceUtils.getInstance().putShared(getActivity(), SharePreferanceUtils.USER_HEAD, "");
-                        SharePreferanceUtils.getInstance().putShared(getActivity(), SharePreferanceUtils.USER_CODE, "");
-                        LogUtil.d("mytest", "tok---" + SharePreferanceUtils.getInstance().getToken(getActivity(), SharePreferanceUtils.TOKEN, ""));
-                        exitHuanxin();
-                        return;
-                    }
-                    if (!state.equals("200")) {
-                        return;
-                    }
-                    JSONObject data = jsons.getJSONObject("data");
-                    String token = data.getString("token");
-                    if (token != null && token.length() > 0) {
-                        SharePreferanceUtils.getInstance().putShared(getActivity(), SharePreferanceUtils.TOKEN, token);
-                    }
-
-                    JSONArray userArray = data.getJSONArray("users");
-                    int biuCoin = data.getInt("virtual_currency");
-                    com.android.biubiu.common.Constant.biubiCnt = biuCoin;
-                    String headFlag = data.getString("iconStatus");
-                    com.android.biubiu.common.Constant.headState = headFlag;
-                    if (headFlag.equals("2") || headFlag.equals("4")) {
-                        showShenHeDaiog(Integer.parseInt(headFlag));
-                    }
-                    Gson gson = new Gson();
-                    JSONObject biuObject = data.optJSONObject("mylatestbiu");
-                    if (biuObject != null) {
-                        UserBean bean = gson.fromJson(biuObject.toString(), UserBean.class);
-                        if (null != bean) {
-                            userBiuBean = bean;
-                            if (userBiuBean.getAlreadSeen().equals(Constants.UN_SEEN)) {
-                                isBiuState = false;
-                                x.image().bind(userBiuImv, bean.getUserHead(), imageOptions);
-                            } else {
-                                isBiuState = true;
-                            }
-                        }
-                    }
-                    ArrayList<UserBean> list = gson.fromJson(userArray.toString(), new TypeToken<List<UserBean>>() {
-                    }.getType());
-                        addAllView(list, true);
-                } catch (JSONException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                }
-            }
-        });
-    }
-
-    /**
-     * 退出环信登录
-     */
-    public void exitHuanxin() {
-        EMClient.getInstance().logout(true, new EMCallBack() {
-
-            @Override
-            public void onSuccess() {
-                // TODO Auto-generated method stub
-                //清空本地token
-                SharePreferanceUtils.getInstance().putShared(getActivity(), SharePreferanceUtils.HX_USER_NAME, "");
-                SharePreferanceUtils.getInstance().putShared(getActivity(), SharePreferanceUtils.HX_USER_PASSWORD, "");
-            }
-
-            @Override
-            public void onProgress(int arg0, String arg1) {
-                // TODO Auto-generated method stub
-
-            }
-
-            @Override
-            public void onError(int arg0, String arg1) {
-                // TODO Auto-generated method stub
-            }
-        });
-
-    }
-
-    //设置消息按钮点击
-    protected void initMsgView(final int flag) {
-        // 头像审核flag：0：待审核  1：审核中 2：审核成功未读 3：审核成功已读  4:审核失败（第一次）未读 5：审核失败已读 6：审核失败 (未回滚)
-        /*MainActivity.rightRl.setOnClickListener(new OnClickListener() {
-
-            @Override
-            public void onClick(View arg0) {
-                switch (flag) {
-                    case Constants.HEAD_VERIFYSUC_UNREAD:
-                    case Constants.HEAD_VERIFYFAIL_UNREAD:
-                    case Constants.HEAD_VERIFYFAIL_UPDATE:
-                        showShenHeDaiog("msg", Integer.parseInt(headFlag));
-                        break;
-                    default:
-                        ((MainActivity) getActivity()).showRightMenu();
-                        MainActivity.newMessage.setVisibility(View.GONE);
-                        break;
-                }
-            }
-        });*/
-    }
-
-    //设置biubiu币相关
-    protected void initBiuView(final int biuCoin) {
-        /*MainActivity.biuCoinTv.setText("" + biuCoin);
-        MainActivity.biuCoinLayout.setOnClickListener(new OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), BiuChargeActivity.class);
-                intent.putExtra("coin", biuCoin);
-                startActivity(intent);
-            }
-        });*/
-    }
-
-    //标记抢我biubiu币的人为已读
-    protected void updateBiuState() {
-        // TODO Auto-generated method stub
-        RequestParams params = new RequestParams(HttpContants.HTTP_ADDRESS + HttpContants.UPDATE_BIU_STATE);
-        JSONObject requestObject = new JSONObject();
-        try {
-            requestObject.put("device_code", SharePreferanceUtils.getInstance().getDeviceId(getActivity(), SharePreferanceUtils.DEVICE_ID, ""));
-            requestObject.put("token", SharePreferanceUtils.getInstance().getToken(getActivity(), SharePreferanceUtils.TOKEN, ""));
-            LogUtil.d("mytest", "biubean--" + userBiuBean.getChatId());
-            requestObject.put("chat_id", userBiuBean.getChatId());
-        } catch (JSONException e) {
-
-            e.printStackTrace();
-        }
-        params.addBodyParameter("data", requestObject.toString());
-        x.http().post(params, new CommonCallback<String>() {
-
-            @Override
-            public void onCancelled(CancelledException arg0) {
-                // TODO Auto-generated method stub
-
-            }
-
-            @Override
-            public void onError(Throwable arg0, boolean arg1) {
-                // TODO Auto-generated method stub
-
-            }
-
-            @Override
-            public void onFinished() {
-                // TODO Auto-generated method stub
-
-            }
-
-            @Override
-            public void onSuccess(String result) {
-                LogUtil.d("mytest", "updatebiu--" + result);
-                JSONObject jsons;
-                try {
-                    jsons = new JSONObject(result);
-                    String state = jsons.getString("state");
-                    if (!state.equals("200")) {
-                        return;
-                    }
-                    JSONObject data = jsons.getJSONObject("data");
-                    //					String token = data.getString("token");
-                    //					SharePreferanceUtils.getInstance().putShared(getActivity(), SharePreferanceUtils.TOKEN, token);
-                } catch (JSONException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                }
-            }
-        });
-    }
-
-    //获取未登录时的biubiu列表
-    private void getBiuListUnlogin() {
-        // TODO Auto-generated method stub
-        user1List.clear();
-        user2List.clear();
-        user3List.clear();
-        userGroupLayout.removeAllViews();
-        RequestParams params = new RequestParams(HttpContants.HTTP_ADDRESS + HttpContants.GET_UNLOGIN_BIU_LIST);
-        JSONObject requestObject = new JSONObject();
-        try {
-            requestObject.put("device_code", SharePreferanceUtils.getInstance().getDeviceId(getActivity(), SharePreferanceUtils.DEVICE_ID, ""));
-            requestObject.put("token", SharePreferanceUtils.getInstance().getToken(getActivity(), SharePreferanceUtils.TOKEN, ""));
-        } catch (JSONException e) {
-
-            e.printStackTrace();
-        }
-        params.addBodyParameter("data", requestObject.toString());
-        x.http().post(params, new CommonCallback<String>() {
-
-            @Override
-            public void onCancelled(CancelledException arg0) {
-                // TODO Auto-generated method stub
-
-            }
-
-            @Override
-            public void onError(Throwable arg0, boolean arg1) {
-                // TODO Auto-generated method stub
-
-            }
-
-            @Override
-            public void onFinished() {
-                // TODO Auto-generated method stub
-
-            }
-
-            @Override
-            public void onSuccess(String result) {
-                // TODO Auto-generated method stub
-                LogUtil.d("mytest", "getall--" + result);
-                JSONObject jsons;
-                try {
-                    jsons = new JSONObject(result);
-                    String state = jsons.getString("state");
-                    if (!state.equals("200")) {
-                        return;
-                    }
-                    JSONObject data = jsons.getJSONObject("data");
-                    JSONArray userArray = data.getJSONArray("users");
-                    Gson gson = new Gson();
-                    ArrayList<UserBean> list = gson.fromJson(userArray.toString(), new TypeToken<List<UserBean>>() {
-                    }.getType());
-                    if (null != list && list.size() > 0) {
-                        addAllView(list, false);
-                    }
-                } catch (JSONException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                }
-            }
-        });
-    }
-
-    Runnable removeR = new Runnable() {
-
+    Runnable shouBiuR = new Runnable() {
         @Override
         public void run() {
-            long current = System.currentTimeMillis();
-            if (null != user1List && user1List.size() > 0) {
-                Collections.sort(user1List, new SorByTime());
-                UserBean bean = user1List.get(0);
-                if (!bean.isDefaultUser()) {
-                    if ((current - bean.getTime()) > 1000 * 60 * 60) {
-                        removeView(bean.getId());
-                    }
-                }
-            }
-            if (null != user2List && user2List.size() > 0) {
-                Collections.sort(user2List, new SorByTime());
-                UserBean bean = user2List.get(0);
-                if ((current - bean.getTime()) > 1000 * 60 * 60) {
-                    if (!bean.isDefaultUser()) {
-                        removeView(bean.getId());
-                    }
-                }
-            }
-            if (null != user3List && user3List.size() > 0) {
-                Collections.sort(user3List, new SorByTime());
-                UserBean bean = user3List.get(0);
-                if (!bean.isDefaultUser()) {
-                    if ((current - bean.getTime()) > 1000 * 60 * 60) {
-                        removeView(bean.getId());
-                    }
-                }
-                removeHandler.removeCallbacks(removeR);
+            Random random = new Random();
+            int time = 0;
+            if(inveralTime == 1){
+                time = 1;
+            }else{
+                time = random.nextInt(inveralTime)+1;
             }
 
-            removeHandler.postDelayed(removeR, 1000);
+            if (!isBiuLoading && isBiuLoaded) {
+                int biuCount = biuDao.getBiuListUnread();
+                //数目小于5 则去网上继续请求
+                if(biuCount<5){
+                    long requestTime = biuDao.getBiuListUnread();
+                    getBiuList(requestTime);
+                }
+                newUserBean = biuDao.getBiuToShow();
+                if(null != newUserBean){
+                    biuDao.updateBiuState(newUserBean.getUserCode());
+                    addCircle1View(newUserBean);
+                }
+            }else{
+                getBiuList(0);
+            }
+            showBiuHandler.postDelayed(shouBiuR,time);
         }
     };
 
     @Override
-    public void updateView(UserBean userBean, int type) {
+    public void updateView(BiuBean userBean, int type) {
         // TODO Auto-generated method stub
         switch (type) {
             case 0:
                 //有新的匹配消息
-                newUserBean = userBean;
-                addCircle1View(userBean);
+                if(!isOnCircle(userBean)){
+                    biuDao.addOneBiu(userBean);
+                }
                 break;
             case 1:
                 //biubiu被抢啦
                 isBiuState = false;
                 userBiuBean = userBean;
                 updateBiuView(userBean);
-                break;
-            case 2:
-                //匹配的人被抢啦
-                String userCode = userBean.getId();
-                removeView(userCode);
                 break;
             default:
                 break;

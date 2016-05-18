@@ -24,9 +24,8 @@ import com.alibaba.fastjson.JSONException;
 import com.alibaba.fastjson.JSONObject;
 import com.android.biubiu.MainActivity;
 import com.android.biubiu.activity.biu.BiuBiuReceiveActivity;
-import com.android.biubiu.bean.UserBean;
+import com.android.biubiu.bean.BiuBean;
 import com.android.biubiu.bean.UserFriends;
-import com.android.biubiu.sqlite.PushMatchDao;
 import com.android.biubiu.sqlite.UserDao;
 import com.android.biubiu.utils.Constants;
 import com.android.biubiu.utils.HttpUtils;
@@ -39,7 +38,6 @@ public class MyPushReceiver extends PushMessageReceiver{
 
 	static PushInterface updateface;
 	private UserDao userDao;
-	private PushMatchDao pushDao;
 
 	public static void setUpdateBean(PushInterface updateBean) {
 		updateface = updateBean;
@@ -77,7 +75,6 @@ public class MyPushReceiver extends PushMessageReceiver{
 	public void onMessage(Context context, String message,
 			String customContentString) {
 		userDao=new UserDao(context);
-		pushDao=new PushMatchDao(context);
 		Log.d("mytest", "透传消息");
 		String messageString = "透传消息 message=\"" + message
 				+ "\" customContentString=" + customContentString;
@@ -93,31 +90,26 @@ public class MyPushReceiver extends PushMessageReceiver{
 			isPlaySound = true;
 		}
 		LogUtil.e(TAG, isOpen+"");
-		UserBean newUserBean = new UserBean();
+		BiuBean newUserBean = new BiuBean();
 		String msgType = "";
 		try {
 			JSONObject jsons;
 			jsons = JSONObject.parseObject(URLDecoder.decode(message, "utf-8"));
 			msgType = jsons.getString("messageType");
 			newUserBean.setTime(Long.parseLong(jsons.getString("time")));
-			newUserBean.setChatId(jsons.getString("chat_id"));
-			newUserBean.setId(jsons.getString("user_code"));
-			newUserBean.setAlreadSeen(Constants.UN_SEEN);
+			newUserBean.setUserCode(jsons.getInteger("user_code"));
+			newUserBean.setIconUrl(jsons.getString("icon_thumbnailUrl"));
 
 			if(msgType.equals(Constants.MSG_TYPE_MATCH)){
 				newUserBean.setNickname(jsons.getString("nickname"));
-				newUserBean.setUserHead(jsons.getString("icon_thumbnailUrl"));
-				newUserBean.setAge(jsons.getString("age"));
+				newUserBean.setAge(jsons.getInteger("age"));
 				newUserBean.setSex(jsons.getString("sex"));
-				newUserBean.setStar(jsons.getString("starsign"));
-				newUserBean.setIsStudent(jsons.getString("isgraduated"));
+				newUserBean.setStarsign(jsons.getString("starsign"));
 				newUserBean.setSchool(jsons.getString("school"));
-				newUserBean.setCareer(jsons.getString("career"));
-				newUserBean.setReferenceId("reference_id");
+				newUserBean.setMatchScore(jsons.getInteger("matching_score"));
+				newUserBean.setDistance(jsons.getInteger("distance"));
 			}else if(msgType.equals(Constants.MSG_TYPE_GRAB)){
-				newUserBean.setId(jsons.getString("user_code"));
-				newUserBean.setUserHead(jsons.getString("icon_thumbnailUrl"));
-				saveUserFriend(jsons.getString("user_code"),jsons.getString("nickname"),jsons.getString("icon_thumbnailUrl"));
+				saveUserFriend(jsons.getInteger("user_code"),jsons.getString("nickname"),jsons.getString("icon_thumbnailUrl"));
 			}
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
@@ -131,7 +123,6 @@ public class MyPushReceiver extends PushMessageReceiver{
 		if(isOpen){
 			if(msgType.equals(Constants.MSG_TYPE_MATCH)){
 				if(updateface != null){
-					pushDao.insertOrReplacePush(newUserBean);
 					if(isPlaySound){
 						SharePreferanceUtils.getInstance().putShared(context, SharePreferanceUtils.BIU_SOUND_TIME, String.valueOf(System.currentTimeMillis()));
 						if(isOpenVoice){
@@ -153,15 +144,7 @@ public class MyPushReceiver extends PushMessageReceiver{
 					}
 					updateface.updateView(newUserBean,1);
 				}
-				saveUserFriend(newUserBean.getId(),newUserBean.getNickname(),newUserBean.getUserHead());
-			}else{
-				if(updateface != null){
-					if(pushDao.queryIsSameTime(newUserBean.getId(), System.currentTimeMillis())){
-						Toast.makeText(context, "biubiu已经被抢啦", 1000).show();
-					}
-					pushDao.deleteByType(newUserBean.getId());
-					updateface.updateView(newUserBean,2);
-				}
+				saveUserFriend(newUserBean.getUserCode(),newUserBean.getNickname(),newUserBean.getIconUrl());
 			}
 		}else{
 			if(msgType.equals(Constants.MSG_TYPE_MATCH)){
@@ -196,7 +179,7 @@ public class MyPushReceiver extends PushMessageReceiver{
 		// TODO Auto-generated method stub
 
 	}
-	private void showNotification(Context context,boolean isShock,boolean isOpenVoice,UserBean bean,String type){
+	private void showNotification(Context context,boolean isShock,boolean isOpenVoice,BiuBean bean,String type){
 		NotificationManager mNotificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 		Builder mBuilder = new NotificationCompat.Builder(context);
 		mBuilder.setContentTitle("你收到一条biubiu")
@@ -230,14 +213,11 @@ public class MyPushReceiver extends PushMessageReceiver{
 			playSound(context);
 		}
 		Intent resultIntent;
+		// TODO: 此处应根据biubiu是否结束来判断进入首页还是biu详情页
 		if((System.currentTimeMillis()-bean.getTime())<59*60*1000){
 			resultIntent= new Intent(context.getApplicationContext(), BiuBiuReceiveActivity.class);
 			resultIntent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-			resultIntent.putExtra("referenceId", bean.getReferenceId());
-			resultIntent.putExtra("userCode", bean.getId());
-			LogUtil.d("mytest", "code--"+bean.getId());
-			resultIntent.putExtra("chatId", bean.getChatId());
-			LogUtil.e(TAG, "userCode=="+bean.getId());
+			resultIntent.putExtra("userCode", bean.getUserCode());
 		}else{
 			resultIntent= new Intent(context.getApplicationContext(), MainActivity.class);
 		}
@@ -264,11 +244,11 @@ public class MyPushReceiver extends PushMessageReceiver{
 	 * @param name
 	 * @param url
 	 */
-	public void saveUserFriend(String code,String name, String url){
+	public void saveUserFriend(int code,String name, String url){
 		LogUtil.e(TAG, code+"||"+name+"||"+url);
 		log.e("保存用户信息");
 		UserFriends item=new UserFriends();
-		item.setUserCode(code);
+		item.setUserCode(code+"");
 		item.setIcon_thumbnailUrl(url);
 		item.setNickname(name);
 		userDao.insertOrReplaceUser(item);

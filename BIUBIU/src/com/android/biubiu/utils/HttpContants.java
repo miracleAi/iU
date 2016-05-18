@@ -2,9 +2,9 @@ package com.android.biubiu.utils;
 
 public class HttpContants {
     //正式服务器
-    public static final String HTTP_ADDRESS = "http://app.iu.imeetu.cc/meetu_maven/";
+    //public static final String HTTP_ADDRESS = "http://app.iu.imeetu.cc/meetu_maven/";
     //测试服务器
-//    public static final String HTTP_ADDRESS = "http://123.57.26.168:8080/meetu_maven/";
+    public static final String HTTP_ADDRESS = "http://123.57.26.168:8080/meetu_maven/";
     //阿里云
     public static final String A_LI_YUN = "http://oss-cn-beijing.aliyuncs.com";
     /**
@@ -97,6 +97,10 @@ public class HttpContants {
      * 获取biubiu列表
      */
     public static final String GET_BIU_LIST = "app/biubiu/biubiuList";
+    /**
+     * 新的获取biubiu列表
+     * */
+    public static final String GET_BIU_LIST_NEW = "app/biu/getTargetBiuList";
     /**
      * 获取头像已读状态
      */

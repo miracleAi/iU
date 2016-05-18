@@ -5,7 +5,10 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
+import com.android.biubiu.bean.BiuBean;
 import com.android.biubiu.bean.UserBean;
+import com.android.biubiu.common.Constant;
+import com.android.biubiu.utils.Constants;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,39 +50,45 @@ public class BiubiuDao {
     public int getBiuListUnread() {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
         Cursor c = db.rawQuery("select * from " + DbConstents.BIU_LIST_DB
-                        + "where " + DbConstents.IS_READ + "=? ",
-                new String[]{"0"});
-        List<UserBean> list = new ArrayList<UserBean>();
+                        + " where " + DbConstents.IS_READ + "=? ",
+                new String[]{Constants.BIU_UNREAD});
+        int i=0;
         while (c.moveToNext()) {
-            UserBean bean = new UserBean();
-            list.add(bean);
+            i =i+1;
         }
         c.close();
         db.close();
-        if(null != list){
-            return list.size();
-        }else{
-            return 0;
-        }
+        return i;
     }
     /**
      * 查询一条时间最新且没有显示过得biubiu
      * */
-    public UserBean getBiuToShow(){
+    public BiuBean getBiuToShow(){
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         Cursor c = db.rawQuery("select * from "
                 + DbConstents.BIU_LIST_DB + " where " + DbConstents.IS_READ
                 + "=? order by " + DbConstents.TIME
-                + " asc", new String[] { "0" });
-        List<UserBean> list = new ArrayList<UserBean>();
+                + " asc", new String[] { Constants.BIU_UNREAD });
+        List<BiuBean> list = new ArrayList<BiuBean>();
         while (c.moveToNext()) {
-            UserBean bean = new UserBean();
+            BiuBean bean = new BiuBean();
+            bean.setIconUrl(c.getString(c.getColumnIndex(DbConstents.ICON_THUM_URL)));
+            bean.setUserCode(c.getInt(c.getColumnIndex(DbConstents.USER_CODE)));
+            bean.setAge(c.getInt(c.getColumnIndex(DbConstents.AGE)));
+            bean.setDistance(c.getInt(c.getColumnIndex(DbConstents.DISTANCE)));
+            bean.setMatchScore(c.getInt(c.getColumnIndex(DbConstents.MACH_SCORE)));
+            bean.setIsRead(c.getString(c.getColumnIndex(DbConstents.IS_READ)));
+            bean.setNickname(c.getString(c.getColumnIndex(DbConstents.NICKNAME)));
+            bean.setSchool(c.getString(c.getColumnIndex(DbConstents.SCHOOL)));
+            bean.setSex(c.getString(c.getColumnIndex(DbConstents.SEX)));
+            bean.setStarsign(c.getString(c.getColumnIndex(DbConstents.STARSIGN)));
+            bean.setTime(c.getLong(c.getColumnIndex(DbConstents.TIME)));
             list.add(bean);
         }
         c.close();
         db.close();
         if(null != list && list.size()>0){
-            UserBean bean = list.get(0);
+            BiuBean bean = list.get(0);
             return bean;
         }else{
             return null;
@@ -88,12 +97,12 @@ public class BiubiuDao {
     /**
      * 更新biubiu的状态为已读
      */
-    public void updateBiuState(String userCode){
+    public void updateBiuState(int userCode){
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         ContentValues values = new ContentValues();
-        values.put(DbConstents.IS_READ, "1");
-        db.update(DbConstents.BIU_LIST_DB, values, DbConstents.USER_CODE
-                + "=?", new String[] {userCode });
+        db.execSQL("update "+DbConstents.BIU_LIST_DB+" set "+DbConstents.IS_READ+"="+ Constants.BIU_READ+
+                " where "+DbConstents.USER_CODE+"=? ",new Integer[]{userCode});
+        values.put(DbConstents.IS_READ, Constants.BIU_READ);
         db.close();
     }
     /**
@@ -101,30 +110,33 @@ public class BiubiuDao {
      */
     public void updateAllBiuState( ){
         SQLiteDatabase db = dbHelper.getWritableDatabase();
-        db.execSQL("update "+DbConstents.BIU_LIST_DB+" set "+DbConstents.IS_READ+"=?",new String[]{"0"});
+        db.execSQL("update "+DbConstents.BIU_LIST_DB+" set "+DbConstents.IS_READ+"=?",new String[]{Constants.BIU_UNREAD});
         db.close();
     }
     /**
      * 插入一条biubiu数据
      */
-    public void addOneBiu(UserBean bean){
+    public void addOneBiu(BiuBean bean){
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         db.execSQL(
                 "insert or replace into "+DbConstents.BIU_LIST_DB+" values("+"?,?,?,?,?,"
                         + "?,?,?,?,?,?)",
-                new Object[] { });
+                new Object[] {bean.getUserCode(),bean.getIconUrl(),bean.getNickname(),bean.getSex(),bean.getAge(),
+                bean.getStarsign(),bean.getSchool(),bean.getMatchScore(),bean.getDistance(),bean.getTime(),Constants.BIU_UNREAD});
         db.close();
     }
     /**
      * 插入biubiu列表
      * */
-    public void addBiuList(ArrayList<UserBean> biuList){
+    public void addBiuList(ArrayList<BiuBean> biuList){
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         for(int i=0;i<biuList.size();i++){
-            UserBean bean = biuList.get(i);
-            ContentValues cv = new ContentValues();
-
-            db.insert(DbConstents.BIU_LIST_DB, null, cv);
+            BiuBean bean = biuList.get(i);
+            db.execSQL(
+                    "insert or replace into "+DbConstents.BIU_LIST_DB+" values("+"?,?,?,?,?,"
+                            + "?,?,?,?,?,?)",
+                    new Object[] {bean.getUserCode(),bean.getIconUrl(),bean.getNickname(),bean.getSex(),bean.getAge(),
+                            bean.getStarsign(),bean.getSchool(),bean.getMatchScore(),bean.getDistance(),bean.getTime(),Constants.BIU_UNREAD});
         }
         db.close();
     }
@@ -136,15 +148,26 @@ public class BiubiuDao {
         Cursor c = db.rawQuery("select * from "
                 + DbConstents.BIU_LIST_DB + " where "+"order by " + DbConstents.TIME
                 + " desc", null);
-        List<UserBean> list = new ArrayList<UserBean>();
+        List<BiuBean> list = new ArrayList<BiuBean>();
         while (c.moveToNext()) {
-            UserBean bean = new UserBean();
+            BiuBean bean = new BiuBean();
+            bean.setIconUrl(c.getString(c.getColumnIndex(DbConstents.ICON_THUM_URL)));
+            bean.setUserCode(c.getInt(c.getColumnIndex(DbConstents.USER_CODE)));
+            bean.setAge(c.getInt(c.getColumnIndex(DbConstents.AGE)));
+            bean.setDistance(c.getInt(c.getColumnIndex(DbConstents.DISTANCE)));
+            bean.setMatchScore(c.getInt(c.getColumnIndex(DbConstents.MACH_SCORE)));
+            bean.setIsRead(c.getString(c.getColumnIndex(DbConstents.IS_READ)));
+            bean.setNickname(c.getString(c.getColumnIndex(DbConstents.NICKNAME)));
+            bean.setSchool(c.getString(c.getColumnIndex(DbConstents.SCHOOL)));
+            bean.setSex(c.getString(c.getColumnIndex(DbConstents.SEX)));
+            bean.setStarsign(c.getString(c.getColumnIndex(DbConstents.STARSIGN)));
+            bean.setTime(c.getLong(c.getColumnIndex(DbConstents.TIME)));
             list.add(bean);
         }
         c.close();
         db.close();
         if(null != list && list.size()>0){
-            UserBean bean = list.get(0);
+            BiuBean bean = list.get(0);
             return bean.getTime();
         }else{
             return 0;

@@ -74,4 +74,10 @@ public class Constants {
 	public static final int HEAD_VERIFYFAIL_UNREAD = 4;
 	public static final int HEAD_VERIFYFAIL = 5;
 	public static final int HEAD_VERIFYFAIL_UPDATE = 6;
+	/**
+	 * 标记biubiu是否已读
+	 * */
+	public static final String BIU_UNREAD = "0";
+	public static final String BIU_READ = "1";
+
 }

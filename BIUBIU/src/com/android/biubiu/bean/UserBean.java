@@ -40,35 +40,7 @@ public class UserBean implements Serializable{
 	int x;
 	//bean的y坐标
 	int y;
-	//标记是否是默认头像
-	boolean isDefaultUser;
-	//默认头像带的链接
-	String webUrl;
-	//默认头像带的标题
-	String webTitle;
 
-	public String getWebTitle() {
-		return webTitle;
-	}
-
-	public void setWebTitle(String webTitle) {
-		this.webTitle = webTitle;
-	}
-
-	public void setDefaultUser(boolean defaultUser) {
-		isDefaultUser = defaultUser;
-	}
-	public void setWebUrl(String webUrl) {
-		this.webUrl = webUrl;
-	}
-	public String getWebUrl() {
-
-		return webUrl;
-	}
-	public boolean isDefaultUser() {
-
-		return isDefaultUser;
-	}
 	public int getX() {
 		return x;
 	}

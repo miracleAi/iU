@@ -56,7 +56,8 @@ public class MySqliteDBHelper extends SQLiteOpenHelper {
 		biuStr.append(DbConstents.SCHOOL + " varchar(100), ");
 		biuStr.append(DbConstents.MACH_SCORE + " Integer, ");
 		biuStr.append(DbConstents.DISTANCE + " Integer, ");
-		biuStr.append(DbConstents.TIME + " Integer ");
+		biuStr.append(DbConstents.TIME + " Integer, ");
+		biuStr.append(DbConstents.IS_READ + " varchar(100) ");
 		biuStr.append(")");
 		db.execSQL(biuStr.toString());
 
