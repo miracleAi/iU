@@ -247,4 +247,17 @@
     <!-- 抢biu页面，biubiu已被接受 -->
     <string name="biu_receive">已收biu</string>
 
+    <string name="title_activity_receive_biu_list">ReceiveBiuListActivity</string>
+    <string name="receive_biu_list">收biu的人</string>
+    <string name="end_this">结束本次</string>
+    <string name="accept">接受</string>
+    <string name="accepted">已接受</string>
+    <string name="give_U">已赠%1$dU米</string>
+    <string name="accept_fail">接受失败</string>
+    <string name="end_biu_title">结束本次biubiu</string>
+    <string name="biu_valid">每个biu都值得珍惜，90s后再结束本次biu呗</string>
+    <string name="biu_valid_btn">我会珍惜哒</string>
+    <string name="biu_invalid">结束后，本次biubiu将失效，也可以重新发biu哦</string>
+    <string name="sure">确定</string>
+    <string name="end_biu_suc">本次biu已结束</string>
 </resources>

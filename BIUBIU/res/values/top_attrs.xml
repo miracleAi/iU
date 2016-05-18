@@ -10,6 +10,7 @@
         <attr name="leftText" format="reference" />
         <attr name="rightText" format="reference" />
         <attr name="rightTextColor" format="reference"/>
+        <attr name="rightPadding" format="dimension"/>
         <attr name="centerText" format="reference" />
         <attr name="centerDrawable" format="reference" />
         <attr name="bothSideSize" format="dimension" />

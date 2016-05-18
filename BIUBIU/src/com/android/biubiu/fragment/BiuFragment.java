@@ -1091,7 +1091,7 @@ public class BiuFragment extends Fragment implements PushInterface {
     private void getBiuList(final long requestTime) {
         isBiuLoading = true;
         isBiuLoaded = false;
-        RequestParams params = new RequestParams(HttpContants.HTTP_ADDRESS + HttpContants.GET_BIU_LIST_NEW);
+        RequestParams params = new RequestParams(HttpContants.APP_BIU_GETTARGETBIULIST);
         JSONObject requestObject = new JSONObject();
         try {
             requestObject.put("device_code", SharePreferanceUtils.getInstance().getDeviceId(getActivity(), SharePreferanceUtils.DEVICE_ID, ""));

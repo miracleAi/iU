@@ -91,7 +91,6 @@ public class CommonDialog {
 
 			@Override
 			public void onClick(View v) {
-				// TODO Auto-generated method stub
 				click1.onClick(portraidlg, R.id.no_dialog_my_rl);
 			}
 		});

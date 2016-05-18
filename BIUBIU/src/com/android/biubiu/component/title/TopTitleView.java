@@ -83,6 +83,9 @@ public class TopTitleView extends LinearLayout {
         if (rightText != null) {
             mTvRight.setText(rightText);
         }
+
+        float margin = a.getDimension(R.styleable.TopTitleView_rightPadding, 24);
+        mTvRight.setPadding(0, 0, (int) margin, 0);
         CharSequence centerText = a.getText(R.styleable.TopTitleView_centerText);
         if (centerText != null) {
             mTvCenter.setText(centerText);
@@ -102,7 +105,7 @@ public class TopTitleView extends LinearLayout {
         float titleSize = a.getDimension(R.styleable.TopTitleView_topTitleSize, 18);
         if (titleSize > 18) {
             mTvTitle.setTextSize(TypedValue.COMPLEX_UNIT_PX, titleSize);
-        }else{
+        } else {
             mTvTitle.setTextSize(titleSize);
         }
         mLeftLayout.setMinimumWidth((int) widthSize);

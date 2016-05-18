@@ -398,17 +398,8 @@ public class BiuBiuReceiveActivity extends BaseActivity {
         RequestParams params = new RequestParams(HttpContants.HTTP_ADDRESS + HttpContants.GET_BIU_DETAIL_NEW);
         JSONObject requestObject = new JSONObject();
         try {
-            requestObject.put(
-                    "token",
-                    SharePreferanceUtils.getInstance().getToken(
-                            getApplicationContext(),
-                            SharePreferanceUtils.TOKEN, ""));
-            requestObject.put(
-                    "device_code",
-                    SharePreferanceUtils.getInstance().getDeviceId(
-                            getApplicationContext(),
-                            SharePreferanceUtils.DEVICE_ID, ""));
-
+            requestObject.put("token", SharePreferanceUtils.getInstance().getToken(this, SharePreferanceUtils.TOKEN, ""));
+            requestObject.put("device_code", SharePreferanceUtils.getInstance().getDeviceId(this, SharePreferanceUtils.DEVICE_ID, ""));
             requestObject.put("user_code", userCode);
         } catch (Exception e) {
             // TODO: handle exception
