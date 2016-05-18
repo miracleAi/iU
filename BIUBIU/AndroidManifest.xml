@@ -562,7 +562,10 @@
             android:label="@string/title_activity_webview" />
         <activity
             android:name="com.android.biubiu.activity.history.History_Activity"
-            android:label="@string/title_activity_history_"></activity>
+            android:label="@string/title_activity_history_" />
+        <activity
+            android:name="com.android.biubiu.activity.biu.ReceiveBiuListActivity"
+            android:label="@string/title_activity_receive_biu_list"></activity>
     </application>
 
 </manifest>

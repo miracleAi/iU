@@ -2,19 +2,19 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" 
-    android:background="#fcfcfc">
+    android:background="#fcfcfc"
+    android:orientation="vertical">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="61dp"
-        android:background="@drawable/item_user_list_bg" >
+        android:background="@drawable/item_user_list_bg">
 
         <RelativeLayout
             android:id="@+id/userHead_chat_user_list_rl"
             android:layout_width="65dp"
             android:layout_height="match_parent"
-            android:gravity="center" >
+            android:gravity="center">
 
             <ImageView
                 android:id="@+id/userHead_chat_user_list_img"
@@ -29,7 +29,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_toRightOf="@id/userHead_chat_user_list_rl" >
+            android:layout_toLeftOf="@+id/grab_layout"
+            android:layout_toRightOf="@id/userHead_chat_user_list_rl">
 
             <TextView
                 android:id="@+id/userName_chat_user_List_tv"
@@ -43,7 +44,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/userName_chat_user_List_tv"
-                android:orientation="horizontal" >
+                android:orientation="horizontal">
 
                 <TextView
                     android:id="@+id/userInfo_chat_user_List_tv"
@@ -78,6 +79,41 @@
                     android:textColor="#808080"
                     android:textSize="12sp" />
             </LinearLayout>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/grab_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="8dp"
+            android:visibility="visible">
+
+
+                <TextView
+                    android:id="@+id/accept_textview"
+                    android:layout_width="44dp"
+                    android:layout_height="24dp"
+                    android:background="@drawable/accept_bg"
+                    android:layout_centerVertical="true"
+                    android:gravity="center"
+                    android:text="@string/accept"
+                    android:textColor="@android:color/white"
+                    android:textSize="11sp" />
+
+                <TextView
+                    android:id="@+id/give_u_textview"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/accept_textview"
+                    android:layout_alignRight="@+id/accept_textview"
+                    android:layout_marginTop="3dp"
+                    android:layout_gravity="right"
+                    android:text="已赠1000U米"
+                    android:textSize="9sp"
+                    android:textColor="#b0b0b0"
+                    android:visibility="visible"/>
         </RelativeLayout>
     </RelativeLayout>
 

@@ -104,7 +104,7 @@ public class HttpContants {
     /**
      * 获取biubiu详情
      */
-    public static final String BIU_DETIAL = "app/biubiu/biuDetails";
+    public static final String BIU_DETIAL = "app/biu/getBiuDetails";
     /**
      * 修改抢biubiu人状态
      */
@@ -149,7 +149,18 @@ public class HttpContants {
      */
     public static final String APP_BIU_GETTARGETBIULIST = HTTP_ADDRESS + "app/biu/getTargetBiuList";
     /**
-     * 新的获取biubiu列表
+     * 获取抢biu列表
      */
-    public static final String GET_BIU_LIST_NEW = "app/biu/getTargetBiuList";
+    public static final String APP_BIU_GETGRABBIULIST = HTTP_ADDRESS + "app/biu/getGrabBiuList";
+
+    /**
+     * 接受biu
+     */
+    public static final String APP_BIU_ACCEPTBIU = HTTP_ADDRESS + "app/biu/acceptBiu";
+    /**
+     * 结束biu
+     */
+
+    public static final String APP_BIU_ENDBIU = HTTP_ADDRESS + "app/biu/endBiu";
+
 }

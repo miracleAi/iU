@@ -36,6 +36,8 @@ public class BiuBean {
     //bean的y坐标
     int y;
 
+    private int status;//0 未被接受,1已被接受
+
     public String getIconUrl() {
         return iconUrl;
     }
@@ -146,5 +148,13 @@ public class BiuBean {
 
     public void setY(int y) {
         this.y = y;
+    }
+
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
     }
 }

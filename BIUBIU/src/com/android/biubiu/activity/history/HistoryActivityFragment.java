@@ -1,5 +1,6 @@
 package com.android.biubiu.activity.history;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
@@ -7,10 +8,12 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Toast;
 
 import com.android.biubiu.BaseFragment;
 import com.android.biubiu.MainActivity;
+import com.android.biubiu.activity.biu.BiuBiuReceiveActivity;
 import com.android.biubiu.bean.HistoryBiuBean;
 import com.android.biubiu.component.stagger.PullToRefreshStaggeredGridView;
 import com.android.biubiu.component.title.TopTitleView;
@@ -77,6 +80,15 @@ public class HistoryActivityFragment extends BaseFragment implements PullToRefre
     private void initData() {
         mAdapter = new HistoryBiuAdapter(getActivity(), mData);
         mDongTaiGridView.setAdapter(mAdapter);
+        mDongTaiGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                HistoryBiuBean bean = mData.get(position);
+                Intent intent = new Intent(getActivity(), BiuBiuReceiveActivity.class);
+                intent.putExtra("userCode", String.valueOf(bean.getId()));
+                startActivity(intent);
+            }
+        });
         getHistoryBiu(0);
     }
 

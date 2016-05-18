@@ -13,6 +13,7 @@ public class BiuDetialBean {
 	 * 我的biu币
 	 */
 	private int havevc;
+	private long time;//biu的时间
 	/**
 	 * 抢一次需要消耗的biu 币
 	 */
@@ -318,8 +319,12 @@ public class BiuDetialBean {
 	public void setChat_tags(String chat_tags) {
 		this.chat_tags = chat_tags;
 	}
-	
-	
 
+	public long getTime() {
+		return time;
+	}
 
+	public void setTime(long time) {
+		this.time = time;
+	}
 }

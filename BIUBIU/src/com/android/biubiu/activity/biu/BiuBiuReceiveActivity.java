@@ -352,7 +352,7 @@ public class BiuBiuReceiveActivity extends BaseActivity {
                     intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                 }
                 /*Intent intent = new Intent(Intent.ACTION_PICK, null);
-				intent.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+                intent.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
 						"image/*");*/
                 startActivityForResult(intent, SELECT_PHOTO);
                 dialog.dismiss();
@@ -390,19 +390,10 @@ public class BiuBiuReceiveActivity extends BaseActivity {
         RequestParams params = new RequestParams(HttpContants.HTTP_ADDRESS + HttpContants.BIU_DETIAL);
         JSONObject requestObject = new JSONObject();
         try {
-            requestObject.put(
-                    "token",
-                    SharePreferanceUtils.getInstance().getToken(
-                            getApplicationContext(),
-                            SharePreferanceUtils.TOKEN, ""));
-            requestObject.put(
-                    "device_code",
-                    SharePreferanceUtils.getInstance().getDeviceId(
-                            getApplicationContext(),
-                            SharePreferanceUtils.DEVICE_ID, ""));
-
-            requestObject.put("chat_id", chatId);
-            requestObject.put("reference_id", referenceId);
+            requestObject.put("token", SharePreferanceUtils.getInstance().getToken(this, SharePreferanceUtils.TOKEN, ""));
+            requestObject.put("device_code", SharePreferanceUtils.getInstance().getDeviceId(this, SharePreferanceUtils.DEVICE_ID, ""));
+//            requestObject.put("chat_id", chatId);
+//            requestObject.put("reference_id", referenceId);
             requestObject.put("user_code", userCode);
         } catch (Exception e) {
             // TODO: handle exception
