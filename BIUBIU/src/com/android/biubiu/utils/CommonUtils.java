@@ -3,6 +3,7 @@ package com.android.biubiu.utils;
 import android.app.ActivityManager;
 import android.content.Context;
 
+import java.text.DecimalFormat;
 import java.util.List;
 
 /**
@@ -23,6 +24,14 @@ public class CommonUtils {
             }
         }
         return false;
+    }
+
+    public static String formatDistance(int meter) {
+        if (meter != 0) {
+            double kilometer = meter / 1000.00;
+            return new DecimalFormat("#.00").format(kilometer);
+        }
+        return "0";
     }
 
 }

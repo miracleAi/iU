@@ -232,4 +232,14 @@
     <string name="other">其它</string>
     <string name="about_iu">关于iU</string>
     <string name="share_content">分享带来满天繁星</string>
+    <string name="title_activity_history_">History_Activity</string>
+    <string name="biu_compatibility">匹配度:</string>
+    <string name="biu_time">%1$s前</string>
+    <string name="biu_distance">%1$skm</string>
+    <string name="school_age">%1$s&#160;&#160;•&#160;&#160;%2$s岁</string>
+    <string name="date_soon">刚刚</string>
+    <string name="date_min">分钟前</string>
+    <string name="date_hour">小时前</string>
+    <string name="date_day">天前</string>
+    <string name="tab_history">历史</string>
 </resources>

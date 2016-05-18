@@ -1,9 +1,7 @@
-package com.android.biubiu.activity.activity;
+package com.android.biubiu.activity.act;
 
 import android.os.Bundle;
-import android.app.Activity;
 import android.view.Window;
-import android.view.WindowManager;
 
 import com.android.biubiu.BaseActivity;
 import com.android.biubiu.common.Umutils;

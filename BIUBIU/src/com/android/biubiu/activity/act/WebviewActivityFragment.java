@@ -1,4 +1,4 @@
-package com.android.biubiu.activity.activity;
+package com.android.biubiu.activity.act;
 
 import android.app.Fragment;
 import android.os.Build;

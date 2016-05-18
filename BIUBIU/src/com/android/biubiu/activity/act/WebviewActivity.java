@@ -1,7 +1,6 @@
-package com.android.biubiu.activity.activity;
+package com.android.biubiu.activity.act;
 
 import android.os.Bundle;
-import android.app.Activity;
 import android.view.Window;
 
 import cc.imeetu.iu.R;
