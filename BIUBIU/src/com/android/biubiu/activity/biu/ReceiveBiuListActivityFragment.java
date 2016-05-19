@@ -45,7 +45,7 @@ public class ReceiveBiuListActivityFragment extends BaseFragment {
     private List<UserFriends> mData;
     private long mBiuTime, mBiuEndTime;
     private AlertDialog mValidDialog, mInvalidDialog;
-
+    private ReceiveBiuListAdapter mAdapter;
     public ReceiveBiuListActivityFragment() {
     }
 
@@ -179,6 +179,8 @@ public class ReceiveBiuListActivityFragment extends BaseFragment {
     }
 
     private void initData() {
+        mAdapter = new ReceiveBiuListAdapter(mData,getActivity());
+        mListview.setAdapter(mAdapter);
         getGrabList(0);
         String sendBiuTime = SharePreferanceUtils.getInstance().getShared(getActivity(), SharePreferanceUtils.SEND_BIU_TIME, "");
         mBiuTime = Long.parseLong(sendBiuTime);
@@ -250,6 +252,7 @@ public class ReceiveBiuListActivityFragment extends BaseFragment {
                     }.getType());
                     if (list != null && list.size() > 0) {
                         mData.addAll(list);
+                        mAdapter.notifyDataSetChanged();
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
