@@ -201,45 +201,45 @@ public class MenuRightFragment extends EaseConversationListFragment {
         String headFlag = Constant.headState;
         int flag = 0;
         if (!TextUtils.isEmpty(headFlag)) {
-            flag =  Integer.parseInt(headFlag);
+            flag = Integer.parseInt(headFlag);
         }
-            switch (flag) {
-                case Constants.HEAD_VERIFYSUC_UNREAD:
-                case Constants.HEAD_VERIFYFAIL_UNREAD:
-                case Constants.HEAD_VERIFYFAIL:
-                case Constants.HEAD_VERIFYFAIL_UPDATE:
-                    showShenHeDaiog(flag);
-                    break;
-                default:
-                    if (toflag == TO_CHAT) {
-                        // 进入聊天页面
-                        Intent intent = new Intent(getActivity(), ChatActivity.class);
-                        intent.putExtra(Constant.EXTRA_USER_ID, userName);
-                        startActivityForResult(intent,TO_CHATPAGE);
-                    } else if (toflag == TO_FRIENDS) {
-                        startActivity(new Intent(getActivity(), UserListActivity.class));
-                    } else if (toflag == DELETE_CHAT) {
-                        MyHintDialog.getDialog(getActivity(), "删除会话", "嗨~确定要删除会话吗", "确定", new OnDialogClick() {
+        switch (flag) {
+            case Constants.HEAD_VERIFYSUC_UNREAD:
+            case Constants.HEAD_VERIFYFAIL_UNREAD:
+            case Constants.HEAD_VERIFYFAIL:
+            case Constants.HEAD_VERIFYFAIL_UPDATE:
+                showShenHeDaiog(flag);
+                break;
+            default:
+                if (toflag == TO_CHAT) {
+                    // 进入聊天页面
+                    Intent intent = new Intent(getActivity(), ChatActivity.class);
+                    intent.putExtra(Constant.EXTRA_USER_ID, userName);
+                    startActivityForResult(intent, TO_CHATPAGE);
+                } else if (toflag == TO_FRIENDS) {
+                    startActivity(new Intent(getActivity(), UserListActivity.class));
+                } else if (toflag == DELETE_CHAT) {
+                    MyHintDialog.getDialog(getActivity(), "删除会话", "嗨~确定要删除会话吗", "确定", new OnDialogClick() {
 
-                            @Override
-                            public void onOK() {
-                                // TODO Auto-generated method stub
-                                // 删除此会话
-                                EMClient.getInstance().chatManager().deleteConversation(userName, true);
-                                refresh();
-                                ((MainActivity) getActivity()).setUnReadVisible(showUnread());
-                                Toast.makeText(getActivity(), "删除成功", Toast.LENGTH_SHORT).show();
-                            }
+                        @Override
+                        public void onOK() {
+                            // TODO Auto-generated method stub
+                            // 删除此会话
+                            EMClient.getInstance().chatManager().deleteConversation(userName, true);
+                            refresh();
+                            ((MainActivity) getActivity()).setUnReadVisible(showUnread());
+                            Toast.makeText(getActivity(), "删除成功", Toast.LENGTH_SHORT).show();
+                        }
 
-                            @Override
-                            public void onDismiss() {
-                                // TODO Auto-generated method stub
+                        @Override
+                        public void onDismiss() {
+                            // TODO Auto-generated method stub
 
-                            }
-                        });
-                    }
-                    break;
-            }
+                        }
+                    });
+                }
+                break;
+        }
     }
 
     private void showShenHeDaiog(final int flag) {
@@ -500,5 +500,11 @@ public class MenuRightFragment extends EaseConversationListFragment {
             noLoginView.setVisibility(View.GONE);
             errorView.setVisibility(View.VISIBLE);
         }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        getActivity().unregisterReceiver(receiveBroadCast);
     }
 }

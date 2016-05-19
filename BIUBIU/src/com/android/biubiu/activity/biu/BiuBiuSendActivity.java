@@ -2,6 +2,7 @@ package com.android.biubiu.activity.biu;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -37,6 +38,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
@@ -72,8 +74,12 @@ public class BiuBiuSendActivity extends BaseActivity implements OnClickListener 
     private ImageOptions imageOptions;
     //private LinearLayout flowRlLayout;
     private ScrollView flowScroll;
-    int viewHight;
+    //    int viewHight;
     int bottomSend;
+
+    private LinearLayout mGrabLayout;
+    private int mSize;
+    private Random mRandom;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,7 +88,7 @@ public class BiuBiuSendActivity extends BaseActivity implements OnClickListener 
         setContentView(R.layout.activity_biu_biu_send);
 
         //		initChildViews();
-        viewHight = (int) (350.0 * DisplayUtils.getWindowHeight(this) / 640.0);
+//        viewHight = (int) (350.0 * DisplayUtils.getWindowHeight(this) / 640.0);
         bottomSend = (int) (52.0 * DisplayUtils.getWindowHeight(this) / 640.0);
         imageOptions = new ImageOptions.Builder()
                 .setImageScaleType(ImageView.ScaleType.CENTER_CROP)
@@ -100,6 +106,12 @@ public class BiuBiuSendActivity extends BaseActivity implements OnClickListener 
      * 网络加载话题标签
      */
     private void initData() {
+        String lastBiuTag = SharePreferanceUtils.getInstance().getShared(this, SharePreferanceUtils.LAST_SEND_BIU_TAG, "");
+        if (!TextUtils.isEmpty(lastBiuTag)) {
+            mEditText.setText(lastBiuTag);
+            mEditText.setSelection(mEditText.getText().toString().length());
+        }
+        mRandom = new Random();
         showLoadingLayout(getResources().getString(R.string.loading));
         if (!NetUtils.isNetworkConnected(getApplicationContext())) {
             dismissLoadingLayout();
@@ -107,7 +119,6 @@ public class BiuBiuSendActivity extends BaseActivity implements OnClickListener 
 
                 @Override
                 public void onClick(View v) {
-                    // TODO Auto-generated method stub
                     dismissErrorLayout();
                     initData();
                 }
@@ -122,7 +133,6 @@ public class BiuBiuSendActivity extends BaseActivity implements OnClickListener 
             requestObject.put("type", Constants.CHAT);
             requestObject.put("token", SharePreferanceUtils.getInstance().getToken(this, SharePreferanceUtils.TOKEN, ""));
         } catch (JSONException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
         params.addBodyParameter("data", requestObject.toString());
@@ -130,19 +140,16 @@ public class BiuBiuSendActivity extends BaseActivity implements OnClickListener 
 
             @Override
             public void onCancelled(CancelledException arg0) {
-                // TODO Auto-generated method stub
 
             }
 
             @Override
             public void onError(Throwable arg0, boolean arg1) {
-                // TODO Auto-generated method stub
                 dismissLoadingLayout();
                 showErrorLayout(new OnClickListener() {
 
                     @Override
                     public void onClick(View v) {
-                        // TODO Auto-generated method stub
                         dismissErrorLayout();
                         initData();
                     }
@@ -153,7 +160,6 @@ public class BiuBiuSendActivity extends BaseActivity implements OnClickListener 
 
             @Override
             public void onFinished() {
-                // TODO Auto-generated method stub
 
             }
 
@@ -171,7 +177,6 @@ public class BiuBiuSendActivity extends BaseActivity implements OnClickListener 
 
                             @Override
                             public void onClick(View v) {
-                                // TODO Auto-generated method stub
                                 dismissErrorLayout();
                                 initData();
                             }
@@ -196,11 +201,10 @@ public class BiuBiuSendActivity extends BaseActivity implements OnClickListener 
                             }.getType());
                     LogUtil.e(TAG, "personalTagBeansList" + personalTagBeansList.size());
                     for (PersonalTagBean tag : personalTagBeansList) {
-
                         mList.add(tag);
                         log.e(TAG, tag.getName());
-
                     }
+                    mSize = mList.size();
                     initChildViews();
                 } catch (JSONException e) {
 
@@ -215,7 +219,6 @@ public class BiuBiuSendActivity extends BaseActivity implements OnClickListener 
 
     @SuppressLint("CutPasteId")
     private void initView() {
-        // TODO Auto-generated method stub
         userPhoto = (ImageView) findViewById(R.id.photo_head_senbiu_img);
         sendBiuBtn = (Button) findViewById(R.id.send_biu);
         sendBiuBtn.setOnClickListener(this);
@@ -243,7 +246,7 @@ public class BiuBiuSendActivity extends BaseActivity implements OnClickListener 
                         if (time / 1000 > 90) {
                             sendBiu(mEditText.getText().toString());
                         } else {
-                            Toast.makeText(BiuBiuSendActivity.this, "距离上次发biu还不到90秒哦！", 1000).show();
+                            Toast.makeText(BiuBiuSendActivity.this, "距离上次发biu还不到90秒哦！", Toast.LENGTH_SHORT).show();
                         }
                     } else {
                         sendBiu(mEditText.getText().toString());
@@ -255,7 +258,6 @@ public class BiuBiuSendActivity extends BaseActivity implements OnClickListener 
 
             @Override
             public void onClick(View arg0) {
-                // TODO Auto-generated method stub
                 finish();
             }
         });
@@ -267,21 +269,19 @@ public class BiuBiuSendActivity extends BaseActivity implements OnClickListener 
 		LinearLayout.LayoutParams params2=(android.widget.LinearLayout.LayoutParams) sendBiuBtn.getLayoutParams();
 		params2.bottomMargin=bottomSend;
 		sendBiuBtn.setLayoutParams(params2);*/
-
+        mGrabLayout = (LinearLayout) findViewById(R.id.grab_random_layout);
+        mGrabLayout.setOnClickListener(this);
     }
 
     private TextWatcher watcher = new TextWatcher() {
 
         @Override
         public void onTextChanged(CharSequence arg0, int arg1, int arg2, int arg3) {
-            // TODO Auto-generated method stub
 
         }
 
         @Override
-        public void beforeTextChanged(CharSequence arg0, int arg1, int arg2,
-                                      int arg3) {
-            // TODO Auto-generated method stub
+        public void beforeTextChanged(CharSequence arg0, int arg1, int arg2, int arg3) {
 
         }
 
@@ -303,10 +303,8 @@ public class BiuBiuSendActivity extends BaseActivity implements OnClickListener 
 
     @SuppressWarnings("deprecation")
     private void initChildViews() {
-        // TODO Auto-generated method stub
-        mFlowLayout = (Flowlayout) findViewById(R.id.flowlayout);
-        MarginLayoutParams lp = new MarginLayoutParams(
-                LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+        /*mFlowLayout = (Flowlayout) findViewById(R.id.flowlayout);
+        MarginLayoutParams lp = new MarginLayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
         lp.leftMargin = 30;
         //		lp.rightMargin = 5;
         lp.topMargin = 45;
@@ -330,15 +328,15 @@ public class BiuBiuSendActivity extends BaseActivity implements OnClickListener 
                 }
             });
             mFlowLayout.addView(view, lp);
-        }
-		/*RelativeLayout.LayoutParams params=(android.widget.RelativeLayout.LayoutParams) flowRlLayout.getLayoutParams();
-		if(mFlowLayout.getmHeight()>viewHight){
+        }*/
+        /*RelativeLayout.LayoutParams params=(android.widget.RelativeLayout.LayoutParams) flowRlLayout.getLayoutParams();
+        if(mFlowLayout.getmHeight()>viewHight){
 			params.height=mFlowLayout.getmHeight();
 		}else{
 			params.height=viewHight;
 		}
 		flowRlLayout.setLayoutParams(params);*/
-        ViewTreeObserver vto = mFlowLayout.getViewTreeObserver();
+        /*ViewTreeObserver vto = mFlowLayout.getViewTreeObserver();
         vto.addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
             public boolean onPreDraw() {
                 mFlowLayout.getViewTreeObserver().removeOnPreDrawListener(this);
@@ -349,15 +347,15 @@ public class BiuBiuSendActivity extends BaseActivity implements OnClickListener 
                 return true;
             }
         });
-        LinearLayout.LayoutParams params2 = (android.widget.LinearLayout.LayoutParams) sendBiuBtn.getLayoutParams();
+        RelativeLayout.LayoutParams params2 = (android.widget.RelativeLayout.LayoutParams) sendBiuBtn.getLayoutParams();
         params2.bottomMargin = bottomSend;
-        sendBiuBtn.setLayoutParams(params2);
+        sendBiuBtn.setLayoutParams(params2);*/
     }
 
     /**
      * 发送biu
      */
-    private void sendBiu(String chatTag) {
+    private void sendBiu(final String chatTag) {
         if (!NetUtils.isNetworkConnected(getApplicationContext())) {
             toastShort(getResources().getString(R.string.net_error));
             return;
@@ -372,32 +370,27 @@ public class BiuBiuSendActivity extends BaseActivity implements OnClickListener 
                     getDeviceId(getApplicationContext(), SharePreferanceUtils.DEVICE_ID, ""));
             requestObject.put("chat_tags", chatTag);
         } catch (Exception e) {
-            // TODO: handle exception
         }
         params.addBodyParameter("data", requestObject.toString());
         x.http().post(params, new CommonCallback<String>() {
 
             @Override
             public void onCancelled(CancelledException arg0) {
-                // TODO Auto-generated method stub
 
             }
 
             @Override
             public void onError(Throwable arg0, boolean arg1) {
-                // TODO Auto-generated method stub
                 dismissLoadingLayout();
             }
 
             @Override
             public void onFinished() {
-                // TODO Auto-generated method stub
 
             }
 
             @Override
             public void onSuccess(String arg0) {
-                // TODO Auto-generated method stub
                 dismissLoadingLayout();
                 Log.d(TAG, "result--" + arg0);
                 JSONObject jsons;
@@ -423,6 +416,7 @@ public class BiuBiuSendActivity extends BaseActivity implements OnClickListener 
                 }
                 Umutils.count(BiuBiuSendActivity.this, Umutils.SEND_BIU_TOTAL);
                 toastShort("发送成功");
+                SharePreferanceUtils.getInstance().putShared(BiuBiuSendActivity.this, SharePreferanceUtils.LAST_SEND_BIU_TAG, chatTag);
                 setResult(RESULT_OK);
                 finish();
 
@@ -442,7 +436,12 @@ public class BiuBiuSendActivity extends BaseActivity implements OnClickListener 
                 setResult(RESULT_OK);
                 finish();
                 break;
-
+            case R.id.grab_random_layout:
+                if (mSize > 0) {
+                    mEditText.setText(mList.get(mRandom.nextInt(mSize - 1)).getName());
+                    mEditText.setSelection(mEditText.getText().toString().length());
+                }
+                break;
             default:
                 break;
         }

@@ -24,6 +24,7 @@ public class SharePreferanceUtils {
 
     public static String HX_USER_NAME = "hx_user_name";
     public static String HX_USER_PASSWORD = "hx_user_password";
+    public static String LAST_SEND_BIU_TAG = "last_send_biu_tag";
 
     //活动相关
     private static final String SHOW_AD = "show_ad";

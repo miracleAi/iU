@@ -322,7 +322,7 @@ public class BiuFragment extends Fragment implements PushInterface {
         if (SharePreferanceUtils.getInstance().isExchange(getActivity(),SharePreferanceUtils.EXCHANGE_FROUNT,true)) {
             //接口通信赋值
             MyPushReceiver.setUpdateBean(this);
-//            showBiuHandler.post(shouBiuR);
+            showBiuHandler.post(shouBiuR);
             //检查是否提交了channelID
             if (!SharePreferanceUtils.getInstance().getShared(getActivity(), SharePreferanceUtils.IS_COMMIT_CHANNEL, false)) {
                 HttpUtils.commitChannelId(getActivity());
