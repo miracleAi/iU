@@ -33,6 +33,8 @@ public class SharePreferanceUtils {
     private static final String HAVE_TO_VIEW = "have_to_view";
     //标记程序前后台切换
     public static String EXCHANGE_FROUNT = "exchange_frount";
+    //标记biubiu是否已结束
+    public static String IS_BIU_END = "is_biu_end";
 
     public static SharePreferanceUtils shareUtils;
 
@@ -117,6 +119,10 @@ public class SharePreferanceUtils {
     }
     //获取应用是否从后台进入前台
     public boolean isExchange(Context context, String prefKey, boolean defValue) {
+        return getShared(context, prefKey, defValue);
+    }
+    //获取biubiu 是否结束
+    public boolean isBiuEnd(Context context, String prefKey, boolean defValue) {
         return getShared(context, prefKey, defValue);
     }
 
