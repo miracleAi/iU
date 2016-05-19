@@ -338,6 +338,18 @@ public class BiuFragment extends Fragment implements PushInterface,FragmentIndic
     @Override
     public void onResume() {
         super.onResume();
+        //主要解决登陆后请求biu列表
+        if(!isBiuLoading && !isBiuLoaded){
+            getBiuList(0);
+        }
+        boolean isBiuEnd = SharePreferanceUtils.getInstance().isBiuEnd(getActivity(), SharePreferanceUtils.IS_BIU_END, true);
+        //如果返回时biu已结束，则清掉抢biu列表的相关状态
+        if(isBiuEnd){
+            grabBiuList.clear();
+            //// TODO: 2016/5/19  还需要清除掉中间显示组合头像相关
+            userBiuImv.setImageResource(R.drawable.biu_btn_biu);
+            userBiuImv.setVisibility(View.VISIBLE);
+        }
         if (SharePreferanceUtils.getInstance().isExchange(getActivity(), SharePreferanceUtils.EXCHANGE_FROUNT, true)) {
             //接口通信赋值
             MyPushReceiver.setUpdateBean(this);
@@ -349,14 +361,18 @@ public class BiuFragment extends Fragment implements PushInterface,FragmentIndic
             initUserGroup();
             if (LoginUtils.isLogin(getActivity())) {
                 //执行加载biu列表 抢biu人列表 各种状态
-                getBiuList(0);
+                if(!isBiuLoading && !isBiuLoaded){
+                    getBiuList(0);
+                }
             } else {
                 //获取未登录时的biubiu列表
                 getBiuListUnlogin();
             }
-            boolean isBiuEnd = SharePreferanceUtils.getInstance().isBiuEnd(getActivity(), SharePreferanceUtils.IS_BIU_END, true);
             if (!isBiuEnd) {
                 getGrabBiuUser();
+            }else{
+                userBiuImv.setImageResource(R.drawable.biu_btn_biu);
+                userBiuImv.setVisibility(View.VISIBLE);
             }
         }
     }
