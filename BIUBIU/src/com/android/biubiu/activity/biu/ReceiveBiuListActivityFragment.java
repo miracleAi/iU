@@ -166,6 +166,7 @@ public class ReceiveBiuListActivityFragment extends BaseFragment {
                         showValidDialog();
                         return;
                     } else if ("1".equals(message)) {
+                        SharePreferanceUtils.getInstance().putShared(getActivity(),SharePreferanceUtils.IS_BIU_END,true);
                         Toast.makeText(getActivity(), getResources().getString(R.string.end_biu_suc), Toast.LENGTH_SHORT).show();
                         getActivity().finish();
                     }
