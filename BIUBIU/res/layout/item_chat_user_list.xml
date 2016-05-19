@@ -5,9 +5,11 @@
     android:background="#fcfcfc"
     android:orientation="vertical">
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="61dp"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
         android:background="@drawable/item_user_list_bg">
 
         <RelativeLayout
@@ -26,11 +28,10 @@
         </RelativeLayout>
 
         <RelativeLayout
-            android:layout_width="match_parent"
+            android:layout_width="183dp"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_toLeftOf="@+id/grab_layout"
-            android:layout_toRightOf="@id/userHead_chat_user_list_rl">
+            >
 
             <TextView
                 android:id="@+id/userName_chat_user_List_tv"
@@ -52,6 +53,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
                     android:text="@string/name_main"
+                    android:singleLine="true"
                     android:textColor="#808080"
                     android:textSize="12sp" />
 
@@ -64,6 +66,7 @@
                     android:drawableLeft="@drawable/mes_imageview_dian"
                     android:drawablePadding="7dp"
                     android:text="@string/name_main"
+                    android:singleLine="true"
                     android:textColor="#808080"
                     android:textSize="12sp" />
 
@@ -75,7 +78,8 @@
                     android:layout_marginTop="5dp"
                     android:drawableLeft="@drawable/mes_imageview_dian"
                     android:drawablePadding="7dp"
-                    android:text="@string/name_main"
+                    android:text="清华大学啊啊啊啊啊啊"
+                    android:singleLine="true"
                     android:textColor="#808080"
                     android:textSize="12sp" />
             </LinearLayout>
@@ -83,10 +87,9 @@
 
         <RelativeLayout
             android:id="@+id/grab_layout"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight="1"
             android:layout_height="match_parent"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
             android:layout_marginRight="8dp"
             android:visibility="visible">
 
@@ -96,6 +99,7 @@
                     android:layout_width="44dp"
                     android:layout_height="24dp"
                     android:background="@drawable/accept_bg"
+                    android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
                     android:gravity="center"
                     android:text="@string/accept"
@@ -115,7 +119,7 @@
                     android:textColor="#b0b0b0"
                     android:visibility="visible"/>
         </RelativeLayout>
-    </RelativeLayout>
+    </LinearLayout>
 
     <View
         android:layout_width="match_parent"
