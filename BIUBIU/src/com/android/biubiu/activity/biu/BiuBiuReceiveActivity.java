@@ -33,6 +33,7 @@ import com.android.biubiu.common.Umutils;
 import com.android.biubiu.sqlite.SchoolDao;
 import com.android.biubiu.sqlite.UserDao;
 import com.android.biubiu.utils.Constants;
+import com.android.biubiu.utils.DateUtils;
 import com.android.biubiu.utils.DensityUtil;
 import com.android.biubiu.utils.HttpContants;
 import com.android.biubiu.utils.HttpUtils;
@@ -150,11 +151,11 @@ public class BiuBiuReceiveActivity extends BaseActivity {
         showTagLayout.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(isTagShow){
+                if (isTagShow) {
                     tagLayout.setVisibility(View.GONE);
                     showTagImv.setImageResource(R.drawable.biu_receive_btn_down);
                     isTagShow = false;
-                }else{
+                } else {
                     tagLayout.setVisibility(View.VISIBLE);
                     showTagImv.setImageResource(R.drawable.biu_receive_btn_up);
                     isTagShow = true;
@@ -488,16 +489,7 @@ public class BiuBiuReceiveActivity extends BaseActivity {
                     } else {
                         distance.setText(biuDEtialBean.getDistance() + "m");
                     }
-
-                    if (biuDEtialBean.getTime() > (24 * 60 * 60)) {
-                        timeBefore.setText(biuDEtialBean.getTime() + "day");
-                    } else if (biuDEtialBean.getTime() > (60 * 60)) {
-                        timeBefore.setText(biuDEtialBean.getTime() + "h");
-                    } else {
-                        timeBefore.setText(biuDEtialBean.getTime() + "min");
-                    }
-
-
+                    timeBefore.setText(DateUtils.getDateFormatReceiveBiu(BiuBiuReceiveActivity.this,biuDEtialBean.getTime()));
                     numberInTag.setText("[" + biuDEtialBean.getHit_tags_num()
                             + "]");
                     numberInInterestTag.setText("["
@@ -626,7 +618,7 @@ public class BiuBiuReceiveActivity extends BaseActivity {
      * 抢biu
      */
     public void grabBiu() {
-        if (biuDEtialBean.getBiuState().equals(Constants.BIU_GRAB)) {
+        if (!biuDEtialBean.getBiuState().equals(Constants.BIU_GRAB)) {
             return;
         }
         if (!NetUtils.isNetworkConnected(getApplicationContext())) {

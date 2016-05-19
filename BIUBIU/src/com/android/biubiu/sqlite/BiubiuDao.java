@@ -9,6 +9,7 @@ import com.android.biubiu.bean.BiuBean;
 import com.android.biubiu.bean.UserBean;
 import com.android.biubiu.common.Constant;
 import com.android.biubiu.utils.Constants;
+import com.android.biubiu.utils.SharePreferanceUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -116,27 +117,31 @@ public class BiubiuDao {
     /**
      * 插入一条biubiu数据
      */
-    public void addOneBiu(BiuBean bean){
-        SQLiteDatabase db = dbHelper.getWritableDatabase();
-        db.execSQL(
-                "insert or replace into "+DbConstents.BIU_LIST_DB+" values("+"?,?,?,?,?,"
-                        + "?,?,?,?,?,?)",
-                new Object[] {bean.getUserCode(),bean.getIconUrl(),bean.getNickname(),bean.getSex(),bean.getAge(),
-                bean.getStarsign(),bean.getSchool(),bean.getMatchScore(),bean.getDistance(),bean.getTime(),Constants.BIU_UNREAD});
-        db.close();
-    }
-    /**
-     * 插入biubiu列表
-     * */
-    public void addBiuList(ArrayList<BiuBean> biuList){
-        SQLiteDatabase db = dbHelper.getWritableDatabase();
-        for(int i=0;i<biuList.size();i++){
-            BiuBean bean = biuList.get(i);
+    public void addOneBiu(BiuBean bean,String receiveSex){
+        if(bean.getSex().equals(receiveSex)){
+            SQLiteDatabase db = dbHelper.getWritableDatabase();
             db.execSQL(
                     "insert or replace into "+DbConstents.BIU_LIST_DB+" values("+"?,?,?,?,?,"
                             + "?,?,?,?,?,?)",
                     new Object[] {bean.getUserCode(),bean.getIconUrl(),bean.getNickname(),bean.getSex(),bean.getAge(),
                             bean.getStarsign(),bean.getSchool(),bean.getMatchScore(),bean.getDistance(),bean.getTime(),Constants.BIU_UNREAD});
+            db.close();
+        }
+    }
+    /**
+     * 插入biubiu列表
+     * */
+    public void addBiuList(ArrayList<BiuBean> biuList,String receiveSex){
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        for(int i=0;i<biuList.size();i++){
+            BiuBean bean = biuList.get(i);
+            if(bean.getSex().equals(receiveSex)){
+                db.execSQL(
+                        "insert or replace into "+DbConstents.BIU_LIST_DB+" values("+"?,?,?,?,?,"
+                                + "?,?,?,?,?,?)",
+                        new Object[] {bean.getUserCode(),bean.getIconUrl(),bean.getNickname(),bean.getSex(),bean.getAge(),
+                                bean.getStarsign(),bean.getSchool(),bean.getMatchScore(),bean.getDistance(),bean.getTime(),Constants.BIU_UNREAD});
+            }
         }
         db.close();
     }

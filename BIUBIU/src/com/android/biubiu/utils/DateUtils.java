@@ -117,5 +117,33 @@ public class DateUtils {
 		}
 		return result;
 	}
+	public static String getDateFormatReceiveBiu(Context context, long time) {
+		init(context);
+		String result = "";
+		try {
+			Date date = DATE_FORMAT_ALL.parse(getActivityTimeStart(time));
+			long now = System.currentTimeMillis();
+			long other = date.getTime();
+			long l = now - other;
+			long day = l / (24 * 60 * 60 * 1000);
+			long hour = (l / (60 * 60 * 1000) - day * 24);
+			long min = ((l / (60 * 1000)) - day * 24 * 60 - hour * 60);
+			long s = (l / 1000 - day * 24 * 60 * 60 - hour * 60 * 60 - min * 60);
+			// System.out.println(""+day+"天"+hour+"小时"+min+"分"+s+"秒");
+			 if (day > 0) {
+				result = day + "day";
+			} else if (hour > 0) {
+				result = hour + "h";
+			} else if (min > 0) {
+				result = min + "min";
+			} else {
+				result = sSoon;
+			}
+
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		return result;
+	}
 
 }

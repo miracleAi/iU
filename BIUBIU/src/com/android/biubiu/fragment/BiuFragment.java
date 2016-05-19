@@ -333,7 +333,7 @@ public class BiuFragment extends Fragment implements PushInterface {
                 getBiuList(0);
             } else {
                 //获取未登录时的biubiu列表
-                // getBiuListUnlogin();
+                 getBiuListUnlogin();
             }
         }
     }
@@ -1121,6 +1121,8 @@ public class BiuFragment extends Fragment implements PushInterface {
                     if (headFlag.equals("2") || headFlag.equals("4")) {
                         showShenHeDaiog(Integer.parseInt(headFlag));
                     }
+                    String recSex = data.getString("s_sex");
+                    SharePreferanceUtils.getInstance().putShared(getActivity(), SharePreferanceUtils.RECEIVE_SEX, recSex);
                     inveralTime = data.getInt("biu_time_interval");
                     String next = data.getString("has_next");
                     if(next.equals("0")){
@@ -1137,7 +1139,7 @@ public class BiuFragment extends Fragment implements PushInterface {
                             if(requestTime == 0){
                                 biuDao.deleteAll();
                             }
-                            biuDao.addBiuList(list);
+                            biuDao.addBiuList(list,SharePreferanceUtils.getInstance().getReceiveSex(getActivity(),SharePreferanceUtils.RECEIVE_SEX,""));
                             isBiuLoaded = true;
                         }else{
                             biuDao.updateAllBiuState();
@@ -1150,6 +1152,8 @@ public class BiuFragment extends Fragment implements PushInterface {
 
             @Override
             public void onError(Throwable throwable, boolean b) {
+                isBiuLoading = false;
+                isBiuLoaded = false;
                 log.d("mytest","error");
             }
 
@@ -1478,7 +1482,7 @@ public class BiuFragment extends Fragment implements PushInterface {
             case 0:
                 //有新的匹配消息
                 if(!isOnCircle(userBean)){
-                    biuDao.addOneBiu(userBean);
+                    biuDao.addOneBiu(userBean,SharePreferanceUtils.getInstance().getReceiveSex(getActivity(),SharePreferanceUtils.RECEIVE_SEX,""));
                 }
                 break;
             case 1:

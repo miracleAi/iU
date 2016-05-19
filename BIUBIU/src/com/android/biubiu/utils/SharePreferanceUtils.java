@@ -21,6 +21,7 @@ public class SharePreferanceUtils {
     public static String IS_RECEIVE_MSG = "is_receive_msg";
     public static String SEND_BIU_TIME = "send_biu_time";
     public static String BIU_SOUND_TIME = "biu_sound_time";
+    public static String RECEIVE_SEX = "receive_sex";
 
     public static String HX_USER_NAME = "hx_user_name";
     public static String HX_USER_PASSWORD = "hx_user_password";
@@ -98,6 +99,10 @@ public class SharePreferanceUtils {
 
     //获取上次biubiu播放声音时间
     public String getBiuSoundTime(Context context, String prefKey, String defValue) {
+        return getShared(context, prefKey, defValue);
+    }
+    //获取可显示匹配的性别
+    public String getReceiveSex(Context context, String prefKey, String defValue) {
         return getShared(context, prefKey, defValue);
     }
 
