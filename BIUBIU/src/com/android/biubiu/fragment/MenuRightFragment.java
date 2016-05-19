@@ -16,6 +16,7 @@ import com.android.biubiu.chat.MyHintDialog.OnDialogClick;
 import com.android.biubiu.chat.UserListActivity;
 import com.android.biubiu.common.CommonDialog;
 import com.android.biubiu.common.Constant;
+import com.android.biubiu.component.indicator.FragmentIndicator;
 import com.android.biubiu.utils.Constants;
 import com.android.biubiu.utils.HttpUtils;
 import com.android.biubiu.utils.LogUtil;
@@ -49,7 +50,7 @@ import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 
 
-public class MenuRightFragment extends EaseConversationListFragment {
+public class MenuRightFragment extends EaseConversationListFragment implements FragmentIndicator.OnClickListener{
     private TextView errorText;
     private Button register, login;
     private String TAG = "MenuRightFragment";
@@ -104,9 +105,13 @@ public class MenuRightFragment extends EaseConversationListFragment {
         receiveBroadCast = new ReceiveBroadCast();
         IntentFilter filter = new IntentFilter();
         filter.addAction(Constants.FLAG_RECEIVE);    //只有持有相同的action的接受者才能接收此广播
-        filter.addAction(com.android.biubiu.common.Constant.EXIT_APP_BROADCAST);
         getActivity().registerReceiver(receiveBroadCast, filter);
 
+    }
+
+    @Override
+    public void onTabClick() {
+        judgeVisibleGone();
     }
 
     public class ReceiveBroadCast extends BroadcastReceiver {
@@ -119,8 +124,6 @@ public class MenuRightFragment extends EaseConversationListFragment {
                     LogUtil.e(TAG, "收到刷新广播");
                     handler.sendEmptyMessage(MSG_REFRESH);
 //                    refresh();
-                } else if (action.equals(Constant.EXIT_APP_BROADCAST)) {
-                    judgeVisibleGone();
                 }
             }
         }

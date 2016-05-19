@@ -392,8 +392,6 @@ public class MainSetActivityFragment extends Fragment implements View.OnClickLis
                 SharePreferanceUtils.getInstance().putShared(getActivity(), SharePreferanceUtils.USER_NAME, "");
                 SharePreferanceUtils.getInstance().putShared(getActivity(), SharePreferanceUtils.USER_HEAD, "");
                 SharePreferanceUtils.getInstance().putShared(getActivity(), SharePreferanceUtils.USER_CODE, "");
-                Intent i = new Intent(Constant.EXIT_APP_BROADCAST);
-                getActivity().sendBroadcast(i, Constant.RECEIVE_EXIT_APP_PERMISSION);
                 getActivity().finish();
             }
 

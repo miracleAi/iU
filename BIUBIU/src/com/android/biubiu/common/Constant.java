@@ -18,6 +18,4 @@ public class Constant extends EaseConstant {
     public static final String ACTIVITY_COVER = "act_cover";
     public static int biubiCnt;
     public static String headState;
-    public static final String EXIT_APP_BROADCAST = "login_exit_app_broadcast";
-    public static final String RECEIVE_EXIT_APP_PERMISSION = "cc.imeetu.iu.RECEIVE_EXIT_LOGIN_APP_PERMISSION";
 }

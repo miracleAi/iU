@@ -10,6 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/top_title_height"
         android:layout_alignParentTop="true"
+        app:centerImage="@drawable/biu_btn_ago_back"
         android:background="@color/main_green"
         top:bothSideSize="68dp"
         top:leftDrawable="@drawable/biu_btn_choose" />

@@ -13,12 +13,17 @@ import android.widget.Toast;
 
 import com.android.biubiu.BaseFragment;
 import com.android.biubiu.MainActivity;
+import com.android.biubiu.MatchSettingActivity;
+import com.android.biubiu.activity.act.ActivityListActivity;
 import com.android.biubiu.activity.biu.BiuBiuReceiveActivity;
 import com.android.biubiu.bean.HistoryBiuBean;
+import com.android.biubiu.common.Umutils;
+import com.android.biubiu.component.indicator.FragmentIndicator;
 import com.android.biubiu.component.stagger.PullToRefreshStaggeredGridView;
 import com.android.biubiu.component.title.TopTitleView;
 import com.android.biubiu.utils.HttpContants;
 import com.android.biubiu.utils.LogUtil;
+import com.android.biubiu.utils.LoginUtils;
 import com.android.biubiu.utils.SharePreferanceUtils;
 import com.etsy.android.grid.StaggeredGridView;
 import com.google.gson.Gson;
@@ -50,6 +55,8 @@ public class HistoryActivityFragment extends BaseFragment implements PullToRefre
     private PullToRefreshStaggeredGridView mPullToRefreshStaggerdGridView;
     private StaggeredGridView mDongTaiGridView;
 
+    private static final int ACTIVITY_LIST = 1004;
+
     public HistoryActivityFragment() {
     }
 
@@ -66,9 +73,25 @@ public class HistoryActivityFragment extends BaseFragment implements PullToRefre
         mTopTitle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((MainActivity)getActivity()).reverseBack();
+                ((MainActivity) getActivity()).reverseBack();
             }
         });
+        mTopTitle.setLeftOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (LoginUtils.isLogin(getActivity())) {
+                    Intent intent = new Intent(getActivity(), MatchSettingActivity.class);
+                    startActivity(intent);
+                }
+            }
+        });
+        mTopTitle.setRightOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
         mRecycleView = (RecyclerView) mRootview.findViewById(R.id.id_recyclerview);
         mPullToRefreshStaggerdGridView = (PullToRefreshStaggeredGridView) mRootview.findViewById(R.id.pull_grid_view);
         mPullToRefreshStaggerdGridView.setMode(PullToRefreshBase.Mode.BOTH);
@@ -181,5 +204,100 @@ public class HistoryActivityFragment extends BaseFragment implements PullToRefre
     @Override
     public void onPullUpToRefresh(PullToRefreshBase<StaggeredGridView> refreshView) {
         getHistoryBiu(mData.get(mData.size() - 1).getTime());
+    }
+
+    /**
+     * 获得广告
+     */
+    public void getAd() {
+        final String userCode = SharePreferanceUtils.getInstance().getUserCode(getActivity(), SharePreferanceUtils.USER_CODE, "");
+        RequestParams params = new RequestParams(HttpContants.ACTIVITY_GETTAGS);
+        JSONObject requestObject = new JSONObject();
+        try {
+            requestObject.put("device_code", SharePreferanceUtils.getInstance().getDeviceId(getActivity(), SharePreferanceUtils.DEVICE_ID, ""));
+            requestObject.put("token", SharePreferanceUtils.getInstance().getToken(getActivity(), SharePreferanceUtils.TOKEN, ""));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        params.addBodyParameter("data", requestObject.toString());
+        x.http().post(params, new Callback.CommonCallback<String>() {
+            @Override
+            public void onSuccess(String s) {
+                JSONObject jsons;
+                try {
+                    jsons = new JSONObject(s);
+                    String state = jsons.getString("state");
+                    if (state.equals("303")) {
+                        Toast.makeText(getActivity(), "登录过期，请重新登录", Toast.LENGTH_SHORT).show();
+                        SharePreferanceUtils.getInstance().putShared(getActivity(), SharePreferanceUtils.TOKEN, "");
+                        SharePreferanceUtils.getInstance().putShared(getActivity(), SharePreferanceUtils.USER_NAME, "");
+                        SharePreferanceUtils.getInstance().putShared(getActivity(), SharePreferanceUtils.USER_HEAD, "");
+                        SharePreferanceUtils.getInstance().putShared(getActivity(), SharePreferanceUtils.USER_CODE, "");
+                        LogUtil.d("mytest", "tok---" + SharePreferanceUtils.getInstance().getToken(getActivity(), SharePreferanceUtils.TOKEN, ""));
+                        return;
+                    }
+                    if (!state.equals("200")) {
+                        return;
+                    }
+                    JSONObject data = jsons.getJSONObject("data");
+                    JSONObject activity = data.getJSONObject("activity");
+                    int status = activity.getInt("status");
+                    if (status == 1) {
+                        mTopTitle.setRightLayoutVisible();
+                        mTopTitle.setRightOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                Intent activities = new Intent(getActivity(), ActivityListActivity.class);
+                                startActivityForResult(activities, ACTIVITY_LIST);
+                            }
+                        });
+                        mTopTitle.setRightImage(R.drawable.biu_btn_activity_nor);
+                        int updateAt = activity.getInt("updateAt");
+                        int cacheUpdate = SharePreferanceUtils.getInstance().getUpdateAd(getActivity(), userCode);
+                        if (updateAt != cacheUpdate) {
+                            boolean haveView = SharePreferanceUtils.getInstance().getHaveToView(getActivity(), userCode);
+                            if (haveView) {
+                                SharePreferanceUtils.getInstance().saveHaveToView(getActivity(), userCode, false);
+                            }
+                            mTopTitle.setRightImage(R.drawable.biu_btn_activity_light);
+                            SharePreferanceUtils.getInstance().saveUpdateAd(getActivity(), userCode, updateAt);
+                        } else {
+                            boolean haveView = SharePreferanceUtils.getInstance().getHaveToView(getActivity(), userCode);
+                            if (!haveView) {
+                                mTopTitle.setRightImage(R.drawable.biu_btn_activity_light);
+                            }
+                        }
+
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onError(Throwable throwable, boolean b) {
+
+            }
+
+            @Override
+            public void onCancelled(CancelledException e) {
+
+            }
+
+            @Override
+            public void onFinished() {
+
+            }
+        });
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch (requestCode) {
+            case ACTIVITY_LIST:
+                mTopTitle.setRightImage(R.drawable.biu_btn_activity_nor);
+                break;
+        }
     }
 }
