@@ -137,9 +137,9 @@ public class MainActivity extends FragmentActivity implements AMapLocationListen
                         f = mFragmentManager.findFragmentByTag(getResources().getString(i.getTitle()));
                     }
                     if (f != null) {
-                        if(mReverse && i.getId() == R.id.tab_biu){
+                        if (mReverse && i.getId() == R.id.tab_biu) {
                             transaction.hide(f);
-                        }else{
+                        } else {
                             transaction.hide(i.getFragment());
                             i.setClickTime(0);
                         }
@@ -397,7 +397,7 @@ public class MainActivity extends FragmentActivity implements AMapLocationListen
         MobclickAgent.onPause(this);
         if (CommonUtils.isAppOnForeground(getApplicationContext())) {
             SharePreferanceUtils.getInstance().putShared(getApplicationContext(), SharePreferanceUtils.IS_APP_OPEN, true);
-        }else{
+        } else {
             SharePreferanceUtils.getInstance().putShared(getApplicationContext(), SharePreferanceUtils.IS_APP_OPEN, false);
         }
 
@@ -628,7 +628,7 @@ public class MainActivity extends FragmentActivity implements AMapLocationListen
     public void reverse() {
         Fragment fragment = mFragmentManager.findFragmentByTag(getResources().getString(R.string.tab_history));
         FragmentTransaction transaction = mFragmentManager.beginTransaction();
-        transaction.setCustomAnimations(R.anim.rotate_enter_anim, R.anim.rotate_exit_anim);
+        transaction.setCustomAnimations(R.anim.right_in_anim, R.anim.left_out_anim);
         if (fragment != null) {
             transaction.show(fragment);
         } else {
@@ -644,10 +644,14 @@ public class MainActivity extends FragmentActivity implements AMapLocationListen
         Fragment fragment = mFragmentManager.findFragmentByTag(getResources().getString(R.string.tab_history));
         Fragment biuFragment = mFragmentManager.findFragmentByTag(getResources().getString(R.string.left_menu_biubiu));
         FragmentTransaction transaction = mFragmentManager.beginTransaction();
-        transaction.setCustomAnimations(R.anim.rotate_enter_anim, R.anim.rotate_exit_anim);
+        transaction.setCustomAnimations(R.anim.left_in_anim, R.anim.right_out_anim);
         transaction.show(biuFragment);
         transaction.hide(fragment);
         transaction.commit();
         mReverse = false;
+    }
+
+    public boolean isReverse(){
+        return mReverse;
     }
 }

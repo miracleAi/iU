@@ -2,6 +2,7 @@ package com.android.biubiu.component.indicator;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.support.v4.app.Fragment;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +11,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import com.android.biubiu.BaseFragment;
 
 import cc.imeetu.iu.R;
 
@@ -127,6 +130,10 @@ public class FragmentIndicator extends LinearLayout implements OnClickListener {
         mOnIndicateListener = listener;
     }
 
+    public interface OnClickListener{
+        void onTabClick();
+    }
+
     @Override
     public void onClick(View v) {
         mOnIndicateListener.onIndicate(v.getId());
@@ -138,5 +145,11 @@ public class FragmentIndicator extends LinearLayout implements OnClickListener {
                 refreshPageListener.refreshPage();
             }
         }*/
+        if (mCurrIndicator != null){
+            Fragment fragment = mCurrIndicator.getFragment();
+            if (fragment instanceof OnClickListener) {
+                ((OnClickListener) fragment).onTabClick();
+            }
+        }
     }
 }

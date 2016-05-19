@@ -237,8 +237,6 @@ public class LoginActivity extends BaseActivity{
 					MobclickAgent.onProfileSignIn(userCode);
 					
 					setResult(RESULT_OK);
-                    Intent i = new Intent(Constant.EXIT_APP_BROADCAST);
-                    sendBroadcast(i,Constant.RECEIVE_EXIT_APP_PERMISSION);
 					finish();
 					/*Intent intent=new Intent(LoginActivity.this,MainActivity.class);
 					intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);

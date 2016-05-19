@@ -74,6 +74,7 @@ import com.android.biubiu.bean.UserPhotoBean;
 import com.android.biubiu.chat.MyHintDialog;
 import com.android.biubiu.common.CommonDialog;
 import com.android.biubiu.common.Constant;
+import com.android.biubiu.component.indicator.FragmentIndicator;
 import com.android.biubiu.component.title.TopTitleView;
 import com.android.biubiu.sqlite.CityDao;
 import com.android.biubiu.sqlite.SchoolDao;
@@ -106,7 +107,7 @@ import cc.imeetu.iu.R;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class PagerFragment extends BaseFragment implements View.OnClickListener {
+public class PagerFragment extends BaseFragment implements View.OnClickListener, FragmentIndicator.OnClickListener {
     private static final int UPDATE_INFO = 1001;
     private static final int UPDATE_PHOTOS = 1002;
     private static final int UPDATE_PERSONAL_TAG = 1003;
@@ -193,12 +194,8 @@ public class PagerFragment extends BaseFragment implements View.OnClickListener 
     private FrameLayout mLoginedView;
     private Button register, login;
     Bundle b;
-    private BroadcastReceiver mReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            switchView();
-        }
-    };
+
+    private boolean mRequestSuccess;
 
     public PagerFragment() {
     }
@@ -295,9 +292,9 @@ public class PagerFragment extends BaseFragment implements View.OnClickListener 
             @Override
             public void onClick(View v) {
                 if (LoginUtils.isLogin(getActivity())) {
-                    if(null != b){
+                    if (null != b) {
                         getActivity().finish();
-                    }else{
+                    } else {
                         Intent i = new Intent(getActivity(), BiuChargeActivity.class);
                         startActivity(i);
                     }
@@ -309,10 +306,10 @@ public class PagerFragment extends BaseFragment implements View.OnClickListener 
             @Override
             public void onClick(View v) {
                 if (LoginUtils.isLogin(getActivity())) {
-                    if(isMyself){
+                    if (isMyself) {
                         Intent setIntent = new Intent(getActivity(), MainSetActivity.class);
                         startActivity(setIntent);
-                    }else{
+                    } else {
                         getMosterDialog();
                     }
                 }
@@ -321,10 +318,6 @@ public class PagerFragment extends BaseFragment implements View.OnClickListener 
     }
 
     private void initData() {
-        IntentFilter filter = new IntentFilter();
-        filter.addAction(Constant.EXIT_APP_BROADCAST);
-        getActivity().registerReceiver(mReceiver, filter);
-
         userDao = new UserDao(getActivity());
         if (b == null) {
             mTopTitle.setLeftImage(R.drawable.main_nav_bar_icon_left);
@@ -353,12 +346,22 @@ public class PagerFragment extends BaseFragment implements View.OnClickListener 
 
     private void switchView() {
         if (!LoginUtils.isLogin(getActivity())) {
-            mLoginView.setVisibility(View.VISIBLE);
-            mLoginedView.setVisibility(View.GONE);
+            if (mLoginedView.getVisibility() == View.GONE) {
+                mLoginView.setVisibility(View.VISIBLE);
+            }
+            if (mLoginedView.getVisibility() == View.VISIBLE) {
+                mLoginedView.setVisibility(View.GONE);
+            }
         } else {
-            mLoginView.setVisibility(View.GONE);
-            mLoginedView.setVisibility(View.VISIBLE);
-            getUserInfo();
+            if (mLoginedView.getVisibility() == View.VISIBLE) {
+                mLoginView.setVisibility(View.GONE);
+            }
+            if (mLoginedView.getVisibility() == View.GONE) {
+                mLoginedView.setVisibility(View.VISIBLE);
+            }
+            if (!mRequestSuccess) {
+                getUserInfo();
+            }
         }
     }
 
@@ -429,8 +432,10 @@ public class PagerFragment extends BaseFragment implements View.OnClickListener 
                     String state = jsons.getString("state");
                     if (!state.equals("200")) {
                         toastShort("获取数据失败");
+                        mRequestSuccess = false;
                         return;
                     }
+                    mRequestSuccess = true;
                     JSONObject data = jsons.getJSONObject("data");
                     String info = data.getJSONObject("userinfo").toString();
                     //					String token = data.getString("token");
@@ -573,7 +578,7 @@ public class PagerFragment extends BaseFragment implements View.OnClickListener 
         if (bean.getSchool() != null && !bean.getSchool().equals("")) {
             schoolTv.setText(schoolDao.getschoolName(bean.getSchool()).get(0).getUnivsNameString());
         } else {
-            if(isMyself){
+            if (isMyself) {
                 goCompleteSchool();
             }
         }
@@ -624,14 +629,15 @@ public class PagerFragment extends BaseFragment implements View.OnClickListener 
                 break;
         }
     }
-    public void updateHeadStatus(){
+
+    public void updateHeadStatus() {
         String flag = Constant.headState;
-        if(null != iconVerify && !TextUtils.isEmpty(flag)){
+        if (null != iconVerify && !TextUtils.isEmpty(flag)) {
             if (flag.equals("0")) {
                 iconVerify.setText("待审核");
             } else if (flag.equals("1")) {
                 iconVerify.setText("审核中");
-            } else if (flag.equals("2") ||flag.equals("3")) {
+            } else if (flag.equals("2") || flag.equals("3")) {
                 //	iconVerify.setText("审核通过");
                 iconVerify.setVisibility(View.GONE);
             } else {
@@ -639,6 +645,7 @@ public class PagerFragment extends BaseFragment implements View.OnClickListener 
             }
         }
     }
+
     private void goCompleteSchool() {
         CommonDialog.singleBtnDialog(getActivity(), "完善信息", "你还没有学校哦", "去设置", new DialogInterface.OnClickListener() {
 
@@ -1234,6 +1241,12 @@ public class PagerFragment extends BaseFragment implements View.OnClickListener 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        getActivity().unregisterReceiver(mReceiver);
+    }
+
+    @Override
+    public void onTabClick() {
+        if (getActivity() != null) {
+            switchView();
+        }
     }
 }

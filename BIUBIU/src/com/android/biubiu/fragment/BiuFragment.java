@@ -34,6 +34,7 @@ import com.android.biubiu.chat.ChatActivity;
 import com.android.biubiu.chat.Constant;
 import com.android.biubiu.common.CommonDialog;
 import com.android.biubiu.common.Umutils;
+import com.android.biubiu.component.indicator.FragmentIndicator;
 import com.android.biubiu.component.title.TopTitleView;
 import com.android.biubiu.push.MyPushReceiver;
 import com.android.biubiu.push.PushInterface;
@@ -102,7 +103,7 @@ import android.widget.Toast;
 import cc.imeetu.iu.R;
 
 @SuppressLint("NewApi")
-public class BiuFragment extends Fragment implements PushInterface {
+public class BiuFragment extends Fragment implements PushInterface,FragmentIndicator.OnClickListener {
     View view;
     //启动发biubiu页面的requestcode
     public static final int SEND_BIU_REQUEST = 1001;
@@ -719,6 +720,13 @@ public class BiuFragment extends Fragment implements PushInterface {
         //将角度按照从小到大排列
         Collections.sort(edgeAngleList, new SorByAngle());
         c3DotList.addAll(BiuUtil.caculateCircleBig(edgeAngleList, userD3, circleR3, x0, y0, n3));
+    }
+
+    @Override
+    public void onTabClick() {
+        if(!LoginUtils.isLogin(getActivity()) && ((MainActivity)getActivity()).isReverse()){
+            ((MainActivity)getActivity()).reverseBack();
+        }
     }
 
     //按照角度
