@@ -637,6 +637,7 @@ public class EaseChatFragment extends EaseBaseFragment {
 		if(chatRoomChangeListener != null){
 			EMClient.getInstance().chatroomManager().removeChatRoomChangeListener(chatRoomChangeListener);
 		}
+		BQMM.getInstance().destory();
 	}
 
 	public void onBackPressed() {
