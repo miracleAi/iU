@@ -78,6 +78,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
+import android.os.Message;
 import android.provider.MediaStore;
 import android.provider.Settings;
 import android.support.v4.app.Fragment;
@@ -195,6 +196,26 @@ public class BiuFragment extends Fragment implements PushInterface {
     private boolean isBiuLoading = false;
     private int inveralTime = 1;
     private Handler showBiuHandler;
+    private Handler mInvalidHandler = new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            if (CommonUtils.isAppOnForeground(getActivity())) {
+                SharePreferanceUtils.getInstance().putShared(getActivity(), SharePreferanceUtils.EXCHANGE_FROUNT, false);
+            } else {
+                SharePreferanceUtils.getInstance().putShared(getActivity(), SharePreferanceUtils.EXCHANGE_FROUNT, true);
+                userGroupLayout.removeAllViews();
+                user1List.clear();
+                user2List.clear();
+                user3List.clear();
+                allUserCodeList.clear();
+                biuDao.deleteAll();
+                showBiuHandler.removeCallbacks(shouBiuR);
+                isBiuLoading = false;
+                isBiuLoaded = false;
+            }
+        }
+    };
     //biu 列表是否还有数据需要请求
     private boolean isBiuHasNext = false;
     private ArrayList<BiuBean> grabBiuList = new ArrayList<BiuBean>();
@@ -1356,20 +1377,7 @@ public class BiuFragment extends Fragment implements PushInterface {
     public void onPause() {
         // TODO Auto-generated method stub
         super.onPause();
-        if (CommonUtils.isAppOnForeground(getActivity())) {
-            SharePreferanceUtils.getInstance().putShared(getActivity(), SharePreferanceUtils.EXCHANGE_FROUNT, false);
-        } else {
-            SharePreferanceUtils.getInstance().putShared(getActivity(), SharePreferanceUtils.EXCHANGE_FROUNT, true);
-            userGroupLayout.removeAllViews();
-            user1List.clear();
-            user2List.clear();
-            user3List.clear();
-            allUserCodeList.clear();
-            biuDao.deleteAll();
-            showBiuHandler.removeCallbacks(shouBiuR);
-            isBiuLoading = false;
-            isBiuLoaded = false;
-        }
+        mInvalidHandler.sendEmptyMessageDelayed(0,1000);
     }
 
     @Override
