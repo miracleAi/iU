@@ -145,6 +145,7 @@ public class MatchSettingActivity extends BaseActivity implements OnClickListene
 		seekBar.setSelectedMinValue(setBean.getAgeDown());
 	}
 	protected void setToggle() {
+		SharePreferanceUtils.getInstance().putShared(MatchSettingActivity.this,SharePreferanceUtils.RECEIVE_SEX,setBean.getSex());
 		// 1--选择男生 2--选择女生
 		if(setBean.getSex().equals(Constants.SEX_MALE)){
 			isSelBoy = true;
@@ -152,8 +153,8 @@ public class MatchSettingActivity extends BaseActivity implements OnClickListene
 			girlToggle.setImageResource(R.drawable.setting_btn_yes);
 		}else{
 			isSelBoy = false;
-			boyToggle.setImageResource(R.drawable.setting_btn_yes);;
-			girlToggle.setImageResource(R.drawable.setting_btn_no);;
+			boyToggle.setImageResource(R.drawable.setting_btn_yes);
+			girlToggle.setImageResource(R.drawable.setting_btn_no);
 		}
 		//1--同城 2--不限
 		if(setBean.getCity().equals(Constants.SAME_CITY)){
@@ -385,6 +386,7 @@ public class MatchSettingActivity extends BaseActivity implements OnClickListene
 			return;
 		}
 		updateSetBean();
+		SharePreferanceUtils.getInstance().putShared(MatchSettingActivity.this,SharePreferanceUtils.RECEIVE_SEX,setBean.getSex());
 		RequestParams params = new RequestParams(HttpContants.HTTP_ADDRESS+HttpContants.UPDATE_SETTING);
 		JSONObject requestObject = new JSONObject();
 		try {
@@ -449,7 +451,9 @@ public class MatchSettingActivity extends BaseActivity implements OnClickListene
 						toastShort("保存失败");
 						return;
 					}
-					
+					JSONObject obj = jsons.getJSONObject("data");
+					String recSex = obj.getString("s_sex");
+					SharePreferanceUtils.getInstance().putShared(getApplicationContext(), SharePreferanceUtils.RECEIVE_SEX, recSex);
 					if(setBean.getSound() == 0){
 						SharePreferanceUtils.getInstance().putShared(getApplicationContext(), SharePreferanceUtils.IS_OPEN_VOICE, false);
 						
