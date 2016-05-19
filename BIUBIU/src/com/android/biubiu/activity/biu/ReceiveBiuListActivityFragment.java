@@ -186,7 +186,7 @@ public class ReceiveBiuListActivityFragment extends BaseFragment {
     }
 
     private void getGrabList(final long value) {
-        RequestParams params = new RequestParams(HttpContants.APP_BIU_GETTARGETBIULIST);
+        RequestParams params = new RequestParams(HttpContants.APP_BIU_GETGRABBIULIST);
         JSONObject requestObject = new JSONObject();
         try {
             requestObject.put("device_code", SharePreferanceUtils.getInstance().getDeviceId(getActivity(), SharePreferanceUtils.DEVICE_ID, ""));
