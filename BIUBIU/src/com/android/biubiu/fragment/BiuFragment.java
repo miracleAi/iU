@@ -1233,6 +1233,7 @@ public class BiuFragment extends Fragment implements PushInterface,FragmentIndic
                         isBiuLoaded = false;
                         return;
                     }
+                    isBiuLoaded = true;
                     JSONObject data = jsons.getJSONObject("data");
                     String headFlag = data.getString("iconStatus");
                     com.android.biubiu.common.Constant.headState = headFlag;
@@ -1258,7 +1259,6 @@ public class BiuFragment extends Fragment implements PushInterface,FragmentIndic
                                 biuDao.deleteAll();
                             }
                             biuDao.addBiuList(list, SharePreferanceUtils.getInstance().getReceiveSex(getActivity(), SharePreferanceUtils.RECEIVE_SEX, ""));
-                            isBiuLoaded = true;
                         } else {
                             biuDao.updateAllBiuState();
                         }

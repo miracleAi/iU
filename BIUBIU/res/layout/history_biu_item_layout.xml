@@ -69,11 +69,15 @@
 
     <TextView
         android:id="@+id/nickname_textview"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
         android:layout_below="@+id/head_imageview"
         android:layout_marginTop="8dp"
+        android:singleLine="true"
         android:gravity="center"
+        android:maxEms="8"
+        android:ellipsize="end"
         android:text="刘三妹"
         android:textColor="#808080"
         android:textSize="12sp" />
