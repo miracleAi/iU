@@ -144,7 +144,7 @@
     <!-- 发送biubiu -->
     <string name="send_biu_title">发出我的biu</string>
     <string name="send_biu_back">取消</string>
-    <string name="send_biu_add_topic_tags">添加话题标签</string>
+    <string name="send_biu_add_topic_tags">输入话题内容：有趣的，生活的，情感的...</string>
     <string name="send_biu_send">发送</string>
     <string name="send_biu_number">0</string>
     <string name="send_biu_allNumber">/50</string>
@@ -260,4 +260,7 @@
     <string name="biu_invalid">结束后，本次biubiu将失效，也可以重新发biu哦</string>
     <string name="sure">确定</string>
     <string name="end_biu_suc">本次biu已结束</string>
+    
+    <string name="send_biu_tag_tip">你发出的话题将会作为你们聊天的第一句话哦</string>
+    <string name="grab_biu_tag">#&#160;获取iU随机话题&#160;#</string>
 </resources>
