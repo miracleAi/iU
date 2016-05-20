@@ -211,7 +211,6 @@ public class BiuFragment extends Fragment implements PushInterface,FragmentIndic
                 user3List.clear();
                 allUserCodeList.clear();
                 biuDao.deleteAll();
-                showBiuHandler.removeCallbacks(shouBiuR);
                 isBiuLoading = false;
                 isBiuLoaded = false;
             }
@@ -338,9 +337,12 @@ public class BiuFragment extends Fragment implements PushInterface,FragmentIndic
     @Override
     public void onResume() {
         super.onResume();
-        //主要解决登陆后请求biu列表
-        if(!isBiuLoading && !isBiuLoaded){
-            getBiuList(0);
+        if (LoginUtils.isLogin(getActivity())) {
+            showBiuHandler.post(shouBiuR);
+            //主要解决登陆后请求biu列表
+            if(!isBiuLoading && !isBiuLoaded){
+                getBiuList(0);
+            }
         }
         boolean isBiuEnd = SharePreferanceUtils.getInstance().isBiuEnd(getActivity(), SharePreferanceUtils.IS_BIU_END, true);
         //如果返回时biu已结束，则清掉抢biu列表的相关状态
@@ -351,7 +353,6 @@ public class BiuFragment extends Fragment implements PushInterface,FragmentIndic
         if (SharePreferanceUtils.getInstance().isExchange(getActivity(), SharePreferanceUtils.EXCHANGE_FROUNT, true)) {
             //接口通信赋值
             MyPushReceiver.setUpdateBean(this);
-            showBiuHandler.post(shouBiuR);
             //检查是否提交了channelID
             if (!SharePreferanceUtils.getInstance().getShared(getActivity(), SharePreferanceUtils.IS_COMMIT_CHANNEL, false)) {
                 HttpUtils.commitChannelId(getActivity());
@@ -1395,6 +1396,7 @@ public class BiuFragment extends Fragment implements PushInterface,FragmentIndic
     public void onPause() {
         // TODO Auto-generated method stub
         super.onPause();
+        showBiuHandler.removeCallbacks(shouBiuR);
         mInvalidHandler.sendEmptyMessageDelayed(0,1000);
     }
 
