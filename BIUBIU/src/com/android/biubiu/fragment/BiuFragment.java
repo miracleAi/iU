@@ -761,6 +761,16 @@ public class BiuFragment extends Fragment implements PushInterface,FragmentIndic
         if(!LoginUtils.isLogin(getActivity()) && ((MainActivity)getActivity()).isReverse()){
             ((MainActivity)getActivity()).reverseBack();
         }
+        if(LoginUtils.isLogin(getActivity())){
+            showBiuHandler.post(shouBiuR);
+        }
+    }
+
+    @Override
+    public void onLeaveTab() {
+        if(LoginUtils.isLogin(getActivity())){
+            showBiuHandler.removeCallbacks(shouBiuR);
+        }
     }
 
     //按照角度
