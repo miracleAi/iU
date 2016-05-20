@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.xutils.common.Callback;
 import org.xutils.x;
 import org.xutils.common.Callback.CommonCallback;
 import org.xutils.http.RequestParams;
@@ -31,6 +32,7 @@ import com.android.biubiu.common.Constant;
 import com.android.biubiu.utils.Constants;
 import com.android.biubiu.utils.HttpContants;
 import com.android.biubiu.utils.LogUtil;
+import com.android.biubiu.utils.NetUtils;
 import com.android.biubiu.utils.SharePreferanceUtils;
 
 public class BiuChargeActivity extends BaseActivity implements OnClickListener{
@@ -126,10 +128,57 @@ public class BiuChargeActivity extends BaseActivity implements OnClickListener{
 		this.requestWindowFeature(Window.FEATURE_NO_TITLE);
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.biu_charge_layout);
-//		myUmCount = getIntent().getIntExtra("coin", 0);
-		myUmCount = Constant.biubiCnt;
 		initView();
+		getUmCount();
 	}
+
+	private void getUmCount() {
+		RequestParams params = new RequestParams(HttpContants.GET_UM_COUNT);
+		JSONObject requestObject = new JSONObject();
+		try {
+			requestObject.put("device_code", SharePreferanceUtils.getInstance().getDeviceId(this, SharePreferanceUtils.DEVICE_ID, ""));
+			requestObject.put("token", SharePreferanceUtils.getInstance().getToken(this, SharePreferanceUtils.TOKEN, ""));
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+		params.addBodyParameter("data", requestObject.toString());
+		x.http().post(params, new CommonCallback<String>() {
+			@Override
+			public void onSuccess(String s) {
+				Log.d("mytest","umcount"+s);
+				JSONObject jsons;
+				try {
+					jsons = new JSONObject(s);
+					String code = jsons.getString("state");
+					if (!code.equals("200")) {
+						return;
+					}
+					JSONObject obj = jsons.getJSONObject("data");
+					myUmCount = obj.getInt("virtual_currency");
+					myUmTv.setText(myUmCount+"粒");
+				} catch (JSONException e) {
+					e.printStackTrace();
+				}
+			}
+
+			@Override
+			public void onError(Throwable throwable, boolean b) {
+				Log.d("mytest","umcount error");
+			}
+
+			@Override
+			public void onCancelled(CancelledException e) {
+
+			}
+
+			@Override
+			public void onFinished() {
+
+			}
+		});
+
+	}
+
 	private void initView() {
 		// TODO Auto-generated method stub
 		zfbPayBtn = (Button) findViewById(R.id.zfb_pay_btn);
@@ -137,7 +186,6 @@ public class BiuChargeActivity extends BaseActivity implements OnClickListener{
 		wxPayBtn = (Button) findViewById(R.id.wx_pay_btn);
 		wxPayBtn.setOnClickListener(this);
 		myUmTv = (TextView) findViewById(R.id.my_um_tv);
-		myUmTv.setText(myUmCount+"粒");
 		payLayout = (LinearLayout) findViewById(R.id.pay_layout);
 		payBtnBgView = findViewById(R.id.btn_bg_view);
 		fitityUmLayout = (LinearLayout) findViewById(R.id.fitity_um_layout);

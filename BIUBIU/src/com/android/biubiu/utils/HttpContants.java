@@ -170,5 +170,9 @@ public class HttpContants {
      * 结束biu
      */
     public static final String APP_BIU_ENDBIU = HTTP_ADDRESS + "app/biu/endBiu";
+    /**
+     * 获取biu币的数量
+     */
+    public static final String GET_UM_COUNT = HTTP_ADDRESS + "app/biu/getVC";
 
 }
