@@ -213,8 +213,8 @@ public class MyPushReceiver extends PushMessageReceiver{
 			playSound(context);
 		}
 		Intent resultIntent;
-		// TODO: 此处应根据biubiu是否结束来判断进入首页还是biu详情页
-		if((System.currentTimeMillis()-bean.getTime())<59*60*1000){
+		// 此处应根据biubiu是否结束来判断进入首页还是biu详情页
+		if(SharePreferanceUtils.getInstance().isBiuEnd(context,SharePreferanceUtils.IS_BIU_END,true)){
 			resultIntent= new Intent(context.getApplicationContext(), BiuBiuReceiveActivity.class);
 			resultIntent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
 			resultIntent.putExtra("userCode", bean.getUserCode());
