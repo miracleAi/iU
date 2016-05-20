@@ -48,7 +48,7 @@
                     android:id="@+id/userhead_rl"
                     android:layout_width="match_parent"
                     android:layout_height="210dp"
-                    android:background="@drawable/main_imageview_bg">
+                    android:background="@drawable/main_pho_bg">
 
                     <RelativeLayout
                         android:id="@+id/back_rl"
