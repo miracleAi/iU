@@ -337,8 +337,17 @@ public class BiuFragment extends Fragment implements PushInterface,FragmentIndic
     @Override
     public void onResume() {
         super.onResume();
+        boolean isBiuEnd = SharePreferanceUtils.getInstance().isBiuEnd(getActivity(), SharePreferanceUtils.IS_BIU_END, true);
         if (LoginUtils.isLogin(getActivity())) {
             showBiuHandler.post(shouBiuR);
+            //如果返回时biu已结束，则清掉抢biu列表的相关状态
+            if(isBiuEnd){
+                userBiuImv.setImageResource(R.drawable.biu_btn_biu);
+                userBiuImv.setVisibility(View.VISIBLE);
+            }else{
+                userBiuImv.setImageResource(R.drawable.biu_btn_unfinished);
+                userBiuImv.setVisibility(View.VISIBLE);
+            }
             //主要解决登陆后请求biu列表
             if(!isBiuLoading && !isBiuLoaded){
                 getBiuList(0);
@@ -357,15 +366,6 @@ public class BiuFragment extends Fragment implements PushInterface,FragmentIndic
             userBiuImv.setVisibility(View.VISIBLE);
             //获取未登录时的biubiu列表
             getBiuListUnlogin();
-        }
-        boolean isBiuEnd = SharePreferanceUtils.getInstance().isBiuEnd(getActivity(), SharePreferanceUtils.IS_BIU_END, true);
-        //如果返回时biu已结束，则清掉抢biu列表的相关状态
-        if(isBiuEnd){
-            userBiuImv.setImageResource(R.drawable.biu_btn_biu);
-            userBiuImv.setVisibility(View.VISIBLE);
-        }else{
-            userBiuImv.setImageResource(R.drawable.biu_btn_unfinished);
-            userBiuImv.setVisibility(View.VISIBLE);
         }
         if (SharePreferanceUtils.getInstance().isExchange(getActivity(), SharePreferanceUtils.EXCHANGE_FROUNT, true)) {
             //接口通信赋值
