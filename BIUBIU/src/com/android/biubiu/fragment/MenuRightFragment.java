@@ -114,6 +114,11 @@ public class MenuRightFragment extends EaseConversationListFragment implements F
         judgeVisibleGone();
     }
 
+    @Override
+    public void onLeaveTab() {
+
+    }
+
     public class ReceiveBroadCast extends BroadcastReceiver {
 
         @Override

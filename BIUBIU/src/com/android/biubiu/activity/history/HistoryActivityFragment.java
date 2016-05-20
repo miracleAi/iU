@@ -205,6 +205,7 @@ public class HistoryActivityFragment extends BaseFragment implements PullToRefre
     public void onPullUpToRefresh(PullToRefreshBase<StaggeredGridView> refreshView) {
         if("0".equals(mHasNext)){
             Toast.makeText(getActivity(),getResources().getString(R.string.data_end),Toast.LENGTH_SHORT).show();
+            mPullToRefreshStaggerdGridView.onRefreshComplete();
         }else{
             getHistoryBiu(mData.get(mData.size() - 1).getTime());
         }

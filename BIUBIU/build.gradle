@@ -49,8 +49,8 @@ android {
     }
 
     defaultConfig {
-        versionCode 20160515
-        versionName "1.2.0"
+        versionCode 20160520
+        versionName "1.3.0"
         //Enabling multidex support.
         multiDexEnabled true
     }
@@ -89,7 +89,7 @@ android {
             // 移除无用的resource文件
             shrinkResources true
             signingConfig signingConfigs.myConfig
-            minifyEnabled false
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-project.txt'
         }
 

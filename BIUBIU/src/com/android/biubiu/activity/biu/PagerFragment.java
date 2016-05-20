@@ -1253,4 +1253,9 @@ public class PagerFragment extends BaseFragment implements View.OnClickListener,
             switchView();
         }
     }
+
+    @Override
+    public void onLeaveTab() {
+
+    }
 }

@@ -26,7 +26,7 @@ public class FragmentIndicator extends LinearLayout implements OnClickListener {
     private static final int COLOR_SELECT = Color.argb(255, 0xff, 0xff, 0x8f);
 
     private Context mCon;
-    private Indicator mCurrIndicator;
+    private Indicator mCurrIndicator, mPreIndicator;
 
     private FragmentIndicator(Context context) {
         super(context);
@@ -85,6 +85,7 @@ public class FragmentIndicator extends LinearLayout implements OnClickListener {
         if (indicator.getFragment() != null) {
             if (mPreViewId != 0) {
                 Indicator preview = (Indicator) findViewById(mPreViewId).getTag();
+                mPreIndicator = preview;
                 showPreview(preview);
             }
             showCurrent(viewId, indicator);
@@ -130,8 +131,16 @@ public class FragmentIndicator extends LinearLayout implements OnClickListener {
         mOnIndicateListener = listener;
     }
 
-    public interface OnClickListener{
+    public interface OnClickListener {
+        /**
+         * 点击当前Tab时调用,模仿 onResume
+         */
         void onTabClick();
+
+        /**
+         * 离开上一个Tab时调用，模仿 onPause
+         */
+        void onLeaveTab();
     }
 
     @Override
@@ -145,10 +154,16 @@ public class FragmentIndicator extends LinearLayout implements OnClickListener {
                 refreshPageListener.refreshPage();
             }
         }*/
-        if (mCurrIndicator != null){
+        if (mCurrIndicator != null) {
             Fragment fragment = mCurrIndicator.getFragment();
             if (fragment instanceof OnClickListener) {
                 ((OnClickListener) fragment).onTabClick();
+            }
+        }
+        if (mPreIndicator != null && mPreIndicator != mCurrIndicator) {
+            Fragment fragment = mPreIndicator.getFragment();
+            if (fragment instanceof OnClickListener) {
+                ((OnClickListener) fragment).onLeaveTab();
             }
         }
     }
