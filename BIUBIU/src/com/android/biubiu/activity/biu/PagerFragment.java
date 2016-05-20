@@ -116,6 +116,7 @@ public class PagerFragment extends BaseFragment implements View.OnClickListener,
     private static final int DELETE_PHOTOS = 1006;
     private static final int TO_LOGIN = 1007;
     private static final int TO_REGISTER = 1008;
+    private static final int TO_SETTING = TO_REGISTER + 1;
     private ImageView userheadImv;
     private TextView usernameTv;
     private ImageView addPhotoImv;
@@ -308,7 +309,7 @@ public class PagerFragment extends BaseFragment implements View.OnClickListener,
                 if (LoginUtils.isLogin(getActivity())) {
                     if (isMyself) {
                         Intent setIntent = new Intent(getActivity(), MainSetActivity.class);
-                        startActivity(setIntent);
+                        startActivityForResult(setIntent,TO_SETTING);
                     } else {
                         getMosterDialog();
                     }
@@ -1015,6 +1016,7 @@ public class PagerFragment extends BaseFragment implements View.OnClickListener,
                 break;
             case TO_LOGIN:
             case TO_REGISTER:
+            case TO_SETTING:
                 switchView();
                 break;
             default:

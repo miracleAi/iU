@@ -56,7 +56,7 @@ public class HistoryActivityFragment extends BaseFragment implements PullToRefre
     private StaggeredGridView mDongTaiGridView;
 
     private static final int ACTIVITY_LIST = 1004;
-
+    private String mHasNext = "1";
     public HistoryActivityFragment() {
     }
 
@@ -171,7 +171,7 @@ public class HistoryActivityFragment extends BaseFragment implements PullToRefre
                     if (!TextUtils.isEmpty(token)) {
                         SharePreferanceUtils.getInstance().putShared(getActivity(), SharePreferanceUtils.TOKEN, token);
                     }
-
+                    mHasNext = data.getString("has_next");
                     JSONArray userArray = data.getJSONArray("users");
                     Gson gson = new Gson();
                     ArrayList<HistoryBiuBean> list = gson.fromJson(userArray.toString(), new TypeToken<List<HistoryBiuBean>>() {
@@ -203,7 +203,11 @@ public class HistoryActivityFragment extends BaseFragment implements PullToRefre
 
     @Override
     public void onPullUpToRefresh(PullToRefreshBase<StaggeredGridView> refreshView) {
-        getHistoryBiu(mData.get(mData.size() - 1).getTime());
+        if("0".equals(mHasNext)){
+            Toast.makeText(getActivity(),getResources().getString(R.string.data_end),Toast.LENGTH_SHORT).show();
+        }else{
+            getHistoryBiu(mData.get(mData.size() - 1).getTime());
+        }
     }
 
     /**

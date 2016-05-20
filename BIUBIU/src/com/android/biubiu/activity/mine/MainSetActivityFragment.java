@@ -1,6 +1,8 @@
 package com.android.biubiu.activity.mine;
 
+import android.app.AlertDialog;
 import android.app.Fragment;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.KeyEvent;
@@ -14,6 +16,7 @@ import android.widget.Toast;
 import com.android.biubiu.AboutOurActivity;
 import com.android.biubiu.bean.PersonalTagBean;
 import com.android.biubiu.bean.SettingBean;
+import com.android.biubiu.common.CommonDialog;
 import com.android.biubiu.common.Constant;
 import com.android.biubiu.component.title.TopTitleView;
 import com.android.biubiu.utils.HttpContants;
@@ -54,6 +57,7 @@ public class MainSetActivityFragment extends Fragment implements View.OnClickLis
     private RelativeLayout shockLayout;
     SettingBean setBean;
     private RelativeLayout logoutRl;
+    private AlertDialog mExitDialog;
 
     public MainSetActivityFragment() {
     }
@@ -449,8 +453,7 @@ public class MainSetActivityFragment extends Fragment implements View.OnClickLis
                 }
                 break;
             case R.id.logout_rl:
-                //退出
-                exitApp();
+                showExitDialog();
                 break;
             case R.id.about_iu_layout:
                 Intent intent = new Intent(getActivity(), AboutOurActivity.class);
@@ -460,6 +463,25 @@ public class MainSetActivityFragment extends Fragment implements View.OnClickLis
                 showShare();
                 break;
         }
+    }
+
+    private void showExitDialog() {
+        if (mExitDialog == null) {
+            mExitDialog = CommonDialog.doubleBtnDialog(getActivity(), "", getResources().getString(R.string.exit_tips),
+                    getResources().getString(R.string.cancel), getResources().getString(R.string.sure),
+                    new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    }, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            exitApp();
+                        }
+                    });
+        }
+        mExitDialog.show();
     }
 
     private void showShare() {

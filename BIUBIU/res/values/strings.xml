@@ -263,4 +263,6 @@
     
     <string name="send_biu_tag_tip">你发出的话题将会作为你们聊天的第一句话哦</string>
     <string name="grab_biu_tag">#&#160;获取iU随机话题&#160;#</string>
+    <string name="data_end">已经到底啦!</string>
+    <string name="exit_tips">确定要退出当前账号?</string>
 </resources>
