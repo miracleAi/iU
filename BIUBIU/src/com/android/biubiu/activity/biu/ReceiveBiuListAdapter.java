@@ -41,7 +41,7 @@ import cc.imeetu.iu.R;
  * Created by yanghj on 16/5/18.
  */
 public class ReceiveBiuListAdapter extends BaseAdapter {
-    private List<UserFriends> mData;
+    private List<UserFriends> mData = new ArrayList<UserFriends>();
     private LayoutInflater mInflater;
     private Context mCon;
     private SchoolDao schoolDao;

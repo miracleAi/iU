@@ -7,7 +7,6 @@ import java.util.Random;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.xutils.x;
-import org.xutils.common.Callback.CancelledException;
 import org.xutils.common.Callback.CommonCallback;
 import org.xutils.http.RequestParams;
 import org.xutils.image.ImageOptions;
@@ -98,8 +97,6 @@ public class BiuBiuSendActivity extends BaseActivity implements OnClickListener 
                 .build();
         initView();
         initData();
-
-
     }
 
     /**
