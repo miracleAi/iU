@@ -349,6 +349,9 @@ public class BiuFragment extends Fragment implements PushInterface,FragmentIndic
         if(isBiuEnd){
             userBiuImv.setImageResource(R.drawable.biu_btn_biu);
             userBiuImv.setVisibility(View.VISIBLE);
+        }else{
+            userBiuImv.setImageResource(R.drawable.biu_btn_unfinished);
+            userBiuImv.setVisibility(View.VISIBLE);
         }
         if (SharePreferanceUtils.getInstance().isExchange(getActivity(), SharePreferanceUtils.EXCHANGE_FROUNT, true)) {
             //接口通信赋值
