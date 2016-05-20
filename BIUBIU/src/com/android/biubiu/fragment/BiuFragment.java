@@ -343,6 +343,20 @@ public class BiuFragment extends Fragment implements PushInterface,FragmentIndic
             if(!isBiuLoading && !isBiuLoaded){
                 getBiuList(0);
             }
+        }else{
+            //退出登录后清掉页面信息
+            userGroupLayout.removeAllViews();
+            user1List.clear();
+            user2List.clear();
+            user3List.clear();
+            allUserCodeList.clear();
+            biuDao.deleteAll();
+            isBiuLoading = false;
+            isBiuLoaded = false;
+            userBiuImv.setImageResource(R.drawable.biu_btn_biu);
+            userBiuImv.setVisibility(View.VISIBLE);
+            //获取未登录时的biubiu列表
+            getBiuListUnlogin();
         }
         boolean isBiuEnd = SharePreferanceUtils.getInstance().isBiuEnd(getActivity(), SharePreferanceUtils.IS_BIU_END, true);
         //如果返回时biu已结束，则清掉抢biu列表的相关状态
