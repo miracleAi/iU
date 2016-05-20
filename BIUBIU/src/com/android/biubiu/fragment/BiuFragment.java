@@ -345,7 +345,6 @@ public class BiuFragment extends Fragment implements PushInterface,FragmentIndic
         boolean isBiuEnd = SharePreferanceUtils.getInstance().isBiuEnd(getActivity(), SharePreferanceUtils.IS_BIU_END, true);
         //如果返回时biu已结束，则清掉抢biu列表的相关状态
         if(isBiuEnd){
-            //// TODO: 2016/5/19  还需要清除掉中间显示组合头像相关
             userBiuImv.setImageResource(R.drawable.biu_btn_biu);
             userBiuImv.setVisibility(View.VISIBLE);
         }
@@ -1160,8 +1159,7 @@ public class BiuFragment extends Fragment implements PushInterface,FragmentIndic
                     Gson gson = new Gson();
                     ArrayList<BiuBean> list = gson.fromJson(userArray.toString(), new TypeToken<List<BiuBean>>() {
                     }.getType());
-                    if (null != list) {
-                        if (list.size() > 0) {
+                    if (null != list && list.size() > 0) {
                             userBiuImv.setImageResource(R.drawable.photo_fail);
                             userBiuImv.setVisibility(View.VISIBLE);
                             Collections.sort(list, new SorByTime());
@@ -1172,8 +1170,10 @@ public class BiuFragment extends Fragment implements PushInterface,FragmentIndic
                             } else {
                                 grabBiuList.addAll(list);
                             }*/
-                            initBiuView(list.get(0));
-                        }
+                            updateBiuView(list.get(0));
+                    }else{
+                        userBiuImv.setImageResource(R.drawable.biu_btn_unfinished);
+                        userBiuImv.setVisibility(View.VISIBLE);
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -1197,13 +1197,6 @@ public class BiuFragment extends Fragment implements PushInterface,FragmentIndic
                 log.d("mytest", "finish");
             }
         });
-    }
-
-    private void initBiuView(BiuBean grabBiuBean) {
-        taskView.setVisibility(View.GONE);
-        userBiuImv.setImageResource(R.drawable.photo_fail);
-        userBiuImv.setVisibility(View.VISIBLE);
-        x.image().bind(userBiuImv, grabBiuBean.getIconUrl(), imageOptions);
     }
 
     //biubiu被抢后显示view
@@ -1555,7 +1548,7 @@ public class BiuFragment extends Fragment implements PushInterface,FragmentIndic
                     Toast.makeText(getActivity().getApplicationContext(), "你的biubiu暂时无人应答，请重新发送", Toast.LENGTH_SHORT).show();
                 }
                 taskView.setVisibility(View.GONE);
-                userBiuImv.setImageResource(R.drawable.biu_btn_biu);
+                userBiuImv.setImageResource(R.drawable.biu_btn_unfinished);
                 userBiuImv.setVisibility(View.VISIBLE);
                 currentTime = 0;
                 taskHandler.removeCallbacks(taskR);
