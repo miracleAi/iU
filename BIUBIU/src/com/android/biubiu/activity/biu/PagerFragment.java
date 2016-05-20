@@ -347,14 +347,14 @@ public class PagerFragment extends BaseFragment implements View.OnClickListener,
 
     private void switchView() {
         if (!LoginUtils.isLogin(getActivity())) {
-            if (mLoginedView.getVisibility() == View.GONE) {
+            if (mLoginView.getVisibility() == View.GONE) {
                 mLoginView.setVisibility(View.VISIBLE);
             }
             if (mLoginedView.getVisibility() == View.VISIBLE) {
                 mLoginedView.setVisibility(View.GONE);
             }
         } else {
-            if (mLoginedView.getVisibility() == View.VISIBLE) {
+            if (mLoginView.getVisibility() == View.VISIBLE) {
                 mLoginView.setVisibility(View.GONE);
             }
             if (mLoginedView.getVisibility() == View.GONE) {
