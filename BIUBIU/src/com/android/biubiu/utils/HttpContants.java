@@ -78,7 +78,7 @@ public class HttpContants {
     /**
      * 发送biu
      */
-    public static final String SEND_BIU = "app/biubiu/sendBiu";
+    public static final String SEND_BIU = "app/biu/sendBiu";
 
     /**
      * 获取默认头像

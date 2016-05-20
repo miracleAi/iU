@@ -226,7 +226,7 @@ public class TopTitleView extends LinearLayout {
     }
 
     public void setRightText(int resId) {
-        mTvRight.setText(resId);
+        mTvRight.setText(getResources().getString(resId));
     }
 
     public void setRightTextColor(int resId) {

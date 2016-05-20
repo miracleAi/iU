@@ -120,6 +120,7 @@ public class ReceiveBiuListAdapter extends BaseAdapter {
         if (status == 1) {
             holder.acceptTv.setBackgroundResource(R.drawable.accepted_bg);
             holder.acceptTv.setText(mCon.getResources().getString(R.string.accepted));
+            holder.acceptTv.setEnabled(false);
         } else {
             int biuvc = item.getBiuVc();
             holder.acceptTv.setBackgroundResource(R.drawable.accept_bg);
@@ -135,20 +136,20 @@ public class ReceiveBiuListAdapter extends BaseAdapter {
             @Override
             public void onClick(View v) {
                 if (status == 0) {
-                    accept(item.getUserCode());
+                    accept(item);
                 }
             }
         });
         return convertView;
     }
 
-    private void accept(final String userCode) {
+    private void accept(final UserFriends user) {
         RequestParams params = new RequestParams(HttpContants.APP_BIU_ACCEPTBIU);
         JSONObject requestObject = new JSONObject();
         try {
             requestObject.put("device_code", SharePreferanceUtils.getInstance().getDeviceId(mCon, SharePreferanceUtils.DEVICE_ID, ""));
             requestObject.put("token", SharePreferanceUtils.getInstance().getToken(mCon, SharePreferanceUtils.TOKEN, ""));
-            requestObject.put("grab_user_code", userCode);
+            requestObject.put("grab_user_code", user.getUserCode());
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -199,8 +200,10 @@ public class ReceiveBiuListAdapter extends BaseAdapter {
                         Toast.makeText(mCon, mCon.getResources().getString(R.string.accept_fail), Toast.LENGTH_SHORT).show();
                         return;
                     } else {
+                        user.setStatus(1);
+                        notifyDataSetChanged();
                         Intent chat = new Intent(mCon, ChatActivity.class);
-                        chat.putExtra(Constant.EXTRA_USER_ID, userCode);
+                        chat.putExtra(Constant.EXTRA_USER_ID, user.getUserCode());
                         mCon.startActivity(chat);
                     }
                 } catch (JSONException e) {

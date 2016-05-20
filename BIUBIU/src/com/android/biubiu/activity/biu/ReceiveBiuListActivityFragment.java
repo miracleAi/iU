@@ -70,6 +70,13 @@ public class ReceiveBiuListActivityFragment extends BaseFragment {
                 }
             }
         });
+
+        mTopTitle.setLeftOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getActivity().finish();
+            }
+        });
     }
 
     private void showValidDialog() {
@@ -138,7 +145,7 @@ public class ReceiveBiuListActivityFragment extends BaseFragment {
 
             @Override
             public void onSuccess(String result) {
-                LogUtil.d("mytest", "getGrabList--" + result);
+                LogUtil.d("mytest", "endbiu--" + result);
                 JSONObject jsons;
                 try {
                     jsons = new JSONObject(result);
