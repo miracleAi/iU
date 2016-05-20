@@ -231,7 +231,7 @@ public class MatchSettingActivity extends BaseActivity implements OnClickListene
 			
 			if(isCheckMyTags==false){
 
-				MyHintDialog.getDialog(this, "完善个性标签", "想让iU的恋爱公式发生作用么  要先完善你自己的个性标签哦", "完善个性标签", new OnDialogClick() {
+				MyHintDialog.getDialog(this, "完善个性标签", "想让iU的恋爱公式发生作用么\n要先完善你自己的个性标签哦", "完善个性标签", new OnDialogClick() {
 					
 					@Override
 					public void onOK() {

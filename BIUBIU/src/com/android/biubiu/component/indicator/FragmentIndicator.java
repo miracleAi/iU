@@ -65,7 +65,7 @@ public class FragmentIndicator extends LinearLayout implements OnClickListener {
             ((TextView) view.findViewById(R.id.tvText)).setText(mCon.getResources().getString(indicator.getTitle()));
         }
         view.setOnClickListener(this);
-        LayoutParams params = new LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, 1);
+        LayoutParams params = new LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT, 1);
         addView(view, params);
     }
 

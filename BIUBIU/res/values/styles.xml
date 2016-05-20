@@ -38,7 +38,7 @@
     </style>
 
     <style name="tab_img_style">
-        <item name="android:layout_width">19dip</item>
+        <item name="android:layout_width">22.5dip</item>
         <item name="android:layout_height">19dip</item>
         <item name="android:layout_marginTop">6dip</item>
         <item name="android:layout_centerHorizontal">true</item>

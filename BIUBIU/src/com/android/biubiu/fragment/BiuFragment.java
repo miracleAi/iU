@@ -434,7 +434,9 @@ public class BiuFragment extends Fragment implements PushInterface,FragmentIndic
         mTopTitle.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((MainActivity) getActivity()).reverse();
+                if(LoginUtils.isLogin(getActivity())){
+                    ((MainActivity) getActivity()).reverse();
+                }
             }
         });
     }

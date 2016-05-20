@@ -309,7 +309,7 @@ public class PagerFragment extends BaseFragment implements View.OnClickListener,
                 if (LoginUtils.isLogin(getActivity())) {
                     if (isMyself) {
                         Intent setIntent = new Intent(getActivity(), MainSetActivity.class);
-                        startActivityForResult(setIntent,TO_SETTING);
+                        startActivityForResult(setIntent, TO_SETTING);
                     } else {
                         getMosterDialog();
                     }
@@ -353,6 +353,9 @@ public class PagerFragment extends BaseFragment implements View.OnClickListener,
             if (mLoginedView.getVisibility() == View.VISIBLE) {
                 mLoginedView.setVisibility(View.GONE);
             }
+            if (mRequestSuccess) {
+                mRequestSuccess = false;
+            }
         } else {
             if (mLoginView.getVisibility() == View.VISIBLE) {
                 mLoginView.setVisibility(View.GONE);
@@ -385,9 +388,7 @@ public class PagerFragment extends BaseFragment implements View.OnClickListener,
         JSONObject requestObject = new JSONObject();
         try {
             requestObject.put("device_code", SharePreferanceUtils.getInstance().getDeviceId(getActivity(), SharePreferanceUtils.DEVICE_ID, ""));
-            requestObject.put("code", TextUtils.isEmpty(userCode) ?
-                    SharePreferanceUtils.getInstance().getUserCode(getActivity(), SharePreferanceUtils.USER_CODE, "") :
-                    userCode);
+            requestObject.put("code", SharePreferanceUtils.getInstance().getUserCode(getActivity(), SharePreferanceUtils.USER_CODE, ""));
             requestObject.put("token", SharePreferanceUtils.getInstance().getToken(getActivity(), SharePreferanceUtils.TOKEN, ""));
         } catch (JSONException e) {
 
@@ -1017,6 +1018,7 @@ public class PagerFragment extends BaseFragment implements View.OnClickListener,
             case TO_LOGIN:
             case TO_REGISTER:
             case TO_SETTING:
+                mRequestSuccess = false;
                 switchView();
                 break;
             default:
