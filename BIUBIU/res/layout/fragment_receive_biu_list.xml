@@ -25,6 +25,7 @@
         android:fastScrollEnabled="true"
         android:scrollbars="none"
         android:fadingEdge="none"
+        android:fadeScrollbars="false"
         android:listSelector="#e7eeed"
         android:layout_below="@+id/top_title_view"/>
 </RelativeLayout>

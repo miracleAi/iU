@@ -42,7 +42,7 @@ import cc.imeetu.iu.R;
 public class ReceiveBiuListActivityFragment extends BaseFragment {
     private TopTitleView mTopTitle;
     private ListView mListview;
-    private List<UserFriends> mData;
+    private List<UserFriends> mData = new ArrayList<UserFriends>();
     private long mBiuTime, mBiuEndTime;
     private AlertDialog mValidDialog, mInvalidDialog;
     private ReceiveBiuListAdapter mAdapter;

@@ -77,7 +77,7 @@ public class ReceiveBiuListAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        ViewHolder holder = null;
+        ViewHolder holder;
         final UserFriends item = mData.get(position);
         if (convertView == null) {
             holder = new ViewHolder();
@@ -98,14 +98,14 @@ public class ReceiveBiuListAdapter extends BaseAdapter {
         holder.userName.setText(item.getNickname());
         holder.age.setText(item.getAge() + "岁");
         holder.star.setText(item.getStarsign() + "");
-        if (item.getIsgraduated().equals("1")) {
-            if (schoolDao.getschoolName(item.getSchool()).get(0).getUnivsNameString() != null) {
-                holder.school.setText(schoolDao.getschoolName(item.getSchool()).get(0).getUnivsNameString());
-            }
-
-        } else {
-            holder.school.setText(item.getCarrer());
+//        if (item.getIsgraduated().equals("1")) {
+        if (schoolDao.getschoolName(item.getSchool()).get(0).getUnivsNameString() != null) {
+            holder.school.setText(schoolDao.getschoolName(item.getSchool()).get(0).getUnivsNameString());
         }
+
+//        } else {
+//            holder.school.setText(item.getCarrer());
+//        }
         x.image().bind(holder.img, item.getIcon_thumbnailUrl(), imageOptions);
         holder.img.setOnClickListener(new View.OnClickListener() {
 
@@ -198,7 +198,7 @@ public class ReceiveBiuListAdapter extends BaseAdapter {
                     if ("0".equals(message)) {
                         Toast.makeText(mCon, mCon.getResources().getString(R.string.accept_fail), Toast.LENGTH_SHORT).show();
                         return;
-                    }else{
+                    } else {
                         Intent chat = new Intent(mCon, ChatActivity.class);
                         chat.putExtra(Constant.EXTRA_USER_ID, userCode);
                         mCon.startActivity(chat);
