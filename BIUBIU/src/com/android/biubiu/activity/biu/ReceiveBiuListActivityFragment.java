@@ -189,13 +189,15 @@ public class ReceiveBiuListActivityFragment extends BaseFragment {
     private void initData() {
         mAdapter = new ReceiveBiuListAdapter(mData,getActivity());
         mListview.setAdapter(mAdapter);
-        getGrabList(0);
+        getGrabList();
         String sendBiuTime = SharePreferanceUtils.getInstance().getShared(getActivity(), SharePreferanceUtils.SEND_BIU_TIME, "");
-        mBiuTime = Long.parseLong(sendBiuTime);
-        mBiuEndTime = mBiuTime + 90 * 1000;
+        if(!TextUtils.isEmpty(sendBiuTime)){
+            mBiuTime = Long.parseLong(sendBiuTime);
+            mBiuEndTime = mBiuTime + 90 * 1000;
+        }
     }
 
-    private void getGrabList(final long value) {
+    private void getGrabList() {
         RequestParams params = new RequestParams(HttpContants.APP_BIU_GETGRABBIULIST);
         JSONObject requestObject = new JSONObject();
         try {
