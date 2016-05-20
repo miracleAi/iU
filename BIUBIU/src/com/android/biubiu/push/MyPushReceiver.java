@@ -120,36 +120,40 @@ public class MyPushReceiver extends PushMessageReceiver{
 		}catch (NullPointerException e) {
 			// TODO: handle exception
 		}
-		if(isOpen){
-			if(msgType.equals(Constants.MSG_TYPE_MATCH)){
-				if(updateface != null){
-					if(isPlaySound){
-						SharePreferanceUtils.getInstance().putShared(context, SharePreferanceUtils.BIU_SOUND_TIME, String.valueOf(System.currentTimeMillis()));
-						if(isOpenVoice){
+		try {
+			if (isOpen) {
+				if (msgType.equals(Constants.MSG_TYPE_MATCH)) {
+					if (updateface != null) {
+						if (isPlaySound) {
+							SharePreferanceUtils.getInstance().putShared(context, SharePreferanceUtils.BIU_SOUND_TIME, String.valueOf(System.currentTimeMillis()));
+							if (isOpenVoice) {
+								playSound(context);
+							}
+							if (isShock) {
+								shock(context);
+							}
+						}
+						updateface.updateView(newUserBean, 0);
+					}
+				} else if (msgType.equals(Constants.MSG_TYPE_GRAB)) {
+					if (updateface != null) {
+						if (isOpenVoice) {
 							playSound(context);
 						}
-						if(isShock){
+						if (isShock) {
 							shock(context);
 						}
+						updateface.updateView(newUserBean, 1);
 					}
-					updateface.updateView(newUserBean,0);
+					saveUserFriend(newUserBean.getUserCode(), newUserBean.getNickname(), newUserBean.getIconUrl());
 				}
-			}else if(msgType.equals(Constants.MSG_TYPE_GRAB)){
-				if(updateface != null){
-					if(isOpenVoice){
-						playSound(context);
-					}
-					if(isShock){
-						shock(context);
-					}
-					updateface.updateView(newUserBean,1);
+			} else {
+				if (msgType.equals(Constants.MSG_TYPE_MATCH)) {
+					showNotification(context, isShock, isOpenVoice, newUserBean, msgType);
 				}
-				saveUserFriend(newUserBean.getUserCode(),newUserBean.getNickname(),newUserBean.getIconUrl());
 			}
-		}else{
-			if(msgType.equals(Constants.MSG_TYPE_MATCH)){
-				showNotification(context,isShock,isOpenVoice,newUserBean,msgType);
-			}
+		}catch (NullPointerException e){
+			e.printStackTrace();
 		}
 	}
 
