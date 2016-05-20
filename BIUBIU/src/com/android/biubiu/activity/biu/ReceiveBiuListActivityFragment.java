@@ -250,6 +250,7 @@ public class ReceiveBiuListActivityFragment extends BaseFragment {
                     }
                     String message = data.getString("message");
                     if ("0".equals(message)) {
+                        SharePreferanceUtils.getInstance().putShared(getActivity(),SharePreferanceUtils.IS_BIU_END,true);
                         Toast.makeText(getActivity(), getResources().getString(R.string.biu_end), Toast.LENGTH_SHORT).show();
                         return;
                     }
