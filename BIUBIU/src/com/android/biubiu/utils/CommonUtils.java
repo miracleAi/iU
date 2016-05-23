@@ -29,7 +29,7 @@ public class CommonUtils {
     public static String formatDistance(int meter) {
         if (meter != 0) {
             double kilometer = meter / 1000.00;
-            return new DecimalFormat("#.00").format(kilometer);
+            return new DecimalFormat("##0.00").format(kilometer);
         }
         return "0";
     }

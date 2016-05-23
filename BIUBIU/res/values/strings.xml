@@ -246,6 +246,7 @@
     <string name="biu_end">本次biubiu已结束</string>
     <!-- 抢biu页面，biubiu已被接受 -->
     <string name="biu_receive">已收biu</string>
+    <string name="again_grab">再次抢biu</string>
 
     <string name="title_activity_receive_biu_list">ReceiveBiuListActivity</string>
     <string name="receive_biu_list">收biu的人</string>

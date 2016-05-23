@@ -388,7 +388,9 @@ public class PagerFragment extends BaseFragment implements View.OnClickListener,
         JSONObject requestObject = new JSONObject();
         try {
             requestObject.put("device_code", SharePreferanceUtils.getInstance().getDeviceId(getActivity(), SharePreferanceUtils.DEVICE_ID, ""));
-            requestObject.put("code", SharePreferanceUtils.getInstance().getUserCode(getActivity(), SharePreferanceUtils.USER_CODE, ""));
+            requestObject.put("code", TextUtils.isEmpty(userCode) ?
+                    SharePreferanceUtils.getInstance().getUserCode(getActivity(), SharePreferanceUtils.USER_CODE, "") :
+                    userCode);
             requestObject.put("token", SharePreferanceUtils.getInstance().getToken(getActivity(), SharePreferanceUtils.TOKEN, ""));
         } catch (JSONException e) {
 
@@ -1017,8 +1019,17 @@ public class PagerFragment extends BaseFragment implements View.OnClickListener,
                 break;
             case TO_LOGIN:
             case TO_REGISTER:
+                mRequestSuccess = false;
+                if(mTopTitle.getVisibility()==View.GONE){
+                    mTopTitle.setVisibility(View.VISIBLE);
+                }
+                switchView();
+                break;
             case TO_SETTING:
                 mRequestSuccess = false;
+                if(mTopTitle.getVisibility()==View.VISIBLE){
+                    mTopTitle.setVisibility(View.GONE);
+                }
                 switchView();
                 break;
             default:

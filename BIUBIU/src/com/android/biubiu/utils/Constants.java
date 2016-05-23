@@ -84,7 +84,8 @@ public class Constants {
 	 * */
 	public static final String BIU_GRAB = "1";
 	public static final String BIU_END = "0";
-	public static final String BIU_RECEIVE = "2";
+	public static final String BIU_GRABED_NOT_ACCEPT = "2";
+	public static final String BIU__GRABED_ACCEPTED = "3";
 	/**
 	 * 是否需要扣除biu币
 	 * */

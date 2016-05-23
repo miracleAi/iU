@@ -461,15 +461,17 @@ public class BiuBiuReceiveActivity extends BaseActivity {
                         return;
                     }
                     Gson gson = new Gson();
-                    biuDEtialBean = gson.fromJson(jsons.getJSONObject("data")
-                            .toString(), BiuDetialBean.class);
-                    if (biuDEtialBean.getBiuState().equals(Constants.BIU_GRAB)) {
+                    biuDEtialBean = gson.fromJson(jsons.getJSONObject("data").toString(), BiuDetialBean.class);
+                    if (biuDEtialBean.getBiuState().equals(Constants.BIU_GRAB)) {//1
                         grabBT.setText(getResources().getString(R.string.receive_biu_grab));
                         grabBT.setBackgroundResource(R.drawable.biu_btn_normal);
-                    } else if (biuDEtialBean.getBiuState().equals(Constants.BIU_END)) {
+                    } else if (biuDEtialBean.getBiuState().equals(Constants.BIU_END)) {//0
                         grabBT.setText(getResources().getString(R.string.biu_end));
                         grabBT.setBackgroundResource(R.drawable.biu_btn_disabled);
-                    } else {
+                    } else if(biuDEtialBean.getBiuState().equals(Constants.BIU_GRABED_NOT_ACCEPT)){
+                        grabBT.setText(getResources().getString(R.string.again_grab));
+//                        grabBT.setBackgroundResource(R.drawable.biu_btn_disabled);
+                    }else{
                         grabBT.setText(getResources().getString(R.string.biu_receive));
                         grabBT.setBackgroundResource(R.drawable.biu_btn_disabled);
                     }

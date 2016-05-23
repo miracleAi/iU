@@ -125,9 +125,9 @@ public class BiuFragment extends Fragment implements PushInterface,FragmentIndic
     float userD2;
     float userD3;
     //三个圈放置view数
-    int n1 = 5;
-    int n2 = 8;
-    int n3 = 12;
+    int n1 = 4;
+    int n2 = 6;
+    int n3 = 8;
     //倒计时总时间和当前时间
     int totalTime = 90;
     int currentTime = 0;
