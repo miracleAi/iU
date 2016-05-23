@@ -3,11 +3,13 @@ package com.android.biubiu.activity.biu;
 import android.app.AlertDialog;
 import android.app.Fragment;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -46,6 +48,7 @@ public class ReceiveBiuListActivityFragment extends BaseFragment {
     private long mBiuTime, mBiuEndTime;
     private AlertDialog mValidDialog, mInvalidDialog;
     private ReceiveBiuListAdapter mAdapter;
+
     public ReceiveBiuListActivityFragment() {
     }
 
@@ -75,6 +78,17 @@ public class ReceiveBiuListActivityFragment extends BaseFragment {
             @Override
             public void onClick(View v) {
                 getActivity().finish();
+            }
+        });
+        mListview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                UserFriends item = mData.get(position);
+                if (item != null) {
+                    Intent intent = new Intent(getActivity(), MyPagerActivity.class);
+                    intent.putExtra("userCode", item.getUserCode());
+                    startActivity(intent);
+                }
             }
         });
     }
@@ -173,7 +187,7 @@ public class ReceiveBiuListActivityFragment extends BaseFragment {
                         showValidDialog();
                         return;
                     } else if ("1".equals(message)) {
-                        SharePreferanceUtils.getInstance().putShared(getActivity(),SharePreferanceUtils.IS_BIU_END,true);
+                        SharePreferanceUtils.getInstance().putShared(getActivity(), SharePreferanceUtils.IS_BIU_END, true);
                         Toast.makeText(getActivity(), getResources().getString(R.string.end_biu_suc), Toast.LENGTH_SHORT).show();
                         getActivity().finish();
                     }
@@ -187,11 +201,11 @@ public class ReceiveBiuListActivityFragment extends BaseFragment {
     }
 
     private void initData() {
-        mAdapter = new ReceiveBiuListAdapter(mData,getActivity());
+        mAdapter = new ReceiveBiuListAdapter(mData, getActivity());
         mListview.setAdapter(mAdapter);
         getGrabList();
         String sendBiuTime = SharePreferanceUtils.getInstance().getShared(getActivity(), SharePreferanceUtils.SEND_BIU_TIME, "");
-        if(!TextUtils.isEmpty(sendBiuTime)){
+        if (!TextUtils.isEmpty(sendBiuTime)) {
             mBiuTime = Long.parseLong(sendBiuTime);
             mBiuEndTime = mBiuTime + 90 * 1000;
         }
@@ -252,7 +266,7 @@ public class ReceiveBiuListActivityFragment extends BaseFragment {
                     }
                     String message = data.getString("message");
                     if ("0".equals(message)) {
-                        SharePreferanceUtils.getInstance().putShared(getActivity(),SharePreferanceUtils.IS_BIU_END,true);
+                        SharePreferanceUtils.getInstance().putShared(getActivity(), SharePreferanceUtils.IS_BIU_END, true);
                         Toast.makeText(getActivity(), getResources().getString(R.string.biu_end), Toast.LENGTH_SHORT).show();
                         return;
                     }
