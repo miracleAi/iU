@@ -128,6 +128,8 @@ public class BiuFragment extends Fragment implements PushInterface,FragmentIndic
     int n1 = 4;
     int n2 = 6;
     int n3 = 8;
+    //所有头像数
+    int allCount = n1+n2+n3;
     //倒计时总时间和当前时间
     int totalTime = 90;
     int currentTime = 0;
@@ -1094,8 +1096,8 @@ public class BiuFragment extends Fragment implements PushInterface,FragmentIndic
     //加入所有list中的view
     protected void addAllView(ArrayList<BiuBean> list, boolean isLogin) {
         int length = 0;
-        if (list.size() > 25) {
-            length = 25;
+        if (list.size() > allCount) {
+            length = allCount;
         } else {
             length = list.size();
         }
