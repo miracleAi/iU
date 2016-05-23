@@ -97,7 +97,8 @@
                                     android:layout_height="wrap_content"
                                     android:drawableLeft="@drawable/biu_receive_imageview_distance"
                                     android:drawablePadding="5dp"
-                                    android:textColor="@color/text_huise" />
+                                    android:textColor="@color/text_huise"
+                                    android:textSize="12sp"/>
 
                                 <View
                                     android:layout_width="1px"
@@ -119,6 +120,7 @@
                                     android:drawableLeft="@drawable/biu_receive_imageview_fit"
                                     android:drawablePadding="5dp"
                                     android:text="@string/receive_biu_compatibility"
+                                    android:textSize="12sp"
                                     android:textColor="@color/text_huise" />
 
                                 <TextView
@@ -126,6 +128,7 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_marginLeft="13dp"
+                                    android:textSize="12sp"
                                     android:textColor="@color/text_huise" />
 
                                 <View
@@ -144,6 +147,7 @@
                                 android:layout_weight="1"
                                 android:drawableLeft="@drawable/biu_receive_imageview_time"
                                 android:drawablePadding="5dp"
+                                android:textSize="12sp"
                                 android:textColor="@color/text_huise" />
                         </LinearLayout>
                     </RelativeLayout>
@@ -177,7 +181,7 @@
                                 android:id="@+id/age_receive_biu_tv"
                                 android:layout_width="40dp"
                                 android:layout_height="wrap_content"
-                                android:layout_marginLeft="12dp"
+                                android:layout_marginLeft="10dp"
                                 android:drawableLeft="@drawable/biu_receive_imageview_dian2"
                                 android:drawablePadding="5dp"
                                 android:singleLine="true"
@@ -189,7 +193,7 @@
                                 android:id="@+id/starsign_receive_biu_tv"
                                 android:layout_width="47dp"
                                 android:layout_height="wrap_content"
-                                android:layout_marginLeft="13dp"
+                                android:layout_marginLeft="10dp"
                                 android:drawableLeft="@drawable/biu_receive_imageview_dian2"
                                 android:drawablePadding="5dp"
                                 android:singleLine="true"
@@ -201,11 +205,11 @@
                                 android:id="@+id/school_receive_biu_tv"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_marginLeft="12dp"
+                                android:layout_marginLeft="10dp"
                                 android:drawableLeft="@drawable/biu_receive_imageview_dian2"
                                 android:drawablePadding="5dp"
                                 android:ellipsize="end"
-                                android:maxEms="7"
+                                android:maxEms="6"
                                 android:singleLine="true"
                                 android:text=""
                                 android:textColor="@color/text_huise2"
