@@ -81,7 +81,7 @@ public class ReceiveBiuListAdapter extends BaseAdapter {
         final UserFriends item = mData.get(position);
         if (convertView == null) {
             holder = new ViewHolder();
-            convertView = LayoutInflater.from(mCon).inflate(R.layout.item_chat_user_list, null);
+            convertView = mInflater.inflate(R.layout.item_chat_user_list, null);
             holder.img = (ImageView) convertView.findViewById(R.id.userHead_chat_user_list_img);
             holder.userName = (TextView) convertView.findViewById(R.id.userName_chat_user_List_tv);
             holder.age = (TextView) convertView.findViewById(R.id.userInfo_chat_user_List_tv);
@@ -194,7 +194,7 @@ public class ReceiveBiuListAdapter extends BaseAdapter {
                         user.setStatus(1);
                         notifyDataSetChanged();
                         Intent chat = new Intent(mCon, ChatActivity.class);
-                        chat.putExtra(Constant.EXTRA_USER_ID, user.getUserCode());
+                        chat.putExtra(Constant.EXTRA_USER_ID, user.getNickname());
                         mCon.startActivity(chat);
                     }
                 } catch (JSONException e) {
