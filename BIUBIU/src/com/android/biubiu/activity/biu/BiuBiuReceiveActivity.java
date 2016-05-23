@@ -468,10 +468,10 @@ public class BiuBiuReceiveActivity extends BaseActivity {
                     } else if (biuDEtialBean.getBiuState().equals(Constants.BIU_END)) {//0
                         grabBT.setText(getResources().getString(R.string.biu_end));
                         grabBT.setBackgroundResource(R.drawable.biu_btn_disabled);
-                    } else if(biuDEtialBean.getBiuState().equals(Constants.BIU_GRABED_NOT_ACCEPT)){
+                    } else if (biuDEtialBean.getBiuState().equals(Constants.BIU_GRABED_NOT_ACCEPT)) {
                         grabBT.setText(getResources().getString(R.string.again_grab));
 //                        grabBT.setBackgroundResource(R.drawable.biu_btn_disabled);
-                    }else{
+                    } else {
                         grabBT.setText(getResources().getString(R.string.biu_receive));
                         grabBT.setBackgroundResource(R.drawable.biu_btn_disabled);
                     }
@@ -491,7 +491,7 @@ public class BiuBiuReceiveActivity extends BaseActivity {
                     } else {
                         distance.setText(biuDEtialBean.getDistance() + "m");
                     }
-                    timeBefore.setText(DateUtils.getDateFormatReceiveBiu(BiuBiuReceiveActivity.this,biuDEtialBean.getTime()));
+                    timeBefore.setText(DateUtils.getDateFormatReceiveBiu(BiuBiuReceiveActivity.this, biuDEtialBean.getTime()));
                     numberInTag.setText("[" + biuDEtialBean.getHit_tags_num()
                             + "]");
                     numberInInterestTag.setText("["
@@ -620,7 +620,8 @@ public class BiuBiuReceiveActivity extends BaseActivity {
      * 抢biu
      */
     public void grabBiu() {
-        if (!biuDEtialBean.getBiuState().equals(Constants.BIU_GRAB)) {
+        if (biuDEtialBean.getBiuState().equals(Constants.BIU_END) ||
+                biuDEtialBean.getBiuState().equals(Constants.BIU__GRABED_ACCEPTED)) {
             return;
         }
         if (!NetUtils.isNetworkConnected(getApplicationContext())) {
