@@ -767,14 +767,14 @@ public class BiuFragment extends Fragment implements PushInterface,FragmentIndic
             ((MainActivity)getActivity()).reverseBack();
         }
         if(LoginUtils.isLogin(getActivity())){
-            showBiuHandler.post(shouBiuR);
+            resumeDraw();
         }
     }
 
     @Override
     public void onLeaveTab() {
         if(LoginUtils.isLogin(getActivity())){
-            showBiuHandler.removeCallbacks(shouBiuR);
+            pauseDraw();
         }
     }
 
@@ -1645,5 +1645,13 @@ public class BiuFragment extends Fragment implements PushInterface,FragmentIndic
             default:
                 break;
         }
+    }
+
+    public void pauseDraw(){
+        showBiuHandler.removeCallbacks(shouBiuR);
+    }
+
+    public void resumeDraw(){
+        showBiuHandler.post(shouBiuR);
     }
 }

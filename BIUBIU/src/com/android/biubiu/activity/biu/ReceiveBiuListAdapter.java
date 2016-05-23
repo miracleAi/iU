@@ -107,15 +107,6 @@ public class ReceiveBiuListAdapter extends BaseAdapter {
 //            holder.school.setText(item.getCarrer());
 //        }
         x.image().bind(holder.img, item.getIcon_thumbnailUrl(), imageOptions);
-        holder.img.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View arg0) {
-                Intent intent = new Intent(mCon, MyPagerActivity.class);
-                intent.putExtra("userCode", item.getUserCode());
-                mCon.startActivity(intent);
-            }
-        });
         final int status = item.getStatus();
         if (status == 1) {
             holder.acceptTv.setBackgroundResource(R.drawable.accepted_bg);

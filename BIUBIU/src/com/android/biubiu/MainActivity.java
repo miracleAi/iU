@@ -627,6 +627,7 @@ public class MainActivity extends FragmentActivity implements AMapLocationListen
 
     public void reverse() {
         Fragment fragment = mFragmentManager.findFragmentByTag(getResources().getString(R.string.tab_history));
+        Fragment biuFragment = mFragmentManager.findFragmentByTag(getResources().getString(R.string.left_menu_biubiu));
         FragmentTransaction transaction = mFragmentManager.beginTransaction();
         transaction.setCustomAnimations(R.anim.right_in_anim, R.anim.left_out_anim);
         if (fragment != null) {
@@ -635,9 +636,11 @@ public class MainActivity extends FragmentActivity implements AMapLocationListen
             fragment = new HistoryActivityFragment();
             transaction.add(R.id.layout_body, fragment, getResources().getString(R.string.tab_history));
         }
-        transaction.hide(mIndicators.get(1).getFragment());
+        transaction.hide(biuFragment);
         transaction.commit();
         mReverse = true;
+        ((BiuFragment) biuFragment).pauseDraw();
+
     }
 
     public void reverseBack() {
@@ -649,9 +652,10 @@ public class MainActivity extends FragmentActivity implements AMapLocationListen
         transaction.hide(fragment);
         transaction.commit();
         mReverse = false;
+        ((BiuFragment) biuFragment).resumeDraw();
     }
 
-    public boolean isReverse(){
+    public boolean isReverse() {
         return mReverse;
     }
 }
