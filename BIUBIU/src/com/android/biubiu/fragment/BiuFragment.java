@@ -196,6 +196,7 @@ public class BiuFragment extends Fragment implements PushInterface,FragmentIndic
     //是否正在请求biu列表
     private boolean isBiuLoading = false;
     private int inveralTime = 1;
+    private BiuBean grabBiuBean;
     private Handler showBiuHandler;
     private Handler mInvalidHandler = new Handler(){
         @Override
@@ -203,13 +204,12 @@ public class BiuFragment extends Fragment implements PushInterface,FragmentIndic
             super.handleMessage(msg);
             if (CommonUtils.isAppOnForeground(getActivity())) {
                 SharePreferanceUtils.getInstance().putShared(getActivity(), SharePreferanceUtils.EXCHANGE_FROUNT, false);
+                if (!LoginUtils.isLogin(getActivity())) {
+                    clearView();
+                }
             } else {
                 SharePreferanceUtils.getInstance().putShared(getActivity(), SharePreferanceUtils.EXCHANGE_FROUNT, true);
-                userGroupLayout.removeAllViews();
-                user1List.clear();
-                user2List.clear();
-                user3List.clear();
-                allUserCodeList.clear();
+                clearView();
                 biuDao.deleteAll();
                 isBiuLoading = false;
                 isBiuLoaded = false;
@@ -345,8 +345,10 @@ public class BiuFragment extends Fragment implements PushInterface,FragmentIndic
                 userBiuImv.setImageResource(R.drawable.biu_btn_biu);
                 userBiuImv.setVisibility(View.VISIBLE);
             }else{
-                userBiuImv.setImageResource(R.drawable.biu_btn_unfinished);
-                userBiuImv.setVisibility(View.VISIBLE);
+                if(null == grabBiuBean){
+                    userBiuImv.setImageResource(R.drawable.biu_btn_unfinished);
+                    userBiuImv.setVisibility(View.VISIBLE);
+                }
             }
             //主要解决登陆后请求biu列表
             if(!isBiuLoading && !isBiuLoaded){
@@ -354,14 +356,10 @@ public class BiuFragment extends Fragment implements PushInterface,FragmentIndic
             }
         }else{
             //退出登录后清掉页面信息
-            userGroupLayout.removeAllViews();
-            user1List.clear();
-            user2List.clear();
-            user3List.clear();
-            allUserCodeList.clear();
             biuDao.deleteAll();
             isBiuLoading = false;
             isBiuLoaded = false;
+           clearView();
             userBiuImv.setImageResource(R.drawable.biu_btn_biu);
             userBiuImv.setVisibility(View.VISIBLE);
             //获取未登录时的biubiu列表
@@ -391,6 +389,13 @@ public class BiuFragment extends Fragment implements PushInterface,FragmentIndic
                 userBiuImv.setVisibility(View.VISIBLE);
             }
         }
+    }
+    private void clearView(){
+        userGroupLayout.removeAllViews();
+        user1List.clear();
+        user2List.clear();
+        user3List.clear();
+        allUserCodeList.clear();
     }
 
     private void init() {
@@ -1231,6 +1236,7 @@ public class BiuFragment extends Fragment implements PushInterface,FragmentIndic
 
     //biubiu被抢后显示view
     private void updateBiuView(BiuBean bean) {
+        grabBiuBean = bean;
         currentTime = 0;
         taskHandler.removeCallbacks(taskR);
         taskView.setVisibility(View.GONE);

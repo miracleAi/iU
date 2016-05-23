@@ -153,19 +153,19 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="16dp"
                         android:layout_marginRight="16dp"
-                        android:layout_marginTop="24dp"
+                        android:layout_marginTop="13dp"
                         android:gravity="center">
 
                         <LinearLayout
-                            android:layout_width="match_parent"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_centerHorizontal="true"
                             android:orientation="horizontal">
 
                             <TextView
                                 android:id="@+id/sex_receive_biu_tv"
-                                android:layout_width="0dp"
+                                android:layout_width="35dp"
                                 android:layout_height="wrap_content"
-                                android:layout_weight="1"
                                 android:drawableLeft="@drawable/biu_receive_imageview_dian2"
                                 android:drawablePadding="5dp"
                                 android:singleLine="true"
@@ -175,10 +175,9 @@
 
                             <TextView
                                 android:id="@+id/age_receive_biu_tv"
-                                android:layout_width="0dp"
+                                android:layout_width="36dp"
                                 android:layout_height="wrap_content"
-                                android:layout_marginLeft="10dp"
-                                android:layout_weight="1"
+                                android:layout_marginLeft="12dp"
                                 android:drawableLeft="@drawable/biu_receive_imageview_dian2"
                                 android:drawablePadding="5dp"
                                 android:singleLine="true"
@@ -188,10 +187,9 @@
 
                             <TextView
                                 android:id="@+id/starsign_receive_biu_tv"
-                                android:layout_width="0dp"
+                                android:layout_width="47dp"
                                 android:layout_height="wrap_content"
-                                android:layout_marginLeft="10dp"
-                                android:layout_weight="1"
+                                android:layout_marginLeft="13dp"
                                 android:drawableLeft="@drawable/biu_receive_imageview_dian2"
                                 android:drawablePadding="5dp"
                                 android:singleLine="true"
@@ -201,10 +199,9 @@
 
                             <TextView
                                 android:id="@+id/school_receive_biu_tv"
-                                android:layout_width="0dp"
+                                android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_marginLeft="10dp"
-                                android:layout_weight="1"
+                                android:layout_marginLeft="12dp"
                                 android:drawableLeft="@drawable/biu_receive_imageview_dian2"
                                 android:drawablePadding="5dp"
                                 android:ellipsize="end"
@@ -221,7 +218,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="35dp"
                         android:layout_marginRight="35dp"
-                        android:layout_marginTop="32dp"
+                        android:layout_marginTop="28dp"
                         android:gravity="center_vertical"
                         android:orientation="horizontal">
 
@@ -310,8 +307,8 @@
                         android:layout_marginBottom="22dp">
                         <ImageView
                             android:id="@+id/show_tag_imv"
-                            android:layout_width="20dp"
-                            android:layout_height="20dp"
+                            android:layout_width="10dp"
+                            android:layout_height="10dp"
                             android:layout_centerInParent="true"
                             android:src="@drawable/biu_receive_btn_down"
                             />
