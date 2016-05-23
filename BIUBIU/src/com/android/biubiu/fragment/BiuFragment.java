@@ -982,7 +982,7 @@ public class BiuFragment extends Fragment implements PushInterface,FragmentIndic
                 lWidth - margin,
                 lHeight - margin);
         //imageViewbg.setTag(imvHeadTag+bean.getId());
-       // imageViewbg.setId(imvHeadIdTag + bean.getUserCode());
+        imageViewbg.setId(imvHeadIdTag + bean.getUserCode());
         imagebg.addRule(RelativeLayout.CENTER_IN_PARENT);
         rl.addView(imageViewbg, imagebg);
         if (lWidth != userD1) {
@@ -994,7 +994,7 @@ public class BiuFragment extends Fragment implements PushInterface,FragmentIndic
         RelativeLayout.LayoutParams imageP = new RelativeLayout.LayoutParams(
                 lWidth - margin,
                 lHeight - margin);
-       // imageView.setId(imvHeadIdTag + bean.getUserCode());
+        imageView.setId(imvHeadIdTag + bean.getUserCode());
         //imageView.setTag(imvHeadTag+bean.getId());
         imageP.addRule(RelativeLayout.CENTER_IN_PARENT);
         rl.addView(imageView, imageP);
