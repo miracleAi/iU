@@ -164,7 +164,7 @@
 
                             <TextView
                                 android:id="@+id/sex_receive_biu_tv"
-                                android:layout_width="35dp"
+                                android:layout_width="37dp"
                                 android:layout_height="wrap_content"
                                 android:drawableLeft="@drawable/biu_receive_imageview_dian2"
                                 android:drawablePadding="5dp"
@@ -175,13 +175,13 @@
 
                             <TextView
                                 android:id="@+id/age_receive_biu_tv"
-                                android:layout_width="36dp"
+                                android:layout_width="40dp"
                                 android:layout_height="wrap_content"
                                 android:layout_marginLeft="12dp"
                                 android:drawableLeft="@drawable/biu_receive_imageview_dian2"
                                 android:drawablePadding="5dp"
                                 android:singleLine="true"
-                                android:text=""
+                                android:text="25岁"
                                 android:textColor="@color/text_huise2"
                                 android:textSize="12sp" />
 

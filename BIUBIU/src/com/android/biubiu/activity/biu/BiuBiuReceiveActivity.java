@@ -621,7 +621,7 @@ public class BiuBiuReceiveActivity extends BaseActivity {
      */
     public void grabBiu() {
         if (biuDEtialBean.getBiuState().equals(Constants.BIU_END) ||
-                biuDEtialBean.getBiuState().equals(Constants.BIU__GRABED_ACCEPTED)) {
+                biuDEtialBean.getBiuState().equals(Constants.BIU_GRABED_ACCEPTED)) {
             return;
         }
         if (!NetUtils.isNetworkConnected(getApplicationContext())) {
