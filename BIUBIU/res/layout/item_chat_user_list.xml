@@ -114,10 +114,9 @@
                     android:layout_alignRight="@+id/accept_textview"
                     android:layout_marginTop="3dp"
                     android:layout_gravity="right"
-                    android:text="已赠1000U米"
                     android:textSize="9sp"
                     android:textColor="#b0b0b0"
-                    android:visibility="visible"/>
+                    android:visibility="gone"/>
         </RelativeLayout>
     </LinearLayout>
 
