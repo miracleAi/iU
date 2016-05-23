@@ -903,8 +903,8 @@ public class BiuFragment extends Fragment implements PushInterface,FragmentIndic
             //移除外圈最早的
             Collections.sort(user3List, new SorByTime());
             BiuBean delBean = user3List.get(0);
-            //RelativeLayout rl = (RelativeLayout) userGroupLayout.findViewWithTag(retivTag+delBean.getId());
-            RelativeLayout rl = (RelativeLayout) userGroupLayout.findViewById(retivIdTag + delBean.getUserCode());
+            RelativeLayout rl = (RelativeLayout) userGroupLayout.findViewWithTag(retivIdTag+delBean.getUserCode());
+            //RelativeLayout rl = (RelativeLayout) userGroupLayout.findViewById(retivIdTag + delBean.getUserCode());
             userGroupLayout.removeView(rl);
             //改变空闲标记，第二圈移到外圈
             c3DotList.get(delBean.getIndex()).setAdd(false);
@@ -960,8 +960,8 @@ public class BiuFragment extends Fragment implements PushInterface,FragmentIndic
     //创建第一圈上新的view,宽高为要创建view的宽高
     private void createCir1NewView(int xLocation, int yLocation, int lWidth, int lHeight, final BiuBean bean) {
         final RelativeLayout rl = new RelativeLayout(getActivity());
-        //rl.setTag(retivTag+bean.getId());
-        rl.setId(retivIdTag + bean.getUserCode());
+        rl.setTag(retivIdTag+bean.getUserCode());
+        //rl.setId(retivIdTag + bean.getUserCode());
         AbsoluteLayout.LayoutParams llParams = new AbsoluteLayout.LayoutParams(
                 lWidth,
                 lHeight, xLocation, yLocation);
@@ -1066,8 +1066,8 @@ public class BiuFragment extends Fragment implements PushInterface,FragmentIndic
 
     //移动view
     public void moveUserView(double startX, double startY, double endX, double endY, BiuBean userBean, float viewD, float viewD1, float viewD2) {
-        //final RelativeLayout rl = (RelativeLayout) userGroupLayout.findViewWithTag(retivTag+userBean.getId());
-        final RelativeLayout rl = (RelativeLayout) userGroupLayout.findViewById(retivIdTag + userBean.getUserCode());
+        final RelativeLayout rl = (RelativeLayout) userGroupLayout.findViewWithTag(retivIdTag+userBean.getUserCode());
+       // final RelativeLayout rl = (RelativeLayout) userGroupLayout.findViewById(retivIdTag + userBean.getUserCode());
         float scale = 0;
         float d = 0;
         if (rl.getWidth() == viewD2) {
