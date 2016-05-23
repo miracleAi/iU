@@ -191,6 +191,8 @@ public class BiuFragment extends Fragment implements PushInterface, FragmentIndi
     private PopupWindow mAdPopup;
     private String mAdUrl, mAdName, mAdCover;
     private String mUserCode;
+    //线程是否开启
+    private boolean isShowRPost = false;
 
     BiubiuDao biuDao;
     //请求biu列表是否成功
@@ -221,6 +223,42 @@ public class BiuFragment extends Fragment implements PushInterface, FragmentIndi
             }
         }
     };
+    private Handler resumeHandler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            boolean isBiuEnd = SharePreferanceUtils.getInstance().isBiuEnd(getActivity(), SharePreferanceUtils.IS_BIU_END, true);
+            if (LoginUtils.isLogin(getActivity())) {
+                resumeDraw();
+                //如果返回时biu已结束，则清掉抢biu列表的相关状态
+                if (isBiuEnd) {
+                    userBiuImv.setImageResource(R.drawable.biu_btn_biu);
+                    userBiuImv.setVisibility(View.VISIBLE);
+                } else {
+                    if (null == grabBiuBean) {
+                        userBiuImv.setImageResource(R.drawable.biu_btn_unfinished);
+                        userBiuImv.setVisibility(View.VISIBLE);
+                        getGrabBiuUser();
+                    }
+                }
+                //主要解决登陆后请求biu列表
+                if (!isBiuLoading && !isBiuLoaded) {
+                    initUserGroup();
+                    getBiuList(0);
+                }
+            } else {
+                //退出登录后清掉页面信息
+                biuDao.deleteAll();
+                isBiuLoading = false;
+                isBiuLoaded = false;
+                clearView();
+                userBiuImv.setImageResource(R.drawable.biu_btn_biu);
+                userBiuImv.setVisibility(View.VISIBLE);
+                //获取未登录时的biubiu列表
+                getBiuListUnlogin();
+            }
+        }
+    };
     //biu 列表是否还有数据需要请求
     private boolean isBiuHasNext = false;
     //private ArrayList<BiuBean> grabBiuList = new ArrayList<BiuBean>();
@@ -243,7 +281,6 @@ public class BiuFragment extends Fragment implements PushInterface, FragmentIndi
         if (!SharePreferanceUtils.getInstance().getShared(getActivity(), SharePreferanceUtils.IS_COMMIT_CHANNEL, false)) {
             HttpUtils.commitChannelId(getActivity());
         }
-        initUserGroup();
         return view;
     }
 
@@ -349,35 +386,7 @@ public class BiuFragment extends Fragment implements PushInterface, FragmentIndi
     @Override
     public void onResume() {
         super.onResume();
-        boolean isBiuEnd = SharePreferanceUtils.getInstance().isBiuEnd(getActivity(), SharePreferanceUtils.IS_BIU_END, true);
-        if (LoginUtils.isLogin(getActivity())) {
-            showBiuHandler.post(shouBiuR);
-            //如果返回时biu已结束，则清掉抢biu列表的相关状态
-            if (isBiuEnd) {
-                userBiuImv.setImageResource(R.drawable.biu_btn_biu);
-                userBiuImv.setVisibility(View.VISIBLE);
-            } else {
-                if (null == grabBiuBean) {
-                    userBiuImv.setImageResource(R.drawable.biu_btn_unfinished);
-                    userBiuImv.setVisibility(View.VISIBLE);
-                    getGrabBiuUser();
-                }
-            }
-            //主要解决登陆后请求biu列表
-            if (!isBiuLoading && !isBiuLoaded) {
-                getBiuList(0);
-            }
-        } else {
-            //退出登录后清掉页面信息
-            biuDao.deleteAll();
-            isBiuLoading = false;
-            isBiuLoaded = false;
-            clearView();
-            userBiuImv.setImageResource(R.drawable.biu_btn_biu);
-            userBiuImv.setVisibility(View.VISIBLE);
-            //获取未登录时的biubiu列表
-            getBiuListUnlogin();
-        }
+        resumeHandler.sendEmptyMessageDelayed(0, 1000);
        /* if (SharePreferanceUtils.getInstance().isExchange(getActivity(), SharePreferanceUtils.EXCHANGE_FROUNT, true)) {
             if (LoginUtils.isLogin(getActivity())) {
                 //接口通信赋值
@@ -1264,6 +1273,9 @@ public class BiuFragment extends Fragment implements PushInterface, FragmentIndi
 
     //新的获取biu列表
     private void getBiuList(final long requestTime) {
+        if (requestTime == 0) {
+            clearView();
+        }
         isBiuLoading = true;
         isBiuLoaded = false;
         RequestParams params = new RequestParams(HttpContants.APP_BIU_GETTARGETBIULIST);
@@ -1442,7 +1454,7 @@ public class BiuFragment extends Fragment implements PushInterface, FragmentIndi
     public void onPause() {
         // TODO Auto-generated method stub
         super.onPause();
-        showBiuHandler.removeCallbacks(shouBiuR);
+        pauseDraw();
         mInvalidHandler.sendEmptyMessageDelayed(0, 1000);
     }
 
@@ -1659,10 +1671,16 @@ public class BiuFragment extends Fragment implements PushInterface, FragmentIndi
     }
 
     public void pauseDraw() {
-        showBiuHandler.removeCallbacks(shouBiuR);
+        if (isShowRPost) {
+            isShowRPost = false;
+            showBiuHandler.removeCallbacks(shouBiuR);
+        }
     }
 
     public void resumeDraw() {
-        showBiuHandler.post(shouBiuR);
+        if (!isShowRPost) {
+            isShowRPost = true;
+            showBiuHandler.post(shouBiuR);
+        }
     }
 }
