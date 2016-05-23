@@ -103,7 +103,7 @@ import android.widget.Toast;
 import cc.imeetu.iu.R;
 
 @SuppressLint("NewApi")
-public class BiuFragment extends Fragment implements PushInterface,FragmentIndicator.OnClickListener {
+public class BiuFragment extends Fragment implements PushInterface, FragmentIndicator.OnClickListener {
     View view;
     //启动发biubiu页面的requestcode
     public static final int SEND_BIU_REQUEST = 1001;
@@ -129,7 +129,7 @@ public class BiuFragment extends Fragment implements PushInterface,FragmentIndic
     int n2 = 6;
     int n3 = 8;
     //所有头像数
-    int allCount = n1+n2+n3;
+    int allCount = n1 + n2 + n3;
     //倒计时总时间和当前时间
     int totalTime = 90;
     int currentTime = 0;
@@ -200,21 +200,24 @@ public class BiuFragment extends Fragment implements PushInterface,FragmentIndic
     private int inveralTime = 1;
     private BiuBean grabBiuBean;
     private Handler showBiuHandler;
-    private Handler mInvalidHandler = new Handler(){
+    private Handler mInvalidHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
             if (CommonUtils.isAppOnForeground(getActivity())) {
                 SharePreferanceUtils.getInstance().putShared(getActivity(), SharePreferanceUtils.EXCHANGE_FROUNT, false);
-                if (!LoginUtils.isLogin(getActivity())) {
+               /* if (!LoginUtils.isLogin(getActivity())) {
                     clearView();
-                }
+                }*/
             } else {
                 SharePreferanceUtils.getInstance().putShared(getActivity(), SharePreferanceUtils.EXCHANGE_FROUNT, true);
-                clearView();
+               /* clearView();
                 biuDao.deleteAll();
                 isBiuLoading = false;
-                isBiuLoaded = false;
+                isBiuLoaded = false;*/
+            }
+            if (!LoginUtils.isLogin(getActivity())) {
+                clearView();
             }
         }
     };
@@ -234,6 +237,13 @@ public class BiuFragment extends Fragment implements PushInterface,FragmentIndic
         if (SharePreferanceUtils.getInstance().isScanBeginGuid(getActivity(), SharePreferanceUtils.IS_SCAN_BEGINGUID, false)) {
             getAd();
         }
+        //接口通信赋值
+        MyPushReceiver.setUpdateBean(this);
+        //检查是否提交了channelID
+        if (!SharePreferanceUtils.getInstance().getShared(getActivity(), SharePreferanceUtils.IS_COMMIT_CHANNEL, false)) {
+            HttpUtils.commitChannelId(getActivity());
+        }
+        initUserGroup();
         return view;
     }
 
@@ -343,41 +353,42 @@ public class BiuFragment extends Fragment implements PushInterface,FragmentIndic
         if (LoginUtils.isLogin(getActivity())) {
             showBiuHandler.post(shouBiuR);
             //如果返回时biu已结束，则清掉抢biu列表的相关状态
-            if(isBiuEnd){
+            if (isBiuEnd) {
                 userBiuImv.setImageResource(R.drawable.biu_btn_biu);
                 userBiuImv.setVisibility(View.VISIBLE);
-            }else{
-                if(null == grabBiuBean){
+            } else {
+                if (null == grabBiuBean) {
                     userBiuImv.setImageResource(R.drawable.biu_btn_unfinished);
                     userBiuImv.setVisibility(View.VISIBLE);
+                    getGrabBiuUser();
                 }
             }
             //主要解决登陆后请求biu列表
-            if(!isBiuLoading && !isBiuLoaded){
+            if (!isBiuLoading && !isBiuLoaded) {
                 getBiuList(0);
             }
-        }else{
+        } else {
             //退出登录后清掉页面信息
             biuDao.deleteAll();
             isBiuLoading = false;
             isBiuLoaded = false;
-           clearView();
+            clearView();
             userBiuImv.setImageResource(R.drawable.biu_btn_biu);
             userBiuImv.setVisibility(View.VISIBLE);
             //获取未登录时的biubiu列表
             getBiuListUnlogin();
         }
-        if (SharePreferanceUtils.getInstance().isExchange(getActivity(), SharePreferanceUtils.EXCHANGE_FROUNT, true)) {
-            //接口通信赋值
-            MyPushReceiver.setUpdateBean(this);
-            //检查是否提交了channelID
-            if (!SharePreferanceUtils.getInstance().getShared(getActivity(), SharePreferanceUtils.IS_COMMIT_CHANNEL, false)) {
-                HttpUtils.commitChannelId(getActivity());
-            }
-            initUserGroup();
+       /* if (SharePreferanceUtils.getInstance().isExchange(getActivity(), SharePreferanceUtils.EXCHANGE_FROUNT, true)) {
             if (LoginUtils.isLogin(getActivity())) {
+                //接口通信赋值
+                MyPushReceiver.setUpdateBean(this);
+                //检查是否提交了channelID
+                if (!SharePreferanceUtils.getInstance().getShared(getActivity(), SharePreferanceUtils.IS_COMMIT_CHANNEL, false)) {
+                    HttpUtils.commitChannelId(getActivity());
+                }
+                initUserGroup();
                 //执行加载biu列表 抢biu人列表 各种状态
-                if(!isBiuLoading && !isBiuLoaded){
+                if (!isBiuLoading && !isBiuLoaded) {
                     getBiuList(0);
                 }
             } else {
@@ -386,13 +397,14 @@ public class BiuFragment extends Fragment implements PushInterface,FragmentIndic
             }
             if (!isBiuEnd) {
                 getGrabBiuUser();
-            }else{
+            } else {
                 userBiuImv.setImageResource(R.drawable.biu_btn_biu);
                 userBiuImv.setVisibility(View.VISIBLE);
             }
-        }
+        }*/
     }
-    private void clearView(){
+
+    private void clearView() {
         userGroupLayout.removeAllViews();
         user1List.clear();
         user2List.clear();
@@ -455,7 +467,7 @@ public class BiuFragment extends Fragment implements PushInterface,FragmentIndic
         mTopTitle.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(LoginUtils.isLogin(getActivity())){
+                if (LoginUtils.isLogin(getActivity())) {
                     ((MainActivity) getActivity()).reverse();
                 }
             }
@@ -569,20 +581,20 @@ public class BiuFragment extends Fragment implements PushInterface,FragmentIndic
                                     showShenHeDaiog(Integer.parseInt(headFlag));
                                     break;
                                 default:
-                                    if(SharePreferanceUtils.getInstance().isBiuEnd(getActivity(),SharePreferanceUtils.IS_BIU_END,true)){
+                                    if (SharePreferanceUtils.getInstance().isBiuEnd(getActivity(), SharePreferanceUtils.IS_BIU_END, true)) {
                                         Intent intent = new Intent(getActivity(), BiuBiuSendActivity.class);
                                         startActivityForResult(intent, SEND_BIU_REQUEST);
-                                    }else{
+                                    } else {
                                         Intent intent = new Intent(getActivity(), ReceiveBiuListActivity.class);
                                         startActivity(intent);
                                     }
                                     break;
                             }
                         } else {
-                            if(SharePreferanceUtils.getInstance().isBiuEnd(getActivity(),SharePreferanceUtils.IS_BIU_END,true)){
+                            if (SharePreferanceUtils.getInstance().isBiuEnd(getActivity(), SharePreferanceUtils.IS_BIU_END, true)) {
                                 Intent intent = new Intent(getActivity(), BiuBiuSendActivity.class);
                                 startActivityForResult(intent, SEND_BIU_REQUEST);
-                            }else{
+                            } else {
                                 Intent intent = new Intent(getActivity(), ReceiveBiuListActivity.class);
                                 startActivity(intent);
                             }
@@ -601,20 +613,20 @@ public class BiuFragment extends Fragment implements PushInterface,FragmentIndic
                                 showShenHeDaiog(Integer.parseInt(headFlag));
                                 break;
                             default:
-                                if(SharePreferanceUtils.getInstance().isBiuEnd(getActivity(),SharePreferanceUtils.IS_BIU_END,true)){
+                                if (SharePreferanceUtils.getInstance().isBiuEnd(getActivity(), SharePreferanceUtils.IS_BIU_END, true)) {
                                     Intent intent = new Intent(getActivity(), BiuBiuSendActivity.class);
                                     startActivityForResult(intent, SEND_BIU_REQUEST);
-                                }else{
+                                } else {
                                     Intent intent = new Intent(getActivity(), ReceiveBiuListActivity.class);
                                     startActivity(intent);
                                 }
                                 break;
                         }
                     } else {
-                        if(SharePreferanceUtils.getInstance().isBiuEnd(getActivity(),SharePreferanceUtils.IS_BIU_END,true)){
+                        if (SharePreferanceUtils.getInstance().isBiuEnd(getActivity(), SharePreferanceUtils.IS_BIU_END, true)) {
                             Intent intent = new Intent(getActivity(), BiuBiuSendActivity.class);
                             startActivityForResult(intent, SEND_BIU_REQUEST);
-                        }else{
+                        } else {
                             Intent intent = new Intent(getActivity(), ReceiveBiuListActivity.class);
                             startActivity(intent);
                         }
@@ -765,17 +777,17 @@ public class BiuFragment extends Fragment implements PushInterface,FragmentIndic
 
     @Override
     public void onTabClick() {
-        if(!LoginUtils.isLogin(getActivity()) && ((MainActivity)getActivity()).isReverse()){
-            ((MainActivity)getActivity()).reverseBack();
+        if (!LoginUtils.isLogin(getActivity()) && ((MainActivity) getActivity()).isReverse()) {
+            ((MainActivity) getActivity()).reverseBack();
         }
-        if(LoginUtils.isLogin(getActivity())){
+        if (LoginUtils.isLogin(getActivity())) {
             resumeDraw();
         }
     }
 
     @Override
     public void onLeaveTab() {
-        if(LoginUtils.isLogin(getActivity())){
+        if (LoginUtils.isLogin(getActivity())) {
             pauseDraw();
         }
     }
@@ -903,7 +915,7 @@ public class BiuFragment extends Fragment implements PushInterface,FragmentIndic
             //移除外圈最早的
             Collections.sort(user3List, new SorByTime());
             BiuBean delBean = user3List.get(0);
-            RelativeLayout rl = (RelativeLayout) userGroupLayout.findViewWithTag(retivIdTag+delBean.getUserCode());
+            RelativeLayout rl = (RelativeLayout) userGroupLayout.findViewWithTag(retivIdTag + delBean.getUserCode());
             //RelativeLayout rl = (RelativeLayout) userGroupLayout.findViewById(retivIdTag + delBean.getUserCode());
             userGroupLayout.removeView(rl);
             //改变空闲标记，第二圈移到外圈
@@ -960,7 +972,7 @@ public class BiuFragment extends Fragment implements PushInterface,FragmentIndic
     //创建第一圈上新的view,宽高为要创建view的宽高
     private void createCir1NewView(int xLocation, int yLocation, int lWidth, int lHeight, final BiuBean bean) {
         final RelativeLayout rl = new RelativeLayout(getActivity());
-        rl.setTag(retivIdTag+bean.getUserCode());
+        rl.setTag(retivIdTag + bean.getUserCode());
         //rl.setId(retivIdTag + bean.getUserCode());
         AbsoluteLayout.LayoutParams llParams = new AbsoluteLayout.LayoutParams(
                 lWidth,
@@ -1066,8 +1078,8 @@ public class BiuFragment extends Fragment implements PushInterface,FragmentIndic
 
     //移动view
     public void moveUserView(double startX, double startY, double endX, double endY, BiuBean userBean, float viewD, float viewD1, float viewD2) {
-        final RelativeLayout rl = (RelativeLayout) userGroupLayout.findViewWithTag(retivIdTag+userBean.getUserCode());
-       // final RelativeLayout rl = (RelativeLayout) userGroupLayout.findViewById(retivIdTag + userBean.getUserCode());
+        final RelativeLayout rl = (RelativeLayout) userGroupLayout.findViewWithTag(retivIdTag + userBean.getUserCode());
+        // final RelativeLayout rl = (RelativeLayout) userGroupLayout.findViewById(retivIdTag + userBean.getUserCode());
         float scale = 0;
         float d = 0;
         if (rl.getWidth() == viewD2) {
@@ -1194,9 +1206,9 @@ public class BiuFragment extends Fragment implements PushInterface,FragmentIndic
                     ArrayList<BiuBean> list = gson.fromJson(userArray.toString(), new TypeToken<List<BiuBean>>() {
                     }.getType());
                     if (null != list && list.size() > 0) {
-                            userBiuImv.setImageResource(R.drawable.photo_fail);
-                            userBiuImv.setVisibility(View.VISIBLE);
-                            Collections.sort(list, new SorByTime());
+                        userBiuImv.setImageResource(R.drawable.photo_fail);
+                        userBiuImv.setVisibility(View.VISIBLE);
+                        Collections.sort(list, new SorByTime());
                             /*grabBiuList.clear();
                             //将最新的9个放入列表
                             if (list.size() > 9) {
@@ -1204,8 +1216,8 @@ public class BiuFragment extends Fragment implements PushInterface,FragmentIndic
                             } else {
                                 grabBiuList.addAll(list);
                             }*/
-                            updateBiuView(list.get(0));
-                    }else{
+                        updateBiuView(list.get(0));
+                    } else {
                         userBiuImv.setImageResource(R.drawable.biu_btn_unfinished);
                         userBiuImv.setVisibility(View.VISIBLE);
                     }
@@ -1241,7 +1253,7 @@ public class BiuFragment extends Fragment implements PushInterface,FragmentIndic
         taskView.setVisibility(View.GONE);
         userBiuImv.setImageResource(R.drawable.photo_fail);
         userBiuImv.setVisibility(View.VISIBLE);
-         x.image().bind(userBiuImv, bean.getIconUrl(), imageOptions);
+        x.image().bind(userBiuImv, bean.getIconUrl(), imageOptions);
        /* if (grabBiuList.size() > 8) {
             grabBiuList.remove(8);
             grabBiuList.add(bean);
@@ -1431,7 +1443,7 @@ public class BiuFragment extends Fragment implements PushInterface,FragmentIndic
         // TODO Auto-generated method stub
         super.onPause();
         showBiuHandler.removeCallbacks(shouBiuR);
-        mInvalidHandler.sendEmptyMessageDelayed(0,1000);
+        mInvalidHandler.sendEmptyMessageDelayed(0, 1000);
     }
 
     @Override
@@ -1646,11 +1658,11 @@ public class BiuFragment extends Fragment implements PushInterface,FragmentIndic
         }
     }
 
-    public void pauseDraw(){
+    public void pauseDraw() {
         showBiuHandler.removeCallbacks(shouBiuR);
     }
 
-    public void resumeDraw(){
+    public void resumeDraw() {
         showBiuHandler.post(shouBiuR);
     }
 }
