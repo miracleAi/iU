@@ -91,7 +91,7 @@ public class ActivityListActivityFragment extends Fragment {
     }
 
     private void getActivites() {
-        RequestParams params = new RequestParams(HttpContants.ACTIVITY_GETTAGS);
+        RequestParams params = new RequestParams(HttpContants.ACTIVITY_GETACTIVITY);
         JSONObject requestObject = new JSONObject();
         try {
             requestObject.put("device_code", SharePreferanceUtils.getInstance().getDeviceId(getActivity(), SharePreferanceUtils.DEVICE_ID, ""));

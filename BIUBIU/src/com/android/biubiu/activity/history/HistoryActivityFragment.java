@@ -17,8 +17,6 @@ import com.android.biubiu.MatchSettingActivity;
 import com.android.biubiu.activity.act.ActivityListActivity;
 import com.android.biubiu.activity.biu.BiuBiuReceiveActivity;
 import com.android.biubiu.bean.HistoryBiuBean;
-import com.android.biubiu.common.Umutils;
-import com.android.biubiu.component.indicator.FragmentIndicator;
 import com.android.biubiu.component.stagger.PullToRefreshStaggeredGridView;
 import com.android.biubiu.component.title.TopTitleView;
 import com.android.biubiu.utils.HttpContants;
@@ -216,7 +214,7 @@ public class HistoryActivityFragment extends BaseFragment implements PullToRefre
      */
     public void getAd() {
         final String userCode = SharePreferanceUtils.getInstance().getUserCode(getActivity(), SharePreferanceUtils.USER_CODE, "");
-        RequestParams params = new RequestParams(HttpContants.ACTIVITY_GETTAGS);
+        RequestParams params = new RequestParams(HttpContants.ACTIVITY_GETACTIVITY);
         JSONObject requestObject = new JSONObject();
         try {
             requestObject.put("device_code", SharePreferanceUtils.getInstance().getDeviceId(getActivity(), SharePreferanceUtils.DEVICE_ID, ""));

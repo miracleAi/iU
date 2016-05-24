@@ -18,4 +18,6 @@ public class Constant extends EaseConstant {
     public static final String ACTIVITY_COVER = "act_cover";
     public static int biubiCnt;
     public static String headState;
+
+    public static final int EXIT_APP_SUCCESS = 10005;
 }

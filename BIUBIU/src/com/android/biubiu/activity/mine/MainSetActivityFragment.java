@@ -396,6 +396,7 @@ public class MainSetActivityFragment extends Fragment implements View.OnClickLis
                 SharePreferanceUtils.getInstance().putShared(getActivity(), SharePreferanceUtils.USER_NAME, "");
                 SharePreferanceUtils.getInstance().putShared(getActivity(), SharePreferanceUtils.USER_HEAD, "");
                 SharePreferanceUtils.getInstance().putShared(getActivity(), SharePreferanceUtils.USER_CODE, "");
+                getActivity().setResult(Constant.EXIT_APP_SUCCESS);
                 getActivity().finish();
             }
 
@@ -467,7 +468,8 @@ public class MainSetActivityFragment extends Fragment implements View.OnClickLis
 
     private void showExitDialog() {
         if (mExitDialog == null) {
-            mExitDialog = CommonDialog.doubleBtnDialog(getActivity(), "", getResources().getString(R.string.exit_tips),
+            mExitDialog = CommonDialog.doubleBtnDialog(getActivity(), getResources().getString(R.string.tips),
+                    getResources().getString(R.string.exit_tips),
                     getResources().getString(R.string.cancel), getResources().getString(R.string.sure),
                     new DialogInterface.OnClickListener() {
                         @Override

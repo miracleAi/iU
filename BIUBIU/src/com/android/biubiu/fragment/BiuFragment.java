@@ -12,7 +12,6 @@ import java.util.Random;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.xutils.common.Callback;
 import org.xutils.x;
 import org.xutils.common.Callback.CommonCallback;
 import org.xutils.http.RequestParams;
@@ -28,10 +27,7 @@ import com.android.biubiu.activity.biu.BiuBiuSendActivity;
 import com.android.biubiu.activity.biu.ReceiveBiuListActivity;
 import com.android.biubiu.bean.BiuBean;
 import com.android.biubiu.bean.DotBean;
-import com.android.biubiu.bean.UserBean;
 import com.android.biubiu.callback.BiuBooleanCallback;
-import com.android.biubiu.chat.ChatActivity;
-import com.android.biubiu.chat.Constant;
 import com.android.biubiu.common.CommonDialog;
 import com.android.biubiu.common.Umutils;
 import com.android.biubiu.component.indicator.FragmentIndicator;
@@ -66,11 +62,8 @@ import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
 
 
-import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.CompressFormat;
 import android.graphics.drawable.ColorDrawable;
@@ -81,7 +74,6 @@ import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.provider.MediaStore;
-import android.provider.Settings;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
 import android.view.Gravity;
@@ -291,7 +283,7 @@ public class BiuFragment extends Fragment implements PushInterface, FragmentIndi
      */
     public void getAd() {
         mUserCode = SharePreferanceUtils.getInstance().getUserCode(getActivity(), SharePreferanceUtils.USER_CODE, "");
-        RequestParams params = new RequestParams(HttpContants.ACTIVITY_GETTAGS);
+        RequestParams params = new RequestParams(HttpContants.ACTIVITY_GETACTIVITY);
         JSONObject requestObject = new JSONObject();
         try {
             requestObject.put("device_code", SharePreferanceUtils.getInstance().getDeviceId(getActivity(), SharePreferanceUtils.DEVICE_ID, ""));
@@ -303,7 +295,7 @@ public class BiuFragment extends Fragment implements PushInterface, FragmentIndi
         x.http().post(params, new CommonCallback<String>() {
             @Override
             public void onSuccess(String s) {
-                LogUtil.e("mytest", "s = " + s);
+                LogUtil.e("mytest", "getactivity = " + s);
                 JSONObject jsons;
                 try {
                     jsons = new JSONObject(s);
