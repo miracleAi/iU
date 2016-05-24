@@ -232,6 +232,8 @@ public class BiuFragment extends Fragment implements PushInterface, FragmentIndi
                         userBiuImv.setImageResource(R.drawable.biu_btn_unfinished);
                         userBiuImv.setVisibility(View.VISIBLE);
                         getGrabBiuUser();
+                    }else {
+                        updateBiuView(grabBiuBean);
                     }
                 }
                 //主要解决登陆后请求biu列表
@@ -1270,12 +1272,8 @@ public class BiuFragment extends Fragment implements PushInterface, FragmentIndi
                     String biuendStr = data.getString("is_biu_end");
                     if(biuendStr.equals("0")){
                         SharePreferanceUtils.getInstance().putShared(getActivity(),SharePreferanceUtils.IS_BIU_END,true);
-                        userBiuImv.setImageResource(R.drawable.biu_btn_biu);
-                        userBiuImv.setVisibility(View.VISIBLE);
                     }else{
                         SharePreferanceUtils.getInstance().putShared(getActivity(),SharePreferanceUtils.IS_BIU_END,false);
-                        userBiuImv.setImageResource(R.drawable.biu_btn_unfinished);
-                        userBiuImv.setVisibility(View.VISIBLE);
                     }
                     inveralTime = data.getInt("biu_time_interval");
                     minTime = data.getInt("biu_time_interval_min");
