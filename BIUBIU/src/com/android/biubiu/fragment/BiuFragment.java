@@ -1269,9 +1269,13 @@ public class BiuFragment extends Fragment implements PushInterface, FragmentIndi
                     SharePreferanceUtils.getInstance().putShared(getActivity(), SharePreferanceUtils.RECEIVE_SEX, recSex);
                     String biuendStr = data.getString("is_biu_end");
                     if(biuendStr.equals("0")){
-                        SharePreferanceUtils.getInstance().putShared(getActivity(),SharePreferanceUtils.IS_BIU_END,false);
-                    }else{
                         SharePreferanceUtils.getInstance().putShared(getActivity(),SharePreferanceUtils.IS_BIU_END,true);
+                        userBiuImv.setImageResource(R.drawable.biu_btn_biu);
+                        userBiuImv.setVisibility(View.VISIBLE);
+                    }else{
+                        SharePreferanceUtils.getInstance().putShared(getActivity(),SharePreferanceUtils.IS_BIU_END,false);
+                        userBiuImv.setImageResource(R.drawable.biu_btn_unfinished);
+                        userBiuImv.setVisibility(View.VISIBLE);
                     }
                     inveralTime = data.getInt("biu_time_interval");
                     minTime = data.getInt("biu_time_interval_min");
