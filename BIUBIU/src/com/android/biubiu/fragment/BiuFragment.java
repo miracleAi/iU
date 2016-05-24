@@ -200,6 +200,7 @@ public class BiuFragment extends Fragment implements PushInterface, FragmentIndi
     //是否正在请求biu列表
     private boolean isBiuLoading = false;
     private int inveralTime = 1;
+    private int minTime = 1;
     private BiuBean grabBiuBean;
     private Handler showBiuHandler;
     private Handler mInvalidHandler = new Handler() {
@@ -243,6 +244,7 @@ public class BiuFragment extends Fragment implements PushInterface, FragmentIndi
                 }
                 //主要解决登陆后请求biu列表
                 if (!isBiuLoading && !isBiuLoaded) {
+                    clearView();
                     initUserGroup();
                     getBiuList(0);
                 }
@@ -929,6 +931,7 @@ public class BiuFragment extends Fragment implements PushInterface, FragmentIndi
             userGroupLayout.removeView(rl);
             //改变空闲标记，第二圈移到外圈
             c3DotList.get(delBean.getIndex()).setAdd(false);
+            allUserCodeList.remove(user3List.get(0));
             user3List.remove(0);
             moveTwoToThree(oneUserBean, twoUserBean);
         }
@@ -1052,7 +1055,7 @@ public class BiuFragment extends Fragment implements PushInterface, FragmentIndi
         imageViewbg.setImageResource(R.drawable.biu_imageview_photo_s);
         imageView.setImageResource(R.drawable.photo_fail);
         x.image().bind(imageView, bean.getIconUrl(), imageOptions);
-        gifIv.setImageResource(R.drawable.biu_imageview_photo_circle);
+        gifIv.setImageResource(R.drawable.biu_circle);
         gifIv.startAnimation(animationUserBg);
         imageViewL.setImageResource(R.drawable.biu_imageview_photo_news_s);
         imageViewL.setVisibility(View.VISIBLE);
@@ -1065,7 +1068,7 @@ public class BiuFragment extends Fragment implements PushInterface, FragmentIndi
                 gifIv.startAnimation(animationHide);
                 gifIv.setVisibility(View.GONE);
             }
-        }, 1000);
+        }, 5000);
         rl.setOnClickListener(new OnClickListener() {
 
             @Override
@@ -1273,9 +1276,6 @@ public class BiuFragment extends Fragment implements PushInterface, FragmentIndi
 
     //新的获取biu列表
     private void getBiuList(final long requestTime) {
-        if (requestTime == 0) {
-            clearView();
-        }
         isBiuLoading = true;
         isBiuLoaded = false;
         RequestParams params = new RequestParams(HttpContants.APP_BIU_GETTARGETBIULIST);
@@ -1312,6 +1312,7 @@ public class BiuFragment extends Fragment implements PushInterface, FragmentIndi
                     String recSex = data.getString("s_sex");
                     SharePreferanceUtils.getInstance().putShared(getActivity(), SharePreferanceUtils.RECEIVE_SEX, recSex);
                     inveralTime = data.getInt("biu_time_interval");
+                    minTime = data.getInt("biu_time_interval_min");
                     String next = data.getString("has_next");
                     if (next.equals("0")) {
                         isBiuHasNext = false;
@@ -1328,8 +1329,6 @@ public class BiuFragment extends Fragment implements PushInterface, FragmentIndi
                                 biuDao.deleteAll();
                             }
                             biuDao.addBiuList(list, SharePreferanceUtils.getInstance().getReceiveSex(getActivity(), SharePreferanceUtils.RECEIVE_SEX, ""));
-                        } else {
-                            biuDao.updateAllBiuState();
                         }
                     }
                 } catch (JSONException e) {
@@ -1625,17 +1624,21 @@ public class BiuFragment extends Fragment implements PushInterface, FragmentIndi
             if (inveralTime == 1) {
                 time = 1;
             } else {
-                time = random.nextInt(inveralTime) + 1;
+                time = random.nextInt(inveralTime - minTime) + minTime;
             }
 
             if (!isBiuLoading && isBiuLoaded) {
                 int biuCount = biuDao.getBiuListUnread();
+                if (biuCount == 0) {
+                    isBiuHasNext = true;
+                }
                 //数目小于5 则去网上继续请求
                 if (biuCount < 5 && isBiuHasNext) {
-                    if (isBiuHasNext) {
-                        long requestTime = biuDao.getBiuListUnread();
-                        getBiuList(requestTime);
+                    long requestTime = biuDao.getBiuListUnread();
+                    if (biuCount == 0) {
+                        requestTime = 0;
                     }
+                    getBiuList(requestTime);
                 }
                 newUserBean = biuDao.getBiuToShow();
                 if (null != newUserBean) {

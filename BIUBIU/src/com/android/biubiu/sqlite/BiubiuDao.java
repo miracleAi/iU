@@ -69,7 +69,7 @@ public class BiubiuDao {
         Cursor c = db.rawQuery("select * from "
                 + DbConstents.BIU_LIST_DB + " where " + DbConstents.IS_READ
                 + "=? order by " + DbConstents.TIME
-                + " asc", new String[] { Constants.BIU_UNREAD });
+                + " desc", new String[] { Constants.BIU_UNREAD });
         List<BiuBean> list = new ArrayList<BiuBean>();
         while (c.moveToNext()) {
             BiuBean bean = new BiuBean();
@@ -109,11 +109,11 @@ public class BiubiuDao {
     /**
      * 更新biubiu列表的状态为未读
      */
-    public void updateAllBiuState( ){
+   /* public void updateAllBiuState( ){
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         db.execSQL("update "+DbConstents.BIU_LIST_DB+" set "+DbConstents.IS_READ+"=?",new String[]{Constants.BIU_UNREAD});
         db.close();
-    }
+    }*/
     /**
      * 插入一条biubiu数据
      */
