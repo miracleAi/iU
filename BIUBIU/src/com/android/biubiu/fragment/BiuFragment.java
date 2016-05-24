@@ -578,30 +578,17 @@ public class BiuFragment extends Fragment implements PushInterface, FragmentIndi
                 if (currentTime > 0) {
                     return;
                 }
-                String sendTimeStr = SharePreferanceUtils.getInstance().getBiuTime(getActivity(), SharePreferanceUtils.SEND_BIU_TIME, "");
-                if (!TextUtils.isEmpty(sendTimeStr)) {
-                    long time = System.currentTimeMillis() - Long.parseLong(sendTimeStr);
-                    if (time / 1000 > 90) {
-                        //启动发送biubiu界面
-                        if (!TextUtils.isEmpty(headFlag)) {
-                            switch (Integer.parseInt(headFlag)) {
-                                case Constants.HEAD_VERIFYSUC_UNREAD:
-                                case Constants.HEAD_VERIFYFAIL_UNREAD:
-                                case Constants.HEAD_VERIFYFAIL:
-                                case Constants.HEAD_VERIFYFAIL_UPDATE:
-                                    showShenHeDaiog(Integer.parseInt(headFlag));
-                                    break;
-                                default:
-                                    if (SharePreferanceUtils.getInstance().isBiuEnd(getActivity(), SharePreferanceUtils.IS_BIU_END, true)) {
-                                        Intent intent = new Intent(getActivity(), BiuBiuSendActivity.class);
-                                        startActivityForResult(intent, SEND_BIU_REQUEST);
-                                    } else {
-                                        Intent intent = new Intent(getActivity(), ReceiveBiuListActivity.class);
-                                        startActivity(intent);
-                                    }
-                                    break;
-                            }
-                        } else {
+                //  String sendTimeStr = SharePreferanceUtils.getInstance().getBiuTime(getActivity(), SharePreferanceUtils.SEND_BIU_TIME, "");
+                //启动发送biubiu界面
+                if (!TextUtils.isEmpty(headFlag)) {
+                    switch (Integer.parseInt(headFlag)) {
+                        case Constants.HEAD_VERIFYSUC_UNREAD:
+                        case Constants.HEAD_VERIFYFAIL_UNREAD:
+                        case Constants.HEAD_VERIFYFAIL:
+                        case Constants.HEAD_VERIFYFAIL_UPDATE:
+                            showShenHeDaiog(Integer.parseInt(headFlag));
+                            break;
+                        default:
                             if (SharePreferanceUtils.getInstance().isBiuEnd(getActivity(), SharePreferanceUtils.IS_BIU_END, true)) {
                                 Intent intent = new Intent(getActivity(), BiuBiuSendActivity.class);
                                 startActivityForResult(intent, SEND_BIU_REQUEST);
@@ -609,38 +596,15 @@ public class BiuFragment extends Fragment implements PushInterface, FragmentIndi
                                 Intent intent = new Intent(getActivity(), ReceiveBiuListActivity.class);
                                 startActivity(intent);
                             }
-                        }
-                    } else {
-                        Toast.makeText(getActivity(), "距离上次发biu还不到90秒哦！", Toast.LENGTH_SHORT).show();
+                            break;
                     }
                 } else {
-                    //启动发送biubiu界面
-                    if (!TextUtils.isEmpty(headFlag)) {
-                        switch (Integer.parseInt(headFlag)) {
-                            case Constants.HEAD_VERIFYSUC_UNREAD:
-                            case Constants.HEAD_VERIFYFAIL_UNREAD:
-                            case Constants.HEAD_VERIFYFAIL:
-                            case Constants.HEAD_VERIFYFAIL_UPDATE:
-                                showShenHeDaiog(Integer.parseInt(headFlag));
-                                break;
-                            default:
-                                if (SharePreferanceUtils.getInstance().isBiuEnd(getActivity(), SharePreferanceUtils.IS_BIU_END, true)) {
-                                    Intent intent = new Intent(getActivity(), BiuBiuSendActivity.class);
-                                    startActivityForResult(intent, SEND_BIU_REQUEST);
-                                } else {
-                                    Intent intent = new Intent(getActivity(), ReceiveBiuListActivity.class);
-                                    startActivity(intent);
-                                }
-                                break;
-                        }
+                    if (SharePreferanceUtils.getInstance().isBiuEnd(getActivity(), SharePreferanceUtils.IS_BIU_END, true)) {
+                        Intent intent = new Intent(getActivity(), BiuBiuSendActivity.class);
+                        startActivityForResult(intent, SEND_BIU_REQUEST);
                     } else {
-                        if (SharePreferanceUtils.getInstance().isBiuEnd(getActivity(), SharePreferanceUtils.IS_BIU_END, true)) {
-                            Intent intent = new Intent(getActivity(), BiuBiuSendActivity.class);
-                            startActivityForResult(intent, SEND_BIU_REQUEST);
-                        } else {
-                            Intent intent = new Intent(getActivity(), ReceiveBiuListActivity.class);
-                            startActivity(intent);
-                        }
+                        Intent intent = new Intent(getActivity(), ReceiveBiuListActivity.class);
+                        startActivity(intent);
                     }
                 }
             }
@@ -1311,6 +1275,12 @@ public class BiuFragment extends Fragment implements PushInterface, FragmentIndi
                     }
                     String recSex = data.getString("s_sex");
                     SharePreferanceUtils.getInstance().putShared(getActivity(), SharePreferanceUtils.RECEIVE_SEX, recSex);
+                    String biuendStr = data.getString("is_biu_end");
+                    if(biuendStr.equals("0")){
+                        SharePreferanceUtils.getInstance().putShared(getActivity(),SharePreferanceUtils.IS_BIU_END,false);
+                    }else{
+                        SharePreferanceUtils.getInstance().putShared(getActivity(),SharePreferanceUtils.IS_BIU_END,true);
+                    }
                     inveralTime = data.getInt("biu_time_interval");
                     minTime = data.getInt("biu_time_interval_min");
                     String next = data.getString("has_next");
