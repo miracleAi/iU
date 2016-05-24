@@ -363,6 +363,9 @@ public class PagerFragment extends BaseFragment implements View.OnClickListener,
             if (mLoginedView.getVisibility() == View.GONE) {
                 mLoginedView.setVisibility(View.VISIBLE);
             }
+            if(mTopTitle.getVisibility()==View.GONE){
+                mTopTitle.setVisibility(View.VISIBLE);
+            }
             if (!mRequestSuccess) {
                 getUserInfo();
             }
@@ -1020,17 +1023,20 @@ public class PagerFragment extends BaseFragment implements View.OnClickListener,
             case TO_LOGIN:
             case TO_REGISTER:
                 mRequestSuccess = false;
+                userCode = SharePreferanceUtils.getInstance().getUserCode(getActivity(), SharePreferanceUtils.USER_CODE, "");
                 if(mTopTitle.getVisibility()==View.GONE){
                     mTopTitle.setVisibility(View.VISIBLE);
                 }
                 switchView();
                 break;
             case TO_SETTING:
-                mRequestSuccess = false;
-                if(mTopTitle.getVisibility()==View.VISIBLE){
-                    mTopTitle.setVisibility(View.GONE);
+                if(resultCode == Constant.EXIT_APP_SUCCESS){
+//                    mRequestSuccess = false;
+                    if(mTopTitle.getVisibility()==View.VISIBLE){
+                        mTopTitle.setVisibility(View.GONE);
+                    }
+                    switchView();
                 }
-                switchView();
                 break;
             default:
                 break;
@@ -1261,6 +1267,7 @@ public class PagerFragment extends BaseFragment implements View.OnClickListener,
     @Override
     public void onTabClick() {
         if (getActivity() != null) {
+            userCode = SharePreferanceUtils.getInstance().getUserCode(getActivity(), SharePreferanceUtils.USER_CODE, "");
             switchView();
         }
     }

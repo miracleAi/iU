@@ -142,7 +142,7 @@ public class HttpContants {
     /**
      * 获取活动
      */
-    public static final String ACTIVITY_GETTAGS = HTTP_ADDRESS + "activity/getActivity";
+    public static final String ACTIVITY_GETACTIVITY = HTTP_ADDRESS + "activity/getActivity";
 
     /**
      * 获取匹配用户列表

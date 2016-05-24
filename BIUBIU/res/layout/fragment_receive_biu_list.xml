@@ -12,7 +12,7 @@
         top:leftDrawable="@drawable/back_main"
         top:rightPadding="20dp"
         top:rightText="@string/end_this"
-        top:title="@string/receive_biu_list"
+        top:title="@string/grab_biu_list"
         top:topTitleColor="@android:color/white"
         top:topTitleSize="@dimen/top_title_size" />
 

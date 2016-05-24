@@ -33,10 +33,10 @@
                 android:layout_centerHorizontal="true"
                 android:layout_below="@id/title_my_hint_dialog_tv"
                 android:textSize="12sp"
-                android:paddingLeft="5dip"
-                android:paddingRight="5dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
                 android:layout_marginTop="14dp"
-                android:textColor="#515151"
+                android:textColor="#000000"
                 android:text="@string/dialog_hint_receivebiu"/>
         </RelativeLayout>
 
@@ -49,7 +49,6 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="39dp"
-            
             android:orientation="horizontal" >
 
             <RelativeLayout
