@@ -1262,7 +1262,7 @@ public class BiuFragment extends Fragment implements PushInterface, FragmentIndi
                     JSONObject data = jsons.getJSONObject("data");
                     String headFlag = data.getString("iconStatus");
                     com.android.biubiu.common.Constant.headState = headFlag;
-                    if (headFlag.equals("2") || headFlag.equals("4")) {
+                    if (headFlag.equals("2") || headFlag.equals("4")|| headFlag.equals("6")) {
                         showShenHeDaiog(Integer.parseInt(headFlag));
                     }
                     String recSex = data.getString("s_sex");
