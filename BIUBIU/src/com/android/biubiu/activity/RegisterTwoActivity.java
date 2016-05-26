@@ -352,8 +352,8 @@ public class RegisterTwoActivity extends BaseCityActivity implements OnClickList
 			userBean.setCareer("");
 		}else{
 			userBean.setIsStudent(Constants.HAS_GRADUATE);
-			userBean.setCareer(schoolTv.getText().toString());
-			userBean.setSchool("");
+			userBean.setSchool(schoolCode);
+			userBean.setCareer("");
 		}
 		try {
 			Umutils.count(RegisterTwoActivity.this, Umutils.REGISTER_BEFORE);

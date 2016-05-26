@@ -703,7 +703,7 @@ public class BiuBiuReceiveActivity extends BaseActivity {
                                 toastShort(getResources().getString(R.string.biu_end));
                                 break;
                             case Constants.GRAB_BIU_SUC:
-                                toastShort("抢中了啊");
+                                toastShort("已经抢啦，等待对方确认");
                                 Umutils.count(BiuBiuReceiveActivity.this, Umutils.GRAB_BIU_SUCCESS);
                                 finish();
                                 break;

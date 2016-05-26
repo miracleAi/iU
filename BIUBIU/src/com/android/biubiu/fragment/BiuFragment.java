@@ -1170,7 +1170,6 @@ public class BiuFragment extends Fragment implements PushInterface, FragmentIndi
                         return;
                     }
                     JSONObject data = jsons.getJSONObject("data");
-
                     JSONArray userArray = data.getJSONArray("users");
                     Gson gson = new Gson();
                     ArrayList<BiuBean> list = gson.fromJson(userArray.toString(), new TypeToken<List<BiuBean>>() {
