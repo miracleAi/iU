@@ -291,9 +291,18 @@ public class MenuRightFragment extends EaseConversationListFragment implements F
 
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                    // TODO Auto-generated method stub
-                    if (flag == Constants.HEAD_VERIFYFAIL_UPDATE) {
-                        HttpUtils.commitIconState(getActivity(), flag);
+                    switch (flag) {
+                        case Constants.HEAD_VERIFYFAIL_UNREAD:
+                            HttpUtils.commitIconState(getActivity(), flag);
+                            break;
+                        case Constants.HEAD_VERIFYFAIL_UPDATE:
+                            HttpUtils.commitIconState(getActivity(), flag);
+                            break;
+                        case Constants.HEAD_VERIFYFAIL:
+                            HttpUtils.commitIconState(getActivity(), flag);
+                            break;
+                        default:
+                            break;
                     }
                     dialog.dismiss();
                 }

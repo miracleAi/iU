@@ -100,7 +100,6 @@ public class BiuBiuReceiveActivity extends BaseActivity {
     Bitmap userheadBitmap = null;
     String headPath = "";
     private boolean isUploadingPhoto = false;
-    String headFlag = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -108,7 +107,6 @@ public class BiuBiuReceiveActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_biu_biu_receive);
         userCode = getIntent().getStringExtra("userCode");
-        headFlag = getIntent().getStringExtra("headFlag");
         //		LogUtil.e(TAG, "referenceId==" + referenceId + "||userCode=="
         //				+ userCode + "||chatId==" + chatId);
         userDao = new UserDao(this);
@@ -190,12 +188,13 @@ public class BiuBiuReceiveActivity extends BaseActivity {
                     LogUtil.e(TAG, "未登录 去登陆");
                     goLoginDialog();
                 } else {
+                    String headFlag = com.android.biubiu.common.Constant.headState;
                     if (null != headFlag && !"".equals(headFlag)) {
                         switch (Integer.parseInt(headFlag)) {
-                            case 2:
-                            case 4:
-                            case 5:
-                            case 6:
+                            case Constants.HEAD_VERIFYSUC_UNREAD:
+                            case Constants.HEAD_VERIFYFAIL_UNREAD:
+                            case Constants.HEAD_VERIFYFAIL:
+                            case Constants.HEAD_VERIFYFAIL_UPDATE:
                                 showShenHeDaiog(Integer.parseInt(headFlag));
                                 break;
 
@@ -315,10 +314,13 @@ public class BiuBiuReceiveActivity extends BaseActivity {
                 public void onClick(DialogInterface dialog, int which) {
                     // TODO Auto-generated method stub
                     switch (flag) {
-                        case 4:
+                        case Constants.HEAD_VERIFYFAIL_UNREAD:
                             HttpUtils.commitIconState(BiuBiuReceiveActivity.this, flag);
                             break;
-                        case 6:
+                        case Constants.HEAD_VERIFYFAIL_UPDATE:
+                            HttpUtils.commitIconState(BiuBiuReceiveActivity.this, flag);
+                            break;
+                        case Constants.HEAD_VERIFYFAIL:
                             HttpUtils.commitIconState(BiuBiuReceiveActivity.this, flag);
                             break;
                         default:

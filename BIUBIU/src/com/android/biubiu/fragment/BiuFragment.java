@@ -639,8 +639,6 @@ public class BiuFragment extends Fragment implements PushInterface, FragmentIndi
                 public void onClick(DialogInterface dialog, int which) {
                     dialog.dismiss();
                     HttpUtils.commitIconState(getActivity(), flag);
-                    Intent intent = new Intent(getActivity(), BiuBiuSendActivity.class);
-                    startActivityForResult(intent, SEND_BIU_REQUEST);
                 }
             });
         } else {
@@ -656,8 +654,9 @@ public class BiuFragment extends Fragment implements PushInterface, FragmentIndi
                             break;
                         case Constants.HEAD_VERIFYFAIL_UPDATE:
                             HttpUtils.commitIconState(getActivity(), flag);
-                            Intent intent = new Intent(getActivity(), BiuBiuSendActivity.class);
-                            startActivityForResult(intent, SEND_BIU_REQUEST);
+                            break;
+                        case Constants.HEAD_VERIFYFAIL:
+                            HttpUtils.commitIconState(getActivity(), flag);
                             break;
                         default:
                             break;
