@@ -50,7 +50,7 @@ import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 
 
-public class MenuRightFragment extends EaseConversationListFragment implements FragmentIndicator.OnClickListener{
+public class MenuRightFragment extends EaseConversationListFragment implements FragmentIndicator.OnClickListener {
     private TextView errorText;
     private Button register, login;
     private String TAG = "MenuRightFragment";
@@ -107,6 +107,20 @@ public class MenuRightFragment extends EaseConversationListFragment implements F
         filter.addAction(Constants.FLAG_RECEIVE);    //只有持有相同的action的接受者才能接收此广播
         getActivity().registerReceiver(receiveBroadCast, filter);
 
+        setConversationListItemClickListener(new EaseConversationListItemClickListener() {
+
+            @Override
+            public void onListItemClicked(EMConversation conversation) {
+                if (conversation != null) {
+                    String username = conversation.getUserName();
+                    if (username.equals(EMClient.getInstance().getCurrentUser()))
+                        Toast.makeText(getActivity(), R.string.Cant_chat_with_yourself, Toast.LENGTH_SHORT).show();
+                    else {
+                        headStateCharge(TO_CHAT, username);
+                    }
+                }
+            }
+        });
     }
 
     @Override
@@ -145,7 +159,6 @@ public class MenuRightFragment extends EaseConversationListFragment implements F
 
             @Override
             public void onClick(View v) {
-
                 if (LoginUtils.isLogin(getActivity())) {
                     headStateCharge(TO_FRIENDS, "");
                 }
@@ -155,7 +168,7 @@ public class MenuRightFragment extends EaseConversationListFragment implements F
 
         // 注册上下文菜单
         registerForContextMenu(conversationListView);// why to do this?
-        conversationListView.setOnItemClickListener(new OnItemClickListener() {
+        /*conversationListView.setOnItemClickListener(new OnItemClickListener() {
 
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -167,13 +180,12 @@ public class MenuRightFragment extends EaseConversationListFragment implements F
                     headStateCharge(TO_CHAT, username);
                 }
             }
-        });
+        });*/
         conversationListView.setOnItemLongClickListener(new OnItemLongClickListener() {
 
             @Override
             public boolean onItemLongClick(AdapterView<?> arg0, View arg1,
                                            int position, long arg3) {
-                // TODO Auto-generated method stub
                 EMConversation conversation = conversationListView.getItem(position);
                 final String username = conversation.getUserName();
                 headStateCharge(DELETE_CHAT, username);
@@ -225,7 +237,7 @@ public class MenuRightFragment extends EaseConversationListFragment implements F
                     intent.putExtra(Constant.EXTRA_USER_ID, userName);
                     startActivityForResult(intent, TO_CHATPAGE);
                 } else if (toflag == TO_FRIENDS) {
-                    startActivity(new Intent(getActivity(), UserListActivity.class));
+                    startActivityForResult(new Intent(getActivity(), UserListActivity.class),TO_FRIENDS);
                 } else if (toflag == DELETE_CHAT) {
                     MyHintDialog.getDialog(getActivity(), "删除会话", "嗨~确定要删除会话吗", "确定", new OnDialogClick() {
 
@@ -380,12 +392,16 @@ public class MenuRightFragment extends EaseConversationListFragment implements F
                 break;
             case TO_CHATPAGE:
                 ((MainActivity) getActivity()).setUnReadVisible(showUnread());
+                refresh();
                 break;
             case TO_LOGIN:
                 judgeVisibleGone();
                 break;
             case TO_REGISTER:
                 judgeVisibleGone();
+                break;
+            case TO_FRIENDS:
+                refresh();
                 break;
             default:
                 break;

@@ -80,7 +80,7 @@ public class HistoryBiuAdapter extends BaseAdapter {
             }
             beanHolder.sexImg.setImageResource("1".equals(biuBean.getSex()) ? R.drawable.biu_ago_icon_sex_boy :
                     R.drawable.biu_ago_icon_sex_girl);
-            beanHolder.tag.setText("\u3000\u3000" + biuBean.getChatTags());
+            beanHolder.tag.setText(biuBean.getChatTags());
         }
         return convertView;
     }
