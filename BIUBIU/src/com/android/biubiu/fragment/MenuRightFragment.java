@@ -238,7 +238,6 @@ public class MenuRightFragment extends EaseConversationListFragment implements F
                             ((MainActivity) getActivity()).setUnReadVisible(showUnread());
                             Toast.makeText(getActivity(), "删除成功", Toast.LENGTH_SHORT).show();
                         }
-
                         @Override
                         public void onDismiss() {
                             // TODO Auto-generated method stub
