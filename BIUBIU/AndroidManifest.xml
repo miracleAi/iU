@@ -566,7 +566,13 @@
             android:label="@string/title_activity_receive_biu_list" />
         <activity
             android:name="com.android.biubiu.community.PublishHomeActivity"
-            android:label="@string/title_activity_publish_home"></activity>
+            android:label="@string/title_activity_publish_home" />
+        <activity
+            android:name="com.android.biubiu.community.PublishEditActivity"
+            android:label="@string/title_activity_publish_edit" />
+        <activity
+            android:name="com.android.biubiu.community.CardTagActivity"
+            android:label="@string/title_activity_card_tag"></activity>
     </application>
 
 </manifest>

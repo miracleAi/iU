@@ -19,5 +19,10 @@ public class Constant extends EaseConstant {
     public static int biubiCnt;
     public static String headState;
 
+    public static final String PUBLISH_TYPE = "publish_type";
+    public static final String PUBLISH_TEXT = "publish_text";
+    public static final String PUBLISH_IMG = "publish_img";
+    public static final String PUBLISH_IMG_PATH = "publish_img_path";
+
     public static final int EXIT_APP_SUCCESS = 10005;
 }
