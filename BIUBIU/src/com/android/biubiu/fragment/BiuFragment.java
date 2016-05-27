@@ -1567,7 +1567,7 @@ public class BiuFragment extends Fragment implements PushInterface, FragmentIndi
             taskView.updeteTask(currentTime--);
             if (currentTime <= 0) {
                 if (getActivity() != null) {
-                    Toast.makeText(getActivity().getApplicationContext(), "你的biubiu暂时无人应答，请重新发送", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity().getApplicationContext(), "你的biubiu暂时没人接收呢", Toast.LENGTH_SHORT).show();
                 }
                 taskView.setVisibility(View.GONE);
                 userBiuImv.setImageResource(R.drawable.biu_btn_unfinished);
