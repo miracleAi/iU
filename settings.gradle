@@ -1,4 +1,4 @@
 include ':EaseUI' ,':BQMM_Lib',':BIUBIU',':refreshlibrary','staggerlibrary'
 project(':refreshlibrary').projectDir = new File(rootDir, "../Android-PullToRefresh/refreshlibrary");
 project(':staggerlibrary').projectDir = new File(rootDir, "../AndroidStaggeredGrid/staggerlibrary");
-//project(':multi-image-selector').projectDir = new File(rootDir, "../MultiImageSelector/multi-image-selector");
+project(':multi-image-selector').projectDir = new File(rootDir, "../MultiImageSelector/multi-image-selector");
