@@ -225,6 +225,7 @@ public class BiuFragment extends Fragment implements PushInterface, FragmentIndi
                 resumeDraw();
                 //如果返回时biu已结束，则清掉抢biu列表的相关状态
                 if (isBiuEnd) {
+                    grabBiuBean = null;
                     userBiuImv.setImageResource(R.drawable.biu_btn_biu);
                     userBiuImv.setVisibility(View.VISIBLE);
                 } else {
