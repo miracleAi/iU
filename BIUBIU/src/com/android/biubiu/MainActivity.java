@@ -276,6 +276,7 @@ public class MainActivity extends FragmentActivity implements AMapLocationListen
         UmengUpdateAgent.setUpdateOnlyWifi(false);
         //UmengUpdateAgent.forceUpdate(SystemSettingsActivity.this);
         UmengUpdateAgent.update(MainActivity.this);
+        UmengUpdateAgent.setDeltaUpdate(false);
     }
 
     private void showUpdateDialog() {
