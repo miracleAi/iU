@@ -206,6 +206,7 @@ public class BiuFragment extends Fragment implements PushInterface, FragmentIndi
                 }*/
             } else {
                 SharePreferanceUtils.getInstance().putShared(getActivity(), SharePreferanceUtils.EXCHANGE_FROUNT, true);
+                SharePreferanceUtils.getInstance().putShared(getActivity(), SharePreferanceUtils.IS_APP_OPEN, false);
                /* clearView();
                 biuDao.deleteAll();
                 isBiuLoading = false;
