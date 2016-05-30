@@ -307,16 +307,14 @@ public class PagerFragment extends BaseFragment implements View.OnClickListener,
         mTopTitle.setRightOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               /* if (LoginUtils.isLogin(getActivity())) {
+                if (LoginUtils.isLogin(getActivity())) {
                     if (isMyself) {
                         Intent setIntent = new Intent(getActivity(), MainSetActivity.class);
                         startActivityForResult(setIntent, TO_SETTING);
                     } else {
                         getMosterDialog();
                     }
-                }*/
-                Intent setIntent = new Intent(getActivity(), PublishHomeActivity.class);
-                startActivity(setIntent);
+                }
             }
         });
     }

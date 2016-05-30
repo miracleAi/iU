@@ -37,6 +37,7 @@
         android:layout_marginRight="20dp"
         android:background="@null"
         android:textColor="@color/black"
+        android:gravity="top"
         android:textSize="14sp" />
 
     <RelativeLayout

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
+    <string name="complete">完成</string>
+    <string name="cancel">取消</string>
     <string name="app_name">iU</string>
     <string name="action_settings">Settings</string>
     <string name="title_activity_biu_biu_send">BiuBiuSendActivity</string>
@@ -272,10 +273,12 @@
     <string name="title_activity_publish_edit">PublishEditActivity</string>
 
     <string name="publish">发布</string>
-    <string name="complete">完成</string>
     <string name="tag_description">#添加话题标签，更容易找到同类哦(必选)#</string>
     <string name="title_activity_card_tag">CardTagActivity</string>
     <string name="discovery">发现</string>
     <string name="recommand">推荐</string>
     <string name="fresh">新鲜</string>
+    <string name="publish_tag_hint">创建/选择话题标签</string>
+    <string name="scan_tag_hint">选择话题标签</string>
+    <string name="create_tag">#创建话题标签</string>
 </resources>

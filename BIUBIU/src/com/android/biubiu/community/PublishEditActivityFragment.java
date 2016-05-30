@@ -91,6 +91,7 @@ public class PublishEditActivityFragment extends Fragment {
 
     private void setImgs(){
         imgPagerAdapter = new PublishPagerAdapter(getActivity(),mSelectPath,imageOptions);
+        photoPager.setAdapter(imgPagerAdapter);
     }
 
     public void getInfo() {
@@ -99,7 +100,7 @@ public class PublishEditActivityFragment extends Fragment {
         if(typeStr.equals(Constant.PUBLISH_IMG)){
             mSelectPath = b.getStringArrayList(Constant.PUBLISH_IMG_PATH);
             photoLayout.setVisibility(View.VISIBLE);
-            // TODO: 2016/5/27 展示选择图片
+            setImgs();
         }else{
             photoLayout.setVisibility(View.GONE);
         }
