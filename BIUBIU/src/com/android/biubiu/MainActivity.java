@@ -214,8 +214,8 @@ public class MainActivity extends FragmentActivity implements AMapLocationListen
                 R.drawable.main_tab_icon_biu_light, new BiuFragment());
         Indicator mine = new Indicator(R.id.tab_mine, R.string.mine, R.drawable.main_tab_icon_mine_nor,
                 R.drawable.main_tab_icon_mine_light, new PagerFragment());
-        Indicator discovery = new Indicator(R.id.tab_discovery, R.string.discovery, R.drawable.main_tab_icon_mine_nor,
-                R.drawable.main_tab_icon_mine_light, new DiscoveryFragment());
+        Indicator discovery = new Indicator(R.id.tab_discovery, R.string.discovery, R.drawable.tab_icon_found_nor,
+                R.drawable.tab_icon_found_light, new DiscoveryFragment());
 
         mIndicators.add(biu);
         mIndicators.add(discovery);
