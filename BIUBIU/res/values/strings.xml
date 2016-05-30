@@ -275,4 +275,7 @@
     <string name="complete">完成</string>
     <string name="tag_description">#添加话题标签，更容易找到同类哦(必选)#</string>
     <string name="title_activity_card_tag">CardTagActivity</string>
+    <string name="discovery">发现</string>
+    <string name="recommand">推荐</string>
+    <string name="fresh">新鲜</string>
 </resources>

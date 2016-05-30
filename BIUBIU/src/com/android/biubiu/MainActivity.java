@@ -37,6 +37,7 @@ import com.android.biubiu.chat.LoadUserFriend;
 import com.android.biubiu.component.indicator.FragmentIndicator;
 import com.android.biubiu.component.indicator.Indicator;
 import com.android.biubiu.fragment.BiuFragment;
+import com.android.biubiu.fragment.DiscoveryFragment;
 import com.android.biubiu.fragment.MenuLeftFragment;
 import com.android.biubiu.fragment.MenuRightFragment;
 import com.android.biubiu.sqlite.PushMatchDao;
@@ -213,9 +214,12 @@ public class MainActivity extends FragmentActivity implements AMapLocationListen
                 R.drawable.main_tab_icon_biu_light, new BiuFragment());
         Indicator mine = new Indicator(R.id.tab_mine, R.string.mine, R.drawable.main_tab_icon_mine_nor,
                 R.drawable.main_tab_icon_mine_light, new PagerFragment());
+        Indicator discovery = new Indicator(R.id.tab_discovery, R.string.discovery, R.drawable.main_tab_icon_mine_nor,
+                R.drawable.main_tab_icon_mine_light, new DiscoveryFragment());
 
-        mIndicators.add(message);
         mIndicators.add(biu);
+        mIndicators.add(discovery);
+        mIndicators.add(message);
         mIndicators.add(mine);
 
         for (Indicator i : mIndicators) {
@@ -374,7 +378,7 @@ public class MainActivity extends FragmentActivity implements AMapLocationListen
                         case 4:
                             SharePreferanceUtils.getInstance().putShared(getApplicationContext(), SharePreferanceUtils.IS_SCAN_BEGINGUID, true);
                             beginGuidLayout.setVisibility(View.GONE);
-                            ((BiuFragment) mIndicators.get(1).getFragment()).getAd();
+                            ((BiuFragment) mIndicators.get(0).getFragment()).getAd();
                             break;
                         default:
                             break;
