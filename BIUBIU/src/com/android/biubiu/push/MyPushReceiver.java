@@ -150,6 +150,8 @@ public class MyPushReceiver extends PushMessageReceiver{
 			} else {
 				if (msgType.equals(Constants.MSG_TYPE_MATCH)) {
 					showNotification(context, isShock, isOpenVoice, newUserBean, msgType);
+				}else if (msgType.equals(Constants.MSG_TYPE_GRAB)) {
+					showNotification(context, isShock, isOpenVoice, newUserBean, msgType);
 				}
 			}
 		}catch (NullPointerException e){
