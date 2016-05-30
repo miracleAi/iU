@@ -74,6 +74,7 @@ import com.android.biubiu.bean.UserPhotoBean;
 import com.android.biubiu.chat.MyHintDialog;
 import com.android.biubiu.common.CommonDialog;
 import com.android.biubiu.common.Constant;
+import com.android.biubiu.community.PublishHomeActivity;
 import com.android.biubiu.component.indicator.FragmentIndicator;
 import com.android.biubiu.component.title.TopTitleView;
 import com.android.biubiu.sqlite.CityDao;
@@ -306,14 +307,16 @@ public class PagerFragment extends BaseFragment implements View.OnClickListener,
         mTopTitle.setRightOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (LoginUtils.isLogin(getActivity())) {
+               /* if (LoginUtils.isLogin(getActivity())) {
                     if (isMyself) {
                         Intent setIntent = new Intent(getActivity(), MainSetActivity.class);
                         startActivityForResult(setIntent, TO_SETTING);
                     } else {
                         getMosterDialog();
                     }
-                }
+                }*/
+                Intent setIntent = new Intent(getActivity(), PublishHomeActivity.class);
+                startActivity(setIntent);
             }
         });
     }

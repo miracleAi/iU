@@ -8,12 +8,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.android.biubiu.BaseFragment;
 import com.android.biubiu.common.Constant;
 import com.android.biubiu.component.title.TopTitleView;
+
+import org.xutils.image.ImageOptions;
 
 import java.util.ArrayList;
 
@@ -36,6 +39,8 @@ public class PublishEditActivityFragment extends Fragment {
 
     private static final int REQUEST_TAG = 1001;
 
+    ImageOptions imageOptions;
+
     public PublishEditActivityFragment() {
     }
 
@@ -43,8 +48,8 @@ public class PublishEditActivityFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.fragment_publish_edit, container, false);
-        getInfo();
         initView();
+        getInfo();
         return rootView;
     }
 
@@ -76,10 +81,16 @@ public class PublishEditActivityFragment extends Fragment {
                 startActivityForResult(intent,REQUEST_TAG);
             }
         });
+        imageOptions = new ImageOptions.Builder()
+                .setImageScaleType(ImageView.ScaleType.CENTER_CROP)
+                .setLoadingDrawableId(R.drawable.loadingbbbb)
+                .setFailureDrawableId(R.drawable.photo_fail)
+                .setIgnoreGif(false)
+                .build();
     }
 
     private void setImgs(){
-       // imgPagerAdapter = new PublishPagerAdapter(getActivity());
+        imgPagerAdapter = new PublishPagerAdapter(getActivity(),mSelectPath,imageOptions);
     }
 
     public void getInfo() {
