@@ -31,6 +31,7 @@ public class PublishEditActivityFragment extends Fragment {
     private TopTitleView titleView;
     private LinearLayout photoLayout;
 
+    private PublishPagerAdapter imgPagerAdapter;
     private ArrayList<String> mSelectPath;
 
     private static final int REQUEST_TAG = 1001;
@@ -75,6 +76,10 @@ public class PublishEditActivityFragment extends Fragment {
                 startActivityForResult(intent,REQUEST_TAG);
             }
         });
+    }
+
+    private void setImgs(){
+       // imgPagerAdapter = new PublishPagerAdapter(getActivity());
     }
 
     public void getInfo() {
