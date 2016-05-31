@@ -3,6 +3,9 @@ package com.android.biubiu.utils;
 import android.app.ActivityManager;
 import android.content.Context;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
 import java.text.DecimalFormat;
 import java.util.List;
 
@@ -10,6 +13,8 @@ import java.util.List;
  * Created by meetu on 2016/5/17.
  */
 public class CommonUtils {
+    private static Gson mGson = new Gson();
+
     public static boolean isAppOnForeground(Context context) {
         ActivityManager mActManager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
         // Returns a list of application processes that are running on the device
@@ -35,6 +40,14 @@ public class CommonUtils {
             return new DecimalFormat("##0.00").format(kilometer);
         }
         return "0";
+    }
+
+    public static <T> T parseJsonToObj(String jsonStr, TypeToken<T> token) {
+        return mGson.fromJson(jsonStr, token.getType());
+    }
+
+    public static <T> String parseObjToJson(Object src, TypeToken<T> token) {
+        return mGson.toJson(src, token.getType());
     }
 
 }

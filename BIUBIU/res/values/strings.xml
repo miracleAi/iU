@@ -278,4 +278,7 @@
     <string name="discovery">发现</string>
     <string name="recommand">推荐</string>
     <string name="fresh">新鲜</string>
+    <string name="praise_num">赞&#160;%1$d</string>
+    <string name="comment_num">评论&#160;%1$d</string>
+    <string name="tag">#&#160;%1$s&#160;#</string>
 </resources>

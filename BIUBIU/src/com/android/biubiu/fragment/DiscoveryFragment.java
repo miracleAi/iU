@@ -13,7 +13,7 @@ import android.view.ViewGroup;
 
 import com.android.biubiu.BaseFragment;
 import com.android.biubiu.community.CardTagActivity;
-import com.android.biubiu.community.PostsFragment;
+import com.android.biubiu.community.homepage.PostsFragment;
 import com.android.biubiu.community.PublishHomeActivity;
 import com.android.biubiu.component.indicator.FragmentIndicator;
 import com.android.biubiu.component.title.TopTitleView;
