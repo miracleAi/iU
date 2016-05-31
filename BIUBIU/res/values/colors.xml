@@ -85,4 +85,5 @@
 
     <color name="send_biu_tag_hint">#999999</color>
     <color name="send_biu_tag">#333333</color>
+    <color name="search_tag_bg">#f8f6f4</color>
 </resources>

@@ -281,4 +281,7 @@
     <string name="publish_tag_hint">创建/选择话题标签</string>
     <string name="scan_tag_hint">选择话题标签</string>
     <string name="create_tag">#创建话题标签</string>
+    <string name="recommend_tag">iU推荐</string>
+    <string name="hot_tag">热门</string>
+    <string name="new_tag">新鲜</string>
 </resources>

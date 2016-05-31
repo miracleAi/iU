@@ -19,10 +19,16 @@ public class Constant extends EaseConstant {
     public static int biubiCnt;
     public static String headState;
 
+    //发布页面相关传递参数
     public static final String PUBLISH_TYPE = "publish_type";
     public static final String PUBLISH_TEXT = "publish_text";
     public static final String PUBLISH_IMG = "publish_img";
     public static final String PUBLISH_IMG_PATH = "publish_img_path";
+
+    //标签页面相关传递参数
+    public static final String TO_TAG_TYPE = "to_tag_type";
+    public static final String TAG_TYPE_PUBLISH = "tag_type_publish";
+    public static final String TAG_TYPE_SELSET = "tag_type_select";
 
     public static final int EXIT_APP_SUCCESS = 10005;
 }
