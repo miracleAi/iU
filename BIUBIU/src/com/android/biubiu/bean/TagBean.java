@@ -1,9 +1,11 @@
 package com.android.biubiu.bean;
 
+import java.io.Serializable;
+
 /**
  * Created by meetu on 2016/5/31.
  */
-public class TagBean {
+public class TagBean implements Serializable{
     int id;
 
     public int getId() {

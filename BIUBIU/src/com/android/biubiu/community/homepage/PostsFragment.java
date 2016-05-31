@@ -1,6 +1,7 @@
 package com.android.biubiu.community.homepage;
 
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -60,6 +61,7 @@ public class PostsFragment extends BaseFragment implements PullToRefreshBase.OnR
         return mRootview;
     }
 
+    @SuppressLint("WrongViewCast")
     private void initView() {
         mPullToRefreshListview = (PullToRefreshListView) mRootview.findViewById(R.id.pull_refresh_list);
         mPullToRefreshListview.setMode(PullToRefreshBase.Mode.BOTH);

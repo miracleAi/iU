@@ -179,20 +179,24 @@ public class HttpContants {
     /**
      * 获取标签
      */
-    public static final String GET_TAGS = HTTP_ADDRESS + "app/community/tag/getTagList";
+    public static final String GET_TAGS = HTTP_COMMUNITY_ADDRESS + "app/community/tag/getTagList";
     /**
      * 根据关键字获取标签
      */
-    public static final String GET_TAGS_BY_NAME = HTTP_ADDRESS + "app/community/tag/getTagByName";
+    public static final String GET_TAGS_BY_NAME = HTTP_COMMUNITY_ADDRESS + "app/community/tag/getTagByName";
     /**
      * 创建标签
      */
-    public static final String CREATE_TAG = HTTP_ADDRESS + "app/community/tag/createTag";
+    public static final String CREATE_TAG = HTTP_COMMUNITY_ADDRESS + "app/community/tag/createTag";
 
     /**
      * 发现首页接口,包括帖子列表和banner
      */
     public static final String POST_GETPOSTLISTBYTYPE = HTTP_COMMUNITY_ADDRESS + "app/community/post/getPostListByType";
+    /**
+     * 发布帖子
+     */
+    public static final String PUBLISH_POST = HTTP_COMMUNITY_ADDRESS + "app/community/post/createPost";
 
 
 }
