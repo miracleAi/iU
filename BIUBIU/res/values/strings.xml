@@ -284,4 +284,7 @@
     <string name="recommend_tag">iU推荐</string>
     <string name="hot_tag">热门</string>
     <string name="new_tag">新鲜</string>
+    <string name="praise_num">赞&#160;%1$d</string>
+    <string name="comment_num">评论&#160;%1$d</string>
+    <string name="tag">#&#160;%1$s&#160;#</string>
 </resources>

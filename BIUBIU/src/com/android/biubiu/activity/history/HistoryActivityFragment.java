@@ -45,8 +45,6 @@ import cc.imeetu.iu.R;
  */
 public class HistoryActivityFragment extends BaseFragment implements PullToRefreshBase.OnRefreshListener2<StaggeredGridView> {
     private TopTitleView mTopTitle;
-    private StaggeredGridLayoutManager mLayoutMgr;
-    private RecyclerView mRecycleView;
     private HistoryBiuAdapter mAdapter;
     private List<HistoryBiuBean> mData = new ArrayList<HistoryBiuBean>();
 
@@ -90,7 +88,6 @@ public class HistoryActivityFragment extends BaseFragment implements PullToRefre
             }
         });
 
-        mRecycleView = (RecyclerView) mRootview.findViewById(R.id.id_recyclerview);
         mPullToRefreshStaggerdGridView = (PullToRefreshStaggeredGridView) mRootview.findViewById(R.id.pull_grid_view);
         mPullToRefreshStaggerdGridView.setMode(PullToRefreshBase.Mode.BOTH);
         mPullToRefreshStaggerdGridView.setOnRefreshListener(this);
