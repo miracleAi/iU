@@ -350,6 +350,7 @@ public class CardTagActivityFragment extends Fragment implements PullToRefreshBa
         HttpRequestUtils.commonRequest(getActivity(), requestObject, HttpContants.CREATE_TAG, new HttpCallback() {
             @Override
             public void callback(JSONObject object, String error) {
+                stopLoad();
                 if (object != null) {
                     try {
                         TagBean bean = new TagBean();

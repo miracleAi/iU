@@ -27,6 +27,7 @@ public class HttpRequestUtils {
 
             e.printStackTrace();
         }
+        Log.d("mytest","request"+requestObject.toString());
         params.addBodyParameter("data",requestObject.toString());
         x.http().post(params, new Callback.CommonCallback<String>() {
 

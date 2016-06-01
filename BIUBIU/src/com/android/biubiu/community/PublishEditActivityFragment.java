@@ -1,6 +1,7 @@
 package com.android.biubiu.community;
 
 import android.app.Fragment;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -9,6 +10,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -43,6 +45,7 @@ import com.android.biubiu.utils.LogUtil;
 import com.android.biubiu.utils.NetUtils;
 import com.android.biubiu.utils.SharePreferanceUtils;
 import com.ant.liao.GifView;
+import com.google.gson.Gson;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -72,8 +75,8 @@ public class PublishEditActivityFragment extends Fragment {
 
     private PublishPagerAdapter imgPagerAdapter;
     private ArrayList<String> mSelectPath;
-    private ArrayList<ImageBean> imageList = new ArrayList<ImageBean>();
-    private TagBean publishTag;
+    private ArrayList<String> imageList = new ArrayList<String>();
+    private ArrayList<Integer> tagIdList = new ArrayList<Integer>();
     private String userCode = "";
 
     //上传文件相关
@@ -95,7 +98,7 @@ public class PublishEditActivityFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.fragment_publish_edit, container, false);
-        userCode = SharePreferanceUtils.getInstance().getUserCode(getActivity(),SharePreferanceUtils.USER_CODE,"");
+        userCode = SharePreferanceUtils.getInstance().getUserCode(getActivity(), SharePreferanceUtils.USER_CODE, "");
         initView();
         getInfo();
         return rootView;
@@ -118,9 +121,20 @@ public class PublishEditActivityFragment extends Fragment {
         titleView.setRightOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // TODO: 2016/5/27  上传图片  发布帖子
-                if(mSelectPath != null && mSelectPath.size()>0){
-                   // getOssToken();
+                if (null == tagIdList || tagIdList.size()==0) {
+                    Toast.makeText(getActivity(), "标签不能为空", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(contentEt.getWindowToken(), InputMethodManager.HIDE_IMPLICIT_ONLY);
+                if (mSelectPath != null && mSelectPath.size() > 0) {
+                    getOssToken();
+                } else {
+                    if (null != contentEt.getText() && !"".equals(contentEt.getText().toString())) {
+                        publishPost(1);
+                    } else {
+                        Toast.makeText(getActivity(), "帖子内容不能为空", Toast.LENGTH_SHORT).show();
+                    }
                 }
             }
         });
@@ -128,9 +142,9 @@ public class PublishEditActivityFragment extends Fragment {
         tagTv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getActivity(),CardTagActivity.class);
-                intent.putExtra(Constant.TO_TAG_TYPE,Constant.TAG_TYPE_PUBLISH);
-                startActivityForResult(intent,REQUEST_TAG);
+                Intent intent = new Intent(getActivity(), CardTagActivity.class);
+                intent.putExtra(Constant.TO_TAG_TYPE, Constant.TAG_TYPE_PUBLISH);
+                startActivityForResult(intent, REQUEST_TAG);
             }
         });
         imageOptions = new ImageOptions.Builder()
@@ -141,19 +155,19 @@ public class PublishEditActivityFragment extends Fragment {
                 .build();
     }
 
-    private void setImgs(){
-        imgPagerAdapter = new PublishPagerAdapter(getActivity(),mSelectPath,imageOptions);
+    private void setImgs() {
+        imgPagerAdapter = new PublishPagerAdapter(getActivity(), mSelectPath, imageOptions);
         photoPager.setAdapter(imgPagerAdapter);
     }
 
     public void getInfo() {
         Bundle b = getArguments();
         String typeStr = b.getString(Constant.PUBLISH_TYPE);
-        if(typeStr.equals(Constant.PUBLISH_IMG)){
+        if (typeStr.equals(Constant.PUBLISH_IMG)) {
             mSelectPath = b.getStringArrayList(Constant.PUBLISH_IMG_PATH);
             photoLayout.setVisibility(View.VISIBLE);
             setImgs();
-        }else{
+        } else {
             photoLayout.setVisibility(View.GONE);
         }
     }
@@ -161,23 +175,26 @@ public class PublishEditActivityFragment extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        switch (requestCode){
+        switch (requestCode) {
             case REQUEST_TAG:
-                if(resultCode == getActivity().RESULT_OK){
-                    publishTag = (TagBean) data.getSerializableExtra("tagBean");
+                if (resultCode == getActivity().RESULT_OK) {
+                    TagBean publishTag = (TagBean) data.getSerializableExtra("tagBean");
                     tagTv.setText(publishTag.getContent());
+                    tagIdList.clear();
+                    tagIdList.add(publishTag.getId());
                 }
                 break;
         }
     }
+
     //鉴权
-    public void getOssToken(){
-        if(!NetUtils.isNetworkConnected(getActivity())){
-            Toast.makeText(getActivity(),getResources().getString(R.string.net_error),Toast.LENGTH_SHORT).show();
+    public void getOssToken() {
+        if (!NetUtils.isNetworkConnected(getActivity())) {
+            Toast.makeText(getActivity(), getResources().getString(R.string.net_error), Toast.LENGTH_SHORT).show();
             return;
         }
-        showLoadingLayout(getResources().getString(R.string.register));
-        RequestParams params = new RequestParams(HttpContants.HTTP_ADDRESS+HttpContants.REGISTER_OSS);
+        showLoadingLayout("正在提交……");
+        RequestParams params = new RequestParams(HttpContants.HTTP_ADDRESS + HttpContants.REGISTER_OSS);
         x.http().post(params, new Callback.CommonCallback<String>() {
 
             @Override
@@ -190,9 +207,9 @@ public class PublishEditActivityFragment extends Fragment {
             public void onError(Throwable ex, boolean arg1) {
                 // TODO Auto-generated method stub
                 dismissLoadingLayout();
-                Toast.makeText(getActivity(),"发布失败",Toast.LENGTH_SHORT).show();
-                LogUtil.d("mytest", "error--"+ex.getMessage());
-                LogUtil.d("mytest", "error--"+ex.getCause());
+                Toast.makeText(getActivity(), "发布失败", Toast.LENGTH_SHORT).show();
+                LogUtil.d("mytest", "error--" + ex.getMessage());
+                LogUtil.d("mytest", "error--" + ex.getCause());
             }
 
             @Override
@@ -204,13 +221,13 @@ public class PublishEditActivityFragment extends Fragment {
             @Override
             public void onSuccess(String arg0) {
                 // TODO Auto-generated method stub
-                LogUtil.d("mytest", "ret=="+arg0);
+                LogUtil.d("mytest", "ret==" + arg0);
                 try {
                     JSONObject jsonObjs = new JSONObject(arg0);
-                    String  state = jsonObjs.getString("state");
-                    if(!state.equals("200")){
+                    String state = jsonObjs.getString("state");
+                    if (!state.equals("200")) {
                         dismissLoadingLayout();
-                        Toast.makeText(getActivity(),"发布失败",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getActivity(), "发布失败", Toast.LENGTH_SHORT).show();
                         return;
                     }
                     JSONObject obj = jsonObjs.getJSONObject("data");
@@ -227,6 +244,7 @@ public class PublishEditActivityFragment extends Fragment {
             }
         });
     }
+
     // 从本地文件上传，使用非阻塞的异步接口
     public void asyncPutObjectFromLocalFile(final int postion) {
         String endpoint = HttpContants.A_LI_YUN;
@@ -245,10 +263,9 @@ public class PublishEditActivityFragment extends Fragment {
         conf.setMaxErrorRetry(2); // 失败后最大重试次数，默认2次
         OSSLog.enableLog();
         OSS oss = new OSSClient(getActivity(), endpoint, credentialProvider, conf);
-        // TODO: 2016/5/31 上传图片名字位置相关修改
-        final String fileName = userCode+"_"+System.currentTimeMillis()/1000+"_"+postion+".jpeg";
+        final String fileName = "community/post/img/" + userCode + "_" + System.currentTimeMillis() / 1000 + "_" + postion + ".jpeg";
         // 构造上传请求
-        PutObjectRequest put = new PutObjectRequest("protect-app",fileName, mSelectPath.get(postion));
+        PutObjectRequest put = new PutObjectRequest("protect-app", fileName, mSelectPath.get(postion));
 
         // 异步上传时可以设置进度回调
         put.setProgressCallback(new OSSProgressCallback<PutObjectRequest>() {
@@ -260,21 +277,22 @@ public class PublishEditActivityFragment extends Fragment {
         OSSAsyncTask task = oss.asyncPutObject(put, new OSSCompletedCallback<PutObjectRequest, PutObjectResult>() {
             @Override
             public void onSuccess(PutObjectRequest request, PutObjectResult result) {
-                addToImageList(mSelectPath.get(postion),fileName);
+                addToImageList(mSelectPath.get(postion), fileName);
                 Log.d("PutObject", "UploadSuccess");
                 Log.d("ETag", result.getETag());
                 Log.d("RequestId", result.getRequestId());
-                imgPos = imgPos+1;
-                if(imgPos < mSelectPath.size()){
+                imgPos = imgPos + 1;
+                if (imgPos < mSelectPath.size()) {
                     asyncPutObjectFromLocalFile(imgPos);
-                }else{
-                    publishPost();
+                } else {
+                    publishPost(1);
                 }
             }
+
             @Override
             public void onFailure(PutObjectRequest request, ClientException clientExcepion, ServiceException serviceException) {
                 dismissLoadingLayout();
-                Toast.makeText(getActivity(),"发布失败",Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), "发布失败", Toast.LENGTH_SHORT).show();
                 // 请求异常
                 if (clientExcepion != null) {
                     // 本地异常如网络异常等
@@ -291,52 +309,67 @@ public class PublishEditActivityFragment extends Fragment {
         });
     }
 
-    private void addToImageList(String path,String fileName) {
+    private void addToImageList(String path, String fileName) {
         ImageBean bean = new ImageBean();
         BitmapFactory.Options options = new BitmapFactory.Options();
         //设置为true,表示解析Bitmap对象，该对象不占内存
         options.inJustDecodeBounds = true;
         BitmapFactory.decodeFile(path, options);
-        bean.setImgHeight(options.outHeight);
-        bean.setImgWidth(options.outWidth);
-        bean.setImgName(fileName);
-        imageList.add(bean);
+        bean.setH(options.outHeight);
+        bean.setW(options.outWidth);
+        bean.setUrl(fileName);
+        Gson gson = new Gson();
+        imageList.add(gson.toJson(bean));
     }
 
     //发布帖子
-    private void publishPost(){
+    private void publishPost(int type) {
         JSONObject requestObject = new JSONObject();
-        // TODO: 2016/5/31 帖子发布传参数 
+        try {
+            requestObject.put("type", type);
+            requestObject.put("tags", tagIdList);
+            requestObject.put("imgs", imageList);
+            requestObject.put("content", contentEt.getText().toString());
+            requestObject.put("music", "");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
         HttpRequestUtils.commonRequest(getActivity(), requestObject, HttpContants.PUBLISH_POST, new HttpCallback() {
             @Override
             public void callback(JSONObject object, String error) {
-                if(object != null){
-                    
+                dismissLoadingLayout();
+                if (object != null) {
+                    Toast.makeText(getActivity(), "帖子发布成功", Toast.LENGTH_SHORT).show();
+                    getActivity().finish();
+                }else{
+                    Toast.makeText(getActivity(), "帖子发布失败", Toast.LENGTH_SHORT).show();
                 }
             }
         });
     }
+
     //显示加载中
-    public void showLoadingLayout(String loadingStr){
-        if(loadingLayout == null){
+    public void showLoadingLayout(String loadingStr) {
+        if (loadingLayout == null) {
             loadingLayout = (LinearLayout) rootView.findViewById(R.id.loading_layout);
         }
-        if(loadGif == null){
+        if (loadGif == null) {
             loadGif = (GifView) rootView.findViewById(R.id.load_gif);
             loadGif.setGifImage(R.drawable.loadingbbbb);
             loadGif.setShowDimension(DensityUtil.dip2px(getActivity(), 30), DensityUtil.dip2px(getActivity(), 30));
             loadGif.setGifImageType(GifView.GifImageType.COVER);
         }
-        if(loadTv == null){
+        if (loadTv == null) {
             loadTv = (TextView) rootView.findViewById(R.id.loading_tv);
         }
         loadTv.setText(loadingStr);
         loadGif.setVisibility(View.VISIBLE);
         loadingLayout.setVisibility(View.VISIBLE);
     }
+
     //加载完毕隐藏
-    public void dismissLoadingLayout(){
-        if(loadingLayout == null){
+    public void dismissLoadingLayout() {
+        if (loadingLayout == null) {
             loadingLayout = (LinearLayout) rootView.findViewById(R.id.loading_layout);
         }
         loadingLayout.setVisibility(View.GONE);

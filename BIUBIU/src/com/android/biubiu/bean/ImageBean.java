@@ -6,31 +6,49 @@ import java.io.Serializable;
  * Created by meetu on 2016/5/31.
  */
 public class ImageBean implements Serializable {
-    String imgName;
-    int imgWidth;
-    int imgHeight;
+    String url;
+    int w;
+    int h;
+    String exten;
+    String desc;
 
-    public String getImgName() {
-        return imgName;
+    public String getUrl() {
+        return url;
     }
 
-    public void setImgName(String imgName) {
-        this.imgName = imgName;
+    public void setUrl(String url) {
+        this.url = url;
     }
 
-    public int getImgWidth() {
-        return imgWidth;
+    public int getW() {
+        return w;
     }
 
-    public void setImgWidth(int imgWidth) {
-        this.imgWidth = imgWidth;
+    public void setW(int w) {
+        this.w = w;
     }
 
-    public int getImgHeight() {
-        return imgHeight;
+    public int getH() {
+        return h;
     }
 
-    public void setImgHeight(int imgHeight) {
-        this.imgHeight = imgHeight;
+    public void setH(int h) {
+        this.h = h;
+    }
+
+    public String getExten() {
+        return exten;
+    }
+
+    public void setExten(String exten) {
+        this.exten = exten;
+    }
+
+    public String getDesc() {
+        return desc;
+    }
+
+    public void setDesc(String desc) {
+        this.desc = desc;
     }
 }

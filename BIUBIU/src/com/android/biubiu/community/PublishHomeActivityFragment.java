@@ -89,11 +89,13 @@ public class PublishHomeActivityFragment extends BaseFragment {
         super.onActivityResult(requestCode, resultCode, data);
         switch (requestCode){
             case MUTI_PHOTO_REQUEST:
-                mSelectPath = data.getStringArrayListExtra(MultiImageSelectorActivity.EXTRA_RESULT);
-                Intent intent = new Intent(getActivity(),PublishEditActivity.class);
-                intent.putExtra(Constant.PUBLISH_TYPE,Constant.PUBLISH_IMG);
-                intent.putStringArrayListExtra(Constant.PUBLISH_IMG_PATH,mSelectPath);
-                startActivity(intent);
+                if(resultCode == getActivity().RESULT_OK){
+                    mSelectPath = data.getStringArrayListExtra(MultiImageSelectorActivity.EXTRA_RESULT);
+                    Intent intent = new Intent(getActivity(),PublishEditActivity.class);
+                    intent.putExtra(Constant.PUBLISH_TYPE,Constant.PUBLISH_IMG);
+                    intent.putStringArrayListExtra(Constant.PUBLISH_IMG_PATH,mSelectPath);
+                    startActivity(intent);
+                }
                 break;
         }
     }
