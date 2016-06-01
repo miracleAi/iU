@@ -50,14 +50,12 @@ public class CardTagActivityFragment extends Fragment implements PullToRefreshBa
     private EditText searchEt;
     private LinearLayout searchTagLayout;
     private LinearLayout createTagLayout;
-    private LinearLayout recommendLayout;
-    private LinearLayout hotLayout;
-    private LinearLayout newLayout;
     private ListView searchLv;
     private ListView recommendLv;
     private ListView hotLv;
     private TextView countTv;
     private Button cancelBtn;
+    private View headerView;
 
     private PullToRefreshListView mPullToRefreshListview;
     private ListView mListview;
@@ -97,7 +95,11 @@ public class CardTagActivityFragment extends Fragment implements PullToRefreshBa
 
     public void getInfo() {
         Bundle b = getArguments();
-        toTagType = b.getString(Constant.TO_TAG_TYPE);
+        if(b != null && null != b.getString(Constant.TO_TAG_TYPE)){
+            toTagType = b.getString(Constant.TO_TAG_TYPE);
+        }else{
+            toTagType = "";
+        }
     }
 
     private void initView() {
@@ -110,18 +112,16 @@ public class CardTagActivityFragment extends Fragment implements PullToRefreshBa
         searchTagLayout = (LinearLayout) rootView.findViewById(R.id.search_tag_layout);
         searchTagLayout.setVisibility(View.GONE);
         createTagLayout = (LinearLayout) rootView.findViewById(R.id.create_tag_layout);
-        recommendLayout = (LinearLayout) rootView.findViewById(R.id.recommend_tag_layout);
-        hotLayout = (LinearLayout) rootView.findViewById(R.id.hot_tag_layout);
-        newLayout = (LinearLayout) rootView.findViewById(R.id.new_tag_layout);
         searchLv = (ListView) rootView.findViewById(R.id.search_tag_lv);
-        recommendLv = (ListView) rootView.findViewById(R.id.recommend_tag_lv);
-        hotLv = (ListView) rootView.findViewById(R.id.hot_tag_lv);
-
+        headerView = LayoutInflater.from(getActivity()).inflate(R.layout.tag_head_view,null);
+        recommendLv = (ListView) headerView.findViewById(R.id.recommend_tag_lv);
+        hotLv = (ListView) headerView.findViewById(R.id.hot_tag_lv);
         mPullToRefreshListview = (PullToRefreshListView) rootView.findViewById(R.id.pull_refresh_list);
         mPullToRefreshListview.setMode(PullToRefreshBase.Mode.PULL_UP_TO_REFRESH);
         mPullToRefreshListview.setOnRefreshListener(this);
         mPullToRefreshListview.setScrollingWhileRefreshingEnabled(true);
         mListview = mPullToRefreshListview.getRefreshableView();
+        mListview.addHeaderView(headerView);
 
         searchAdapter = new TagAdapter(getActivity(), searchList);
         recomendAdapter = new TagAdapter(getActivity(), recommendLsit);
@@ -164,7 +164,7 @@ public class CardTagActivityFragment extends Fragment implements PullToRefreshBa
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 if (toTagType.equals(Constant.TAG_TYPE_PUBLISH)) {
                     Intent intent = new Intent();
-                    intent.putExtra("tagBean", (Serializable) newList.get(position-1));
+                    intent.putExtra("tagBean", (Serializable) newList.get(position-mListview.getHeaderViewsCount()));
                     getActivity().setResult(getActivity().RESULT_OK, intent);
                     getActivity().finish();
                 } else {
@@ -399,8 +399,8 @@ public class CardTagActivityFragment extends Fragment implements PullToRefreshBa
         hotLinear.height = DensityUtil.dip2px(getActivity(), itemHeight) * hotList.size();
         hotLv.setLayoutParams(hotLinear);
 
-        LinearLayout.LayoutParams newLinear = (LinearLayout.LayoutParams)mPullToRefreshListview.getLayoutParams();
+       /* LinearLayout.LayoutParams newLinear = (LinearLayout.LayoutParams)mPullToRefreshListview.getLayoutParams();
         newLinear.height = DensityUtil.dip2px(getActivity(), itemHeight) * newList.size();
-        mPullToRefreshListview.setLayoutParams(newLinear);
+        mPullToRefreshListview.setLayoutParams(newLinear);*/
     }
 }
