@@ -1,16 +1,18 @@
 package com.android.biubiu.bean.community;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
  * Created by yanghj on 16/5/31.
  */
-public class Posts {
+public class Posts implements Serializable{
     private int postId;
     private int userCode;
     private int isPraise;
     private int commentNum;
     private int praiseNum;
+    private String userSex;
     private String userSchool;
     private ArrayList<Tag> tags;
     private long createAt;
@@ -57,6 +59,14 @@ public class Posts {
 
     public void setPraiseNum(int praiseNum) {
         this.praiseNum = praiseNum;
+    }
+
+    public String getUserSex() {
+        return userSex;
+    }
+
+    public void setUserSex(String userSex) {
+        this.userSex = userSex;
     }
 
     public String getUserSchool() {

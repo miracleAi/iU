@@ -1,9 +1,11 @@
 package com.android.biubiu.bean.community;
 
+import java.io.Serializable;
+
 /**
  * Created by yanghj on 16/5/31.
  */
-public class Tag {
+public class Tag implements Serializable{
     private String content;
     private int id;
 

@@ -30,5 +30,9 @@ public class Constant extends EaseConstant {
     public static final String TAG_TYPE_PUBLISH = "tag_type_publish";
     public static final String TAG_TYPE_SELSET = "tag_type_select";
 
+    public static final String POSTS = "posts";
+    public static final String POSTS_ID = "posts_id";
     public static final int EXIT_APP_SUCCESS = 10005;
+
+    public static int screenWidth,screenHeight;
 }

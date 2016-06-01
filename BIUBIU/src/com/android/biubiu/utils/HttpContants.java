@@ -197,6 +197,16 @@ public class HttpContants {
      * 发布帖子
      */
     public static final String PUBLISH_POST = HTTP_COMMUNITY_ADDRESS + "app/community/post/createPost";
-
-
+    /**
+     * 帖子详情
+     */
+    public static final String POST_DETAIL = HTTP_COMMUNITY_ADDRESS + "app/community/post/getPostDetail";
+    /**
+     * 发布评论
+     */
+    public static final String COMMENT_CREATECOMMENT = HTTP_COMMUNITY_ADDRESS + "app/community/comment/createComment";
+    /**
+     * 点赞/取消赞
+     */
+    public static final String PRAISE_DOPRAISE = HTTP_COMMUNITY_ADDRESS + "app/community/praise/doPraise";
 }

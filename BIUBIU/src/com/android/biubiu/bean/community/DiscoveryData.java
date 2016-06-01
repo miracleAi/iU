@@ -1,7 +1,5 @@
 package com.android.biubiu.bean.community;
 
-import com.android.biubiu.bean.SimpleData;
-
 import java.util.ArrayList;
 
 /**

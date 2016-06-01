@@ -12,4 +12,12 @@
     <dimen name="top_title_height">44dp</dimen>
 
     <dimen name="top_title_size">18sp</dimen>
+    <dimen name="post_list_one_pic">340dp</dimen>
+    <dimen name="post_list_two_pic">167dp</dimen>
+    <dimen name="post_list_three_pic">110dp</dimen>
+    <dimen name="pic_margin">5dp</dimen>
+    <dimen name="ad_banner_height">135dp</dimen>
+    <dimen name="indicator_width">10dip</dimen>
+    <dimen name="indicator_height">1dip</dimen>
+    <dimen name="indicator_line_margin">4dip</dimen>
 </resources>
