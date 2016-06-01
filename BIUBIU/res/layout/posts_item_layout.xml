@@ -60,7 +60,7 @@
             android:layout_alignParentRight="true"
             android:layout_below="@+id/more_img"
             android:layout_marginRight="10dp"
-            android:text="2016-05-20"
+            android:layout_marginTop="16dp"
             android:textColor="#999999"
             android:textSize="11sp" />
     </RelativeLayout>
@@ -70,10 +70,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="20dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
+        android:gravity="center"
         android:layout_marginTop="20dp"
-        android:orientation="vertical" />
+        android:orientation="vertical"
+        android:visibility="gone"/>
 
     <TextView
         android:id="@+id/tag_textview"

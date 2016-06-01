@@ -12,12 +12,16 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.android.biubiu.BaseFragment;
+import com.android.biubiu.common.Constant;
 import com.android.biubiu.community.CardTagActivity;
 import com.android.biubiu.community.homepage.PostsFragment;
 import com.android.biubiu.community.PublishHomeActivity;
 import com.android.biubiu.component.indicator.FragmentIndicator;
 import com.android.biubiu.component.title.TopTitleView;
 import com.viewpagerindicator.TabPageIndicator;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import cc.imeetu.iu.R;
 
@@ -28,13 +32,12 @@ public class DiscoveryFragment extends BaseFragment implements FragmentIndicator
 
     private static final int TO_PUBLISH_PAGE = 0;
     private static final int TO_NOTIFY_PAGE = TO_PUBLISH_PAGE + 1;
-    private static final int TO_DETAIL_PAGE = TO_NOTIFY_PAGE + 1;
     private static final String[] CONTENT = new String[3];
 
     private TopTitleView mTopTitle;
     private TabPageIndicator mIndicator;
     private ViewPager mViewPager;
-
+    private List<PostsFragment> mFragments = new ArrayList<PostsFragment>();
     public DiscoveryFragment() {
     }
 
@@ -68,17 +71,38 @@ public class DiscoveryFragment extends BaseFragment implements FragmentIndicator
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(getActivity(), CardTagActivity.class);
+                i.putExtra(Constant.TO_TAG_TYPE,Constant.TAG_TYPE_SELSET);
                 startActivityForResult(i, TO_PUBLISH_PAGE);
             }
         });
         mIndicator = (TabPageIndicator) mRootview.findViewById(R.id.indicator);
         mViewPager = (ViewPager) mRootview.findViewById(R.id.pager);
+        mViewPager.setOffscreenPageLimit(2);
     }
 
     private void initData() {
         CONTENT[0] = getResources().getString(R.string.recommand);
         CONTENT[1] = getResources().getString(R.string.fresh);
         CONTENT[2] = getResources().getString(R.string.left_menu_biubiu);
+
+        PostsFragment recommand = new PostsFragment();
+        Bundle b = new Bundle();
+        b.putInt("type",1);
+        recommand.setArguments(b);
+
+        PostsFragment refresh = new PostsFragment();
+        Bundle b2 = new Bundle();
+        b2.putInt("type",0);
+        refresh.setArguments(b2);
+
+        PostsFragment biubiu = new PostsFragment();
+        Bundle b3 = new Bundle();
+        b3.putInt("type",2);
+        biubiu.setArguments(b3);
+
+        mFragments.add(recommand);
+        mFragments.add(refresh);
+        mFragments.add(biubiu);
 
         DiscoveryAdapter adapter = new DiscoveryAdapter(getFragmentManager());
         mViewPager.setAdapter(adapter);
@@ -102,7 +126,7 @@ public class DiscoveryFragment extends BaseFragment implements FragmentIndicator
 
         @Override
         public Fragment getItem(int position) {
-            return new PostsFragment();
+            return mFragments.get(position);
         }
 
         @Override

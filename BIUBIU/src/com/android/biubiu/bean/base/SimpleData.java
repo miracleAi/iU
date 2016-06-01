@@ -1,4 +1,4 @@
-package com.android.biubiu.bean;
+package com.android.biubiu.bean.base;
 
 /**
  * Created by yanghj on 16/5/31.

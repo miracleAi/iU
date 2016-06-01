@@ -287,4 +287,12 @@
     <string name="praise_num">赞&#160;%1$d</string>
     <string name="comment_num">评论&#160;%1$d</string>
     <string name="tag">#&#160;%1$s&#160;#</string>
+    <string name="title_activity_posts_detail">PostsDetailActivity</string>
+    <string name="detail">详情</string>
+    <string name="comment_hint">你想说点什么呢？</string>
+    <string name="reply_comment">回复&#160;%1$s&#160;:&#160;%2$s</string>
+    <string name="reply_who">回复&#160;%1$s:</string>
+    <string name="send">发送</string>
+    <string name="comment_not_null">评论不能为空!</string>
+    <string name="comment_success">评论成功!</string>
 </resources>

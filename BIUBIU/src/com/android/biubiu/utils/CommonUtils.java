@@ -1,8 +1,14 @@
 package com.android.biubiu.utils;
 
+import android.app.Activity;
 import android.app.ActivityManager;
 import android.content.Context;
+import android.util.DisplayMetrics;
+import android.view.View;
+import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 
+import com.android.biubiu.common.Constant;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -50,4 +56,22 @@ public class CommonUtils {
         return mGson.toJson(src, token.getType());
     }
 
+    public static void setScreenWH(Context con) {
+        DisplayMetrics metrics = new DisplayMetrics();
+        WindowManager manager = (WindowManager) con.getSystemService(Context.WINDOW_SERVICE);
+        manager.getDefaultDisplay().getMetrics(metrics);
+        Constant.screenWidth = metrics.widthPixels;
+        Constant.screenHeight = metrics.heightPixels;
+    }
+
+    public static void hideKeyboard(Activity activity) {
+        View view = activity.getWindow().peekDecorView();
+        InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+    }
+
+    public static void showKeyboard(Context context, View view) {
+        InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.showSoftInput(view, 0);
+    }
 }
