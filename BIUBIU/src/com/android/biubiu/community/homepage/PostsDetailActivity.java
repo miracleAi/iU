@@ -1,5 +1,6 @@
 package com.android.biubiu.community.homepage;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -8,6 +9,8 @@ import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
@@ -15,6 +18,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,6 +31,7 @@ import com.android.biubiu.bean.community.PostDetailData;
 import com.android.biubiu.bean.community.Posts;
 import com.android.biubiu.bean.community.PublishCommentData;
 import com.android.biubiu.bean.community.SimpleRespData;
+import com.android.biubiu.chat.MyHintDialog;
 import com.android.biubiu.common.Constant;
 import com.android.biubiu.component.title.TopTitleView;
 import com.android.biubiu.sqlite.SchoolDao;
@@ -63,16 +68,16 @@ public class PostsDetailActivity extends Activity implements AdapterView.OnItemC
     private List<Comment> mData = new ArrayList<Comment>();
 
     private View mHeaderView;
-    private ImageView mHeaderImg, mReportImg, mPraiseImg, mCommentImg;
+    private ImageView mHeaderImg, mPraiseImg, mCommentImg;
     private TextView mNicknameTv, mSchoolTv, mTimeTv, mTagTv, mContentTv, mPraiseTv, mCommentTv;
-    private LinearLayout mImgLayout;
+    private LinearLayout mImgLayout, mReportLayout;
 
     private EditText mCommentEt;
 
     private SchoolDao mSchoolDao;
     private int mHasNext;
     private Comment mReplayComment;
-
+    private int mUserCode;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -175,7 +180,7 @@ public class PostsDetailActivity extends Activity implements AdapterView.OnItemC
                     if (!TextUtils.isEmpty(data.getToken())) {
                         SharePreferanceUtils.getInstance().putShared(PostsDetailActivity.this, SharePreferanceUtils.TOKEN, data.getToken());
                     }
-                    refreshList(data.getCommentId());
+                    refreshList(data.getComment());
                     commentDone();
                     Toast.makeText(PostsDetailActivity.this, getResources().getString(R.string.comment_success), Toast.LENGTH_SHORT).show();
                 }
@@ -200,22 +205,7 @@ public class PostsDetailActivity extends Activity implements AdapterView.OnItemC
         }
     }
 
-    private void refreshList(int commentId) {
-        Comment comment = new Comment();
-        comment.setCommentId(commentId);
-        comment.setContent(mCommentEt.getText().toString());
-        comment.setCreateAt(System.currentTimeMillis() / 1000);
-        comment.setUserFromCode(mPosts.getUserCode());
-        comment.setUserFromHead(mPosts.getUserHead());
-        comment.setUserFromName(mPosts.getUserName());
-        comment.setUserFromSchool(mPosts.getUserSchool());
-        comment.setUserFromSex(mPosts.getUserSex());
-        if (mReplayComment == null) {
-            comment.setParentId(0);
-        } else {
-            comment.setParentId(mReplayComment.getCommentId());
-            comment.setUserToName(mReplayComment.getUserFromName());
-        }
+    private void refreshList(Comment comment) {
         mData.add(0, comment);
         mCommentAdapter.notifyDataSetChanged();
         mPosts.setCommentNum(mPosts.getCommentNum() + 1);
@@ -224,7 +214,7 @@ public class PostsDetailActivity extends Activity implements AdapterView.OnItemC
 
     private void initHeader() {
         mHeaderImg = (ImageView) mHeaderView.findViewById(R.id.head_imageview);
-        mReportImg = (ImageView) mHeaderView.findViewById(R.id.more_img);
+        mReportLayout = (LinearLayout) mHeaderView.findViewById(R.id.more_layout);
         mPraiseImg = (ImageView) mHeaderView.findViewById(R.id.praise_imageview);
         mCommentImg = (ImageView) mHeaderView.findViewById(R.id.comment_imageview);
 
@@ -240,6 +230,7 @@ public class PostsDetailActivity extends Activity implements AdapterView.OnItemC
     }
 
     private void initData() {
+        mUserCode = Integer.parseInt(SharePreferanceUtils.getInstance().getUserCode(this, SharePreferanceUtils.USER_CODE, ""));
         mSchoolDao = new SchoolDao();
 
         mPosts = (Posts) getIntent().getSerializableExtra(Constant.POSTS);
@@ -335,6 +326,7 @@ public class PostsDetailActivity extends Activity implements AdapterView.OnItemC
                 mSchoolTv.setText(mSchoolDao.getschoolName(mPosts.getUserSchool()).get(0).getUnivsNameString());
             }
         }
+        mReportLayout.setOnClickListener(this);
         mTimeTv.setText(DateUtils.getDateFormatInList(this, mPosts.getCreateAt() * 1000));
         if (mPosts.getTags() != null && mPosts.getTags().size() > 0) {
             mTagTv.setText(getResources().getString(R.string.tag, mPosts.getTags().get(0).getContent()));
@@ -477,18 +469,17 @@ public class PostsDetailActivity extends Activity implements AdapterView.OnItemC
         switch (v.getId()) {
             case R.id.praise_imageview:
                 if (mPosts.getIsPraise() == 1) {
-                    mPosts.setIsPraise(0);
+                    setPraiseUi(0);
                 } else {
-                    mPosts.setIsPraise(1);
+                    setPraiseUi(1);
                 }
-                setPraiseUi(mPosts.getIsPraise());
                 praise();
                 break;
             case R.id.comment_imageview:
-
+                CommonUtils.showKeyboard(this, mCommentImg);
                 break;
-            case R.id.more_img:
-
+            case R.id.more_layout:
+                showOperation(mUserCode == mPosts.getUserCode());
                 break;
             case R.id.head_imageview:
                 Intent intent = new Intent(this, MyPagerActivity.class);
@@ -499,6 +490,156 @@ public class PostsDetailActivity extends Activity implements AdapterView.OnItemC
                 mHeaderImg.performClick();
                 break;
         }
+    }
+
+    /**
+     * 举报或删除
+     */
+    private void showOperation(final boolean b) {
+        final AlertDialog portraidlg = new AlertDialog.Builder(this).create();
+        portraidlg.show();
+
+        Window win = portraidlg.getWindow();
+        win.setContentView(R.layout.item_hint_moster_dralog_mypage);
+        WindowManager.LayoutParams params = win.getAttributes();
+        params.width = WindowManager.LayoutParams.MATCH_PARENT;
+        win.setAttributes(params);
+
+        RelativeLayout dismissLayout, jubaoLayout;
+        jubaoLayout = (RelativeLayout) win.findViewById(R.id.jubao_dialog_mupage_rl);
+        dismissLayout = (RelativeLayout) win.findViewById(R.id.dismiss_dialog_mypage_rl);
+        dismissLayout.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View arg0) {
+                portraidlg.dismiss();
+            }
+        });
+        if (b) {
+            ((TextView) jubaoLayout.findViewById(R.id.operation_textview)).setText(getResources().getString(R.string.delete));
+        }
+        jubaoLayout.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View arg0) {
+                String tips, title;
+                if (b) {
+                    title = getResources().getString(R.string.delete_title);
+                    tips = getResources().getString(R.string.delete_tips);
+                } else {
+                    title = getResources().getString(R.string.report_title);
+                    tips = getResources().getString(R.string.report_tips);
+                }
+                portraidlg.dismiss();
+                MyHintDialog.getDialog(PostsDetailActivity.this, title, tips, getResources().getString(R.string.sure),
+                        new MyHintDialog.OnDialogClick() {
+
+                            @Override
+                            public void onOK() {
+                                if (b) {
+                                    deletePost();
+                                } else {
+                                    reportPost();
+                                }
+                            }
+
+                            @Override
+                            public void onDismiss() {
+
+                            }
+                        });
+            }
+        });
+    }
+
+    private void deletePost() {
+        RequestParams params = new RequestParams(HttpContants.POST_DELETEPOST);
+        JSONObject requestObject = new JSONObject();
+        try {
+            requestObject.put("device_code", SharePreferanceUtils.getInstance().getDeviceId(this, SharePreferanceUtils.DEVICE_ID, ""));
+            requestObject.put("token", SharePreferanceUtils.getInstance().getToken(this, SharePreferanceUtils.TOKEN, ""));
+            requestObject.put("postId", mPostsId);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        params.addBodyParameter("data", requestObject.toString());
+        x.http().post(params, new Callback.CommonCallback<String>() {
+            @Override
+            public void onSuccess(String s) {
+                Data<SimpleRespData> response = CommonUtils.parseJsonToObj(s, new TypeToken<Data<SimpleRespData>>() {
+                });
+                if (!CommonUtils.unifyResponse(Integer.parseInt(response.getState()), PostsDetailActivity.this)) {
+                    return;
+                }
+                SimpleRespData data = response.getData();
+                if (!TextUtils.isEmpty(data.getToken())) {
+                    SharePreferanceUtils.getInstance().putShared(PostsDetailActivity.this, SharePreferanceUtils.TOKEN, data.getToken());
+                }
+                Toast.makeText(PostsDetailActivity.this, getResources().getString(R.string.delete_success), Toast.LENGTH_SHORT).show();
+                setResult(RESULT_OK);
+                PostsDetailActivity.this.finish();
+            }
+
+            @Override
+            public void onError(Throwable throwable, boolean b) {
+
+            }
+
+            @Override
+            public void onCancelled(CancelledException e) {
+
+            }
+
+            @Override
+            public void onFinished() {
+
+            }
+        });
+    }
+
+    private void reportPost() {
+        RequestParams params = new RequestParams(HttpContants.REPORT_CREATEREPORT);
+        JSONObject requestObject = new JSONObject();
+        try {
+            requestObject.put("device_code", SharePreferanceUtils.getInstance().getDeviceId(this, SharePreferanceUtils.DEVICE_ID, ""));
+            requestObject.put("token", SharePreferanceUtils.getInstance().getToken(this, SharePreferanceUtils.TOKEN, ""));
+            requestObject.put("postId", mPostsId);
+            requestObject.put("commentId", 0);
+            requestObject.put("userCode", mPosts.getUserCode());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        params.addBodyParameter("data", requestObject.toString());
+        x.http().post(params, new Callback.CommonCallback<String>() {
+            @Override
+            public void onSuccess(String s) {
+                Data<SimpleRespData> response = CommonUtils.parseJsonToObj(s, new TypeToken<Data<SimpleRespData>>() {
+                });
+                if (!CommonUtils.unifyResponse(Integer.parseInt(response.getState()), PostsDetailActivity.this)) {
+                    return;
+                }
+                SimpleRespData data = response.getData();
+                if (!TextUtils.isEmpty(data.getToken())) {
+                    SharePreferanceUtils.getInstance().putShared(PostsDetailActivity.this, SharePreferanceUtils.TOKEN, data.getToken());
+                }
+                Toast.makeText(PostsDetailActivity.this, getResources().getString(R.string.report_success), Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onError(Throwable throwable, boolean b) {
+
+            }
+
+            @Override
+            public void onCancelled(CancelledException e) {
+
+            }
+
+            @Override
+            public void onFinished() {
+
+            }
+        });
     }
 
     private void praise() {
@@ -523,16 +664,7 @@ public class PostsDetailActivity extends Activity implements AdapterView.OnItemC
             public void onSuccess(String s) {
                 Data<SimpleRespData> response = CommonUtils.parseJsonToObj(s, new TypeToken<Data<SimpleRespData>>() {
                 });
-                if (response.getState().equals("303")) {
-                    Toast.makeText(PostsDetailActivity.this, "登录过期，请重新登录", Toast.LENGTH_SHORT).show();
-                    SharePreferanceUtils.getInstance().putShared(PostsDetailActivity.this, SharePreferanceUtils.TOKEN, "");
-                    SharePreferanceUtils.getInstance().putShared(PostsDetailActivity.this, SharePreferanceUtils.USER_NAME, "");
-                    SharePreferanceUtils.getInstance().putShared(PostsDetailActivity.this, SharePreferanceUtils.USER_HEAD, "");
-                    SharePreferanceUtils.getInstance().putShared(PostsDetailActivity.this, SharePreferanceUtils.USER_CODE, "");
-//                  exitHuanxin();
-                    return;
-                }
-                if (!response.getState().equals("200")) {
+                if (!CommonUtils.unifyResponse(Integer.parseInt(response.getState()), PostsDetailActivity.this)) {
                     return;
                 }
                 SimpleRespData data = response.getData();

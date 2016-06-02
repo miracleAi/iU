@@ -7,6 +7,7 @@ import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Toast;
 
 import com.android.biubiu.common.Constant;
 import com.google.gson.Gson;
@@ -41,7 +42,7 @@ public class CommonUtils {
         if (meter != 0) {
             double kilometer = meter / 1000.00;
             if (kilometer > 10.00) {
-                return String.valueOf((int)(kilometer));
+                return String.valueOf((int) (kilometer));
             }
             return new DecimalFormat("##0.00").format(kilometer);
         }
@@ -73,5 +74,20 @@ public class CommonUtils {
     public static void showKeyboard(Context context, View view) {
         InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.showSoftInput(view, 0);
+    }
+
+    public static boolean unifyResponse(int stateCode, Context con) {
+        if (stateCode == 303) {
+            Toast.makeText(con, "登录过期，请重新登录", Toast.LENGTH_SHORT).show();
+            SharePreferanceUtils.getInstance().putShared(con, SharePreferanceUtils.TOKEN, "");
+            SharePreferanceUtils.getInstance().putShared(con, SharePreferanceUtils.USER_NAME, "");
+            SharePreferanceUtils.getInstance().putShared(con, SharePreferanceUtils.USER_HEAD, "");
+            SharePreferanceUtils.getInstance().putShared(con, SharePreferanceUtils.USER_CODE, "");
+            return false;
+        }
+        if (stateCode != 200) {
+            return false;
+        }
+        return true;
     }
 }

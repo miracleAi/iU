@@ -6,7 +6,7 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="65dp">
 
         <ImageView
             android:id="@+id/head_imageview"
@@ -14,7 +14,6 @@
             android:layout_height="45dp"
             android:layout_centerVertical="true"
             android:layout_marginLeft="10dp"
-            android:layout_marginTop="10dp"
             android:src="@drawable/photo_fail" />
 
         <LinearLayout
@@ -44,23 +43,31 @@
                 android:textSize="11sp" />
         </LinearLayout>
 
-        <ImageView
-            android:id="@+id/more_img"
-            android:layout_width="15dp"
-            android:layout_height="8dp"
+        <LinearLayout
+            android:id="@+id/more_layout"
+            android:layout_width="54dip"
+            android:layout_height="36dip"
             android:layout_alignParentRight="true"
-            android:layout_alignTop="@+id/head_imageview"
-            android:layout_marginRight="10dp"
-            android:src="@drawable/found_btn_more" />
+            android:gravity="right|center_vertical"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="15dp"
+                android:layout_height="8dp"
+                android:layout_marginRight="10dp"
+                android:src="@drawable/found_btn_more" />
+        </LinearLayout>
+
 
         <TextView
             android:id="@+id/time_textview"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:layout_below="@+id/more_img"
+            android:layout_below="@+id/more_layout"
+            android:text="2015"
             android:layout_marginRight="10dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="4dp"
             android:textColor="#999999"
             android:textSize="11sp" />
     </RelativeLayout>
@@ -70,10 +77,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="20dp"
-        android:gravity="center"
         android:layout_marginTop="20dp"
+        android:gravity="center"
         android:orientation="vertical"
-        android:visibility="gone"/>
+        android:visibility="gone" />
 
     <TextView
         android:id="@+id/tag_textview"

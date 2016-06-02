@@ -217,4 +217,15 @@ public class HttpContants {
      * 社区抢biu
      */
     public static final String GRAB_COM_BIU = HTTP_COMMUNITY_ADDRESS + "app/community/combiu/grabComBiu";
+     /* 举报
+     */
+    public static final String REPORT_CREATEREPORT = HTTP_COMMUNITY_ADDRESS + "app/community/report/createReport";
+    /**
+     * 删除帖子
+     */
+    public static final String POST_DELETEPOST = HTTP_COMMUNITY_ADDRESS + "app/community/post/deletePost";
+    /**
+     * 删除评论
+     */
+    public static final String COMMENT_DELETECOMMENT = HTTP_COMMUNITY_ADDRESS + "app/community/comment/deleteComment";
 }
