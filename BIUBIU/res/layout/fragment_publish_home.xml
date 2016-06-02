@@ -6,11 +6,12 @@
     tools:context="com.android.biubiu.community.PublishHomeActivityFragment">
 
 <LinearLayout
+    android:id="@+id/bottom_layout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:layout_alignParentBottom="true"
-    android:layout_marginBottom="15dp">
+    android:paddingBottom="15dp">
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

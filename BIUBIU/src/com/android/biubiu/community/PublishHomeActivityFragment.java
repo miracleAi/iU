@@ -80,6 +80,7 @@ public class PublishHomeActivityFragment extends BaseFragment {
             @Override
             public void onClick(View v) {
                 getActivity().finish();
+                getActivity().overridePendingTransition(0, R.anim.alpha_out_anim);
             }
         });
     }
