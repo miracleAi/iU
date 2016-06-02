@@ -1,6 +1,7 @@
 package com.android.biubiu.community.homepage;
 
 
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -356,7 +357,9 @@ public class PostsFragment extends BaseFragment implements PullToRefreshBase.OnR
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == TO_DETAIL_PAGE) {
-
+            if (requestCode == Activity.RESULT_OK) {
+                getData(0);
+            }
         }
     }
 

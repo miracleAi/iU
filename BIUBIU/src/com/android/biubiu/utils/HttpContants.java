@@ -209,4 +209,16 @@ public class HttpContants {
      * 点赞/取消赞
      */
     public static final String PRAISE_DOPRAISE = HTTP_COMMUNITY_ADDRESS + "app/community/praise/doPraise";
+    /**
+     * 举报
+     */
+    public static final String REPORT_CREATEREPORT = HTTP_COMMUNITY_ADDRESS + "app/community/report/createReport";
+    /**
+     * 删除帖子
+     */
+    public static final String POST_DELETEPOST = HTTP_COMMUNITY_ADDRESS + "app/community/post/deletePost";
+    /**
+     * 删除评论
+     */
+    public static final String COMMENT_DELETECOMMENT = HTTP_COMMUNITY_ADDRESS + "app/community/comment/deleteComment";
 }

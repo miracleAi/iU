@@ -5,7 +5,7 @@ package com.android.biubiu.bean.community;
  */
 public class PublishCommentData {
     private String token;
-    private int commentId;
+    private Comment comment;
 
     public String getToken() {
         return token;
@@ -15,11 +15,12 @@ public class PublishCommentData {
         this.token = token;
     }
 
-    public int getCommentId() {
-        return commentId;
+    public Comment getComment() {
+        return comment;
     }
 
-    public void setCommentId(int commentId) {
-        this.commentId = commentId;
+    public void setComment(Comment comment) {
+        this.comment = comment;
     }
+
 }
