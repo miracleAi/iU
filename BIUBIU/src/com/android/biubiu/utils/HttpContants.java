@@ -221,4 +221,12 @@ public class HttpContants {
      * 删除评论
      */
     public static final String COMMENT_DELETECOMMENT = HTTP_COMMUNITY_ADDRESS + "app/community/comment/deleteComment";
+    /**
+     * 获取社区biu列表
+     */
+    public static final String COMBIU_GETCOMBIULIST = HTTP_COMMUNITY_ADDRESS + "app/community/combiu/getComBiuList";
+    /**
+     * 话题分类下的帖子
+     */
+    public static final String POST_GETPOSTLISTBYTAG = HTTP_COMMUNITY_ADDRESS + "app/community/post/getPostListByTag";
 }

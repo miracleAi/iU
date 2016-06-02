@@ -55,7 +55,7 @@ import cc.imeetu.iu.R;
 /**
  * 帖子列表页面,分推荐、新鲜、biubiu
  */
-public class PostsFragment extends BaseFragment implements PullToRefreshBase.OnRefreshListener2<ListView>, AdapterView.OnItemClickListener {
+public class PostsFragment extends BaseFragment implements PullToRefreshBase.OnRefreshListener2<ListView>, AdapterView.OnItemClickListener, PostsAdapter.IRefreshUi {
     private final String TAG = PostsFragment.class.getSimpleName();
     private static final int TO_DETAIL_PAGE = 0;
     private int mType;//0--新鲜，1--推荐，2--biubiu
@@ -79,6 +79,7 @@ public class PostsFragment extends BaseFragment implements PullToRefreshBase.OnR
     ExecutorService mThreadPool;
     private ScheduledFuture<?> mFuture;
     private Handler mHandler = new Handler();
+    private boolean mIsSet, mAddHeadBanner;
 
     public PostsFragment() {
     }
@@ -104,9 +105,6 @@ public class PostsFragment extends BaseFragment implements PullToRefreshBase.OnR
     }
 
     private void initData() {
-        mAdapter = new PostsAdapter(mData, getActivity());
-        mListview.addHeaderView(mHeadAdBanner);
-        mListview.setAdapter(mAdapter);
         mListview.setOnItemClickListener(this);
 
         mType = getArguments().getInt("type", 0);
@@ -227,11 +225,26 @@ public class PostsFragment extends BaseFragment implements PullToRefreshBase.OnR
                     if (mData.size() > 0) {
                         mData.clear();
                     }
+                    if (mAdapter == null) {
+                        mAdapter = new PostsAdapter(mData, getActivity());
+                        mAdapter.setIRefreshUi(PostsFragment.this);
+                    }
                     List<Banner> banners = data.getBanner();
                     if (banners != null && banners.size() > 0) {
+                        if (!mAddHeadBanner) {
+                            mListview.addHeaderView(mHeadAdBanner);
+                            mAddHeadBanner = true;
+                        } else {
+                            mListview.removeHeaderView(mHeadAdBanner);
+                            mListview.addHeaderView(mHeadAdBanner);
+                        }
                         initBanners(banners);
                     } else {
                         mListview.removeHeaderView(mHeadAdBanner);
+                    }
+                    if (!mIsSet) {
+                        mListview.setAdapter(mAdapter);
+                        mIsSet = true;
                     }
                 }
                 if (postsList != null && postsList.size() > 0) {
@@ -243,6 +256,12 @@ public class PostsFragment extends BaseFragment implements PullToRefreshBase.OnR
     }
 
     private void initBanners(List<Banner> banners) {
+        if (mIndicatorLayout.getChildCount() > 0) {
+            mIndicatorLayout.removeAllViews();
+        }
+        if (mFlipper.getChildCount() > 0) {
+            mFlipper.removeAllViews();
+        }
         int size = banners.size();
         for (int i = 0; i < size; i++) {
             ImageView bannerImageView = new ImageView(getActivity());
@@ -250,7 +269,7 @@ public class PostsFragment extends BaseFragment implements PullToRefreshBase.OnR
             x.image().bind(bannerImageView, banner.getCover());
             bannerImageView.setTag(banner);
             bannerImageView.setId(i);
-            bannerImageView.setScaleType(ImageView.ScaleType.FIT_XY);
+            bannerImageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
             mFlipper.addView(bannerImageView, i);
 
             View v = new View(getActivity());
@@ -279,7 +298,9 @@ public class PostsFragment extends BaseFragment implements PullToRefreshBase.OnR
     @Override
     public void onPullUpToRefresh(PullToRefreshBase<ListView> refreshView) {
         if (mHasNext == 0) {
-            Toast.makeText(getActivity(), getResources().getString(R.string.data_end), Toast.LENGTH_SHORT).show();
+            if (mData.size() > 0) {
+                Toast.makeText(getActivity(), getResources().getString(R.string.data_end), Toast.LENGTH_SHORT).show();
+            }
             stopLoad();
         } else {
             getData(mData.get(mData.size() - 1).getCreateAt());
@@ -357,9 +378,42 @@ public class PostsFragment extends BaseFragment implements PullToRefreshBase.OnR
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == TO_DETAIL_PAGE) {
-            if (requestCode == Activity.RESULT_OK) {
-                getData(0);
+            if (resultCode == Constant.DELETE_RESULT_CODE) {
+                Posts posts = (Posts) data.getSerializableExtra(Constant.POSTS);
+                refreshListWhenDelete(posts);
+            } else if (resultCode == Constant.PRAISE_RESULT_CODE) {
+                Posts posts = (Posts) data.getSerializableExtra(Constant.POSTS);
+                refreshListWhenPraise(posts);
             }
+        }
+    }
+
+    private void refreshListWhenDelete(Posts posts) {
+        for (int i = mData.size() - 1; i > -1; i--) {
+            if (mData.get(i).getPostId() == posts.getPostId()) {
+                mData.remove(mData.get(i));
+                break;
+            }
+        }
+        mAdapter.notifyDataSetChanged();
+    }
+
+    private void refreshListWhenPraise(Posts posts) {
+        for (Posts p : mData) {
+            if (p.getPostId() == posts.getPostId()) {
+                p.setIsPraise(posts.getIsPraise());
+                p.setPraiseNum(posts.getPraiseNum());
+                break;
+            }
+        }
+        mAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void whenDelete(Posts posts) {
+        if (mData.contains(posts)) {
+            mData.remove(posts);
+            mAdapter.notifyDataSetChanged();
         }
     }
 

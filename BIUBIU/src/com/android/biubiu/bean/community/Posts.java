@@ -1,5 +1,7 @@
 package com.android.biubiu.bean.community;
 
+import com.android.biubiu.bean.TagBean;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 
@@ -14,7 +16,7 @@ public class Posts implements Serializable{
     private int praiseNum;
     private String userSex;
     private String userSchool;
-    private ArrayList<Tag> tags;
+    private ArrayList<TagBean> tags;
     private long createAt;
     private String userHead;
     private String userName;
@@ -77,11 +79,11 @@ public class Posts implements Serializable{
         this.userSchool = userSchool;
     }
 
-    public ArrayList<Tag> getTags() {
+    public ArrayList<TagBean> getTags() {
         return tags;
     }
 
-    public void setTags(ArrayList<Tag> tags) {
+    public void setTags(ArrayList<TagBean> tags) {
         this.tags = tags;
     }
 

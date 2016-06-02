@@ -23,12 +23,15 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.biubiu.activity.biu.MyPagerActivity;
+import com.android.biubiu.activity.mine.UserPhotoScanActivity;
+import com.android.biubiu.bean.UserPhotoBean;
 import com.android.biubiu.bean.base.Data;
 import com.android.biubiu.bean.community.Comment;
 import com.android.biubiu.bean.community.DiscoveryData;
 import com.android.biubiu.bean.community.Img;
 import com.android.biubiu.bean.community.PostDetailData;
 import com.android.biubiu.bean.community.Posts;
+import com.android.biubiu.bean.community.PraiseData;
 import com.android.biubiu.bean.community.PublishCommentData;
 import com.android.biubiu.bean.community.SimpleRespData;
 import com.android.biubiu.chat.MyHintDialog;
@@ -78,6 +81,8 @@ public class PostsDetailActivity extends Activity implements AdapterView.OnItemC
     private int mHasNext;
     private Comment mReplayComment;
     private int mUserCode;
+
+    private boolean mFromTagPostListPage;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -232,7 +237,7 @@ public class PostsDetailActivity extends Activity implements AdapterView.OnItemC
     private void initData() {
         mUserCode = Integer.parseInt(SharePreferanceUtils.getInstance().getUserCode(this, SharePreferanceUtils.USER_CODE, ""));
         mSchoolDao = new SchoolDao();
-
+        mFromTagPostListPage = getIntent().getBooleanExtra(Constant.FROM_POSTLIST_BY_TAG,false);
         mPosts = (Posts) getIntent().getSerializableExtra(Constant.POSTS);
         if (mPosts != null) {
             mPostsId = mPosts.getPostId();
@@ -330,6 +335,16 @@ public class PostsDetailActivity extends Activity implements AdapterView.OnItemC
         mTimeTv.setText(DateUtils.getDateFormatInList(this, mPosts.getCreateAt() * 1000));
         if (mPosts.getTags() != null && mPosts.getTags().size() > 0) {
             mTagTv.setText(getResources().getString(R.string.tag, mPosts.getTags().get(0).getContent()));
+            if(!mFromTagPostListPage){
+                mTagTv.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent i = new Intent(PostsDetailActivity.this,PostsListByTagActivity.class);
+                        i.putExtra(Constant.TAG,mPosts.getTags().get(0));
+                        startActivity(i);
+                    }
+                });
+            }
         }
         mContentTv.setText(mPosts.getContent());
         mPraiseTv.setText(getResources().getString(R.string.praise_num, mPosts.getPraiseNum()));
@@ -350,7 +365,7 @@ public class PostsDetailActivity extends Activity implements AdapterView.OnItemC
 
 
     private void setPic() {
-        List<Img> imgs = mPosts.getImgs();
+        final List<Img> imgs = mPosts.getImgs();
         if (imgs != null && imgs.size() > 0) {
             mImgLayout.setVisibility(View.VISIBLE);
             int size = imgs.size();
@@ -358,7 +373,7 @@ public class PostsDetailActivity extends Activity implements AdapterView.OnItemC
                 Img img = imgs.get(0);
                 ImageView iv = new ImageView(this);
                 if (img.getW() != 0 && img.getH() != 0) {
-                    x.image().bind(iv, packageUrl(img.getW(), img.getH(), getResources().getDimensionPixelSize(R.dimen.post_list_one_pic), img.getUrl()));
+                    x.image().bind(iv, packageUrl(getResources().getDimensionPixelSize(R.dimen.post_list_one_pic), img.getUrl()));
                 } else {
                     x.image().bind(iv, img.getUrl());
                 }
@@ -369,7 +384,7 @@ public class PostsDetailActivity extends Activity implements AdapterView.OnItemC
                 iv.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-
+                        toPreviewPage(0,imgs);
                     }
                 });
             } else {
@@ -378,7 +393,7 @@ public class PostsDetailActivity extends Activity implements AdapterView.OnItemC
                     LinearLayout rowLayout = new LinearLayout(this);
                     rowLayout.setOrientation(LinearLayout.HORIZONTAL);
                     for (int i = 0; i < 2; i++) {
-                        addImgView(imgs.get(i), i != 0, rowLayout, getResources().getDimensionPixelSize(R.dimen.post_list_two_pic));
+                        addImgView(i,imgs, i != 0, rowLayout, getResources().getDimensionPixelSize(R.dimen.post_list_two_pic));
                     }
                     LinearLayout.LayoutParams rowParam = new LinearLayout.LayoutParams(getResources().getDimensionPixelSize(R.dimen.post_list_one_pic),
                             getResources().getDimensionPixelSize(R.dimen.post_list_two_pic));
@@ -389,7 +404,7 @@ public class PostsDetailActivity extends Activity implements AdapterView.OnItemC
                             LinearLayout rowLayout = new LinearLayout(this);
                             rowLayout.setOrientation(LinearLayout.HORIZONTAL);
                             for (int j = i * 3; j < (i + 1) * 3; j++) {
-                                addImgView(imgs.get(j), j != i * 3, rowLayout, getResources().getDimensionPixelSize(R.dimen.post_list_three_pic));
+                                addImgView(j,imgs, j != i * 3, rowLayout, getResources().getDimensionPixelSize(R.dimen.post_list_three_pic));
                             }
                             LinearLayout.LayoutParams rowParam = new LinearLayout.LayoutParams(getResources().getDimensionPixelSize(R.dimen.post_list_one_pic),
                                     getResources().getDimensionPixelSize(R.dimen.post_list_three_pic));
@@ -403,11 +418,11 @@ public class PostsDetailActivity extends Activity implements AdapterView.OnItemC
                             rowLayout.setOrientation(LinearLayout.HORIZONTAL);
                             if (i == rows - 1) {
                                 for (int j = i * 3; j < (rows - 1) * 3 + size % 3; j++) {
-                                    addImgView(imgs.get(j), j != i * 3, rowLayout, getResources().getDimensionPixelSize(R.dimen.post_list_three_pic));
+                                    addImgView(j,imgs, j != i * 3, rowLayout, getResources().getDimensionPixelSize(R.dimen.post_list_three_pic));
                                 }
                             } else {
                                 for (int j = i * 3; j < (i + 1) * 3; j++) {
-                                    addImgView(imgs.get(j), j != i * 3, rowLayout, getResources().getDimensionPixelSize(R.dimen.post_list_three_pic));
+                                    addImgView(j,imgs, j != i * 3, rowLayout, getResources().getDimensionPixelSize(R.dimen.post_list_three_pic));
                                 }
                             }
                             LinearLayout.LayoutParams rowParam = new LinearLayout.LayoutParams(getResources().getDimensionPixelSize(R.dimen.post_list_one_pic),
@@ -424,9 +439,9 @@ public class PostsDetailActivity extends Activity implements AdapterView.OnItemC
 
     }
 
-    private void addImgView(Img img, boolean b, LinearLayout rowLayout, int targetSize) {
+    private void addImgView(final int index, final List<Img> imgs, boolean b, LinearLayout rowLayout, int targetSize) {
         ImageView imageView = new ImageView(this);
-        x.image().bind(imageView, packageUrl(img.getW(), img.getH(), targetSize, img.getUrl()));
+        x.image().bind(imageView, packageUrl(targetSize, imgs.get(index).getUrl()));
         imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(targetSize, targetSize);
         if (b) {
@@ -436,16 +451,29 @@ public class PostsDetailActivity extends Activity implements AdapterView.OnItemC
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                toPreviewPage(index,imgs);
             }
         });
     }
 
-    private String packageUrl(int imgW, int imgH, int dimensionPixelSize, String url) {
+    private void toPreviewPage(int position, List<Img> imgs) {
+        ArrayList<UserPhotoBean> photos = new ArrayList<UserPhotoBean>();
+        for (Img img : imgs) {
+            UserPhotoBean bean = new UserPhotoBean();
+            bean.setPhotoOrigin(img.getUrl());
+            photos.add(bean);
+        }
+        Intent intent = new Intent(this, UserPhotoScanActivity.class);
+        intent.putExtra("photolist", photos);
+        intent.putExtra("photoindex", position);
+        intent.putExtra("isMyself", false);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
+    }
+
+    private String packageUrl(int dimensionPixelSize, String url) {
         StringBuilder sb = new StringBuilder(url);
-//        if (imgW > dimensionPixelSize || imgH > dimensionPixelSize) {
         sb.append("@").append(dimensionPixelSize + "w").append("_1l");
-//        }
         return sb.toString();
     }
 
@@ -576,7 +604,9 @@ public class PostsDetailActivity extends Activity implements AdapterView.OnItemC
                     SharePreferanceUtils.getInstance().putShared(PostsDetailActivity.this, SharePreferanceUtils.TOKEN, data.getToken());
                 }
                 Toast.makeText(PostsDetailActivity.this, getResources().getString(R.string.delete_success), Toast.LENGTH_SHORT).show();
-                setResult(RESULT_OK);
+                Intent i = new Intent();
+                i.putExtra(Constant.POSTS,mPosts);
+                setResult(Constant.DELETE_RESULT_CODE,i);
                 PostsDetailActivity.this.finish();
             }
 
@@ -662,23 +692,25 @@ public class PostsDetailActivity extends Activity implements AdapterView.OnItemC
         x.http().post(params, new Callback.CommonCallback<String>() {
             @Override
             public void onSuccess(String s) {
-                Data<SimpleRespData> response = CommonUtils.parseJsonToObj(s, new TypeToken<Data<SimpleRespData>>() {
+                Data<PraiseData> response = CommonUtils.parseJsonToObj(s, new TypeToken<Data<PraiseData>>() {
                 });
                 if (!CommonUtils.unifyResponse(Integer.parseInt(response.getState()), PostsDetailActivity.this)) {
                     return;
                 }
-                SimpleRespData data = response.getData();
+                PraiseData data = response.getData();
                 if (!TextUtils.isEmpty(data.getToken())) {
                     SharePreferanceUtils.getInstance().putShared(PostsDetailActivity.this, SharePreferanceUtils.TOKEN, data.getToken());
                 }
                 if (mPosts.getIsPraise() == 1) {
                     mPosts.setIsPraise(0);
-                    mPosts.setPraiseNum(mPosts.getPraiseNum() - 1);
                 } else if (mPosts.getIsPraise() == 0) {
                     mPosts.setIsPraise(1);
-                    mPosts.setPraiseNum(mPosts.getPraiseNum() + 1);
                 }
+                mPosts.setPraiseNum(data.getPraiseNum());
                 mPraiseTv.setText(getResources().getString(R.string.praise_num, mPosts.getPraiseNum()));
+                Intent i = new Intent();
+                i.putExtra(Constant.POSTS,mPosts);
+                setResult(Constant.PRAISE_RESULT_CODE,i);
             }
 
             @Override
