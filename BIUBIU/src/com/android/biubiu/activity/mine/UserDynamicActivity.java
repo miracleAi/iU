@@ -1,0 +1,145 @@
+package com.android.biubiu.activity.mine;
+
+import android.content.Intent;
+import android.os.Bundle;
+import android.app.Activity;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ListView;
+import android.widget.Toast;
+
+import com.android.biubiu.BaseActivity;
+import com.android.biubiu.bean.community.Posts;
+import com.android.biubiu.callback.HttpCallback;
+import com.android.biubiu.common.Constant;
+import com.android.biubiu.community.homepage.PostsAdapter;
+import com.android.biubiu.community.homepage.PostsDetailActivity;
+import com.android.biubiu.component.title.TopTitleView;
+import com.android.biubiu.utils.Constants;
+import com.android.biubiu.utils.HttpContants;
+import com.android.biubiu.utils.HttpRequestUtils;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import com.handmark.pulltorefresh.library.PullToRefreshBase;
+import com.handmark.pulltorefresh.library.PullToRefreshListView;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import cc.imeetu.iu.R;
+
+public class UserDynamicActivity extends BaseActivity implements PullToRefreshBase.OnRefreshListener2<ListView> {
+    private TopTitleView titleView;
+    private PullToRefreshListView pulltoRefreshListview;
+    private ListView mListview;
+
+    private long lastTime = 0;
+    private int hasNext = 0;
+    ArrayList<Posts> postList = new ArrayList<Posts>();
+    private PostsAdapter postAdapter;
+
+    private static final int TO_DETAIL_PAGE = 1001;
+    private String userCode = "";
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_user_dynamic);
+        userCode = getIntent().getStringExtra("userCode");
+        initView();
+        getDynamicList(true);
+    }
+
+    private void initView() {
+        titleView = (TopTitleView) findViewById(R.id.top_title_view);
+        pulltoRefreshListview = (PullToRefreshListView) findViewById(R.id.pull_refresh_list);
+        pulltoRefreshListview.setMode(PullToRefreshBase.Mode.BOTH);
+        pulltoRefreshListview.setOnRefreshListener(this);
+        pulltoRefreshListview.setScrollingWhileRefreshingEnabled(true);
+        mListview = pulltoRefreshListview.getRefreshableView();
+
+        titleView.setLeftOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
+        postAdapter = new PostsAdapter(postList,UserDynamicActivity.this);
+        mListview.setAdapter(postAdapter);
+        mListview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Posts posts = postList.get(position - mListview.getHeaderViewsCount());
+                if (posts != null) {
+                    Intent intent = new Intent(UserDynamicActivity.this, PostsDetailActivity.class);
+                    intent.putExtra(Constant.POSTS, posts);
+                    startActivityForResult(intent, TO_DETAIL_PAGE);
+                }
+            }
+        });
+    }
+
+    private void getDynamicList(final boolean isRefresh) {
+        JSONObject requestObject = new JSONObject();
+        try {
+            if (isRefresh) {
+                requestObject.put("time", 0);
+            } else {
+                requestObject.put("time", lastTime);
+            }
+            requestObject.put("userCode",userCode);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        HttpRequestUtils.commonRequest(UserDynamicActivity.this, requestObject, HttpContants.USER_DYNAMIC, new HttpCallback() {
+            @Override
+            public void callback(JSONObject object, String error) {
+                stopLoad();
+                if(object != null){
+                    try {
+                        hasNext = object.getInt("hasNext");
+                        lastTime = object.getLong("time");
+                        JSONArray postArray = object.optJSONArray("postList");
+                        Gson gson = new Gson();
+                        ArrayList<Posts> list = gson.fromJson(postArray.toString(),new TypeToken<List<Posts>>(){}.getType());
+                        if(list != null && list.size()>0){
+                            if(isRefresh){
+                                postList.clear();
+                                postList.addAll(list);
+                            }else{
+                                postList.addAll(list);
+                            }
+                            postAdapter.notifyDataSetChanged();
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        });
+    }
+    private void stopLoad() {
+        if (pulltoRefreshListview.isRefreshing()) {
+            pulltoRefreshListview.onRefreshComplete();
+        }
+    }
+    @Override
+    public void onPullDownToRefresh(PullToRefreshBase<ListView> refreshView) {
+        getDynamicList(true);
+    }
+
+    @Override
+    public void onPullUpToRefresh(PullToRefreshBase<ListView> refreshView) {
+        if (hasNext == Constants.HAS_NO_DATA) {
+            Toast.makeText(UserDynamicActivity.this, "已经到底了", Toast.LENGTH_SHORT).show();
+            stopLoad();
+        } else {
+            getDynamicList(false);
+        }
+    }
+}

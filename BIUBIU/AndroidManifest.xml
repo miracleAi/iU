@@ -588,6 +588,9 @@
         <activity
             android:name="com.android.biubiu.community.homepage.PostsListByTagActivity"
             android:label="@string/title_activity_posts_list_by_tag"></activity>
+        <activity
+            android:name="com.android.biubiu.activity.mine.UserDynamicActivity"
+            android:label="@string/title_activity_user_dynamic"></activity>
     </application>
 
 </manifest>
