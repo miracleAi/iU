@@ -6,6 +6,7 @@ import android.nfc.Tag;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -128,6 +129,7 @@ public class CardTagActivityFragment extends Fragment implements PullToRefreshBa
         hotAdapter = new TagAdapter(getActivity(), hotList);
         newAdapter = new TagAdapter(getActivity(), newList);
 
+        searchLv.setAdapter(searchAdapter);
         recommendLv.setAdapter(recomendAdapter);
         hotLv.setAdapter(hotAdapter);
         mListview.setAdapter(newAdapter);
@@ -255,7 +257,7 @@ public class CardTagActivityFragment extends Fragment implements PullToRefreshBa
                         ArrayList<TagBean> list = gson.fromJson(searchArray.toString(), new TypeToken<List<TagBean>>() {
                         }.getType());
                         if (list != null && list.size() > 0) {
-                            if (!list.get(0).equals(keyword)) {
+                            if (!list.get(0).getContent().equals(keyword)) {
                                 createTagLayout.setVisibility(View.VISIBLE);
                             } else {
                                 createTagLayout.setVisibility(View.GONE);
@@ -296,6 +298,7 @@ public class CardTagActivityFragment extends Fragment implements PullToRefreshBa
                     allTagLayout.setVisibility(View.VISIBLE);
                     try {
                         hasNext = object.getInt("hasNext");
+                        lastTime = object.getLong("time");
                         postNum = object.getInt("postNum");
                         if(postNum < queryCount){
                             return;

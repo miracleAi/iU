@@ -575,16 +575,19 @@
             android:name="com.android.biubiu.community.CardTagActivity"
             android:label="@string/title_activity_card_tag" />
         <activity
-            android:configChanges="orientation|screenSize"
-            android:name="me.nereo.multi_image_selector.MultiImageSelectorActivity" />
+            android:name="me.nereo.multi_image_selector.MultiImageSelectorActivity"
+            android:configChanges="orientation|screenSize" />
         <activity
-            android:configChanges="orientation|screenSize"
-            android:name="me.nereo.multi_image_selector.PreviewActivity" />
+            android:name="me.nereo.multi_image_selector.PreviewActivity"
+            android:configChanges="orientation|screenSize" />
         <activity
             android:name="com.android.biubiu.community.homepage.PostsDetailActivity"
             android:label="@string/title_activity_posts_detail"
             android:theme="@android:style/Theme.NoTitleBar"
-            android:windowSoftInputMode="adjustResize"/>
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name="com.android.biubiu.activity.mine.UserDynamicActivity"
+            android:label="@string/title_activity_user_dynamic"></activity>
     </application>
 
 </manifest>

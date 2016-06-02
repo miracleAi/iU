@@ -2,6 +2,7 @@ package com.android.biubiu.utils;
 
 import android.content.Context;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.android.biubiu.callback.HttpCallback;
 import com.android.biubiu.common.Constant;
@@ -17,7 +18,7 @@ import org.xutils.x;
  */
 public class HttpRequestUtils {
     //修改头像状态
-    public static void commonRequest(Context context, JSONObject requestObject, String httpUrl, final HttpCallback callback) {
+    public static void commonRequest(final Context context, JSONObject requestObject, String httpUrl, final HttpCallback callback) {
         // TODO Auto-generated method stub
         RequestParams params = new RequestParams(httpUrl);
         try {
@@ -58,6 +59,13 @@ public class HttpRequestUtils {
                     jsons = new JSONObject(result);
                     String state = jsons.getString("state");
                     if(!state.equals("200")){
+                        if (state.equals("303")) {
+                            Toast.makeText(context, "登录过期，请重新登录", Toast.LENGTH_SHORT).show();
+                            SharePreferanceUtils.getInstance().putShared(context, SharePreferanceUtils.TOKEN, "");
+                            SharePreferanceUtils.getInstance().putShared(context, SharePreferanceUtils.USER_NAME, "");
+                            SharePreferanceUtils.getInstance().putShared(context, SharePreferanceUtils.USER_HEAD, "");
+                            SharePreferanceUtils.getInstance().putShared(context, SharePreferanceUtils.USER_CODE, "");
+                        }
                         callback.callback(null,"");
                     }else{
                         JSONObject data = jsons.getJSONObject("data");

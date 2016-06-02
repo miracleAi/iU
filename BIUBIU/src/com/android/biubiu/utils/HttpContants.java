@@ -209,4 +209,12 @@ public class HttpContants {
      * 点赞/取消赞
      */
     public static final String PRAISE_DOPRAISE = HTTP_COMMUNITY_ADDRESS + "app/community/praise/doPraise";
+    /**
+     * 获取个人动态
+     */
+    public static final String USER_DYNAMIC = HTTP_COMMUNITY_ADDRESS + "app/community/post/getMyPostList";
+    /**
+     * 社区抢biu
+     */
+    public static final String GRAB_COM_BIU = HTTP_COMMUNITY_ADDRESS + "app/community/combiu/grabComBiu";
 }
