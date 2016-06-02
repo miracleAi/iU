@@ -64,6 +64,7 @@ public class DiscoveryFragment extends BaseFragment implements FragmentIndicator
             public void onClick(View v) {
                 Intent i = new Intent(getActivity(), PublishHomeActivity.class);
                 startActivityForResult(i, TO_PUBLISH_PAGE);
+                getActivity().overridePendingTransition(R.anim.alpha_in_anim, R.anim.alpha_out_anim);
             }
         });
 
