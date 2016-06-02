@@ -357,7 +357,6 @@ public class PostsDetailActivity extends Activity implements AdapterView.OnItemC
     }
 
 
-
     private void setPic() {
         List<Img> imgs = mPosts.getImgs();
         if (imgs != null && imgs.size() > 0) {
@@ -460,14 +459,16 @@ public class PostsDetailActivity extends Activity implements AdapterView.OnItemC
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        Comment comment = mData.get(position - mListview.getHeaderViewsCount());
-        if (comment != null) {
-            mCommentEt.setHint(getResources().getString(R.string.reply_who, comment.getUserFromName()));
-            mReplayComment = comment;
-            mCommentEt.setFocusable(true);
-            mCommentEt.setFocusableInTouchMode(true);
-            mCommentEt.requestFocus();
-            CommonUtils.showKeyboard(PostsDetailActivity.this, mCommentEt);
+        if (position != 0 && position != 1) {
+            Comment comment = mData.get(position - mListview.getHeaderViewsCount());
+            if (comment != null) {
+                mCommentEt.setHint(getResources().getString(R.string.reply_who, comment.getUserFromName()));
+                mReplayComment = comment;
+                mCommentEt.setFocusable(true);
+                mCommentEt.setFocusableInTouchMode(true);
+                mCommentEt.requestFocus();
+                CommonUtils.showKeyboard(PostsDetailActivity.this, mCommentEt);
+            }
         }
     }
 
@@ -475,9 +476,9 @@ public class PostsDetailActivity extends Activity implements AdapterView.OnItemC
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.praise_imageview:
-                if(mPosts.getIsPraise()==1){
+                if (mPosts.getIsPraise() == 1) {
                     mPosts.setIsPraise(0);
-                }else{
+                } else {
                     mPosts.setIsPraise(1);
                 }
                 setPraiseUi(mPosts.getIsPraise());

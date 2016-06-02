@@ -101,7 +101,7 @@ public class MainActivity extends FragmentActivity implements AMapLocationListen
             for (Indicator i : mIndicators) {
                 if (id == i.getId()) {
                     Fragment f = null;
-                    if (i.getTitle() == 0) {
+                    if (i.getTitle() == R.string.left_menu_biubiu) {
                         if (mReverse) {
                             f = mFragmentManager.findFragmentByTag(getResources().getString(R.string.tab_history));
                         } else {
@@ -128,7 +128,7 @@ public class MainActivity extends FragmentActivity implements AMapLocationListen
                     }
                 } else {
                     Fragment f = null;
-                    if (i.getTitle() == 0) {
+                    if (i.getTitle() == R.string.left_menu_biubiu) {
                         if (mReverse && i.getId() == R.id.tab_biu) {
                             f = mFragmentManager.findFragmentByTag(getResources().getString(R.string.tab_history));
                         } else {
@@ -159,7 +159,7 @@ public class MainActivity extends FragmentActivity implements AMapLocationListen
         initView();
         initData();
 
-        log.e("Token", SharePreferanceUtils.getInstance().getToken(getApplicationContext(), SharePreferanceUtils.TOKEN, ""));
+//        log.e("Token", SharePreferanceUtils.getInstance().getToken(getApplicationContext(), SharePreferanceUtils.TOKEN, ""));
     }
 
     private void initView() {
@@ -210,7 +210,7 @@ public class MainActivity extends FragmentActivity implements AMapLocationListen
 
         Indicator message = new Indicator(R.id.tab_message, R.string.left_menu_message, R.drawable.main_tab_icon_mes_nor,
                 R.drawable.main_tab_icon_mes_light, new MenuRightFragment());
-        Indicator biu = new Indicator(R.id.tab_biu, R.drawable.main_tab_icon_biu_nor,
+        Indicator biu = new Indicator(R.id.tab_biu,R.string.left_menu_biubiu,R.drawable.main_tab_icon_biu_nor,
                 R.drawable.main_tab_icon_biu_light, new BiuFragment());
         Indicator mine = new Indicator(R.id.tab_mine, R.string.mine, R.drawable.main_tab_icon_mine_nor,
                 R.drawable.main_tab_icon_mine_light, new PagerFragment());
