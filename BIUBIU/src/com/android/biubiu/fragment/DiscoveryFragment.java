@@ -19,6 +19,7 @@ import com.android.biubiu.community.homepage.PostsFragment;
 import com.android.biubiu.community.PublishHomeActivity;
 import com.android.biubiu.component.indicator.FragmentIndicator;
 import com.android.biubiu.component.title.TopTitleView;
+import com.android.biubiu.utils.LoginUtils;
 import com.viewpagerindicator.TabPageIndicator;
 
 import java.util.ArrayList;
@@ -51,6 +52,15 @@ public class DiscoveryFragment extends BaseFragment implements FragmentIndicator
         initView();
         initData();
         return mRootview;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if(!LoginUtils.isLogin(getActivity())){
+            newMsgCount = 0;
+            judgeTab();
+        }
     }
 
     private void initView() {
