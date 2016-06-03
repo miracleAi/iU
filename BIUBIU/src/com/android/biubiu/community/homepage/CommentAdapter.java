@@ -20,6 +20,7 @@ import android.widget.Toast;
 import com.android.biubiu.activity.biu.MyPagerActivity;
 import com.android.biubiu.bean.base.Data;
 import com.android.biubiu.bean.community.Comment;
+import com.android.biubiu.bean.community.Posts;
 import com.android.biubiu.bean.community.SimpleRespData;
 import com.android.biubiu.chat.MyHintDialog;
 import com.android.biubiu.sqlite.SchoolDao;
@@ -49,6 +50,8 @@ public class CommentAdapter extends BaseAdapter {
     private SchoolDao schoolDao;
     private int mUserCode;
     private int mPostId;
+    private IRefreshUi mRefreshUi;
+
     public CommentAdapter(List<Comment> mData, Context mCon) {
         this.mData = mData;
         this.mCon = mCon;
@@ -57,8 +60,16 @@ public class CommentAdapter extends BaseAdapter {
         schoolDao = new SchoolDao();
     }
 
-    public void setPostId(int postId){
+    public void setPostId(int postId) {
         mPostId = postId;
+    }
+
+    public interface IRefreshUi {
+        void whenDelete(Comment comment);
+    }
+
+    public void setIRefreshUi(IRefreshUi refreshUi) {
+        mRefreshUi = refreshUi;
     }
 
     @Override
@@ -132,7 +143,7 @@ public class CommentAdapter extends BaseAdapter {
         vh.moreLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showOperation(mUserCode == comment.getUserFromCode(),comment);
+                showOperation(mUserCode == comment.getUserFromCode(), comment);
             }
         });
         return convertView;
@@ -183,7 +194,7 @@ public class CommentAdapter extends BaseAdapter {
                             @Override
                             public void onOK() {
                                 if (b) {
-                                    deleteComment(comment.getCommentId());
+                                    deleteComment(comment);
                                 } else {
                                     reportComment(comment);
                                 }
@@ -198,13 +209,13 @@ public class CommentAdapter extends BaseAdapter {
         });
     }
 
-    private void deleteComment(int commentId) {
+    private void deleteComment(final Comment comment) {
         RequestParams params = new RequestParams(HttpContants.COMMENT_DELETECOMMENT);
         JSONObject requestObject = new JSONObject();
         try {
             requestObject.put("device_code", SharePreferanceUtils.getInstance().getDeviceId(mCon, SharePreferanceUtils.DEVICE_ID, ""));
             requestObject.put("token", SharePreferanceUtils.getInstance().getToken(mCon, SharePreferanceUtils.TOKEN, ""));
-            requestObject.put("commentId", commentId);
+            requestObject.put("commentId", comment.getCommentId());
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -222,6 +233,9 @@ public class CommentAdapter extends BaseAdapter {
                     SharePreferanceUtils.getInstance().putShared(mCon, SharePreferanceUtils.TOKEN, data.getToken());
                 }
                 Toast.makeText(mCon, mCon.getResources().getString(R.string.delete_success), Toast.LENGTH_SHORT).show();
+                if (mRefreshUi != null) {
+                    mRefreshUi.whenDelete(comment);
+                }
             }
 
             @Override

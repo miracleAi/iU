@@ -202,16 +202,7 @@ public class PostsFragment extends BaseFragment implements PullToRefreshBase.OnR
                 LogUtil.d(TAG, "getPostlist-- mType = " + mType + result);
                 Data<DiscoveryData> response = CommonUtils.parseJsonToObj(result, new TypeToken<Data<DiscoveryData>>() {
                 });
-                if (response.getState().equals("303")) {
-                    Toast.makeText(getActivity(), "登录过期，请重新登录", Toast.LENGTH_SHORT).show();
-                    SharePreferanceUtils.getInstance().putShared(getActivity(), SharePreferanceUtils.TOKEN, "");
-                    SharePreferanceUtils.getInstance().putShared(getActivity(), SharePreferanceUtils.USER_NAME, "");
-                    SharePreferanceUtils.getInstance().putShared(getActivity(), SharePreferanceUtils.USER_HEAD, "");
-                    SharePreferanceUtils.getInstance().putShared(getActivity(), SharePreferanceUtils.USER_CODE, "");
-//                  exitHuanxin();
-                    return;
-                }
-                if (!response.getState().equals("200")) {
+                if (!CommonUtils.unifyResponse(Integer.parseInt(response.getState()), getActivity())) {
                     return;
                 }
                 DiscoveryData data = response.getData();

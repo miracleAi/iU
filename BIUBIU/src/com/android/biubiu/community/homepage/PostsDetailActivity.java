@@ -60,7 +60,7 @@ import java.util.List;
 import cc.imeetu.iu.R;
 
 public class PostsDetailActivity extends Activity implements AdapterView.OnItemClickListener, View.OnClickListener,
-        PullToRefreshBase.OnRefreshListener2<ListView> {
+        PullToRefreshBase.OnRefreshListener2<ListView>, CommentAdapter.IRefreshUi {
     private static final String TAG = PostsDetailActivity.class.getSimpleName();
     private Posts mPosts;
     private int mPostsId;
@@ -83,6 +83,7 @@ public class PostsDetailActivity extends Activity implements AdapterView.OnItemC
     private int mUserCode;
 
     private boolean mFromTagPostListPage;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -237,7 +238,7 @@ public class PostsDetailActivity extends Activity implements AdapterView.OnItemC
     private void initData() {
         mUserCode = Integer.parseInt(SharePreferanceUtils.getInstance().getUserCode(this, SharePreferanceUtils.USER_CODE, ""));
         mSchoolDao = new SchoolDao();
-        mFromTagPostListPage = getIntent().getBooleanExtra(Constant.FROM_POSTLIST_BY_TAG,false);
+        mFromTagPostListPage = getIntent().getBooleanExtra(Constant.FROM_POSTLIST_BY_TAG, false);
         mPosts = (Posts) getIntent().getSerializableExtra(Constant.POSTS);
         if (mPosts != null) {
             mPostsId = mPosts.getPostId();
@@ -247,6 +248,8 @@ public class PostsDetailActivity extends Activity implements AdapterView.OnItemC
         }
 
         mCommentAdapter = new CommentAdapter(mData, this);
+        mCommentAdapter.setPostId(mPostsId);
+        mCommentAdapter.setIRefreshUi(this);
         mListview.addHeaderView(mHeaderView);
         mListview.setAdapter(mCommentAdapter);
         getPostsDetail(0);
@@ -270,16 +273,7 @@ public class PostsDetailActivity extends Activity implements AdapterView.OnItemC
                 LogUtil.d(TAG, "getPostsDetail--" + s);
                 Data<PostDetailData> response = CommonUtils.parseJsonToObj(s, new TypeToken<Data<PostDetailData>>() {
                 });
-                if (response.getState().equals("303")) {
-                    Toast.makeText(PostsDetailActivity.this, "登录过期，请重新登录", Toast.LENGTH_SHORT).show();
-                    SharePreferanceUtils.getInstance().putShared(PostsDetailActivity.this, SharePreferanceUtils.TOKEN, "");
-                    SharePreferanceUtils.getInstance().putShared(PostsDetailActivity.this, SharePreferanceUtils.USER_NAME, "");
-                    SharePreferanceUtils.getInstance().putShared(PostsDetailActivity.this, SharePreferanceUtils.USER_HEAD, "");
-                    SharePreferanceUtils.getInstance().putShared(PostsDetailActivity.this, SharePreferanceUtils.USER_CODE, "");
-//                  exitHuanxin();
-                    return;
-                }
-                if (!response.getState().equals("200")) {
+                if(!CommonUtils.unifyResponse(Integer.parseInt(response.getState()),PostsDetailActivity.this)){
                     return;
                 }
                 PostDetailData data = response.getData();
@@ -335,12 +329,12 @@ public class PostsDetailActivity extends Activity implements AdapterView.OnItemC
         mTimeTv.setText(DateUtils.getDateFormatInList(this, mPosts.getCreateAt() * 1000));
         if (mPosts.getTags() != null && mPosts.getTags().size() > 0) {
             mTagTv.setText(getResources().getString(R.string.tag, mPosts.getTags().get(0).getContent()));
-            if(!mFromTagPostListPage){
+            if (!mFromTagPostListPage) {
                 mTagTv.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Intent i = new Intent(PostsDetailActivity.this,PostsListByTagActivity.class);
-                        i.putExtra(Constant.TAG,mPosts.getTags().get(0));
+                        Intent i = new Intent(PostsDetailActivity.this, PostsListByTagActivity.class);
+                        i.putExtra(Constant.TAG, mPosts.getTags().get(0));
                         startActivity(i);
                     }
                 });
@@ -384,7 +378,7 @@ public class PostsDetailActivity extends Activity implements AdapterView.OnItemC
                 iv.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        toPreviewPage(0,imgs);
+                        toPreviewPage(0, imgs);
                     }
                 });
             } else {
@@ -393,7 +387,7 @@ public class PostsDetailActivity extends Activity implements AdapterView.OnItemC
                     LinearLayout rowLayout = new LinearLayout(this);
                     rowLayout.setOrientation(LinearLayout.HORIZONTAL);
                     for (int i = 0; i < 2; i++) {
-                        addImgView(i,imgs, i != 0, rowLayout, getResources().getDimensionPixelSize(R.dimen.post_list_two_pic));
+                        addImgView(i, imgs, i != 0, rowLayout, getResources().getDimensionPixelSize(R.dimen.post_list_two_pic));
                     }
                     LinearLayout.LayoutParams rowParam = new LinearLayout.LayoutParams(getResources().getDimensionPixelSize(R.dimen.post_list_one_pic),
                             getResources().getDimensionPixelSize(R.dimen.post_list_two_pic));
@@ -404,7 +398,7 @@ public class PostsDetailActivity extends Activity implements AdapterView.OnItemC
                             LinearLayout rowLayout = new LinearLayout(this);
                             rowLayout.setOrientation(LinearLayout.HORIZONTAL);
                             for (int j = i * 3; j < (i + 1) * 3; j++) {
-                                addImgView(j,imgs, j != i * 3, rowLayout, getResources().getDimensionPixelSize(R.dimen.post_list_three_pic));
+                                addImgView(j, imgs, j != i * 3, rowLayout, getResources().getDimensionPixelSize(R.dimen.post_list_three_pic));
                             }
                             LinearLayout.LayoutParams rowParam = new LinearLayout.LayoutParams(getResources().getDimensionPixelSize(R.dimen.post_list_one_pic),
                                     getResources().getDimensionPixelSize(R.dimen.post_list_three_pic));
@@ -418,11 +412,11 @@ public class PostsDetailActivity extends Activity implements AdapterView.OnItemC
                             rowLayout.setOrientation(LinearLayout.HORIZONTAL);
                             if (i == rows - 1) {
                                 for (int j = i * 3; j < (rows - 1) * 3 + size % 3; j++) {
-                                    addImgView(j,imgs, j != i * 3, rowLayout, getResources().getDimensionPixelSize(R.dimen.post_list_three_pic));
+                                    addImgView(j, imgs, j != i * 3, rowLayout, getResources().getDimensionPixelSize(R.dimen.post_list_three_pic));
                                 }
                             } else {
                                 for (int j = i * 3; j < (i + 1) * 3; j++) {
-                                    addImgView(j,imgs, j != i * 3, rowLayout, getResources().getDimensionPixelSize(R.dimen.post_list_three_pic));
+                                    addImgView(j, imgs, j != i * 3, rowLayout, getResources().getDimensionPixelSize(R.dimen.post_list_three_pic));
                                 }
                             }
                             LinearLayout.LayoutParams rowParam = new LinearLayout.LayoutParams(getResources().getDimensionPixelSize(R.dimen.post_list_one_pic),
@@ -451,7 +445,7 @@ public class PostsDetailActivity extends Activity implements AdapterView.OnItemC
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                toPreviewPage(index,imgs);
+                toPreviewPage(index, imgs);
             }
         });
     }
@@ -605,8 +599,8 @@ public class PostsDetailActivity extends Activity implements AdapterView.OnItemC
                 }
                 Toast.makeText(PostsDetailActivity.this, getResources().getString(R.string.delete_success), Toast.LENGTH_SHORT).show();
                 Intent i = new Intent();
-                i.putExtra(Constant.POSTS,mPosts);
-                setResult(Constant.DELETE_RESULT_CODE,i);
+                i.putExtra(Constant.POSTS, mPosts);
+                setResult(Constant.DELETE_RESULT_CODE, i);
                 PostsDetailActivity.this.finish();
             }
 
@@ -709,8 +703,8 @@ public class PostsDetailActivity extends Activity implements AdapterView.OnItemC
                 mPosts.setPraiseNum(data.getPraiseNum());
                 mPraiseTv.setText(getResources().getString(R.string.praise_num, mPosts.getPraiseNum()));
                 Intent i = new Intent();
-                i.putExtra(Constant.POSTS,mPosts);
-                setResult(Constant.PRAISE_RESULT_CODE,i);
+                i.putExtra(Constant.POSTS, mPosts);
+                setResult(Constant.PRAISE_RESULT_CODE, i);
             }
 
             @Override
@@ -739,6 +733,14 @@ public class PostsDetailActivity extends Activity implements AdapterView.OnItemC
     public void onPullUpToRefresh(PullToRefreshBase<ListView> refreshView) {
         if (mData.size() > 0) {
             getPostsDetail(mData.get(mData.size() - 1).getCreateAt());
+        }
+    }
+
+    @Override
+    public void whenDelete(Comment comment) {
+        if(mData.contains(comment)){
+            mData.remove(comment);
+            mCommentAdapter.notifyDataSetChanged();
         }
     }
 }

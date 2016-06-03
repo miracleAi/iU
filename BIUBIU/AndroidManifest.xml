@@ -587,10 +587,14 @@
             android:windowSoftInputMode="adjustResize" />
         <activity
             android:name="com.android.biubiu.community.homepage.PostsListByTagActivity"
-            android:label="@string/title_activity_posts_list_by_tag"></activity>
+            android:label="@string/title_activity_posts_list_by_tag" />
         <activity
             android:name="com.android.biubiu.activity.mine.UserDynamicActivity"
-            android:label="@string/title_activity_user_dynamic"></activity>
+            android:label="@string/title_activity_user_dynamic" />
+        <activity
+            android:name="com.android.biubiu.community.CommunityBiuListActivity"
+            android:label="@string/title_activity_community_biu_list"
+            android:theme="@android:style/Theme.NoTitleBar"/>
     </application>
 
 </manifest>
