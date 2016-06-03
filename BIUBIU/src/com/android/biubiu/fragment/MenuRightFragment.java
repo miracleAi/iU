@@ -70,6 +70,7 @@ public class MenuRightFragment extends EaseConversationListFragment implements F
     private static final int DELETE_CHAT = 2;
     private static final int TO_REGISTER = TO_LOGIN + 1;
     private static final int TO_CHATPAGE = TO_REGISTER + 1;
+    private int newMsgCount = 0;
 
     @Override
     protected void initView() {
@@ -165,6 +166,15 @@ public class MenuRightFragment extends EaseConversationListFragment implements F
 
             }
         });
+        titleBar.setLeftImageResource(R.drawable.mes_btn_left);
+        titleBar.setLeftLayoutClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                newMsgCount = 0;
+                titleBar.setNewMsgGone();
+                judgeVisibleGone();
+            }
+        });
 
         // 注册上下文菜单
         registerForContextMenu(conversationListView);// why to do this?
@@ -193,6 +203,22 @@ public class MenuRightFragment extends EaseConversationListFragment implements F
             }
         });
         judgeVisibleGone();
+    }
+
+    public void updateNewMsg(int num){
+        newMsgCount = num;
+        judgeVisibleGone();
+        String countStr = "";
+        if(num >0){
+            if(num > 99){
+                countStr = num%100+"+";
+            }else{
+                countStr = num + "";
+            }
+            titleBar.setNewMsgCount(countStr);
+        }else{
+            titleBar.setNewMsgGone();
+        }
     }
 
     /**
@@ -510,7 +536,7 @@ public class MenuRightFragment extends EaseConversationListFragment implements F
 //	};
     private boolean showUnread() {
         int unread = EMClient.getInstance().chatManager().getUnreadMsgsCount();
-        if (unread > 0) {
+        if ((unread + newMsgCount) > 0) {
             return true;
         }
         return false;

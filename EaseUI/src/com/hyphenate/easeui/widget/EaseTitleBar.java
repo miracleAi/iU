@@ -5,6 +5,8 @@ import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -23,6 +25,7 @@ public class EaseTitleBar extends RelativeLayout{
     protected ImageView rightImage;
     protected TextView titleView;
     protected RelativeLayout titleLayout;
+    protected Button newMsgBtn;
 
     public EaseTitleBar(Context context, AttributeSet attrs, int defStyle) {
         this(context, attrs);
@@ -46,6 +49,7 @@ public class EaseTitleBar extends RelativeLayout{
         rightImage = (ImageView) findViewById(R.id.right_image);
         titleView = (TextView) findViewById(R.id.title);
         titleLayout = (RelativeLayout) findViewById(R.id.root);
+        newMsgBtn = (Button) findViewById(R.id.new_msg);
         
         parseStyle(context, attrs);
     }
@@ -76,6 +80,14 @@ public class EaseTitleBar extends RelativeLayout{
     
     public void setLeftImageResource(int resId) {
         leftImage.setImageResource(resId);
+    }
+
+    public void setNewMsgCount(String count){
+        newMsgBtn.setText(count);
+        newMsgBtn.setVisibility(View.VISIBLE);
+    }
+    public void setNewMsgGone(){
+        newMsgBtn.setVisibility(View.GONE);
     }
     
     public void setRightImageResource(int resId) {

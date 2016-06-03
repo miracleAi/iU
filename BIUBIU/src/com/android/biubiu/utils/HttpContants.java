@@ -228,4 +228,8 @@ public class HttpContants {
      * 删除评论
      */
     public static final String COMMENT_DELETECOMMENT = HTTP_COMMUNITY_ADDRESS + "app/community/comment/deleteComment";
+    /**
+     * 获取全局通知
+     */
+    public static final String GET_ALL_STATUS = HTTP_COMMUNITY_ADDRESS + "app/overall/getStatus";
 }

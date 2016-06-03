@@ -41,7 +41,7 @@ public class HttpRequestUtils {
             @Override
             public void onError(Throwable arg0, boolean arg1) {
                 // TODO Auto-generated method stub
-                Log.d("mytest","error");
+                Log.d("mytest","error"+arg0.getMessage());
             }
 
             @Override
