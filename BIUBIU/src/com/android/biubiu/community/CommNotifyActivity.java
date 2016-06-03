@@ -16,6 +16,7 @@ import com.android.biubiu.bean.community.CommBiuListData;
 import com.android.biubiu.bean.community.CommNotify;
 import com.android.biubiu.bean.community.CommNotifyData;
 import com.android.biubiu.bean.community.PostDetailData;
+import com.android.biubiu.bean.community.Posts;
 import com.android.biubiu.bean.community.SimpleRespData;
 import com.android.biubiu.common.Constant;
 import com.android.biubiu.community.homepage.PostsDetailActivity;
@@ -47,7 +48,7 @@ public class CommNotifyActivity extends BaseActivity implements PullToRefreshBas
     private ListView mListview;
     private List<CommNotify> mData = new ArrayList<CommNotify>();
     private CommNotifyAdapter mAdapter;
-
+    private CommNotify mNotify;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -84,11 +85,19 @@ public class CommNotifyActivity extends BaseActivity implements PullToRefreshBas
                 if (item != null) {
                     Intent intent = new Intent(CommNotifyActivity.this, PostsDetailActivity.class);
                     intent.putExtra(Constant.POSTS_ID, item.getPostId());
-                    intent.putExtra(Constant.FROM_COMM_NOTIFY_PAGE,true);
-                    startActivity(intent);
+                    intent.putExtra(Constant.FROM_COMM_NOTIFY_PAGE, true);
+                    startActivityForResult(intent, 0);
+                    mNotify = item;
                 }
             }
         });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        mNotify.setIsRead(1);
+        mAdapter.notifyDataSetChanged();
     }
 
     private void clear() {

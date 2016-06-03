@@ -9,22 +9,37 @@
         android:layout_width="match_parent"
         android:layout_height="65dp">
 
-        <ImageView
-            android:id="@+id/head_imageview"
+        <RelativeLayout
+            android:id="@+id/head_layout"
             android:layout_width="35dp"
             android:layout_height="35dp"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="30dp"
-            android:src="@drawable/photo_fail" />
+            android:layout_marginLeft="10dp">
+
+            <ImageView
+                android:id="@+id/head_imageview"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:src="@drawable/photo_fail" />
+
+            <ImageView
+                android:id="@+id/unread_imageview"
+                android:layout_width="8dp"
+                android:layout_height="8dp"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:src="@drawable/notify_unread_shape"
+                android:visibility="gone"/>
+        </RelativeLayout>
+
 
         <RelativeLayout
             android:id="@+id/nickname_school_layout"
             android:layout_width="wrap_content"
             android:layout_height="35dp"
-            android:layout_alignTop="@+id/head_imageview"
+            android:layout_alignTop="@+id/head_layout"
             android:layout_marginLeft="8dp"
-            android:layout_toRightOf="@+id/head_imageview">
+            android:layout_toRightOf="@+id/head_layout">
 
             <TextView
                 android:id="@+id/nickname_textview"
@@ -112,10 +127,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:textColor="#333333"
-            android:textSize="12sp"
             android:ellipsize="end"
-            android:singleLine="true" />
+            android:singleLine="true"
+            android:textColor="#333333"
+            android:textSize="12sp" />
     </LinearLayout>
 
     <View

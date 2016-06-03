@@ -75,12 +75,18 @@ public class CommNotifyAdapter extends BaseAdapter {
             vh.content = (TextView) convertView.findViewById(R.id.content_textview);
             vh.thumbnail = (ImageView) convertView.findViewById(R.id.thumbnail_imageview);
             vh.brief = (TextView) convertView.findViewById(R.id.brief_textview);
+            vh.unread = (ImageView) convertView.findViewById(R.id.unread_imageview);
             convertView.setTag(vh);
         } else {
             vh = (ViewHolder) convertView.getTag();
         }
         x.image().bind(vh.head, notify.getUserHead(), imageOptions);
         vh.nickname.setText(notify.getUserName());
+        if (notify.getIsRead() == 0) {
+            vh.unread.setVisibility(View.VISIBLE);
+        } else {
+            vh.unread.setVisibility(View.GONE);
+        }
         vh.head.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -110,7 +116,7 @@ public class CommNotifyAdapter extends BaseAdapter {
     }
 
     class ViewHolder {
-        ImageView head, thumbnail;
+        ImageView head, thumbnail, unread;
         TextView nickname, school, time, content, brief;
     }
 }
