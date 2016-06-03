@@ -423,4 +423,9 @@ public class PostsFragment extends BaseFragment implements PullToRefreshBase.OnR
             });
         }
     }
+
+    public void refreshList(){
+        onPullDownToRefresh(mPullToRefreshListview);
+        mListview.setSelection(0);
+    }
 }

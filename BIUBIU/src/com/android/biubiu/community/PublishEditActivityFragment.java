@@ -121,7 +121,7 @@ public class PublishEditActivityFragment extends Fragment {
         titleView.setRightOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (null == tagIdList || tagIdList.size()==0) {
+                if (null == tagIdList || tagIdList.size() == 0) {
                     Toast.makeText(getActivity(), "标签不能为空", Toast.LENGTH_SHORT).show();
                     return;
                 }
@@ -340,8 +340,10 @@ public class PublishEditActivityFragment extends Fragment {
                 dismissLoadingLayout();
                 if (object != null) {
                     Toast.makeText(getActivity(), "帖子发布成功", Toast.LENGTH_SHORT).show();
+                    Intent i = new Intent(Constant.PUBLISH_POST_ACTION);
+                    getActivity().sendBroadcast(i, Constant.PUBLISH_POST_ACTION_PERMISSION);
                     getActivity().finish();
-                }else{
+                } else {
                     Toast.makeText(getActivity(), "帖子发布失败", Toast.LENGTH_SHORT).show();
                 }
             }
