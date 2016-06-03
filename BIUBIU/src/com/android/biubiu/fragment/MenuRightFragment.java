@@ -16,6 +16,7 @@ import com.android.biubiu.chat.MyHintDialog.OnDialogClick;
 import com.android.biubiu.chat.UserListActivity;
 import com.android.biubiu.common.CommonDialog;
 import com.android.biubiu.common.Constant;
+import com.android.biubiu.community.CommunityBiuListActivity;
 import com.android.biubiu.component.indicator.FragmentIndicator;
 import com.android.biubiu.utils.Constants;
 import com.android.biubiu.utils.HttpUtils;
@@ -71,6 +72,7 @@ public class MenuRightFragment extends EaseConversationListFragment implements F
     private static final int TO_REGISTER = TO_LOGIN + 1;
     private static final int TO_CHATPAGE = TO_REGISTER + 1;
     private int newMsgCount = 0;
+    private static final int TO_BIU_PAGE = TO_CHATPAGE + 1;
 
     @Override
     protected void initView() {
@@ -155,7 +157,8 @@ public class MenuRightFragment extends EaseConversationListFragment implements F
         super.setUpView();
         titleBar.setTitle(getResources().getString(R.string.biu_msg));
         titleBar.setBackgroundColor(getResources().getColor(R.color.main_green));
-        titleBar.setRightImageResource(R.drawable.mes_btn_people);
+        titleBar.setRightImageResource(R.drawable.message_btn_right);
+        titleBar.setLeftImageResource(R.drawable.mes_btn_left);
         titleBar.setRightLayoutClickListener(new OnClickListener() {
 
             @Override
@@ -173,6 +176,14 @@ public class MenuRightFragment extends EaseConversationListFragment implements F
                 newMsgCount = 0;
                 titleBar.setNewMsgGone();
                 judgeVisibleGone();
+            }
+        });
+
+        titleBar.setLeftLayoutClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(getActivity(), CommunityBiuListActivity.class);
+                startActivityForResult(i,TO_BIU_PAGE);
             }
         });
 

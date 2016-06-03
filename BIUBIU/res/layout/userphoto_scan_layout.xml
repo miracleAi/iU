@@ -2,19 +2,19 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" >
+    android:orientation="vertical">
 
     <RelativeLayout
         android:id="@+id/title_back_rl"
         android:layout_width="match_parent"
         android:layout_height="44dp"
-        android:background="@color/main_green" >
+        android:background="@color/main_green">
 
         <RelativeLayout
             android:id="@+id/back_rl"
             android:layout_width="52dp"
             android:layout_height="match_parent"
-            android:background="@drawable/kongjianruoqu_bg" >
+            android:background="@drawable/kongjianruoqu_bg">
 
             <ImageView
                 android:id="@+id/title_left_imv"
@@ -43,7 +43,7 @@
             android:layout_height="match_parent"
             android:layout_alignParentRight="true"
             android:background="@drawable/kongjianruoqu_bg"
-            android:paddingRight="20dp" >
+            android:paddingRight="20dp">
 
             <ImageView
                 android:id="@+id/title_delete_imv"
@@ -59,7 +59,6 @@
         android:id="@+id/userphoto_scan_pager"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1" >
-    </android.support.v4.view.ViewPager>
+        android:layout_weight="1"></android.support.v4.view.ViewPager>
 
 </LinearLayout>

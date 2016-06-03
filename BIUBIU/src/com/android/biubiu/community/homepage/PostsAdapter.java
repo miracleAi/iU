@@ -20,11 +20,15 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.biubiu.activity.biu.MyPagerActivity;
+import com.android.biubiu.activity.mine.UserPhotoScanActivity;
+import com.android.biubiu.bean.UserPhotoBean;
 import com.android.biubiu.bean.base.Data;
 import com.android.biubiu.bean.community.Img;
 import com.android.biubiu.bean.community.Posts;
+import com.android.biubiu.bean.community.PraiseData;
 import com.android.biubiu.bean.community.SimpleRespData;
 import com.android.biubiu.chat.MyHintDialog;
+import com.android.biubiu.common.Constant;
 import com.android.biubiu.sqlite.SchoolDao;
 import com.android.biubiu.utils.CommonUtils;
 import com.android.biubiu.utils.DateUtils;
@@ -38,6 +42,7 @@ import org.xutils.common.Callback;
 import org.xutils.http.RequestParams;
 import org.xutils.x;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -52,13 +57,26 @@ public class PostsAdapter extends BaseAdapter {
     private LayoutInflater mInflater;
     private SchoolDao schoolDao;
     private int mUserCode;
-
+    private IRefreshUi mRefreshUi;
+    private boolean mIsTagPostListPage;
     public PostsAdapter(List<Posts> mData, Context mCon) {
         this.mData = mData;
         this.mCon = mCon;
         mInflater = LayoutInflater.from(mCon);
         schoolDao = new SchoolDao();
         mUserCode = Integer.parseInt(SharePreferanceUtils.getInstance().getUserCode(mCon, SharePreferanceUtils.USER_CODE, ""));
+    }
+
+    public interface IRefreshUi {
+        void whenDelete(Posts posts);
+    }
+
+    public void setIRefreshUi(IRefreshUi refreshUi){
+        mRefreshUi = refreshUi;
+    }
+
+    public void setIsTagPostListPage(boolean isTagPostListPage){
+        mIsTagPostListPage = isTagPostListPage;
     }
 
     @Override
@@ -129,12 +147,22 @@ public class PostsAdapter extends BaseAdapter {
         if (posts.getTags() != null && posts.getTags().size() > 0) {
             vh.tag.setText(mCon.getResources().getString(R.string.tag, posts.getTags().get(0).getContent()));
         }
+        if(!mIsTagPostListPage){
+            vh.tag.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent i = new Intent(mCon,PostsListByTagActivity.class);
+                    i.putExtra(Constant.TAG,posts.getTags().get(0));
+                    mCon.startActivity(i);
+                }
+            });
+        }
         vh.content.setText(posts.getContent());
         vh.praise.setText(mCon.getResources().getString(R.string.praise_num, posts.getPraiseNum()));
         vh.comment.setText(mCon.getResources().getString(R.string.comment_num, posts.getCommentNum()));
-        if(posts.getIsPraise()==1){
+        if (posts.getIsPraise() == 1) {
             vh.praiseImg.setImageResource(R.drawable.found_btn_like_light);
-        }else{
+        } else {
             vh.praiseImg.setImageResource(R.drawable.found_btn_like_normal);
         }
         vh.praiseImg.setOnClickListener(new View.OnClickListener() {
@@ -146,7 +174,7 @@ public class PostsAdapter extends BaseAdapter {
         vh.reportLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showOperation(mUserCode == posts.getUserCode(),posts);
+                showOperation(mUserCode == posts.getUserCode(), posts);
             }
         });
         return convertView;
@@ -158,11 +186,11 @@ public class PostsAdapter extends BaseAdapter {
         mCon.startActivity(intent);
     }
 
-    private void setPic(ViewHolder vh, Posts posts) {
+    private void setPic(ViewHolder vh, final Posts posts) {
         if (vh.imgLayout.getChildCount() > 0) {
             vh.imgLayout.removeAllViews();
         }
-        List<Img> imgs = posts.getImgs();
+        final List<Img> imgs = posts.getImgs();
         if (imgs != null && imgs.size() > 0) {
             vh.imgLayout.setVisibility(View.VISIBLE);
             int size = imgs.size();
@@ -181,7 +209,7 @@ public class PostsAdapter extends BaseAdapter {
                 iv.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-
+                        toPreviewPage(0, imgs);
                     }
                 });
             } else {
@@ -190,7 +218,7 @@ public class PostsAdapter extends BaseAdapter {
                     LinearLayout rowLayout = new LinearLayout(mCon);
                     rowLayout.setOrientation(LinearLayout.HORIZONTAL);
                     for (int i = 0; i < 2; i++) {
-                        addImgView(imgs.get(i), i != 0, rowLayout, mCon.getResources().getDimensionPixelSize(R.dimen.post_list_two_pic));
+                        addImgView(i, imgs, i != 0, rowLayout, mCon.getResources().getDimensionPixelSize(R.dimen.post_list_two_pic));
                     }
                     LinearLayout.LayoutParams rowParam = new LinearLayout.LayoutParams(mCon.getResources().getDimensionPixelSize(R.dimen.post_list_one_pic),
                             mCon.getResources().getDimensionPixelSize(R.dimen.post_list_two_pic));
@@ -201,7 +229,7 @@ public class PostsAdapter extends BaseAdapter {
                             LinearLayout rowLayout = new LinearLayout(mCon);
                             rowLayout.setOrientation(LinearLayout.HORIZONTAL);
                             for (int j = i * 3; j < (i + 1) * 3; j++) {
-                                addImgView(imgs.get(j), j != i * 3, rowLayout, mCon.getResources().getDimensionPixelSize(R.dimen.post_list_three_pic));
+                                addImgView(j, imgs, j != i * 3, rowLayout, mCon.getResources().getDimensionPixelSize(R.dimen.post_list_three_pic));
                             }
                             LinearLayout.LayoutParams rowParam = new LinearLayout.LayoutParams(mCon.getResources().getDimensionPixelSize(R.dimen.post_list_one_pic),
                                     mCon.getResources().getDimensionPixelSize(R.dimen.post_list_three_pic));
@@ -215,11 +243,11 @@ public class PostsAdapter extends BaseAdapter {
                             rowLayout.setOrientation(LinearLayout.HORIZONTAL);
                             if (i == rows - 1) {
                                 for (int j = i * 3; j < (rows - 1) * 3 + size % 3; j++) {
-                                    addImgView(imgs.get(j), j != i * 3, rowLayout, mCon.getResources().getDimensionPixelSize(R.dimen.post_list_three_pic));
+                                    addImgView(j, imgs, j != i * 3, rowLayout, mCon.getResources().getDimensionPixelSize(R.dimen.post_list_three_pic));
                                 }
                             } else {
                                 for (int j = i * 3; j < (i + 1) * 3; j++) {
-                                    addImgView(imgs.get(j), j != i * 3, rowLayout, mCon.getResources().getDimensionPixelSize(R.dimen.post_list_three_pic));
+                                    addImgView(j, imgs, j != i * 3, rowLayout, mCon.getResources().getDimensionPixelSize(R.dimen.post_list_three_pic));
                                 }
                             }
                             LinearLayout.LayoutParams rowParam = new LinearLayout.LayoutParams(mCon.getResources().getDimensionPixelSize(R.dimen.post_list_one_pic),
@@ -236,9 +264,24 @@ public class PostsAdapter extends BaseAdapter {
 
     }
 
-    private void addImgView(Img img, boolean b, LinearLayout rowLayout, int targetSize) {
+    private void toPreviewPage(int position, List<Img> imgs) {
+        ArrayList<UserPhotoBean> photos = new ArrayList<UserPhotoBean>();
+        for (Img img : imgs) {
+            UserPhotoBean bean = new UserPhotoBean();
+            bean.setPhotoOrigin(img.getUrl());
+            photos.add(bean);
+        }
+        Intent intent = new Intent(mCon, UserPhotoScanActivity.class);
+        intent.putExtra("photolist", photos);
+        intent.putExtra("photoindex", position);
+        intent.putExtra("isMyself", false);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        mCon.startActivity(intent);
+    }
+
+    private void addImgView(final int index, final List<Img> imgs, boolean b, LinearLayout rowLayout, int targetSize) {
         ImageView imageView = new ImageView(mCon);
-        x.image().bind(imageView, packageUrl(img.getW(), img.getH(), targetSize, img.getUrl()));
+        x.image().bind(imageView, packageUrl(imgs.get(index).getW(), imgs.get(index).getH(), targetSize, imgs.get(index).getUrl()));
         imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(targetSize, targetSize);
         if (b) {
@@ -248,7 +291,7 @@ public class PostsAdapter extends BaseAdapter {
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                toPreviewPage(index, imgs);
             }
         });
     }
@@ -289,22 +332,21 @@ public class PostsAdapter extends BaseAdapter {
         x.http().post(params, new Callback.CommonCallback<String>() {
             @Override
             public void onSuccess(String s) {
-                Data<SimpleRespData> response = CommonUtils.parseJsonToObj(s, new TypeToken<Data<SimpleRespData>>() {
+                Data<PraiseData> response = CommonUtils.parseJsonToObj(s, new TypeToken<Data<PraiseData>>() {
                 });
                 if (!CommonUtils.unifyResponse(Integer.parseInt(response.getState()), mCon)) {
                     return;
                 }
-                SimpleRespData data = response.getData();
+                PraiseData data = response.getData();
                 if (!TextUtils.isEmpty(data.getToken())) {
                     SharePreferanceUtils.getInstance().putShared(mCon, SharePreferanceUtils.TOKEN, data.getToken());
                 }
                 if (posts.getIsPraise() == 1) {
                     posts.setIsPraise(0);
-                    posts.setPraiseNum(posts.getPraiseNum() - 1);
                 } else if (posts.getIsPraise() == 0) {
                     posts.setIsPraise(1);
-                    posts.setPraiseNum(posts.getPraiseNum() + 1);
                 }
+                posts.setPraiseNum(data.getPraiseNum());
                 notifyDataSetChanged();
             }
 
@@ -385,7 +427,7 @@ public class PostsAdapter extends BaseAdapter {
         });
     }
 
-    private void deletePost(Posts posts) {
+    private void deletePost(final Posts posts) {
         RequestParams params = new RequestParams(HttpContants.POST_DELETEPOST);
         JSONObject requestObject = new JSONObject();
         try {
@@ -410,6 +452,9 @@ public class PostsAdapter extends BaseAdapter {
                 }
                 Toast.makeText(mCon, mCon.getResources().getString(R.string.delete_success), Toast.LENGTH_SHORT).show();
                 //刷新数据源
+                if (mRefreshUi != null) {
+                    mRefreshUi.whenDelete(posts);
+                }
             }
 
             @Override

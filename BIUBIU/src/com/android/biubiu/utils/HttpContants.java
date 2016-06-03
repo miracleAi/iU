@@ -217,8 +217,8 @@ public class HttpContants {
      * 社区抢biu
      */
     public static final String GRAB_COM_BIU = HTTP_COMMUNITY_ADDRESS + "app/community/combiu/grabComBiu";
-     /* 举报
-     */
+    /* 举报
+    */
     public static final String REPORT_CREATEREPORT = HTTP_COMMUNITY_ADDRESS + "app/community/report/createReport";
     /**
      * 删除帖子
@@ -232,4 +232,19 @@ public class HttpContants {
      * 获取全局通知
      */
     public static final String GET_ALL_STATUS = HTTP_COMMUNITY_ADDRESS + "app/overall/getStatus";
+     /* 获取社区biu列表
+     */
+    public static final String COMBIU_GETCOMBIULIST = HTTP_COMMUNITY_ADDRESS + "app/community/combiu/getComBiuList";
+    /**
+     * 话题分类下的帖子
+     */
+    public static final String POST_GETPOSTLISTBYTAG = HTTP_COMMUNITY_ADDRESS + "app/community/post/getPostListByTag";
+    /**
+     * 接受社区biu我的人
+     */
+    public static final String COMBIU_ACCEPTCOMBIU = HTTP_COMMUNITY_ADDRESS + "app/community/combiu/acceptComBiu";
+    /**
+     * 清空社区biu我的人
+     */
+    public static final String COMBIU_DELETECOMBIU = HTTP_COMMUNITY_ADDRESS + "app/community/combiu/deleteComBiu";
 }

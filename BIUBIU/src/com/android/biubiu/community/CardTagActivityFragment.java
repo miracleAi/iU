@@ -22,6 +22,7 @@ import android.widget.Toast;
 import com.android.biubiu.bean.TagBean;
 import com.android.biubiu.callback.HttpCallback;
 import com.android.biubiu.common.Constant;
+import com.android.biubiu.community.homepage.PostsListByTagActivity;
 import com.android.biubiu.utils.Constants;
 import com.android.biubiu.utils.DensityUtil;
 import com.android.biubiu.utils.HttpContants;
@@ -143,7 +144,9 @@ public class CardTagActivityFragment extends Fragment implements PullToRefreshBa
                     getActivity().setResult(getActivity().RESULT_OK, intent);
                     getActivity().finish();
                 } else {
-                    // TODO: 2016/5/31 社区跳转点击在此处理 
+                    Intent i = new Intent(getActivity(),PostsListByTagActivity.class);
+                    i.putExtra(Constant.TAG,recommendLsit.get(position));
+                    getActivity().startActivity(i);
                 }
 
             }
@@ -157,7 +160,9 @@ public class CardTagActivityFragment extends Fragment implements PullToRefreshBa
                     getActivity().setResult(getActivity().RESULT_OK, intent);
                     getActivity().finish();
                 } else {
-                    // TODO: 2016/5/31 社区跳转点击在此处理
+                    Intent i = new Intent(getActivity(),PostsListByTagActivity.class);
+                    i.putExtra(Constant.TAG,hotList.get(position));
+                    getActivity().startActivity(i);
                 }
             }
         });
@@ -170,7 +175,9 @@ public class CardTagActivityFragment extends Fragment implements PullToRefreshBa
                     getActivity().setResult(getActivity().RESULT_OK, intent);
                     getActivity().finish();
                 } else {
-                    // TODO: 2016/5/31 社区跳转点击在此处理
+                    Intent i = new Intent(getActivity(),PostsListByTagActivity.class);
+                    i.putExtra(Constant.TAG,newList.get(position-mListview.getHeaderViewsCount()));
+                    getActivity().startActivity(i);
                 }
             }
         });

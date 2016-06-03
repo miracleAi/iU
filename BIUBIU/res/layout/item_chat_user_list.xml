@@ -8,9 +8,9 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="61dp"
-        android:orientation="horizontal"
+        android:background="@drawable/item_user_list_bg"
         android:gravity="center_vertical"
-        android:background="@drawable/item_user_list_bg">
+        android:orientation="horizontal">
 
         <RelativeLayout
             android:id="@+id/userHead_chat_user_list_rl"
@@ -30,8 +30,7 @@
         <RelativeLayout
             android:layout_width="183dp"
             android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            >
+            android:layout_centerVertical="true">
 
             <TextView
                 android:id="@+id/userName_chat_user_List_tv"
@@ -85,35 +84,35 @@
         <RelativeLayout
             android:id="@+id/grab_layout"
             android:layout_width="0dp"
-            android:layout_weight="1"
             android:layout_height="match_parent"
             android:layout_marginRight="8dp"
+            android:layout_weight="1"
             android:visibility="visible">
 
 
-                <TextView
-                    android:id="@+id/accept_textview"
-                    android:layout_width="44dp"
-                    android:layout_height="24dp"
-                    android:background="@drawable/accept_bg"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:gravity="center"
-                    android:text="@string/accept"
-                    android:textColor="@android:color/white"
-                    android:textSize="11sp" />
+            <TextView
+                android:id="@+id/accept_textview"
+                android:layout_width="44dp"
+                android:layout_height="24dp"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:background="@drawable/accept_bg"
+                android:gravity="center"
+                android:text="@string/accept"
+                android:textColor="@android:color/white"
+                android:textSize="11sp" />
 
-                <TextView
-                    android:id="@+id/give_u_textview"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/accept_textview"
-                    android:layout_alignRight="@+id/accept_textview"
-                    android:layout_marginTop="3dp"
-                    android:layout_gravity="right"
-                    android:textSize="9sp"
-                    android:textColor="#b0b0b0"
-                    android:visibility="gone"/>
+            <TextView
+                android:id="@+id/give_u_textview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignRight="@+id/accept_textview"
+                android:layout_below="@+id/accept_textview"
+                android:layout_gravity="right"
+                android:layout_marginTop="3dp"
+                android:textColor="#b0b0b0"
+                android:textSize="9sp"
+                android:visibility="gone" />
         </RelativeLayout>
     </LinearLayout>
 
