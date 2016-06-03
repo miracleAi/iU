@@ -19,6 +19,18 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:scaleType="centerInside" />
+        <Button
+            android:id="@+id/new_msg"
+            android:layout_width="wrap_content"
+            android:layout_height="10dp"
+            android:textColor="@color/white"
+            android:textSize="8sp"
+            android:gravity="center"
+            android:text="1"
+            android:background="@drawable/new_msg_btn"
+            android:layout_alignLeft="@+id/left_image"
+            android:layout_alignTop="@+id/left_image"
+            />
     </RelativeLayout>
 
     <TextView

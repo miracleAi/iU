@@ -229,7 +229,10 @@ public class HttpContants {
      */
     public static final String COMMENT_DELETECOMMENT = HTTP_COMMUNITY_ADDRESS + "app/community/comment/deleteComment";
     /**
-     * 获取社区biu列表
+     * 获取全局通知
+     */
+    public static final String GET_ALL_STATUS = HTTP_COMMUNITY_ADDRESS + "app/overall/getStatus";
+     /* 获取社区biu列表
      */
     public static final String COMBIU_GETCOMBIULIST = HTTP_COMMUNITY_ADDRESS + "app/community/combiu/getComBiuList";
     /**

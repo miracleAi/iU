@@ -71,6 +71,7 @@ public class MenuRightFragment extends EaseConversationListFragment implements F
     private static final int DELETE_CHAT = 2;
     private static final int TO_REGISTER = TO_LOGIN + 1;
     private static final int TO_CHATPAGE = TO_REGISTER + 1;
+    private int newMsgCount = 0;
     private static final int TO_BIU_PAGE = TO_CHATPAGE + 1;
 
     @Override
@@ -168,7 +169,7 @@ public class MenuRightFragment extends EaseConversationListFragment implements F
 
             }
         });
-
+        titleBar.setLeftImageResource(R.drawable.mes_btn_left);
         titleBar.setLeftLayoutClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -204,6 +205,22 @@ public class MenuRightFragment extends EaseConversationListFragment implements F
             }
         });
         judgeVisibleGone();
+    }
+
+    public void updateNewMsg(int num){
+        newMsgCount = num;
+        judgeVisibleGone();
+        String countStr = "";
+        if(num >0){
+            if(num > 99){
+                countStr = num%100+"+";
+            }else{
+                countStr = num + "";
+            }
+            titleBar.setNewMsgCount(countStr);
+        }else{
+            titleBar.setNewMsgGone();
+        }
     }
 
     /**
@@ -414,6 +431,11 @@ public class MenuRightFragment extends EaseConversationListFragment implements F
             case TO_FRIENDS:
                 refresh();
                 break;
+            case TO_BIU_PAGE:
+                newMsgCount = 0;
+                titleBar.setNewMsgGone();
+                judgeVisibleGone();
+                break;
             default:
                 break;
         }
@@ -521,7 +543,7 @@ public class MenuRightFragment extends EaseConversationListFragment implements F
 //	};
     private boolean showUnread() {
         int unread = EMClient.getInstance().chatManager().getUnreadMsgsCount();
-        if (unread > 0) {
+        if ((unread + newMsgCount) > 0) {
             return true;
         }
         return false;

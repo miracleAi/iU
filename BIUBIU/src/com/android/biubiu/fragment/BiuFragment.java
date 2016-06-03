@@ -199,18 +199,18 @@ public class BiuFragment extends Fragment implements PushInterface, FragmentIndi
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
-            if (CommonUtils.isAppOnForeground(getActivity())) {
+           /* if (CommonUtils.isAppOnForeground(getActivity())) {
                 SharePreferanceUtils.getInstance().putShared(getActivity(), SharePreferanceUtils.EXCHANGE_FROUNT, false);
-               /* if (!LoginUtils.isLogin(getActivity())) {
+               *//* if (!LoginUtils.isLogin(getActivity())) {
                     clearView();
-                }*/
+                }*//*
             } else {
                 SharePreferanceUtils.getInstance().putShared(getActivity(), SharePreferanceUtils.EXCHANGE_FROUNT, true);
-               /* clearView();
+               *//* clearView();
                 biuDao.deleteAll();
                 isBiuLoading = false;
-                isBiuLoaded = false;*/
-            }
+                isBiuLoaded = false;*//*
+            }*/
             if (!LoginUtils.isLogin(getActivity())) {
                 clearView();
             }

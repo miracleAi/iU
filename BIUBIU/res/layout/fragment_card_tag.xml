@@ -63,10 +63,10 @@
 
             <Button
                 android:id="@+id/cancel_btn"
-                android:layout_width="13dp"
-                android:layout_height="13dp"
+                android:layout_width="14dp"
+                android:layout_height="14dp"
                 android:layout_marginLeft="5dp"
-                android:background="@drawable/biu_ago_icon_sex_boy" />
+                android:background="@drawable/huati_close" />
         </LinearLayout>
     </RelativeLayout>
 

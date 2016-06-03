@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.android.biubiu.BaseFragment;
+import com.android.biubiu.MainActivity;
 import com.android.biubiu.common.Constant;
 import com.android.biubiu.community.CardTagActivity;
 import com.android.biubiu.community.CommNotifyActivity;
@@ -39,6 +40,8 @@ public class DiscoveryFragment extends BaseFragment implements FragmentIndicator
     private TabPageIndicator mIndicator;
     private ViewPager mViewPager;
     private List<PostsFragment> mFragments = new ArrayList<PostsFragment>();
+
+    private int newMsgCount = 0;
     public DiscoveryFragment() {
     }
 
@@ -58,6 +61,9 @@ public class DiscoveryFragment extends BaseFragment implements FragmentIndicator
             public void onClick(View v) {
                 Intent i = new Intent(getActivity(), CommNotifyActivity.class);
                 startActivityForResult(i,TO_NOTIFY_PAGE);
+                newMsgCount = 0;
+                judgeTab();
+                mTopTitle.setLeftImage(R.drawable.biu_btn_activity_nor);
             }
         });
 
@@ -140,6 +146,22 @@ public class DiscoveryFragment extends BaseFragment implements FragmentIndicator
         @Override
         public int getCount() {
             return CONTENT.length;
+        }
+    }
+    public void updateNotify(int num){
+        newMsgCount = num;
+        judgeTab();
+        if(num > 0){
+            mTopTitle.setLeftImage(R.drawable.biu_btn_activity_light);
+        }else{
+            mTopTitle.setLeftImage(R.drawable.biu_btn_activity_nor);
+        }
+    }
+    public void judgeTab(){
+        if(newMsgCount > 0){
+            ((MainActivity)getActivity()).setDisUnReadVisible(true);
+        }else{
+            ((MainActivity)getActivity()).setDisUnReadVisible(false);
         }
     }
 }
