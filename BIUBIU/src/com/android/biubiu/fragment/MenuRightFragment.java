@@ -173,15 +173,6 @@ public class MenuRightFragment extends EaseConversationListFragment implements F
         titleBar.setLeftLayoutClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                newMsgCount = 0;
-                titleBar.setNewMsgGone();
-                judgeVisibleGone();
-            }
-        });
-
-        titleBar.setLeftLayoutClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
                 Intent i = new Intent(getActivity(), CommunityBiuListActivity.class);
                 startActivityForResult(i,TO_BIU_PAGE);
             }
@@ -439,6 +430,11 @@ public class MenuRightFragment extends EaseConversationListFragment implements F
                 break;
             case TO_FRIENDS:
                 refresh();
+                break;
+            case TO_BIU_PAGE:
+                newMsgCount = 0;
+                titleBar.setNewMsgGone();
+                judgeVisibleGone();
                 break;
             default:
                 break;
