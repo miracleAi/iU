@@ -247,4 +247,13 @@ public class HttpContants {
      * 清空社区biu我的人
      */
     public static final String COMBIU_DELETECOMBIU = HTTP_COMMUNITY_ADDRESS + "app/community/combiu/deleteComBiu";
+    /**
+     * 请求通知列表
+     */
+    public static final String NOTIFY_GETNOTIFYLIST = HTTP_COMMUNITY_ADDRESS + "app/community/notify/getNotifyList";
+    /**
+     * 清空通知
+     */
+    public static final String NOTIFY_DELETNOTIFIES = HTTP_COMMUNITY_ADDRESS + "app/community/notify/deletNotifies";
+
 }

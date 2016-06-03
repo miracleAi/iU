@@ -310,4 +310,7 @@
     <string name="community_biu_title">biu我的人</string>
     <string name="clear">清空</string>
     <string name="comm_biu_null">亲，还没有人biu过你呢</string>
+    <string name="title_activity_comm_notify">CommNotifyActivity</string>
+    <string name="comm_notify">通知</string>
+    <string name="comm_notify_null">还没有通知呢！</string>
 </resources>

@@ -9,7 +9,7 @@
     <uses-sdk
         android:minSdkVersion="17"
         android:targetSdkVersion="21" />
-
+    <permission android:name="cc.imeetu.iu.PUBLISH_POST_ACTION_PERMISSION" />
     <!-- oss文件上传相关权限 -->
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -76,6 +76,8 @@
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
+    <uses-permission android:name="cc.imeetu.iu.PUBLISH_POST_ACTION_PERMISSION" />
 
     <application
         android:name="com.android.biubiu.myapplication.BiubiuApplication"
@@ -594,7 +596,11 @@
         <activity
             android:name="com.android.biubiu.community.CommunityBiuListActivity"
             android:label="@string/title_activity_community_biu_list"
-            android:theme="@android:style/Theme.NoTitleBar"/>
+            android:theme="@android:style/Theme.NoTitleBar" />
+        <activity
+            android:name="com.android.biubiu.community.CommNotifyActivity"
+            android:label="@string/title_activity_comm_notify"
+            android:theme="@android:style/Theme.NoTitleBar" />
     </application>
 
 </manifest>

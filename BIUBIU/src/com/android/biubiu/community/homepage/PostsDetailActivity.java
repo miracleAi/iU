@@ -82,7 +82,7 @@ public class PostsDetailActivity extends Activity implements AdapterView.OnItemC
     private Comment mReplayComment;
     private int mUserCode;
 
-    private boolean mFromTagPostListPage;
+    private boolean mFromTagPostListPage,mFromCommNotifyPage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -239,6 +239,7 @@ public class PostsDetailActivity extends Activity implements AdapterView.OnItemC
         mUserCode = Integer.parseInt(SharePreferanceUtils.getInstance().getUserCode(this, SharePreferanceUtils.USER_CODE, ""));
         mSchoolDao = new SchoolDao();
         mFromTagPostListPage = getIntent().getBooleanExtra(Constant.FROM_POSTLIST_BY_TAG, false);
+        mFromCommNotifyPage = getIntent().getBooleanExtra(Constant.FROM_COMM_NOTIFY_PAGE,false);
         mPosts = (Posts) getIntent().getSerializableExtra(Constant.POSTS);
         if (mPosts != null) {
             mPostsId = mPosts.getPostId();
@@ -279,6 +280,10 @@ public class PostsDetailActivity extends Activity implements AdapterView.OnItemC
                 PostDetailData data = response.getData();
                 if (!TextUtils.isEmpty(data.getToken())) {
                     SharePreferanceUtils.getInstance().putShared(PostsDetailActivity.this, SharePreferanceUtils.TOKEN, data.getToken());
+                }
+                if(mFromCommNotifyPage){
+                    mPosts = data.getPost();
+                    initHeaderUi();
                 }
                 mHasNext = data.getHasNext();
                 List<Comment> comment = data.getCommentList();

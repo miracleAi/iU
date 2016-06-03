@@ -1,7 +1,10 @@
 package com.android.biubiu.fragment;
 
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -15,6 +18,7 @@ import com.android.biubiu.BaseFragment;
 import com.android.biubiu.MainActivity;
 import com.android.biubiu.common.Constant;
 import com.android.biubiu.community.CardTagActivity;
+import com.android.biubiu.community.CommNotifyActivity;
 import com.android.biubiu.community.homepage.PostsFragment;
 import com.android.biubiu.community.PublishHomeActivity;
 import com.android.biubiu.component.indicator.FragmentIndicator;
@@ -42,9 +46,18 @@ public class DiscoveryFragment extends BaseFragment implements FragmentIndicator
     private List<PostsFragment> mFragments = new ArrayList<PostsFragment>();
 
     private int newMsgCount = 0;
+    private boolean mNeedRefresh;
+    private BroadcastReceiver mReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (intent.getAction().equals(Constant.PUBLISH_POST_ACTION)) {
+                mNeedRefresh = true;
+            }
+        }
+    };
+
     public DiscoveryFragment() {
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -68,6 +81,8 @@ public class DiscoveryFragment extends BaseFragment implements FragmentIndicator
         mTopTitle.setLeftOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Intent i = new Intent(getActivity(), CommNotifyActivity.class);
+                startActivityForResult(i, TO_NOTIFY_PAGE);
                 newMsgCount = 0;
                 judgeTab();
                 mTopTitle.setLeftImage(R.drawable.biu_btn_activity_nor);
@@ -87,7 +102,7 @@ public class DiscoveryFragment extends BaseFragment implements FragmentIndicator
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(getActivity(), CardTagActivity.class);
-                i.putExtra(Constant.TO_TAG_TYPE,Constant.TAG_TYPE_SELSET);
+                i.putExtra(Constant.TO_TAG_TYPE, Constant.TAG_TYPE_SELSET);
                 startActivityForResult(i, TO_PUBLISH_PAGE);
             }
         });
@@ -103,17 +118,17 @@ public class DiscoveryFragment extends BaseFragment implements FragmentIndicator
 
         PostsFragment recommand = new PostsFragment();
         Bundle b = new Bundle();
-        b.putInt("type",1);
+        b.putInt("type", 1);
         recommand.setArguments(b);
 
         PostsFragment refresh = new PostsFragment();
         Bundle b2 = new Bundle();
-        b2.putInt("type",0);
+        b2.putInt("type", 0);
         refresh.setArguments(b2);
 
         PostsFragment biubiu = new PostsFragment();
         Bundle b3 = new Bundle();
-        b3.putInt("type",2);
+        b3.putInt("type", 2);
         biubiu.setArguments(b3);
 
         mFragments.add(recommand);
@@ -123,6 +138,10 @@ public class DiscoveryFragment extends BaseFragment implements FragmentIndicator
         DiscoveryAdapter adapter = new DiscoveryAdapter(getFragmentManager());
         mViewPager.setAdapter(adapter);
         mIndicator.setViewPager(mViewPager);
+
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(Constant.PUBLISH_POST_ACTION);
+        getActivity().registerReceiver(mReceiver, filter);
     }
 
     @Override
@@ -155,20 +174,42 @@ public class DiscoveryFragment extends BaseFragment implements FragmentIndicator
             return CONTENT.length;
         }
     }
-    public void updateNotify(int num){
+
+    public void updateNotify(int num) {
         newMsgCount = num;
         judgeTab();
-        if(num > 0){
+        if (num > 0) {
             mTopTitle.setLeftImage(R.drawable.biu_btn_activity_light);
-        }else{
+        } else {
             mTopTitle.setLeftImage(R.drawable.biu_btn_activity_nor);
         }
     }
-    public void judgeTab(){
-        if(newMsgCount > 0){
-            ((MainActivity)getActivity()).setDisUnReadVisible(true);
-        }else{
-            ((MainActivity)getActivity()).setDisUnReadVisible(false);
+
+    public void judgeTab() {
+        if (newMsgCount > 0) {
+            ((MainActivity) getActivity()).setDisUnReadVisible(true);
+        } else {
+            ((MainActivity) getActivity()).setDisUnReadVisible(false);
         }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (mNeedRefresh) {
+            if (mViewPager.getCurrentItem() == 1) {
+                mFragments.get(1).refreshList();
+            } else {
+                mViewPager.setCurrentItem(1);
+                mFragments.get(1).refreshList();
+            }
+            mNeedRefresh = false;
+        }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        getActivity().unregisterReceiver(mReceiver);
     }
 }

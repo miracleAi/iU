@@ -33,11 +33,15 @@ public class Constant extends EaseConstant {
     public static final String POSTS = "posts";
     public static final String TAG = "tag";
     public static final String FROM_POSTLIST_BY_TAG = "from_postlist_by_tag";
+    public static final String FROM_COMM_NOTIFY_PAGE = "from_comm_notify_page";
     public static final String POSTS_ID = "posts_id";
     public static final int EXIT_APP_SUCCESS = 10005;
 
     public static final int DELETE_RESULT_CODE = EXIT_APP_SUCCESS + 1;
     public static final int PRAISE_RESULT_CODE = DELETE_RESULT_CODE + 1;
+
+    public static final String PUBLISH_POST_ACTION = "publish_post_action";
+    public static final String PUBLISH_POST_ACTION_PERMISSION = "cc.imeetu.iu.PUBLISH_POST_ACTION_PERMISSION";
 
     public static int screenWidth, screenHeight;
 }
