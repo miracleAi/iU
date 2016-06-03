@@ -82,7 +82,8 @@ public class PostsDetailActivity extends Activity implements AdapterView.OnItemC
     private Comment mReplayComment;
     private int mUserCode;
 
-    private boolean mFromTagPostListPage,mFromCommNotifyPage;
+    private boolean mFromTagPostListPage, mFromCommNotifyPage;
+    private int mTargetW;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -236,10 +237,11 @@ public class PostsDetailActivity extends Activity implements AdapterView.OnItemC
     }
 
     private void initData() {
+        mTargetW = Constant.screenWidth - getResources().getDimensionPixelSize(R.dimen.posts_list_margin);
         mUserCode = Integer.parseInt(SharePreferanceUtils.getInstance().getUserCode(this, SharePreferanceUtils.USER_CODE, ""));
         mSchoolDao = new SchoolDao();
         mFromTagPostListPage = getIntent().getBooleanExtra(Constant.FROM_POSTLIST_BY_TAG, false);
-        mFromCommNotifyPage = getIntent().getBooleanExtra(Constant.FROM_COMM_NOTIFY_PAGE,false);
+        mFromCommNotifyPage = getIntent().getBooleanExtra(Constant.FROM_COMM_NOTIFY_PAGE, false);
         mPosts = (Posts) getIntent().getSerializableExtra(Constant.POSTS);
         if (mPosts != null) {
             mPostsId = mPosts.getPostId();
@@ -274,14 +276,14 @@ public class PostsDetailActivity extends Activity implements AdapterView.OnItemC
                 LogUtil.d(TAG, "getPostsDetail--" + s);
                 Data<PostDetailData> response = CommonUtils.parseJsonToObj(s, new TypeToken<Data<PostDetailData>>() {
                 });
-                if(!CommonUtils.unifyResponse(Integer.parseInt(response.getState()),PostsDetailActivity.this)){
+                if (!CommonUtils.unifyResponse(Integer.parseInt(response.getState()), PostsDetailActivity.this)) {
                     return;
                 }
                 PostDetailData data = response.getData();
                 if (!TextUtils.isEmpty(data.getToken())) {
                     SharePreferanceUtils.getInstance().putShared(PostsDetailActivity.this, SharePreferanceUtils.TOKEN, data.getToken());
                 }
-                if(mFromCommNotifyPage){
+                if (mFromCommNotifyPage) {
                     mPosts = data.getPost();
                     initHeaderUi();
                 }
@@ -372,13 +374,12 @@ public class PostsDetailActivity extends Activity implements AdapterView.OnItemC
                 Img img = imgs.get(0);
                 ImageView iv = new ImageView(this);
                 if (img.getW() != 0 && img.getH() != 0) {
-                    x.image().bind(iv, packageUrl(getResources().getDimensionPixelSize(R.dimen.post_list_one_pic), img.getUrl()));
+                    x.image().bind(iv, packageUrl(mTargetW, img.getUrl()));
                 } else {
                     x.image().bind(iv, img.getUrl());
                 }
                 iv.setScaleType(ImageView.ScaleType.CENTER_CROP);
-                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(getResources().getDimensionPixelSize(R.dimen.post_list_one_pic),
-                        getResources().getDimensionPixelSize(R.dimen.post_list_one_pic));
+                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(mTargetW, mTargetW);
                 mImgLayout.addView(iv, params);
                 iv.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -391,21 +392,23 @@ public class PostsDetailActivity extends Activity implements AdapterView.OnItemC
                 if (rows == 0) {//只有一行
                     LinearLayout rowLayout = new LinearLayout(this);
                     rowLayout.setOrientation(LinearLayout.HORIZONTAL);
+                    int targetW = (Constant.screenWidth - getResources().getDimensionPixelSize(R.dimen.posts_list_margin_two)) / 2;
                     for (int i = 0; i < 2; i++) {
-                        addImgView(i, imgs, i != 0, rowLayout, getResources().getDimensionPixelSize(R.dimen.post_list_two_pic));
+                        addImgView(i, imgs, i != 0, rowLayout, targetW);
                     }
-                    LinearLayout.LayoutParams rowParam = new LinearLayout.LayoutParams(getResources().getDimensionPixelSize(R.dimen.post_list_one_pic),
+                    LinearLayout.LayoutParams rowParam = new LinearLayout.LayoutParams(mTargetW,
                             getResources().getDimensionPixelSize(R.dimen.post_list_two_pic));
                     mImgLayout.addView(rowLayout, rowParam);
                 } else {//多行
+                    int targetW = (Constant.screenWidth - getResources().getDimensionPixelSize(R.dimen.posts_list_margin_three)) / 3;
                     if (size % 3 == 0) {//正好是3的倍数
                         for (int i = 0; i < rows; i++) {
                             LinearLayout rowLayout = new LinearLayout(this);
                             rowLayout.setOrientation(LinearLayout.HORIZONTAL);
                             for (int j = i * 3; j < (i + 1) * 3; j++) {
-                                addImgView(j, imgs, j != i * 3, rowLayout, getResources().getDimensionPixelSize(R.dimen.post_list_three_pic));
+                                addImgView(j, imgs, j != i * 3, rowLayout, targetW);
                             }
-                            LinearLayout.LayoutParams rowParam = new LinearLayout.LayoutParams(getResources().getDimensionPixelSize(R.dimen.post_list_one_pic),
+                            LinearLayout.LayoutParams rowParam = new LinearLayout.LayoutParams(mTargetW,
                                     getResources().getDimensionPixelSize(R.dimen.post_list_three_pic));
                             rowParam.setMargins(0, getResources().getDimensionPixelSize(R.dimen.pic_margin), 0, 0);
                             mImgLayout.addView(rowLayout, rowParam);
@@ -417,14 +420,14 @@ public class PostsDetailActivity extends Activity implements AdapterView.OnItemC
                             rowLayout.setOrientation(LinearLayout.HORIZONTAL);
                             if (i == rows - 1) {
                                 for (int j = i * 3; j < (rows - 1) * 3 + size % 3; j++) {
-                                    addImgView(j, imgs, j != i * 3, rowLayout, getResources().getDimensionPixelSize(R.dimen.post_list_three_pic));
+                                    addImgView(j, imgs, j != i * 3, rowLayout, targetW);
                                 }
                             } else {
                                 for (int j = i * 3; j < (i + 1) * 3; j++) {
-                                    addImgView(j, imgs, j != i * 3, rowLayout, getResources().getDimensionPixelSize(R.dimen.post_list_three_pic));
+                                    addImgView(j, imgs, j != i * 3, rowLayout, targetW);
                                 }
                             }
-                            LinearLayout.LayoutParams rowParam = new LinearLayout.LayoutParams(getResources().getDimensionPixelSize(R.dimen.post_list_one_pic),
+                            LinearLayout.LayoutParams rowParam = new LinearLayout.LayoutParams(mTargetW,
                                     getResources().getDimensionPixelSize(R.dimen.post_list_three_pic));
                             rowParam.setMargins(0, getResources().getDimensionPixelSize(R.dimen.pic_margin), 0, 0);
                             mImgLayout.addView(rowLayout, rowParam);
@@ -743,7 +746,7 @@ public class PostsDetailActivity extends Activity implements AdapterView.OnItemC
 
     @Override
     public void whenDelete(Comment comment) {
-        if(mData.contains(comment)){
+        if (mData.contains(comment)) {
             mData.remove(comment);
             mCommentAdapter.notifyDataSetChanged();
         }

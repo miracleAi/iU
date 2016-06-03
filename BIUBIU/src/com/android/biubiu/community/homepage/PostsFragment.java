@@ -108,9 +108,9 @@ public class PostsFragment extends BaseFragment implements PullToRefreshBase.OnR
 
         mType = getArguments().getInt("type", 0);
         getData(0);
-//        mThreadPool = Executors.newFixedThreadPool(5);
-//        mService = Executors.newSingleThreadScheduledExecutor();
-//        mFuture = mService.scheduleAtFixedRate(new Task(), 1, 5, TimeUnit.SECONDS);
+        mThreadPool = Executors.newFixedThreadPool(5);
+        mService = Executors.newSingleThreadScheduledExecutor();
+        mFuture = mService.scheduleAtFixedRate(new Task(), 1, Constant.BANNER_ANIM_INTERVAL, TimeUnit.SECONDS);
         mDetector = new GestureDetector(getActivity(), new GestureDetector.OnGestureListener() {
 
             public boolean onDown(MotionEvent e) {
@@ -121,11 +121,11 @@ public class PostsFragment extends BaseFragment implements PullToRefreshBase.OnR
             public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
                 if (mFlipper.getChildCount() > 1) {
                     if (e1.getX() - e2.getX() > 100) {//左滑
-//                    mFuture.cancel(true);
+                    mFuture.cancel(true);
                         slideToLeft();
                         return true;
                     } else if (e1.getX() - e2.getX() < -100) {//右滑
-//                    mFuture.cancel(true);
+                    mFuture.cancel(true);
                         slideToRight();
                         return true;
                     }
@@ -311,9 +311,9 @@ public class PostsFragment extends BaseFragment implements PullToRefreshBase.OnR
             }
 
             public void onAnimationEnd(Animation animation) {
-                /*if (mFuture.isCancelled()) {
-                    mFuture = mService.scheduleAtFixedRate(new Task(), 1, 5, TimeUnit.SECONDS);
-                }*/
+                if (mFuture.isCancelled()) {
+                    mFuture = mService.scheduleAtFixedRate(new Task(), 1, Constant.BANNER_ANIM_INTERVAL, TimeUnit.SECONDS);
+                }
 //                mBannerName.setText(((Banner) mFlipper.getCurrentView().getTag()).getTitle());
                 setIndicatorLine(mFlipper.getDisplayedChild());
             }
@@ -334,9 +334,9 @@ public class PostsFragment extends BaseFragment implements PullToRefreshBase.OnR
             }
 
             public void onAnimationEnd(Animation animation) {
-                /*if (mFuture.isCancelled()) {
-                    mFuture = mService.scheduleAtFixedRate(new Task(), 1, 5, TimeUnit.SECONDS);
-                }*/
+                if (mFuture.isCancelled()) {
+                    mFuture = mService.scheduleAtFixedRate(new Task(), 1, Constant.BANNER_ANIM_INTERVAL, TimeUnit.SECONDS);
+                }
 //                mBannerName.setText(((Banner) mFlipper.getCurrentView().getTag()).getTitle());
                 setIndicatorLine(mFlipper.getDisplayedChild());
             }
@@ -428,5 +428,15 @@ public class PostsFragment extends BaseFragment implements PullToRefreshBase.OnR
     public void refreshList() {
         onPullDownToRefresh(mPullToRefreshListview);
         mListview.setSelection(0);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
     }
 }

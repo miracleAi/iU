@@ -59,23 +59,26 @@ public class PostsAdapter extends BaseAdapter {
     private int mUserCode;
     private IRefreshUi mRefreshUi;
     private boolean mIsTagPostListPage;
+    private int mTargetW;
+
     public PostsAdapter(List<Posts> mData, Context mCon) {
         this.mData = mData;
         this.mCon = mCon;
         mInflater = LayoutInflater.from(mCon);
         schoolDao = new SchoolDao();
         mUserCode = Integer.parseInt(SharePreferanceUtils.getInstance().getUserCode(mCon, SharePreferanceUtils.USER_CODE, ""));
+        mTargetW = Constant.screenWidth - mCon.getResources().getDimensionPixelSize(R.dimen.posts_list_margin);
     }
 
     public interface IRefreshUi {
         void whenDelete(Posts posts);
     }
 
-    public void setIRefreshUi(IRefreshUi refreshUi){
+    public void setIRefreshUi(IRefreshUi refreshUi) {
         mRefreshUi = refreshUi;
     }
 
-    public void setIsTagPostListPage(boolean isTagPostListPage){
+    public void setIsTagPostListPage(boolean isTagPostListPage) {
         mIsTagPostListPage = isTagPostListPage;
     }
 
@@ -147,12 +150,12 @@ public class PostsAdapter extends BaseAdapter {
         if (posts.getTags() != null && posts.getTags().size() > 0) {
             vh.tag.setText(mCon.getResources().getString(R.string.tag, posts.getTags().get(0).getContent()));
         }
-        if(!mIsTagPostListPage){
+        if (!mIsTagPostListPage) {
             vh.tag.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent i = new Intent(mCon,PostsListByTagActivity.class);
-                    i.putExtra(Constant.TAG,posts.getTags().get(0));
+                    Intent i = new Intent(mCon, PostsListByTagActivity.class);
+                    i.putExtra(Constant.TAG, posts.getTags().get(0));
                     mCon.startActivity(i);
                 }
             });
@@ -197,14 +200,14 @@ public class PostsAdapter extends BaseAdapter {
             if (size == 1) {//只有一张图片
                 Img img = imgs.get(0);
                 ImageView iv = new ImageView(mCon);
+
                 if (img.getW() != 0 && img.getH() != 0) {
-                    x.image().bind(iv, packageUrl(img.getW(), img.getH(), mCon.getResources().getDimensionPixelSize(R.dimen.post_list_one_pic), img.getUrl()));
+                    x.image().bind(iv, packageUrl(img.getW(), img.getH(), mTargetW, img.getUrl()));
                 } else {
                     x.image().bind(iv, img.getUrl());
                 }
                 iv.setScaleType(ImageView.ScaleType.CENTER_CROP);
-                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(mCon.getResources().getDimensionPixelSize(R.dimen.post_list_one_pic),
-                        mCon.getResources().getDimensionPixelSize(R.dimen.post_list_one_pic));
+                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(mTargetW,mTargetW);
                 vh.imgLayout.addView(iv, params);
                 iv.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -217,21 +220,23 @@ public class PostsAdapter extends BaseAdapter {
                 if (rows == 0) {//只有一行
                     LinearLayout rowLayout = new LinearLayout(mCon);
                     rowLayout.setOrientation(LinearLayout.HORIZONTAL);
+                    int targetW = (Constant.screenWidth - mCon.getResources().getDimensionPixelSize(R.dimen.posts_list_margin_two)) / 2;
                     for (int i = 0; i < 2; i++) {
-                        addImgView(i, imgs, i != 0, rowLayout, mCon.getResources().getDimensionPixelSize(R.dimen.post_list_two_pic));
+                        addImgView(i, imgs, i != 0, rowLayout, targetW);
                     }
-                    LinearLayout.LayoutParams rowParam = new LinearLayout.LayoutParams(mCon.getResources().getDimensionPixelSize(R.dimen.post_list_one_pic),
+                    LinearLayout.LayoutParams rowParam = new LinearLayout.LayoutParams(mTargetW,
                             mCon.getResources().getDimensionPixelSize(R.dimen.post_list_two_pic));
                     vh.imgLayout.addView(rowLayout, rowParam);
                 } else {//多行
+                    int targetW = (Constant.screenWidth - mCon.getResources().getDimensionPixelSize(R.dimen.posts_list_margin_three)) / 3;
                     if (size % 3 == 0) {//正好是3的倍数
                         for (int i = 0; i < rows; i++) {
                             LinearLayout rowLayout = new LinearLayout(mCon);
                             rowLayout.setOrientation(LinearLayout.HORIZONTAL);
                             for (int j = i * 3; j < (i + 1) * 3; j++) {
-                                addImgView(j, imgs, j != i * 3, rowLayout, mCon.getResources().getDimensionPixelSize(R.dimen.post_list_three_pic));
+                                addImgView(j, imgs, j != i * 3, rowLayout, targetW);
                             }
-                            LinearLayout.LayoutParams rowParam = new LinearLayout.LayoutParams(mCon.getResources().getDimensionPixelSize(R.dimen.post_list_one_pic),
+                            LinearLayout.LayoutParams rowParam = new LinearLayout.LayoutParams(mTargetW,
                                     mCon.getResources().getDimensionPixelSize(R.dimen.post_list_three_pic));
                             rowParam.setMargins(0, mCon.getResources().getDimensionPixelSize(R.dimen.pic_margin), 0, 0);
                             vh.imgLayout.addView(rowLayout, rowParam);
@@ -243,14 +248,14 @@ public class PostsAdapter extends BaseAdapter {
                             rowLayout.setOrientation(LinearLayout.HORIZONTAL);
                             if (i == rows - 1) {
                                 for (int j = i * 3; j < (rows - 1) * 3 + size % 3; j++) {
-                                    addImgView(j, imgs, j != i * 3, rowLayout, mCon.getResources().getDimensionPixelSize(R.dimen.post_list_three_pic));
+                                    addImgView(j, imgs, j != i * 3, rowLayout, targetW);
                                 }
                             } else {
                                 for (int j = i * 3; j < (i + 1) * 3; j++) {
-                                    addImgView(j, imgs, j != i * 3, rowLayout, mCon.getResources().getDimensionPixelSize(R.dimen.post_list_three_pic));
+                                    addImgView(j, imgs, j != i * 3, rowLayout, targetW);
                                 }
                             }
-                            LinearLayout.LayoutParams rowParam = new LinearLayout.LayoutParams(mCon.getResources().getDimensionPixelSize(R.dimen.post_list_one_pic),
+                            LinearLayout.LayoutParams rowParam = new LinearLayout.LayoutParams(mTargetW,
                                     mCon.getResources().getDimensionPixelSize(R.dimen.post_list_three_pic));
                             rowParam.setMargins(0, mCon.getResources().getDimensionPixelSize(R.dimen.pic_margin), 0, 0);
                             vh.imgLayout.addView(rowLayout, rowParam);

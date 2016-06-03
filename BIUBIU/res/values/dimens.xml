@@ -20,4 +20,7 @@
     <dimen name="indicator_width">10dip</dimen>
     <dimen name="indicator_height">1dip</dimen>
     <dimen name="indicator_line_margin">4dip</dimen>
+    <dimen name="posts_list_margin">20dp</dimen>
+    <dimen name="posts_list_margin_two">25dp</dimen>
+    <dimen name="posts_list_margin_three">30dp</dimen>
 </resources>
