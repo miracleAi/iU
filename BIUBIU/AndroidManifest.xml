@@ -594,6 +594,10 @@
         <activity
             android:name="com.android.biubiu.community.CommunityBiuListActivity"
             android:label="@string/title_activity_community_biu_list"
+            android:theme="@android:style/Theme.NoTitleBar" />
+        <activity
+            android:name="com.android.biubiu.community.CommNotifyActivity"
+            android:label="@string/title_activity_comm_notify"
             android:theme="@android:style/Theme.NoTitleBar"/>
     </application>
 

@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import com.android.biubiu.BaseFragment;
 import com.android.biubiu.common.Constant;
 import com.android.biubiu.community.CardTagActivity;
+import com.android.biubiu.community.CommNotifyActivity;
 import com.android.biubiu.community.homepage.PostsFragment;
 import com.android.biubiu.community.PublishHomeActivity;
 import com.android.biubiu.component.indicator.FragmentIndicator;
@@ -55,7 +56,8 @@ public class DiscoveryFragment extends BaseFragment implements FragmentIndicator
         mTopTitle.setLeftOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Intent i = new Intent(getActivity(), CommNotifyActivity.class);
+                startActivityForResult(i,TO_NOTIFY_PAGE);
             }
         });
 

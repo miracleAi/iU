@@ -9,13 +9,16 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.android.biubiu.activity.biu.MyPagerActivity;
-import com.android.biubiu.bean.UserFriends;
+import com.android.biubiu.BaseActivity;
 import com.android.biubiu.bean.base.Data;
 import com.android.biubiu.bean.community.CommBiuBean;
 import com.android.biubiu.bean.community.CommBiuListData;
+import com.android.biubiu.bean.community.CommNotify;
+import com.android.biubiu.bean.community.CommNotifyData;
 import com.android.biubiu.bean.community.PostDetailData;
 import com.android.biubiu.bean.community.SimpleRespData;
+import com.android.biubiu.common.Constant;
+import com.android.biubiu.community.homepage.PostsDetailActivity;
 import com.android.biubiu.component.title.TopTitleView;
 import com.android.biubiu.utils.CommonUtils;
 import com.android.biubiu.utils.HttpContants;
@@ -35,20 +38,20 @@ import java.util.List;
 
 import cc.imeetu.iu.R;
 
-public class CommunityBiuListActivity extends Activity implements PullToRefreshBase.OnRefreshListener2<ListView> {
+public class CommNotifyActivity extends BaseActivity implements PullToRefreshBase.OnRefreshListener2<ListView> {
     private TopTitleView mTopTitle;
 
     private int mHasNext;
 
     private PullToRefreshListView mPullToRefreshListview;
     private ListView mListview;
-    private List<CommBiuBean> mData = new ArrayList<CommBiuBean>();
-    private CommBiuListAdapter mAdapter;
+    private List<CommNotify> mData = new ArrayList<CommNotify>();
+    private CommNotifyAdapter mAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_community_biu_list);
+        setContentView(R.layout.activity_comm_notify);
         initView();
         initData();
     }
@@ -77,10 +80,11 @@ public class CommunityBiuListActivity extends Activity implements PullToRefreshB
         mListview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                CommBiuBean item = mData.get(position - mListview.getHeaderViewsCount());
+                CommNotify item = mData.get(position - mListview.getHeaderViewsCount());
                 if (item != null) {
-                    Intent intent = new Intent(CommunityBiuListActivity.this, MyPagerActivity.class);
-                    intent.putExtra("userCode", String.valueOf(item.getUserCode()));
+                    Intent intent = new Intent(CommNotifyActivity.this, PostsDetailActivity.class);
+                    intent.putExtra(Constant.POSTS_ID, item.getPostId());
+                    intent.putExtra(Constant.FROM_COMM_NOTIFY_PAGE,true);
                     startActivity(intent);
                 }
             }
@@ -88,7 +92,7 @@ public class CommunityBiuListActivity extends Activity implements PullToRefreshB
     }
 
     private void clear() {
-        RequestParams params = new RequestParams(HttpContants.COMBIU_DELETECOMBIU);
+        RequestParams params = new RequestParams(HttpContants.NOTIFY_DELETNOTIFIES);
         JSONObject requestObject = new JSONObject();
         try {
             requestObject.put("device_code", SharePreferanceUtils.getInstance().getDeviceId(this, SharePreferanceUtils.DEVICE_ID, ""));
@@ -102,12 +106,12 @@ public class CommunityBiuListActivity extends Activity implements PullToRefreshB
             public void onSuccess(String s) {
                 Data<SimpleRespData> response = CommonUtils.parseJsonToObj(s, new TypeToken<Data<SimpleRespData>>() {
                 });
-                if (!CommonUtils.unifyResponse(Integer.parseInt(response.getState()), CommunityBiuListActivity.this)) {
+                if (!CommonUtils.unifyResponse(Integer.parseInt(response.getState()), CommNotifyActivity.this)) {
                     return;
                 }
                 SimpleRespData data = response.getData();
                 if (!TextUtils.isEmpty(data.getToken())) {
-                    SharePreferanceUtils.getInstance().putShared(CommunityBiuListActivity.this, SharePreferanceUtils.TOKEN, data.getToken());
+                    SharePreferanceUtils.getInstance().putShared(CommNotifyActivity.this, SharePreferanceUtils.TOKEN, data.getToken());
                 }
                 mData.clear();
                 mAdapter.notifyDataSetChanged();
@@ -132,13 +136,13 @@ public class CommunityBiuListActivity extends Activity implements PullToRefreshB
     }
 
     private void initData() {
-        mAdapter = new CommBiuListAdapter(mData, this);
+        mAdapter = new CommNotifyAdapter(mData, this);
         mListview.setAdapter(mAdapter);
-        getBiuList(0);
+        getNotifyList(0);
     }
 
-    private void getBiuList(final long time) {
-        RequestParams params = new RequestParams(HttpContants.COMBIU_GETCOMBIULIST);
+    private void getNotifyList(final long time) {
+        RequestParams params = new RequestParams(HttpContants.NOTIFY_GETNOTIFYLIST);
         JSONObject requestObject = new JSONObject();
         try {
             requestObject.put("device_code", SharePreferanceUtils.getInstance().getDeviceId(this, SharePreferanceUtils.DEVICE_ID, ""));
@@ -152,14 +156,14 @@ public class CommunityBiuListActivity extends Activity implements PullToRefreshB
             @Override
             public void onSuccess(String s) {
                 stopLoad();
-                Data<CommBiuListData> response = CommonUtils.parseJsonToObj(s, new TypeToken<Data<CommBiuListData>>() {
+                Data<CommNotifyData> response = CommonUtils.parseJsonToObj(s, new TypeToken<Data<CommNotifyData>>() {
                 });
-                if (!CommonUtils.unifyResponse(Integer.parseInt(response.getState()), CommunityBiuListActivity.this)) {
+                if (!CommonUtils.unifyResponse(Integer.parseInt(response.getState()), CommNotifyActivity.this)) {
                     return;
                 }
-                CommBiuListData data = response.getData();
+                CommNotifyData data = response.getData();
                 if (!TextUtils.isEmpty(data.getToken())) {
-                    SharePreferanceUtils.getInstance().putShared(CommunityBiuListActivity.this, SharePreferanceUtils.TOKEN, data.getToken());
+                    SharePreferanceUtils.getInstance().putShared(CommNotifyActivity.this, SharePreferanceUtils.TOKEN, data.getToken());
                 }
                 mHasNext = data.getHasNext();
                 if (time == 0) {
@@ -167,12 +171,12 @@ public class CommunityBiuListActivity extends Activity implements PullToRefreshB
                         mData.clear();
                     }
                 }
-                List<CommBiuBean> list = data.getBiuList();
+                List<CommNotify> list = data.getNotifies();
                 if (list != null && list.size() > 0) {
                     mData.addAll(list);
                     mAdapter.notifyDataSetChanged();
                 } else {
-                    Toast.makeText(CommunityBiuListActivity.this, getResources().getString(R.string.comm_biu_null), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(CommNotifyActivity.this, getResources().getString(R.string.comm_notify_null), Toast.LENGTH_SHORT).show();
                 }
 
             }
@@ -194,9 +198,15 @@ public class CommunityBiuListActivity extends Activity implements PullToRefreshB
         });
     }
 
+    private void stopLoad() {
+        if (mPullToRefreshListview.isRefreshing()) {
+            mPullToRefreshListview.onRefreshComplete();
+        }
+    }
+
     @Override
     public void onPullDownToRefresh(PullToRefreshBase<ListView> refreshView) {
-        getBiuList(0);
+        getNotifyList(0);
     }
 
     @Override
@@ -207,13 +217,7 @@ public class CommunityBiuListActivity extends Activity implements PullToRefreshB
             }
             stopLoad();
         } else {
-            getBiuList(mData.get(mData.size() - 1).getCreateAt());
-        }
-    }
-
-    private void stopLoad() {
-        if (mPullToRefreshListview.isRefreshing()) {
-            mPullToRefreshListview.onRefreshComplete();
+            getNotifyList(mData.get(mData.size() - 1).getCreateAt());
         }
     }
 }
