@@ -82,7 +82,13 @@
 
                <ScrollView
                    android:layout_width="match_parent"
-                   android:layout_height="wrap_content">
+                   android:layout_height="70dp"
+                   android:layout_marginTop="10dp"
+                   android:scrollbars="none">
+                   <HorizontalScrollView
+                       android:layout_width="match_parent"
+                       android:layout_height="70dp"
+                       android:scrollbars="none">
                    <LinearLayout
                        android:id="@+id/photo_scroll_layout"
                        android:layout_width="match_parent"
@@ -90,6 +96,7 @@
                        android:orientation="horizontal">
 
                    </LinearLayout>
+                   </HorizontalScrollView>
                </ScrollView>
 
                 <View

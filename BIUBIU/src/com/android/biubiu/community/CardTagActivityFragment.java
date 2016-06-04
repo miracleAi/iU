@@ -52,6 +52,7 @@ public class CardTagActivityFragment extends Fragment implements PullToRefreshBa
     private EditText searchEt;
     private LinearLayout searchTagLayout;
     private LinearLayout createTagLayout;
+    private TextView noTagTv;
     private ListView searchLv;
     private ListView recommendLv;
     private ListView hotLv;
@@ -119,6 +120,7 @@ public class CardTagActivityFragment extends Fragment implements PullToRefreshBa
         searchTagLayout = (LinearLayout) rootView.findViewById(R.id.search_tag_layout);
         searchTagLayout.setVisibility(View.GONE);
         createTagLayout = (LinearLayout) rootView.findViewById(R.id.create_tag_layout);
+        noTagTv = (TextView) rootView.findViewById(R.id.no_tag_tv);
         searchLv = (ListView) rootView.findViewById(R.id.search_tag_lv);
         headerView = LayoutInflater.from(getActivity()).inflate(R.layout.tag_head_view,null);
         recommendLv = (ListView) headerView.findViewById(R.id.recommend_tag_lv);
@@ -268,22 +270,24 @@ public class CardTagActivityFragment extends Fragment implements PullToRefreshBa
                         Gson gson = new Gson();
                         ArrayList<TagBean> list = gson.fromJson(searchArray.toString(), new TypeToken<List<TagBean>>() {
                         }.getType());
+                        searchList.clear();
                         if (list != null && list.size() > 0) {
                             if (!list.get(0).getContent().equals(keyword)) {
                                 if(toTagType.equals(Constant.TAG_TYPE_PUBLISH)){
                                     createTagLayout.setVisibility(View.VISIBLE);
+                                    noTagTv.setVisibility(View.GONE);
                                 }
                             } else {
                                 createTagLayout.setVisibility(View.GONE);
                             }
-                            searchList.clear();
                             searchList.addAll(list);
-                            searchAdapter.notifyDataSetChanged();
                         }else{
                             if(toTagType.equals(Constant.TAG_TYPE_PUBLISH)){
                                 createTagLayout.setVisibility(View.VISIBLE);
+                                noTagTv.setVisibility(View.VISIBLE);
                             }
                         }
+                        searchAdapter.notifyDataSetChanged();
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
