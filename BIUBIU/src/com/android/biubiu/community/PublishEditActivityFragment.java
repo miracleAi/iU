@@ -7,6 +7,8 @@ import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -102,6 +104,7 @@ public class PublishEditActivityFragment extends Fragment {
         userCode = SharePreferanceUtils.getInstance().getUserCode(getActivity(), SharePreferanceUtils.USER_CODE, "");
         initView();
         getInfo();
+        titleView.setRightImage(R.drawable.biu_btn_disabled);
         return rootView;
     }
 
@@ -148,6 +151,24 @@ public class PublishEditActivityFragment extends Fragment {
                 startActivityForResult(intent, REQUEST_TAG);
             }
         });
+        contentEt.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (s.length() != 0) {
+                    completeState();
+                }
+            }
+        });
         imageOptions = new ImageOptions.Builder()
                 .setImageScaleType(ImageView.ScaleType.CENTER_CROP)
                 .setLoadingDrawableId(R.drawable.loadingbbbb)
@@ -155,12 +176,26 @@ public class PublishEditActivityFragment extends Fragment {
                 .setIgnoreGif(false)
                 .build();
     }
-
+    private void completeState(){
+        if (null == tagIdList || tagIdList.size() == 0) {
+            titleView.setRightImage(R.drawable.biu_btn_disabled);
+        }
+        if (mSelectPath != null && mSelectPath.size() > 0) {
+            titleView.setRightImage(R.drawable.biu_btn_normal);
+        } else {
+            if (null != contentEt.getText() && !"".equals(contentEt.getText().toString())) {
+                titleView.setRightImage(R.drawable.biu_btn_normal);
+            } else {
+                titleView.setRightImage(R.drawable.biu_btn_disabled);
+            }
+        }
+    }
     private void setImgs(int i) {
         ImageView imgView = new ImageView(getActivity());
         LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(DensityUtil.dip2px(getActivity(),80),DensityUtil.dip2px(getActivity(),70));
-        lp.leftMargin = DensityUtil.dip2px(getActivity(),10);
+        imgView.setLayoutParams(lp);
         imgView.setId(i);
+        imgView.setPadding(DensityUtil.dip2px(getActivity(),10),0,0,0);
         x.image().bind(imgView, mSelectPath.get(i),imageOptions);
         photoScrollLayout.addView(imgView);
     }
@@ -191,6 +226,7 @@ public class PublishEditActivityFragment extends Fragment {
                     tagTv.setText(publishTag.getContent());
                     tagIdList.clear();
                     tagIdList.add(publishTag.getId());
+                    completeState();
                 }
                 break;
         }
