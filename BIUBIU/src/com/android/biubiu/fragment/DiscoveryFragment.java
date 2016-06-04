@@ -185,9 +185,9 @@ public class DiscoveryFragment extends BaseFragment implements FragmentIndicator
         newMsgCount = num;
         judgeTab();
         if (num > 0) {
-            mTopTitle.setLeftImage(R.drawable.biu_btn_activity_light);
+            mTopTitle.setLeftImage(R.drawable.found_activity_light);
         } else {
-            mTopTitle.setLeftImage(R.drawable.biu_btn_activity_nor);
+            mTopTitle.setLeftImage(R.drawable.found_btn_activity_nor);
         }
     }
 

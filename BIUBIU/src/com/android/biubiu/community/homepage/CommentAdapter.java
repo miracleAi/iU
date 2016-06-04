@@ -132,7 +132,7 @@ public class CommentAdapter extends BaseAdapter {
                 vh.school.setText(schoolDao.getschoolName(comment.getUserFromSchool()).get(0).getUnivsNameString());
             }
         }
-        vh.time.setText(DateUtils.getDateFormatInList(mCon, comment.getCreateAt() * 1000));
+        vh.time.setText(DateUtils.getDateFormatInList2(mCon, comment.getCreateAt() * 1000));
         int parentId = comment.getParentId();
         if (parentId != 0) {
             vh.content.setText(mCon.getResources().getString(R.string.reply_comment, comment.getUserToName(),

@@ -145,7 +145,7 @@ public class PostsAdapter extends BaseAdapter {
                 vh.school.setText(schoolDao.getschoolName(posts.getUserSchool()).get(0).getUnivsNameString());
             }
         }
-        vh.time.setText(DateUtils.getDateFormatInList(mCon, posts.getCreateAt() * 1000));
+        vh.time.setText(DateUtils.getDateFormatInList2(mCon, posts.getCreateAt() * 1000));
         setPic(vh, posts);
         if (posts.getTags() != null && posts.getTags().size() > 0) {
             vh.tag.setText(mCon.getResources().getString(R.string.tag, posts.getTags().get(0).getContent()));

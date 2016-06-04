@@ -243,6 +243,8 @@
     <string name="date_min">分钟前</string>
     <string name="date_hour">小时前</string>
     <string name="date_day">天前</string>
+    <string name="date_yesterday">昨天</string>
+    <string name="date_before_yesterday">前天</string>
     <string name="tab_history">历史</string>
     <!-- 抢biu页面，biubiu已结束 -->
     <string name="biu_end">本次biubiu已结束</string>

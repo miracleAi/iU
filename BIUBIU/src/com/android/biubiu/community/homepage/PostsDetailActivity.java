@@ -333,7 +333,7 @@ public class PostsDetailActivity extends Activity implements AdapterView.OnItemC
             }
         }
         mReportLayout.setOnClickListener(this);
-        mTimeTv.setText(DateUtils.getDateFormatInList(this, mPosts.getCreateAt() * 1000));
+        mTimeTv.setText(DateUtils.getDateFormatInList2(this, mPosts.getCreateAt() * 1000));
         if (mPosts.getTags() != null && mPosts.getTags().size() > 0) {
             mTagTv.setText(getResources().getString(R.string.tag, mPosts.getTags().get(0).getContent()));
             if (!mFromTagPostListPage) {
@@ -506,7 +506,10 @@ public class PostsDetailActivity extends Activity implements AdapterView.OnItemC
                 praise();
                 break;
             case R.id.comment_imageview:
-                CommonUtils.showKeyboard(this, mCommentImg);
+                mCommentEt.setFocusable(true);
+                mCommentEt.setFocusableInTouchMode(true);
+                mCommentEt.requestFocus();
+                CommonUtils.showKeyboard(this, mCommentEt);
                 break;
             case R.id.more_layout:
                 showOperation(mUserCode == mPosts.getUserCode());

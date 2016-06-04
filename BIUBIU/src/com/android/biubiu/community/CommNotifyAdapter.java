@@ -108,7 +108,7 @@ public class CommNotifyAdapter extends BaseAdapter {
                 vh.school.setText(schoolDao.getschoolName(notify.getUserSchool()).get(0).getUnivsNameString());
             }
         }
-        vh.time.setText(DateUtils.getDateFormatInList(mCon, notify.getCreateAt() * 1000));
+        vh.time.setText(DateUtils.getDateFormatInList2(mCon, notify.getCreateAt() * 1000));
         vh.content.setText(notify.getDesc());
         x.image().bind(vh.thumbnail, notify.getPostImg());
         vh.brief.setText(notify.getPostContent());
