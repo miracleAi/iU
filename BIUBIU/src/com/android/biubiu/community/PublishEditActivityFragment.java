@@ -2,6 +2,7 @@ package com.android.biubiu.community;
 
 import android.app.Fragment;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -35,6 +36,7 @@ import com.android.biubiu.BaseFragment;
 import com.android.biubiu.bean.ImageBean;
 import com.android.biubiu.bean.TagBean;
 import com.android.biubiu.callback.HttpCallback;
+import com.android.biubiu.common.CommonDialog;
 import com.android.biubiu.common.Constant;
 import com.android.biubiu.component.title.TopTitleView;
 import com.android.biubiu.utils.Constants;
@@ -66,14 +68,13 @@ public class PublishEditActivityFragment extends Fragment {
     private TextView tagTv;
     private EditText contentEt;
     private TextView textCountTv;
-    private ViewPager photoPager;
     private TopTitleView titleView;
     private LinearLayout photoLayout;
     private LinearLayout loadingLayout;
     private GifView loadGif;
     private TextView loadTv;
+    private LinearLayout photoScrollLayout;
 
-    private PublishPagerAdapter imgPagerAdapter;
     private ArrayList<String> mSelectPath;
     private ArrayList<String> imageList = new ArrayList<String>();
     private ArrayList<Integer> tagIdList = new ArrayList<Integer>();
@@ -108,14 +109,14 @@ public class PublishEditActivityFragment extends Fragment {
         tagTv = (TextView) rootView.findViewById(R.id.tag_tv);
         contentEt = (EditText) rootView.findViewById(R.id.content_et);
         textCountTv = (TextView) rootView.findViewById(R.id.text_count_tv);
-        photoPager = (ViewPager) rootView.findViewById(R.id.photo_pager);
+        photoScrollLayout = (LinearLayout) rootView.findViewById(R.id.photo_scroll_layout);
         photoLayout = (LinearLayout) rootView.findViewById(R.id.photo_layout);
         titleView = (TopTitleView) rootView.findViewById(R.id.top_title_view);
 
         titleView.setLeftOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getActivity().finish();
+              showDialog();
             }
         });
         titleView.setRightOnClickListener(new View.OnClickListener() {
@@ -155,9 +156,13 @@ public class PublishEditActivityFragment extends Fragment {
                 .build();
     }
 
-    private void setImgs() {
-        imgPagerAdapter = new PublishPagerAdapter(getActivity(), mSelectPath, imageOptions);
-        photoPager.setAdapter(imgPagerAdapter);
+    private void setImgs(int i) {
+        ImageView imgView = new ImageView(getActivity());
+        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(DensityUtil.dip2px(getActivity(),80),DensityUtil.dip2px(getActivity(),70));
+        lp.leftMargin = DensityUtil.dip2px(getActivity(),10);
+        imgView.setId(i);
+        x.image().bind(imgView, mSelectPath.get(i),imageOptions);
+        photoScrollLayout.addView(imgView);
     }
 
     public void getInfo() {
@@ -166,7 +171,11 @@ public class PublishEditActivityFragment extends Fragment {
         if (typeStr.equals(Constant.PUBLISH_IMG)) {
             mSelectPath = b.getStringArrayList(Constant.PUBLISH_IMG_PATH);
             photoLayout.setVisibility(View.VISIBLE);
-            setImgs();
+            if(mSelectPath.size()>0){
+                for(int i=0;i<mSelectPath.size();i++){
+                    setImgs(i);
+                }
+            }
         } else {
             photoLayout.setVisibility(View.GONE);
         }
@@ -342,6 +351,7 @@ public class PublishEditActivityFragment extends Fragment {
                     Toast.makeText(getActivity(), "帖子发布成功", Toast.LENGTH_SHORT).show();
                     Intent i = new Intent(Constant.PUBLISH_POST_ACTION);
                     getActivity().sendBroadcast(i, Constant.PUBLISH_POST_ACTION_PERMISSION);
+                    getActivity().setResult(getActivity().RESULT_OK);
                     getActivity().finish();
                 } else {
                     Toast.makeText(getActivity(), "帖子发布失败", Toast.LENGTH_SHORT).show();
@@ -375,5 +385,23 @@ public class PublishEditActivityFragment extends Fragment {
             loadingLayout = (LinearLayout) rootView.findViewById(R.id.loading_layout);
         }
         loadingLayout.setVisibility(View.GONE);
+    }
+    //显示提示退出对话框
+    public void showDialog(){
+        if(contentEt.getText() != null && !contentEt.getText().toString().equals("") && imageList.size() > 0){
+            CommonDialog.doubleBtnDialog(getActivity(), "", "要退出内容编辑么？", "取消", "确定", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            }, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    getActivity().finish();
+                }
+            });
+        }else{
+            getActivity().finish();
+        }
     }
 }

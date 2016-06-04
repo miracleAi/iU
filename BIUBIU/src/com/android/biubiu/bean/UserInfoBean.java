@@ -57,7 +57,27 @@ public class UserInfoBean implements Serializable{
 	private long activityTime;
 	@SerializedName("superman")
 	private int superMan;
-	
+	@SerializedName("today_num")
+	private int todayNum;
+	@SerializedName("total_num")
+	private int totalNum;
+
+	public int getTodayNum() {
+		return todayNum;
+	}
+
+	public void setTodayNum(int todayNum) {
+		this.todayNum = todayNum;
+	}
+
+	public int getTotalNum() {
+		return totalNum;
+	}
+
+	public void setTotalNum(int totalNum) {
+		this.totalNum = totalNum;
+	}
+
 	public int getSuperMan() {
 		return superMan;
 	}

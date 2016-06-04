@@ -9,14 +9,14 @@ import com.android.biubiu.common.Constant;
 import cc.imeetu.iu.R;
 
 public class PublishEditActivity extends Activity {
-
+    PublishEditActivityFragment fragment;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getWindow().requestFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_publish_edit);
         String typeStr = getIntent().getStringExtra(Constant.PUBLISH_TYPE);
-        PublishEditActivityFragment fragment = new PublishEditActivityFragment();
+        fragment = new PublishEditActivityFragment();
         Bundle b = new Bundle();
         b.putString(Constant.PUBLISH_TYPE,typeStr);
         if(typeStr.equals(Constant.PUBLISH_IMG)){
@@ -26,4 +26,11 @@ public class PublishEditActivity extends Activity {
         getFragmentManager().beginTransaction().add(R.id.layout_body,fragment).commit();
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        if(fragment != null){
+            fragment.showDialog();
+        }
+    }
 }

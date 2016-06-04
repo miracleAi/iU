@@ -28,6 +28,7 @@ public class PublishHomeActivityFragment extends BaseFragment {
     private ImageView cancelImv;
 
     private static final int MUTI_PHOTO_REQUEST = 1001;
+    private static final int TO_PUBLISH = 1002;
 
     private ArrayList<String> mSelectPath;
 
@@ -52,7 +53,7 @@ public class PublishHomeActivityFragment extends BaseFragment {
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(),PublishEditActivity.class);
                 intent.putExtra(Constant.PUBLISH_TYPE,Constant.PUBLISH_TEXT);
-                startActivity(intent);
+                startActivityForResult(intent,TO_PUBLISH);
             }
         });
         imgLayout.setOnClickListener(new View.OnClickListener() {
@@ -95,9 +96,14 @@ public class PublishHomeActivityFragment extends BaseFragment {
                     Intent intent = new Intent(getActivity(),PublishEditActivity.class);
                     intent.putExtra(Constant.PUBLISH_TYPE,Constant.PUBLISH_IMG);
                     intent.putStringArrayListExtra(Constant.PUBLISH_IMG_PATH,mSelectPath);
-                    startActivity(intent);
+                    startActivityForResult(intent,TO_PUBLISH);
                 }
                 break;
+            case TO_PUBLISH:
+                if(resultCode == getActivity().RESULT_OK){
+                    getActivity().finish();
+                }
+            break;
         }
     }
 }

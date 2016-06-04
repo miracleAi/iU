@@ -148,7 +148,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_alignParentBottom="true"
-                        android:layout_marginBottom="11dp">
+                        android:layout_marginBottom="11dp"
+                        android:visibility="gone">
 
                         <LinearLayout
                             android:layout_width="wrap_content"
@@ -216,6 +217,53 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginLeft="5.5dp"
                                 android:textColor="@color/white"
+                                android:textSize="11sp" />
+                        </LinearLayout>
+                    </RelativeLayout>
+                    <RelativeLayout
+                        android:id="@+id/my_info_layout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentBottom="true"
+                        android:layout_marginBottom="15dp">
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerInParent="true"
+                            android:orientation="horizontal">
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textColor="@color/yello_text"
+                                android:text="今日访问："
+                                android:textSize="11sp" />
+                            <TextView
+                                android:id="@+id/today_tv"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="5.5dp"
+                                android:textColor="@color/white"
+                                android:text="154"
+                                android:textSize="11sp" />
+                            <View
+                                android:layout_width="1dp"
+                                android:layout_height="11dp"
+                                android:layout_marginLeft="11dp"
+                                android:background="@drawable/main_imageview_line" />
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textColor="@color/yello_text"
+                                android:text="总访问："
+                                android:layout_marginLeft="11dp"
+                                android:textSize="11sp" />
+                            <TextView
+                                android:id="@+id/total_tv"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="5.5dp"
+                                android:textColor="@color/white"
+                                android:text="154"
                                 android:textSize="11sp" />
                         </LinearLayout>
                     </RelativeLayout>

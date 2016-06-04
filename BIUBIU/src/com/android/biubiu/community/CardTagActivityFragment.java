@@ -109,6 +109,11 @@ public class CardTagActivityFragment extends Fragment implements PullToRefreshBa
         allTagLayout = (LinearLayout) rootView.findViewById(R.id.all_tag_layout);
         allTagLayout.setVisibility(View.GONE);
         searchEt = (EditText) rootView.findViewById(R.id.search_tag_et);
+        if(toTagType.equals(Constant.TAG_TYPE_PUBLISH)){
+            searchEt.setHint(getResources().getString(R.string.publish_tag_hint));
+        }else{
+            searchEt.setHint(getResources().getString(R.string.scan_tag_hint));
+        }
         countTv = (TextView) rootView.findViewById(R.id.count_tv);
         cancelBtn = (Button) rootView.findViewById(R.id.cancel_btn);
         searchTagLayout = (LinearLayout) rootView.findViewById(R.id.search_tag_layout);
@@ -265,7 +270,9 @@ public class CardTagActivityFragment extends Fragment implements PullToRefreshBa
                         }.getType());
                         if (list != null && list.size() > 0) {
                             if (!list.get(0).getContent().equals(keyword)) {
-                                createTagLayout.setVisibility(View.VISIBLE);
+                                if(toTagType.equals(Constant.TAG_TYPE_PUBLISH)){
+                                    createTagLayout.setVisibility(View.VISIBLE);
+                                }
                             } else {
                                 createTagLayout.setVisibility(View.GONE);
                             }
@@ -273,7 +280,9 @@ public class CardTagActivityFragment extends Fragment implements PullToRefreshBa
                             searchList.addAll(list);
                             searchAdapter.notifyDataSetChanged();
                         }else{
-                            createTagLayout.setVisibility(View.VISIBLE);
+                            if(toTagType.equals(Constant.TAG_TYPE_PUBLISH)){
+                                createTagLayout.setVisibility(View.VISIBLE);
+                            }
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();
