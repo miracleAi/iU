@@ -74,6 +74,15 @@ public class DiscoveryFragment extends BaseFragment implements FragmentIndicator
             newMsgCount = 0;
             judgeTab();
         }
+        if (mNeedRefresh) {
+            if (mViewPager.getCurrentItem() == 1) {
+                mFragments.get(1).refreshList();
+            } else {
+                mViewPager.setCurrentItem(1);
+                mFragments.get(1).refreshList();
+            }
+            mNeedRefresh = false;
+        }
     }
 
     private void initView() {
@@ -83,9 +92,6 @@ public class DiscoveryFragment extends BaseFragment implements FragmentIndicator
             public void onClick(View v) {
                 Intent i = new Intent(getActivity(), CommNotifyActivity.class);
                 startActivityForResult(i, TO_NOTIFY_PAGE);
-                newMsgCount = 0;
-                judgeTab();
-                mTopTitle.setLeftImage(R.drawable.biu_btn_activity_nor);
             }
         });
 
@@ -193,23 +199,22 @@ public class DiscoveryFragment extends BaseFragment implements FragmentIndicator
         }
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        if (mNeedRefresh) {
-            if (mViewPager.getCurrentItem() == 1) {
-                mFragments.get(1).refreshList();
-            } else {
-                mViewPager.setCurrentItem(1);
-                mFragments.get(1).refreshList();
-            }
-            mNeedRefresh = false;
-        }
-    }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
         getActivity().unregisterReceiver(mReceiver);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch (requestCode){
+            case TO_NOTIFY_PAGE:
+                newMsgCount = 0;
+                judgeTab();
+                mTopTitle.setLeftImage(R.drawable.biu_btn_activity_nor);
+                break;
+        }
     }
 }

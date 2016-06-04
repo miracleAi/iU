@@ -179,6 +179,10 @@ public class PagerFragment extends BaseFragment implements View.OnClickListener,
     private ImageView superManIv;
     private RelativeLayout grabBiuLayout;
     private TextView grabBiuTv;
+    private RelativeLayout myInfoLayout;
+    private TextView totalTv;
+    private TextView todayTv;
+
     private UserInfoBean infoBean;
     ImageOptions imageOptions;
     private UserPagerPhotoAdapter photoAdapter;
@@ -275,6 +279,9 @@ public class PagerFragment extends BaseFragment implements View.OnClickListener,
         locationTv = (TextView) mRootview.findViewById(R.id.location_tv);
         matchTv = (TextView) mRootview.findViewById(R.id.match_tv);
         timeTv = (TextView) mRootview.findViewById(R.id.time_tv);
+        myInfoLayout = (RelativeLayout) mRootview.findViewById(R.id.my_info_layout);
+        totalTv = (TextView) mRootview.findViewById(R.id.total_tv);
+        todayTv = (TextView) mRootview.findViewById(R.id.today_tv);
         dynamicLayout = (LinearLayout) mRootview.findViewById(R.id.dynamic_linear);
         dynamicLayout.setOnClickListener(this);
         dynamicArrow = (ImageView) mRootview.findViewById(R.id.dynamic_arrow);
@@ -527,6 +534,9 @@ public class PagerFragment extends BaseFragment implements View.OnClickListener,
             schoolArrow.setVisibility(View.VISIBLE);
             personalArrow.setVisibility(View.VISIBLE);
             interestArrow.setVisibility(View.VISIBLE);
+            myInfoLayout.setVisibility(View.VISIBLE);
+            todayTv.setText(bean.getTodayNum()+"");
+            totalTv.setText(bean.getTotalNum()+"");
         } else {
             if (bean.getDistance() > 1000) {
                 locationTv.setText(Math.round(bean.getDistance() / 1000) / 10.0 + "km");
@@ -543,6 +553,7 @@ public class PagerFragment extends BaseFragment implements View.OnClickListener,
             matchTv.setText("" + bean.getMatchScore() + "%");
             addPhotoImv.setVisibility(View.GONE);
             otherInfoLayout.setVisibility(View.VISIBLE);
+            myInfoLayout.setVisibility(View.GONE);
             aboutMeArrow.setVisibility(View.GONE);
             nickArrwo.setVisibility(View.GONE);
             birthArrow.setVisibility(View.GONE);
