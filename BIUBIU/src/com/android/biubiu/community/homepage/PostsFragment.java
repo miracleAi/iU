@@ -2,7 +2,6 @@ package com.android.biubiu.community.homepage;
 
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.TextUtils;
@@ -13,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -30,10 +30,12 @@ import com.android.biubiu.component.viewflipper.ViewFlipperForListview;
 import com.android.biubiu.utils.CommonUtils;
 import com.android.biubiu.utils.HttpContants;
 import com.android.biubiu.utils.LogUtil;
+import com.android.biubiu.utils.ScreenUtil;
 import com.android.biubiu.utils.SharePreferanceUtils;
 import com.google.gson.reflect.TypeToken;
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
+import com.viewpagerindicator.TabPageIndicator;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -43,7 +45,6 @@ import org.xutils.x;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
@@ -70,17 +71,27 @@ public class PostsFragment extends BaseFragment implements PullToRefreshBase.OnR
     private ViewFlipperForListview mFlipper;
     private LinearLayout mIndicatorLayout;
 
-    private static final int INDICATOR_COLOR = Color.argb(102, 0xFF, 0xFF, 0xFF);
-    private static final int CUR_INDICATOR_COLOR = Color.argb(255, 0xFF, 0xFF, 0xFF);
     //判断滑动手势
     private GestureDetector mDetector;
     private ScheduledExecutorService mService;
-    ExecutorService mThreadPool;
     private ScheduledFuture<?> mFuture;
     private Handler mHandler = new Handler();
     private boolean mIsSet, mAddHeadBanner;
+    private boolean mScrollFlag;
+    private int mLastVisibleItemPosition;
+    private ITabPageIndicatorAnim mTabPageIndicatorAnim;
 
     public PostsFragment() {
+    }
+
+    public interface ITabPageIndicatorAnim {
+        void slideUp();
+
+        void slideDown();
+    }
+
+    public void setTabPageIndicatorAnim(ITabPageIndicatorAnim tabPageIndicatorAnim) {
+        mTabPageIndicatorAnim = tabPageIndicatorAnim;
     }
 
     @Override
@@ -101,6 +112,58 @@ public class PostsFragment extends BaseFragment implements PullToRefreshBase.OnR
 
         mFlipper = (ViewFlipperForListview) mHeadAdBanner.findViewById(R.id.banner_flipper);
         mIndicatorLayout = (LinearLayout) mHeadAdBanner.findViewById(R.id.indicator_layout);
+
+        /*mListview.setOnScrollListener(new AbsListView.OnScrollListener() {
+
+            @Override
+            public void onScrollStateChanged(AbsListView view, int scrollState) {
+                switch (scrollState) {
+                    // 当不滚动时
+                    case AbsListView.OnScrollListener.SCROLL_STATE_IDLE:// 是当屏幕停止滚动时
+                        mScrollFlag = false;
+                        // 判断滚动到底部
+                        if (mListview.getLastVisiblePosition() == (mListview.getCount() - 1)) {
+
+                        }
+                        // 判断滚动到顶部
+                        if (mListview.getFirstVisiblePosition() == 0) {
+
+                        }
+
+                        break;
+                    case AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL:// 滚动时
+                        mScrollFlag = true;
+                        break;
+                    case AbsListView.OnScrollListener.SCROLL_STATE_FLING:// 是当用户由于之前划动屏幕并抬起手指，屏幕产生惯性滑动时
+                        mScrollFlag = false;
+                        break;
+                }
+            }
+
+            *//**
+             * firstVisibleItem：当前能看见的第一个列表项ID（从0开始）
+             * visibleItemCount：当前能看见的列表项个数（小半个也算） totalItemCount：列表项共数
+             *//*
+            @Override
+            public void onScroll(AbsListView view, int firstVisibleItem,
+                                 int visibleItemCount, int totalItemCount) {
+                // 当开始滑动且ListView底部的Y轴点超出屏幕最大范围时，显示或隐藏顶部按钮
+                if (mScrollFlag*//* && ScreenUtil.getScreenViewBottomHeight(mListview) >= ScreenUtil.getScreenHeight(getActivity())*//*) {
+                    if (firstVisibleItem > mLastVisibleItemPosition) {// 上滑
+                        if (mTabPageIndicatorAnim != null) {
+                            mTabPageIndicatorAnim.slideUp();
+                        }
+                    } else if (firstVisibleItem < mLastVisibleItemPosition) {// 下滑
+                        if (mTabPageIndicatorAnim != null) {
+                            mTabPageIndicatorAnim.slideDown();
+                        }
+                    } else {
+                        return;
+                    }
+                    mLastVisibleItemPosition = firstVisibleItem;
+                }
+            }
+        });*/
     }
 
     private void initData() {
@@ -108,9 +171,7 @@ public class PostsFragment extends BaseFragment implements PullToRefreshBase.OnR
 
         mType = getArguments().getInt("type", 0);
         getData(0);
-        mThreadPool = Executors.newFixedThreadPool(5);
         mService = Executors.newSingleThreadScheduledExecutor();
-        mFuture = mService.scheduleAtFixedRate(new Task(), 1, Constant.BANNER_ANIM_INTERVAL, TimeUnit.SECONDS);
         mDetector = new GestureDetector(getActivity(), new GestureDetector.OnGestureListener() {
 
             public boolean onDown(MotionEvent e) {
@@ -121,11 +182,11 @@ public class PostsFragment extends BaseFragment implements PullToRefreshBase.OnR
             public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
                 if (mFlipper.getChildCount() > 1) {
                     if (e1.getX() - e2.getX() > 100) {//左滑
-                    mFuture.cancel(true);
+                        mFuture.cancel(true);
                         slideToLeft();
                         return true;
                     } else if (e1.getX() - e2.getX() < -100) {//右滑
-                    mFuture.cancel(true);
+                        mFuture.cancel(true);
                         slideToRight();
                         return true;
                     }
@@ -255,6 +316,12 @@ public class PostsFragment extends BaseFragment implements PullToRefreshBase.OnR
             mFlipper.removeAllViews();
         }
         int size = banners.size();
+        if (mFuture != null) {
+            mFuture.cancel(true);
+        }
+        if (size > 1) {
+            mFuture = mService.scheduleAtFixedRate(new Task(), 1, Constant.BANNER_ANIM_INTERVAL, TimeUnit.SECONDS);
+        }
         for (int i = 0; i < size; i++) {
             ImageView bannerImageView = new ImageView(getActivity());
             Banner banner = banners.get(i);
@@ -264,15 +331,17 @@ public class PostsFragment extends BaseFragment implements PullToRefreshBase.OnR
             bannerImageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
             mFlipper.addView(bannerImageView, i);
 
-            View v = new View(getActivity());
-            v.setId(i);
-            v.setBackgroundColor(INDICATOR_COLOR);
-            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(getResources().getDimensionPixelSize(R.dimen.indicator_width),
-                    getResources().getDimensionPixelSize(R.dimen.indicator_height));
-            if (i != 0) {
-                params.setMargins(getResources().getDimensionPixelSize(R.dimen.indicator_line_margin), 0, 0, 0);
+            if (size > 1) {
+                View v = new View(getActivity());
+                v.setId(i);
+                v.setBackgroundResource(R.drawable.indicator_default);
+                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(getResources().getDimensionPixelSize(R.dimen.indicator_width),
+                        getResources().getDimensionPixelSize(R.dimen.indicator_height));
+                if (i != 0) {
+                    params.setMargins(getResources().getDimensionPixelSize(R.dimen.indicator_line_margin), 0, 0, 0);
+                }
+                mIndicatorLayout.addView(v, i, params);
             }
-            mIndicatorLayout.addView(v, i, params);
         }
     }
 
@@ -311,8 +380,10 @@ public class PostsFragment extends BaseFragment implements PullToRefreshBase.OnR
             }
 
             public void onAnimationEnd(Animation animation) {
-                if (mFuture.isCancelled()) {
-                    mFuture = mService.scheduleAtFixedRate(new Task(), 1, Constant.BANNER_ANIM_INTERVAL, TimeUnit.SECONDS);
+                if (mFlipper.getChildCount() > 1) {
+                    if (mFuture.isCancelled()) {
+                        mFuture = mService.scheduleAtFixedRate(new Task(), 1, Constant.BANNER_ANIM_INTERVAL, TimeUnit.SECONDS);
+                    }
                 }
 //                mBannerName.setText(((Banner) mFlipper.getCurrentView().getTag()).getTitle());
                 setIndicatorLine(mFlipper.getDisplayedChild());
@@ -334,8 +405,10 @@ public class PostsFragment extends BaseFragment implements PullToRefreshBase.OnR
             }
 
             public void onAnimationEnd(Animation animation) {
-                if (mFuture.isCancelled()) {
-                    mFuture = mService.scheduleAtFixedRate(new Task(), 1, Constant.BANNER_ANIM_INTERVAL, TimeUnit.SECONDS);
+                if (mFlipper.getChildCount() > 1) {
+                    if (mFuture.isCancelled()) {
+                        mFuture = mService.scheduleAtFixedRate(new Task(), 1, Constant.BANNER_ANIM_INTERVAL, TimeUnit.SECONDS);
+                    }
                 }
 //                mBannerName.setText(((Banner) mFlipper.getCurrentView().getTag()).getTitle());
                 setIndicatorLine(mFlipper.getDisplayedChild());
@@ -349,9 +422,9 @@ public class PostsFragment extends BaseFragment implements PullToRefreshBase.OnR
     private void setIndicatorLine(int id) {
         for (int i = 0, size = mFlipper.getChildCount(); i < size; i++) {
             if (i == id) {
-                mIndicatorLayout.getChildAt(i).setBackgroundColor(CUR_INDICATOR_COLOR);
+                mIndicatorLayout.getChildAt(i).setBackgroundResource(R.drawable.indicator_selected);
             } else {
-                mIndicatorLayout.getChildAt(i).setBackgroundColor(INDICATOR_COLOR);
+                mIndicatorLayout.getChildAt(i).setBackgroundResource(R.drawable.indicator_default);
             }
         }
     }
@@ -433,10 +506,16 @@ public class PostsFragment extends BaseFragment implements PullToRefreshBase.OnR
     @Override
     public void onResume() {
         super.onResume();
+        if (mFuture != null && mFuture.isCancelled()) {
+            mFuture = mService.scheduleAtFixedRate(new Task(), 1, Constant.BANNER_ANIM_INTERVAL, TimeUnit.SECONDS);
+        }
     }
 
     @Override
     public void onPause() {
         super.onPause();
+        if (mFuture != null) {
+            mFuture.cancel(true);
+        }
     }
 }
