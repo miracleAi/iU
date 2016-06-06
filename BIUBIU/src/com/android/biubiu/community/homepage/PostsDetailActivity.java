@@ -82,9 +82,8 @@ public class PostsDetailActivity extends Activity implements AdapterView.OnItemC
     private Comment mReplayComment;
     private int mUserCode;
 
-    private boolean mFromTagPostListPage, mFromCommNotifyPage;
+    private boolean mFromTagPostListPage, mFromCommNotifyPage,mKeyboardShow;
     private int mTargetW;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -506,10 +505,16 @@ public class PostsDetailActivity extends Activity implements AdapterView.OnItemC
                 praise();
                 break;
             case R.id.comment_imageview:
-                mCommentEt.setFocusable(true);
-                mCommentEt.setFocusableInTouchMode(true);
-                mCommentEt.requestFocus();
-                CommonUtils.showKeyboard(this, mCommentEt);
+                if(!mKeyboardShow){
+                    mCommentEt.setFocusable(true);
+                    mCommentEt.setFocusableInTouchMode(true);
+                    mCommentEt.requestFocus();
+                    CommonUtils.showKeyboard(this, mCommentEt);
+                    mKeyboardShow = true;
+                }else{
+                    CommonUtils.hideKeyboard(this);
+                    mKeyboardShow = false;
+                }
                 break;
             case R.id.more_layout:
                 showOperation(mUserCode == mPosts.getUserCode());

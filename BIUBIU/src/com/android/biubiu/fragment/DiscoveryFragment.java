@@ -13,6 +13,9 @@ import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.view.animation.TranslateAnimation;
 
 import com.android.biubiu.BaseFragment;
 import com.android.biubiu.MainActivity;
@@ -22,9 +25,9 @@ import com.android.biubiu.community.CommNotifyActivity;
 import com.android.biubiu.community.homepage.PostsFragment;
 import com.android.biubiu.community.PublishHomeActivity;
 import com.android.biubiu.component.indicator.FragmentIndicator;
+import com.android.biubiu.component.indicator.PagerSlidingTabStrip;
 import com.android.biubiu.component.title.TopTitleView;
 import com.android.biubiu.utils.LoginUtils;
-import com.viewpagerindicator.TabPageIndicator;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,17 +37,16 @@ import cc.imeetu.iu.R;
 /**
  * 发现页面，包括推荐、新鲜、biubiu三个界面
  */
-public class DiscoveryFragment extends BaseFragment implements FragmentIndicator.OnClickListener {
+public class DiscoveryFragment extends BaseFragment implements FragmentIndicator.OnClickListener, PostsFragment.ITabPageIndicatorAnim {
 
     private static final int TO_PUBLISH_PAGE = 0;
     private static final int TO_NOTIFY_PAGE = TO_PUBLISH_PAGE + 1;
     private static final String[] CONTENT = new String[3];
 
     private TopTitleView mTopTitle;
-    private TabPageIndicator mIndicator;
+    private PagerSlidingTabStrip mIndicator;
     private ViewPager mViewPager;
     private List<PostsFragment> mFragments = new ArrayList<PostsFragment>();
-
     private int newMsgCount = 0;
     private boolean mNeedRefresh;
     private BroadcastReceiver mReceiver = new BroadcastReceiver() {
@@ -70,7 +72,7 @@ public class DiscoveryFragment extends BaseFragment implements FragmentIndicator
     @Override
     public void onResume() {
         super.onResume();
-        if(!LoginUtils.isLogin(getActivity())){
+        if (!LoginUtils.isLogin(getActivity())) {
             newMsgCount = 0;
             judgeTab();
         }
@@ -112,7 +114,7 @@ public class DiscoveryFragment extends BaseFragment implements FragmentIndicator
                 startActivityForResult(i, TO_PUBLISH_PAGE);
             }
         });
-        mIndicator = (TabPageIndicator) mRootview.findViewById(R.id.indicator);
+        mIndicator = (PagerSlidingTabStrip) mRootview.findViewById(R.id.indicator);
         mViewPager = (ViewPager) mRootview.findViewById(R.id.pager);
         mViewPager.setOffscreenPageLimit(2);
     }
@@ -123,16 +125,19 @@ public class DiscoveryFragment extends BaseFragment implements FragmentIndicator
         CONTENT[2] = getResources().getString(R.string.left_menu_biubiu);
 
         PostsFragment recommand = new PostsFragment();
+        recommand.setTabPageIndicatorAnim(this);
         Bundle b = new Bundle();
         b.putInt("type", 1);
         recommand.setArguments(b);
 
         PostsFragment refresh = new PostsFragment();
+        refresh.setTabPageIndicatorAnim(this);
         Bundle b2 = new Bundle();
         b2.putInt("type", 0);
         refresh.setArguments(b2);
 
         PostsFragment biubiu = new PostsFragment();
+        biubiu.setTabPageIndicatorAnim(this);
         Bundle b3 = new Bundle();
         b3.putInt("type", 2);
         biubiu.setArguments(b3);
@@ -158,6 +163,16 @@ public class DiscoveryFragment extends BaseFragment implements FragmentIndicator
     @Override
     public void onLeaveTab() {
 
+    }
+
+    @Override
+    public void slideUp() {
+        mIndicator.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void slideDown() {
+        mIndicator.setVisibility(View.VISIBLE);
     }
 
     class DiscoveryAdapter extends FragmentPagerAdapter {
@@ -209,7 +224,7 @@ public class DiscoveryFragment extends BaseFragment implements FragmentIndicator
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        switch (requestCode){
+        switch (requestCode) {
             case TO_NOTIFY_PAGE:
                 newMsgCount = 0;
                 judgeTab();

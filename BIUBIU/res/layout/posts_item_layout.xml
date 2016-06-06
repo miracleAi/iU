@@ -37,7 +37,7 @@
                 android:id="@+id/school_textview"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="8dp"
                 android:text="北京理工大学"
                 android:textColor="#999999"
                 android:textSize="11sp" />
@@ -130,7 +130,7 @@
             android:id="@+id/praise_imageview"
             android:layout_width="20dp"
             android:layout_height="17dp"
-            android:layout_marginRight="10dp"
+            android:layout_marginRight="20dp"
             android:layout_toLeftOf="@+id/comment_imageview"
             android:src="@drawable/found_btn_like_normal" />
 

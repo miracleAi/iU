@@ -1,5 +1,6 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:top="http://schemas.android.com/apk/res-auto"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -15,6 +16,22 @@
         top:rightDrawable="@drawable/found_btn_publish"
         top:title="@string/discovery" />
 
+    <!--<RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/top_title_view"
+        android:background="@android:color/white">
+
+        <android.support.v4.view.ViewPager
+            android:id="@+id/pager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <com.viewpagerindicator.TabPageIndicator
+            android:id="@+id/indicator"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/found_tab_indicator_height" />
+    </RelativeLayout>-->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -22,15 +39,24 @@
         android:background="@android:color/white"
         android:orientation="vertical">
 
-        <com.viewpagerindicator.TabPageIndicator
+        <com.android.biubiu.component.indicator.PagerSlidingTabStrip
             android:id="@+id/indicator"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content" />
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/found_tab_indicator_height"
+            app:pstsIndicatorColor="#6cd1c9"
+            app:pstsIndicatorHeight="2dp"
+            app:pstsUnderlineColor="#6cd1c9"
+            app:pstsUnderlineHeight="1dp"
+            app:pstsDividerColor="@android:color/transparent"
+            app:pstsDividerPadding="0dp"
+            app:pstsShouldExpand="true"
+            android:background="@android:color/white"/>
 
         <android.support.v4.view.ViewPager
             android:id="@+id/pager"
-            android:layout_width="fill_parent"
+            android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1" />
+
     </LinearLayout>
 </RelativeLayout>
