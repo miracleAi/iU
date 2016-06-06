@@ -522,7 +522,8 @@ public class PagerFragment extends BaseFragment implements View.OnClickListener,
         /*photoAdapter = new UserPagerPhotoAdapter(getActivity(), phos, imageOptions, isMyself);
         photoPager.setAdapter(photoAdapter);*/
         currentPhotoIndex = -1;
-        for (int i = 0; i < phos.size(); i++) {
+        userPhotoLayout.removeAllViews();
+        for(int i=0;i<phos.size();i++){
             currentPhotoIndex = 0;
             ImageView imgView = new ImageView(getActivity());
             LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(DensityUtil.dip2px(getActivity(), 80), DensityUtil.dip2px(getActivity(), 70));
@@ -1354,8 +1355,8 @@ public class PagerFragment extends BaseFragment implements View.OnClickListener,
                     bean.setPhotoOrigin(photoOrigin);
                     bean.setPhotoThumbnail(photoThumbnail);
                     ArrayList<UserPhotoBean> list = new ArrayList<UserPhotoBean>();
-                    list.addAll(infoBean.getUserPhotos());
                     list.add(bean);
+                    list.addAll(infoBean.getUserPhotos());
                     infoBean.setUserPhotos(list);
                     setUserPhotos(list);
                 } catch (JSONException e) {

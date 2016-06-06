@@ -104,7 +104,7 @@ public class PublishEditActivityFragment extends Fragment {
         userCode = SharePreferanceUtils.getInstance().getUserCode(getActivity(), SharePreferanceUtils.USER_CODE, "");
         initView();
         getInfo();
-        titleView.setRightBackGround(R.drawable.biu_btn_disabled);
+        titleView.setRightBackGround(R.drawable.title_btn_disable);
         return rootView;
     }
 
@@ -178,7 +178,7 @@ public class PublishEditActivityFragment extends Fragment {
     }
     private void completeState(){
         if (null == tagIdList || tagIdList.size() == 0) {
-            titleView.setRightBackGround(R.drawable.biu_btn_disabled);
+            titleView.setRightBackGround(R.drawable.title_btn_disable);
         }
         if (mSelectPath != null && mSelectPath.size() > 0) {
             titleView.setRightBackGround(R.drawable.biu_btn_normal);

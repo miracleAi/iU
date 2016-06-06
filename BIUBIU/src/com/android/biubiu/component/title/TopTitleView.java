@@ -7,12 +7,15 @@ import android.graphics.drawable.Drawable;
 import android.text.Spanned;
 import android.util.AttributeSet;
 import android.util.TypedValue;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import com.android.biubiu.utils.DensityUtil;
 
 import cc.imeetu.iu.R;
 
@@ -229,6 +232,8 @@ public class TopTitleView extends LinearLayout {
         mTvRight.setText(getResources().getString(resId));
     }
     public void setRightBackGround(int resId) {
+        mTvRight.setPadding(DensityUtil.dip2px(getContext(),8),DensityUtil.dip2px(getContext(),3),DensityUtil.dip2px(getContext(),8),DensityUtil.dip2px(getContext(),3));
+        mTvRight.setGravity(Gravity.CENTER);
         mTvRight.setBackgroundResource(resId);
     }
 
