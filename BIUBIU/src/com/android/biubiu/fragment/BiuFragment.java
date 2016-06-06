@@ -227,6 +227,7 @@ public class BiuFragment extends Fragment implements PushInterface, FragmentIndi
                 if (isBiuEnd) {
                     userBiuImv.setImageResource(R.drawable.biu_btn_biu);
                     userBiuImv.setVisibility(View.VISIBLE);
+                    grabBiuBean = null;
                 } else {
                     if (null == grabBiuBean) {
                         userBiuImv.setImageResource(R.drawable.biu_btn_unfinished);

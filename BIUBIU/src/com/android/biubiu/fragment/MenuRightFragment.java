@@ -153,6 +153,14 @@ public class MenuRightFragment extends EaseConversationListFragment implements F
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        if(!LoginUtils.isLogin(getActivity())){
+            titleBar.setNewMsgGone();
+        }
+    }
+
+    @Override
     protected void setUpView() {
         super.setUpView();
         titleBar.setTitle(getResources().getString(R.string.biu_msg));
