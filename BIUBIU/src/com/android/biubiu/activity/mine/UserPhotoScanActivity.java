@@ -202,6 +202,7 @@ public class UserPhotoScanActivity extends BaseActivity implements OnClickListen
                         toastShort("删除照片失败");
                         return;
                     }
+                    setResult(RESULT_OK);
                     JSONObject data = jsons.getJSONObject("data");
 //					String token = data.getString("token");
 //					SharePreferanceUtils.getInstance().putShared(getApplicationContext(), SharePreferanceUtils.TOKEN, token);
@@ -212,7 +213,6 @@ public class UserPhotoScanActivity extends BaseActivity implements OnClickListen
                         /*Intent intent = new Intent(UserPhotoScanActivity.this, MyPagerActivity.class);
                         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         startActivity(intent);*/
-                        setResult(RESULT_OK);
                         finish();
                     } else if (currentIndex > (photoList.size() - 1)) {
                         photoPager.setCurrentItem(currentIndex - 1);
@@ -296,13 +296,4 @@ public class UserPhotoScanActivity extends BaseActivity implements OnClickListen
 
     }
 
-    @Override
-    public void onBackPressed() {
-        if(hasDelete){
-            setResult(RESULT_OK);
-            finish();
-        }else{
-            super.onBackPressed();
-        }
-    }
 }
