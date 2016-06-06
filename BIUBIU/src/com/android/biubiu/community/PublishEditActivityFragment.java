@@ -179,6 +179,7 @@ public class PublishEditActivityFragment extends Fragment {
     private void completeState(){
         if (null == tagIdList || tagIdList.size() == 0) {
             titleView.setRightBackGround(R.drawable.title_btn_disable);
+            return;
         }
         if (mSelectPath != null && mSelectPath.size() > 0) {
             titleView.setRightBackGround(R.drawable.biu_btn_normal);
