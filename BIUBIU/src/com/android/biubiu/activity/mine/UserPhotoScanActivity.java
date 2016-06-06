@@ -211,6 +211,7 @@ public class UserPhotoScanActivity extends BaseActivity implements OnClickListen
                         /*Intent intent = new Intent(UserPhotoScanActivity.this, MyPagerActivity.class);
                         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         startActivity(intent);*/
+                        setResult(RESULT_OK);
                         finish();
                     } else if (currentIndex > (photoList.size() - 1)) {
                         photoPager.setCurrentItem(currentIndex - 1);
