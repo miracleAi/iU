@@ -21,6 +21,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
+import android.view.ActionMode;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -235,9 +236,10 @@ public class UserPhotoScanActivity extends BaseActivity implements OnClickListen
         switch (v.getId()) {
             case R.id.title_back_rl:
                 if (hasDelete) {
-                    Intent intent = new Intent(UserPhotoScanActivity.this, MyPagerActivity.class);
+                    /*Intent intent = new Intent(UserPhotoScanActivity.this, MyPagerActivity.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    startActivity(intent);
+                    startActivity(intent);*/
+                    setResult(RESULT_OK);
                 }
                 finish();
                 break;
@@ -292,5 +294,15 @@ public class UserPhotoScanActivity extends BaseActivity implements OnClickListen
             return frag;
         }
 
+    }
+
+    @Override
+    public void onBackPressed() {
+        if(hasDelete){
+            setResult(RESULT_OK);
+            finish();
+        }else{
+            super.onBackPressed();
+        }
     }
 }

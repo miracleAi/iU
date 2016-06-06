@@ -79,7 +79,7 @@ public class PostsFragment extends BaseFragment implements PullToRefreshBase.OnR
     private boolean mScrollFlag;
     private int mLastVisibleItemPosition;
     private ITabPageIndicatorAnim mTabPageIndicatorAnim;
-
+    
     public PostsFragment() {
     }
 
