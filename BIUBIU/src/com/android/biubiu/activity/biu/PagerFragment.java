@@ -588,9 +588,7 @@ public class PagerFragment extends BaseFragment implements View.OnClickListener,
             grabBiuLayout.setVisibility(View.VISIBLE);
             if (codeState == 0) {
                 grabBiuTv.setText("biu");
-            } else if (codeState == 1) {
-                grabBiuTv.setText("已经biu过啦");
-            } else if (codeState == 2) {
+            }  else if (codeState == 2) {
                 grabBiuTv.setText("和TA聊聊");
             }
         }
@@ -851,9 +849,8 @@ public class PagerFragment extends BaseFragment implements View.OnClickListener,
             case R.id.grab_biu_layout:
                 switch (codeState) {
                     case 0:
-                        grabComBiu();
-                        break;
                     case 1:
+                        grabComBiu();
                         break;
                     case 2:
                         //进入聊天界面

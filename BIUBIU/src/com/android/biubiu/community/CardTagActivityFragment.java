@@ -217,11 +217,13 @@ public class CardTagActivityFragment extends Fragment implements PullToRefreshBa
             @Override
             public void afterTextChanged(Editable s) {
                 if (s.length() != 0) {
+                    cancelBtn.setVisibility(View.VISIBLE);
                     countTv.setText(""+(30-s.length()));
                     searchTagLayout.setVisibility(View.VISIBLE);
                     queryCount = queryCount + 1;
                     getTagByKeyword(s.toString(), queryCount);
                 } else {
+                    cancelBtn.setVisibility(View.GONE);
                     searchTagLayout.setVisibility(View.GONE);
                     createTagLayout.setVisibility(View.GONE);
                 }
@@ -248,6 +250,7 @@ public class CardTagActivityFragment extends Fragment implements PullToRefreshBa
                 searchTagLayout.setVisibility(View.GONE);
                 createTagLayout.setVisibility(View.GONE);
                 searchEt.setText("");
+                countTv.setText(30+"");
             }
         });
     }
