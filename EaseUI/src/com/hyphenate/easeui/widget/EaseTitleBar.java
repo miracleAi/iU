@@ -87,6 +87,11 @@ public class EaseTitleBar extends RelativeLayout {
     }
 
     public void setNewMsgCount(String count){
+        if(count.length()==1){
+            newMsgBtn.setBackgroundResource(R.drawable.title_circle_msg);
+        }else{
+            newMsgBtn.setBackgroundResource(R.drawable.new_msg_btn);
+        }
         newMsgBtn.setText(count);
         newMsgBtn.setVisibility(View.VISIBLE);
     }
