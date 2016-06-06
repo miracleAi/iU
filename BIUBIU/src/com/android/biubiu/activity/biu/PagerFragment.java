@@ -63,6 +63,7 @@ import com.android.biubiu.activity.mine.PersonalityTagActivity;
 import com.android.biubiu.activity.mine.ScanUserHeadActivity;
 import com.android.biubiu.activity.mine.SuperMainInfoActivity;
 import com.android.biubiu.activity.mine.UserDynamicActivity;
+import com.android.biubiu.activity.mine.UserPhotoScanActivity;
 import com.android.biubiu.adapter.UserInterestAdapter;
 import com.android.biubiu.adapter.UserPagerPhotoAdapter;
 import com.android.biubiu.adapter.UserPagerTagAdapter;
@@ -105,6 +106,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import cc.imeetu.iu.R;
@@ -125,7 +127,7 @@ public class PagerFragment extends BaseFragment implements View.OnClickListener,
     private ImageView userheadImv;
     private TextView usernameTv;
     private ImageView addPhotoImv;
-    private ViewPager photoPager;
+    private LinearLayout userPhotoLayout;
     private TextView userInfoTv;
     private TextView userInfoBigTv;
     private TextView userOpenTv;
@@ -185,7 +187,7 @@ public class PagerFragment extends BaseFragment implements View.OnClickListener,
 
     private UserInfoBean infoBean;
     ImageOptions imageOptions;
-    private UserPagerPhotoAdapter photoAdapter;
+   // private UserPagerPhotoAdapter photoAdapter;
     //标记个人描述是否已经展开
     private boolean isOpen = false;
     private boolean isMyself = false;
@@ -212,6 +214,8 @@ public class PagerFragment extends BaseFragment implements View.OnClickListener,
     private int codeState = -1;
 
     private boolean mRequestSuccess;
+
+    private int currentPhotoIndex = -1;
 
     public PagerFragment() {
     }
@@ -243,7 +247,7 @@ public class PagerFragment extends BaseFragment implements View.OnClickListener,
         iconVerify = (TextView) mRootview.findViewById(R.id.virify_tv);
         usernameTv = (TextView) mRootview.findViewById(R.id.username_tv);
         addPhotoImv = (ImageView) mRootview.findViewById(R.id.add_userphoto_imv);
-        photoPager = (ViewPager) mRootview.findViewById(R.id.userphoto_pager);
+        userPhotoLayout = (LinearLayout) mRootview.findViewById(R.id.user_photo_layout);
         userInfoTv = (TextView) mRootview.findViewById(R.id.userinfo_tv);
         userInfoBigTv = (TextView) mRootview.findViewById(R.id.userinfo_big_tv);
         userOpenTv = (TextView) mRootview.findViewById(R.id.open_tv);
@@ -312,8 +316,8 @@ public class PagerFragment extends BaseFragment implements View.OnClickListener,
                 .setIgnoreGif(false)
                 .build();
 
-        photoPager.setOffscreenPageLimit(3);
-        photoPager.setPageMargin(DensityUtil.dip2px(getActivity(), 10));
+       /* photoPager.setOffscreenPageLimit(3);
+        photoPager.setPageMargin(DensityUtil.dip2px(getActivity(), 10));*/
         mTopTitle.setLeftOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -513,11 +517,31 @@ public class PagerFragment extends BaseFragment implements View.OnClickListener,
         userDao.insertOrReplaceUser(item);
     }
 
-    private void setUserPhotos(ArrayList<UserPhotoBean> phos) {
-        photoAdapter = new UserPagerPhotoAdapter(getActivity(), phos, imageOptions, isMyself);
-        photoPager.setAdapter(photoAdapter);
+    private void setUserPhotos(final ArrayList<UserPhotoBean> phos) {
+        /*photoAdapter = new UserPagerPhotoAdapter(getActivity(), phos, imageOptions, isMyself);
+        photoPager.setAdapter(photoAdapter);*/
+        currentPhotoIndex = -1;
+        for(int i=0;i<phos.size();i++){
+            currentPhotoIndex = 0;
+            ImageView imgView = new ImageView(getActivity());
+            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(DensityUtil.dip2px(getActivity(),80),DensityUtil.dip2px(getActivity(),70));
+            imgView.setLayoutParams(lp);
+            imgView.setId(i);
+            imgView.setPadding(DensityUtil.dip2px(getActivity(),10),0,0,0);
+            x.image().bind(imgView, phos.get(i).getPhotoThumbnail(),imageOptions);
+            userPhotoLayout.addView(imgView);
+            imgView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(getActivity(),UserPhotoScanActivity.class);
+                    intent.putExtra("photolist", (Serializable)phos);
+                    intent.putExtra("photoindex", currentPhotoIndex);
+                    intent.putExtra("isMyself", isMyself);
+                    startActivity(intent);
+                }
+            });
+        }
     }
-
     private void setUserInfoView(UserInfoBean bean) {
         mTopTitle.setTitle(bean.getNickname());
         if (isMyself) {
@@ -720,7 +744,6 @@ public class PagerFragment extends BaseFragment implements View.OnClickListener,
         personalAdapter = new UserPagerTagAdapter(getActivity(), per);
         personalTagGv.setAdapter(personalAdapter);
     }
-
     private void initOnclick() {
         addPhotoImv.setOnClickListener(this);
         userInfoLinear.setOnClickListener(this);

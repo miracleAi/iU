@@ -104,7 +104,7 @@ public class PublishEditActivityFragment extends Fragment {
         userCode = SharePreferanceUtils.getInstance().getUserCode(getActivity(), SharePreferanceUtils.USER_CODE, "");
         initView();
         getInfo();
-        titleView.setRightImage(R.drawable.biu_btn_disabled);
+        titleView.setRightBackGround(R.drawable.biu_btn_disabled);
         return rootView;
     }
 
@@ -178,15 +178,15 @@ public class PublishEditActivityFragment extends Fragment {
     }
     private void completeState(){
         if (null == tagIdList || tagIdList.size() == 0) {
-            titleView.setRightImage(R.drawable.biu_btn_disabled);
+            titleView.setRightBackGround(R.drawable.biu_btn_disabled);
         }
         if (mSelectPath != null && mSelectPath.size() > 0) {
-            titleView.setRightImage(R.drawable.biu_btn_normal);
+            titleView.setRightBackGround(R.drawable.biu_btn_normal);
         } else {
             if (null != contentEt.getText() && !"".equals(contentEt.getText().toString())) {
-                titleView.setRightImage(R.drawable.biu_btn_normal);
+                titleView.setRightBackGround(R.drawable.biu_btn_normal);
             } else {
-                titleView.setRightImage(R.drawable.biu_btn_disabled);
+                titleView.setRightBackGround(R.drawable.biu_btn_disabled);
             }
         }
     }
@@ -424,7 +424,7 @@ public class PublishEditActivityFragment extends Fragment {
     }
     //显示提示退出对话框
     public void showDialog(){
-        if(contentEt.getText() != null && !contentEt.getText().toString().equals("") && imageList.size() > 0){
+        if(contentEt.getText() != null && !contentEt.getText().toString().equals("") || imageList.size() > 0 || tagIdList.size()>0){
             CommonDialog.doubleBtnDialog(getActivity(), "", "要退出内容编辑么？", "取消", "确定", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
