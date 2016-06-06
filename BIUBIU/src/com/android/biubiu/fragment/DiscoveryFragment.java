@@ -25,9 +25,9 @@ import com.android.biubiu.community.CommNotifyActivity;
 import com.android.biubiu.community.homepage.PostsFragment;
 import com.android.biubiu.community.PublishHomeActivity;
 import com.android.biubiu.component.indicator.FragmentIndicator;
+import com.android.biubiu.component.indicator.PagerSlidingTabStrip;
 import com.android.biubiu.component.title.TopTitleView;
 import com.android.biubiu.utils.LoginUtils;
-import com.viewpagerindicator.TabPageIndicator;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,7 +44,7 @@ public class DiscoveryFragment extends BaseFragment implements FragmentIndicator
     private static final String[] CONTENT = new String[3];
 
     private TopTitleView mTopTitle;
-    private TabPageIndicator mIndicator;
+    private PagerSlidingTabStrip mIndicator;
     private ViewPager mViewPager;
     private List<PostsFragment> mFragments = new ArrayList<PostsFragment>();
     private int newMsgCount = 0;
@@ -114,7 +114,7 @@ public class DiscoveryFragment extends BaseFragment implements FragmentIndicator
                 startActivityForResult(i, TO_PUBLISH_PAGE);
             }
         });
-        mIndicator = (TabPageIndicator) mRootview.findViewById(R.id.indicator);
+        mIndicator = (PagerSlidingTabStrip) mRootview.findViewById(R.id.indicator);
         mViewPager = (ViewPager) mRootview.findViewById(R.id.pager);
         mViewPager.setOffscreenPageLimit(2);
     }

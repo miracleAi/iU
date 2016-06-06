@@ -35,7 +35,6 @@ import com.android.biubiu.utils.SharePreferanceUtils;
 import com.google.gson.reflect.TypeToken;
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
-import com.viewpagerindicator.TabPageIndicator;
 
 import org.json.JSONException;
 import org.json.JSONObject;
