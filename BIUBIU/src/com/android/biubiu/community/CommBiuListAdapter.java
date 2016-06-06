@@ -164,7 +164,7 @@ public class CommBiuListAdapter extends BaseAdapter {
                 bean.setIsAccept(1);
                 notifyDataSetChanged();
                 Intent chat = new Intent(mCon, ChatActivity.class);
-                chat.putExtra(Constant.EXTRA_USER_ID, bean.getUserName());
+                chat.putExtra(Constant.EXTRA_USER_ID, String.valueOf(bean.getUserCode()));
                 mCon.startActivity(chat);
             }
         });
