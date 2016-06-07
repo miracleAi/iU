@@ -2,6 +2,7 @@ package com.android.biubiu.community.homepage;
 
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -37,6 +38,7 @@ import com.android.biubiu.utils.SharePreferanceUtils;
 import com.google.gson.reflect.TypeToken;
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
+import com.squareup.picasso.Picasso;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -173,7 +175,9 @@ public class PostsFragment extends BaseFragment implements PullToRefreshBase.OnR
     private void initData() {
         mImgOptions = new ImageOptions.Builder()
                 .setImageScaleType(ImageView.ScaleType.CENTER_CROP)
-                .setFailureDrawableId(R.drawable.photo_fail)
+                .setFailureDrawableId(R.drawable.banner_fail)
+                .setLoadingDrawableId(R.drawable.banner_fail)
+                .setConfig(Bitmap.Config.ARGB_8888)
                 .build();
         mBannerH = getResources().getDimensionPixelSize(R.dimen.ad_banner_height);
         mListview.setOnItemClickListener(this);
@@ -335,7 +339,7 @@ public class PostsFragment extends BaseFragment implements PullToRefreshBase.OnR
             final ImageView bannerImageView = new ImageView(getActivity());
             final Banner banner = banners.get(i);
             System.out.println("i = " + i + " cover = " + banner.getCover());
-            final int finalI = i;
+            /*final int finalI = i;
             x.image().bind(bannerImageView, packageUrl(banner.getCover()), mImgOptions, new Callback.CommonCallback<Drawable>() {
                 @Override
                 public void onSuccess(Drawable drawable) {
@@ -345,21 +349,30 @@ public class PostsFragment extends BaseFragment implements PullToRefreshBase.OnR
 
                 @Override
                 public void onError(Throwable throwable, boolean b) {
-                    System.out.println("onError");
+                    System.out.println("i = " + finalI + " onError");
                 }
 
                 @Override
                 public void onCancelled(CancelledException e) {
-                    System.out.println("onCancelled");
+                    System.out.println("i = " + finalI + " onCancelled");
                 }
 
                 @Override
                 public void onFinished() {
-
+                    System.out.println("i = " + finalI + " onFinished");
                 }
-            });
+            });*/
+//            x.image().bind(bannerImageView,banner.getCover());
+            Picasso.with(getActivity()) //
+                    .load(/*packageUrl(*/banner.getCover()/*)*/) //
+                    .placeholder(R.drawable.banner_fail) //
+                    .error(R.drawable.banner_fail) //
+//                    .fit() //
+                    .tag(PostsFragment.this) //
+                    .into(bannerImageView);
             bannerImageView.setTag(banner);
             bannerImageView.setId(i);
+            bannerImageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
             ViewGroup.LayoutParams imgParams = new ViewGroup.LayoutParams(Constant.screenWidth, mBannerH);
             mFlipper.addView(bannerImageView, i, imgParams);
             if (size > 1) {
@@ -484,6 +497,9 @@ public class PostsFragment extends BaseFragment implements PullToRefreshBase.OnR
             } else if (resultCode == Constant.PRAISE_RESULT_CODE) {
                 Posts posts = (Posts) data.getSerializableExtra(Constant.POSTS);
                 refreshListWhenPraise(posts);
+            } else if (resultCode == Constant.COMMENT_RESULT_CODE) {
+                Posts posts = (Posts) data.getSerializableExtra(Constant.POSTS);
+                refreshListWhenPraise(posts);
             }
         }
     }
@@ -503,6 +519,7 @@ public class PostsFragment extends BaseFragment implements PullToRefreshBase.OnR
             if (p.getPostId() == posts.getPostId()) {
                 p.setIsPraise(posts.getIsPraise());
                 p.setPraiseNum(posts.getPraiseNum());
+                p.setCommentNum(posts.getCommentNum());
                 break;
             }
         }

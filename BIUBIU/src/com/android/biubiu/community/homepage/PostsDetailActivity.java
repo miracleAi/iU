@@ -145,7 +145,7 @@ public class PostsDetailActivity extends Activity implements AdapterView.OnItemC
     }
 
     private void sendComment() {
-        String comment = mCommentEt.getText().toString();
+        String comment = mCommentEt.getText().toString().trim();
         if (!TextUtils.isEmpty(comment)) {
             RequestParams params = new RequestParams(HttpContants.COMMENT_CREATECOMMENT);
             JSONObject requestObject = new JSONObject();
@@ -171,16 +171,7 @@ public class PostsDetailActivity extends Activity implements AdapterView.OnItemC
                     LogUtil.d(TAG, "create comment--" + s);
                     Data<PublishCommentData> response = CommonUtils.parseJsonToObj(s, new TypeToken<Data<PublishCommentData>>() {
                     });
-                    if (response.getState().equals("303")) {
-                        Toast.makeText(PostsDetailActivity.this, "登录过期，请重新登录", Toast.LENGTH_SHORT).show();
-                        SharePreferanceUtils.getInstance().putShared(PostsDetailActivity.this, SharePreferanceUtils.TOKEN, "");
-                        SharePreferanceUtils.getInstance().putShared(PostsDetailActivity.this, SharePreferanceUtils.USER_NAME, "");
-                        SharePreferanceUtils.getInstance().putShared(PostsDetailActivity.this, SharePreferanceUtils.USER_HEAD, "");
-                        SharePreferanceUtils.getInstance().putShared(PostsDetailActivity.this, SharePreferanceUtils.USER_CODE, "");
-//                  exitHuanxin();
-                        return;
-                    }
-                    if (!response.getState().equals("200")) {
+                    if(!CommonUtils.unifyResponse(Integer.parseInt(response.getState()),PostsDetailActivity.this)){
                         return;
                     }
                     PublishCommentData data = response.getData();
@@ -217,6 +208,9 @@ public class PostsDetailActivity extends Activity implements AdapterView.OnItemC
         mCommentAdapter.notifyDataSetChanged();
         mPosts.setCommentNum(mPosts.getCommentNum() + 1);
         mCommentTv.setText(getResources().getString(R.string.comment_num, mPosts.getCommentNum()));
+        Intent i = new Intent();
+        i.putExtra(Constant.POSTS, mPosts);
+        setResult(Constant.PRAISE_RESULT_CODE, i);
     }
 
     private void initHeader() {
@@ -245,7 +239,7 @@ public class PostsDetailActivity extends Activity implements AdapterView.OnItemC
         mPosts = (Posts) getIntent().getSerializableExtra(Constant.POSTS);
         if (mPosts != null) {
             mPostsId = mPosts.getPostId();
-            initHeaderUi();
+//            initHeaderUi();
         } else {
             mPostsId = getIntent().getIntExtra(Constant.POSTS_ID, 0);
         }
@@ -283,10 +277,10 @@ public class PostsDetailActivity extends Activity implements AdapterView.OnItemC
                 if (!TextUtils.isEmpty(data.getToken())) {
                     SharePreferanceUtils.getInstance().putShared(PostsDetailActivity.this, SharePreferanceUtils.TOKEN, data.getToken());
                 }
-                if (mFromCommNotifyPage) {
-                    mPosts = data.getPost();
-                    initHeaderUi();
-                }
+//                if (mFromCommNotifyPage) {
+                mPosts = data.getPost();
+                initHeaderUi();
+//                }
                 mHasNext = data.getHasNext();
                 List<Comment> comment = data.getCommentList();
                 if (time == 0) {
@@ -330,8 +324,12 @@ public class PostsDetailActivity extends Activity implements AdapterView.OnItemC
         if (!TextUtils.isEmpty(mPosts.getUserSchool())) {
             if (!TextUtils.isEmpty(mSchoolDao.getschoolName(mPosts.getUserSchool()).get(0).getUnivsNameString())) {
                 mSchoolTv.setText(mSchoolDao.getschoolName(mPosts.getUserSchool()).get(0).getUnivsNameString());
-            }
-        }
+            }/*else{
+                mSchoolTv.setText(getResources().getString(R.string.default_school));
+            }*/
+        }/*else{
+            mSchoolTv.setText(getResources().getString(R.string.default_school));
+        }*/
         mReportLayout.setOnClickListener(this);
         mTimeTv.setText(DateUtils.getDateFormatInList2(this, mPosts.getCreateAt() * 1000));
         if (mPosts.getTags() != null && mPosts.getTags().size() > 0) {
@@ -617,7 +615,7 @@ public class PostsDetailActivity extends Activity implements AdapterView.OnItemC
                 Toast.makeText(PostsDetailActivity.this, getResources().getString(R.string.delete_success), Toast.LENGTH_SHORT).show();
                 Intent i = new Intent();
                 i.putExtra(Constant.POSTS, mPosts);
-                setResult(Constant.DELETE_RESULT_CODE, i);
+                setResult(Constant.COMMENT_RESULT_CODE, i);
                 PostsDetailActivity.this.finish();
             }
 
@@ -755,7 +753,7 @@ public class PostsDetailActivity extends Activity implements AdapterView.OnItemC
         }
         if (mData.size() > 0) {
             getPostsDetail(mData.get(mData.size() - 1).getCreateAt());
-        }else{
+        } else {
             getPostsDetail(0);
         }
     }
@@ -765,6 +763,11 @@ public class PostsDetailActivity extends Activity implements AdapterView.OnItemC
         if (mData.contains(comment)) {
             mData.remove(comment);
             mCommentAdapter.notifyDataSetChanged();
+            mPosts.setCommentNum(mPosts.getCommentNum() - 1);
+            mCommentTv.setText(getResources().getString(R.string.comment_num, mPosts.getCommentNum()));
+            Intent i = new Intent();
+            i.putExtra(Constant.POSTS, mPosts);
+            setResult(Constant.COMMENT_RESULT_CODE, i);
         }
     }
 }

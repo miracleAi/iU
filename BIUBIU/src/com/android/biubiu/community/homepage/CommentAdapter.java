@@ -4,7 +4,11 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.text.SpannableString;
+import android.text.Spanned;
 import android.text.TextUtils;
+import android.text.style.ClickableSpan;
+import android.text.style.ForegroundColorSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -135,8 +139,19 @@ public class CommentAdapter extends BaseAdapter {
         vh.time.setText(DateUtils.getDateFormatInList2(mCon, comment.getCreateAt() * 1000));
         int parentId = comment.getParentId();
         if (parentId != 0) {
-            vh.content.setText(mCon.getResources().getString(R.string.reply_comment, comment.getUserToName(),
-                    comment.getContent()));
+            String replyComm = mCon.getResources().getString(R.string.reply_comment, comment.getUserToName(),
+                    comment.getContent());
+            SpannableString ss = new SpannableString(replyComm);
+            ForegroundColorSpan foregroundColorSpan = null;
+            if ("1".equals(comment.getUserFromSex())) {
+                foregroundColorSpan = new ForegroundColorSpan(Color.parseColor("#8883bc"));
+            } else if ("2".equals(comment.getUserFromSex())) {
+                foregroundColorSpan = new ForegroundColorSpan(Color.parseColor("#f0637f"));
+            }
+            int start = 3;
+            int end = start + comment.getUserToName().length();
+            ss.setSpan(foregroundColorSpan, start, end, Spanned.SPAN_INCLUSIVE_INCLUSIVE);
+            vh.content.setText(ss);
         } else {
             vh.content.setText(comment.getContent());
         }

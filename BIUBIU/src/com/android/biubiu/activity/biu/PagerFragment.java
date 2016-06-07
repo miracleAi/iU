@@ -523,8 +523,8 @@ public class PagerFragment extends BaseFragment implements View.OnClickListener,
         photoPager.setAdapter(photoAdapter);*/
         currentPhotoIndex = -1;
         userPhotoLayout.removeAllViews();
-        for(int i=0;i<phos.size();i++){
-            currentPhotoIndex = 0;
+        for (int i = 0; i < phos.size(); i++) {
+            currentPhotoIndex = i;
             ImageView imgView = new ImageView(getActivity());
             LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(DensityUtil.dip2px(getActivity(), 80), DensityUtil.dip2px(getActivity(), 70));
             imgView.setLayoutParams(lp);

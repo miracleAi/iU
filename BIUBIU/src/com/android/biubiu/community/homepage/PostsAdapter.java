@@ -302,11 +302,14 @@ public class PostsAdapter extends BaseAdapter {
     }
 
     private String packageUrl(int imgW, int imgH, int dimensionPixelSize, String url) {
-        StringBuilder sb = new StringBuilder(url);
+        if(!TextUtils.isEmpty(url)){
+            StringBuilder sb = new StringBuilder(url);
 //        if (imgW > dimensionPixelSize || imgH > dimensionPixelSize) {
-        sb.append("@").append(dimensionPixelSize + "w").append("_1l");
+            sb.append("@").append(dimensionPixelSize + "w").append("_1l");
 //        }
-        return sb.toString();
+            return sb.toString();
+        }
+        return "";
     }
 
     class ViewHolder {

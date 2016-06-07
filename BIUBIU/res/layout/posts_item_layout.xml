@@ -29,7 +29,6 @@
                 android:id="@+id/nickname_textview"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="柳叁哥"
                 android:textColor="#8883bc"
                 android:textSize="14sp" />
 
@@ -38,7 +37,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:text="北京理工大学"
                 android:textColor="#999999"
                 android:textSize="11sp" />
         </LinearLayout>
@@ -65,7 +63,6 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_below="@+id/more_layout"
-            android:text="2015"
             android:layout_marginRight="10dp"
             android:layout_marginTop="4dp"
             android:textColor="#999999"

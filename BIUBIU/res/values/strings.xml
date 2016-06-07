@@ -316,4 +316,5 @@
     <string name="title_activity_comm_notify">CommNotifyActivity</string>
     <string name="comm_notify">通知</string>
     <string name="comm_notify_null">还没有通知呢！</string>
+    <string name="default_school">清华大学</string>
 </resources>

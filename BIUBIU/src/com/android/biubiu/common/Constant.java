@@ -39,6 +39,7 @@ public class Constant extends EaseConstant {
 
     public static final int DELETE_RESULT_CODE = EXIT_APP_SUCCESS + 1;
     public static final int PRAISE_RESULT_CODE = DELETE_RESULT_CODE + 1;
+    public static final int COMMENT_RESULT_CODE = PRAISE_RESULT_CODE + 1;
 
     public static final String PUBLISH_POST_ACTION = "publish_post_action";
     public static final String PUBLISH_POST_ACTION_PERMISSION = "cc.imeetu.iu.PUBLISH_POST_ACTION_PERMISSION";
