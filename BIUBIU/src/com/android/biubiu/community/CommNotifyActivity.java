@@ -225,8 +225,9 @@ public class CommNotifyActivity extends BaseActivity implements PullToRefreshBas
                 Toast.makeText(this, getResources().getString(R.string.data_end), Toast.LENGTH_SHORT).show();
             }
             stopLoad();
-        } else {
+        } /*else {
             getNotifyList(mData.get(mData.size() - 1).getCreateAt());
-        }
+        }*/
+        getNotifyList(mData.get(mData.size() - 1).getCreateAt());
     }
 }

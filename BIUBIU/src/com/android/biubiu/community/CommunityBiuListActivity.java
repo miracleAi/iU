@@ -206,9 +206,10 @@ public class CommunityBiuListActivity extends Activity implements PullToRefreshB
                 Toast.makeText(this, getResources().getString(R.string.data_end), Toast.LENGTH_SHORT).show();
             }
             stopLoad();
-        } else {
+        } /*else {
             getBiuList(mData.get(mData.size() - 1).getCreateAt());
-        }
+        }*/
+        getBiuList(mData.get(mData.size() - 1).getCreateAt());
     }
 
     private void stopLoad() {

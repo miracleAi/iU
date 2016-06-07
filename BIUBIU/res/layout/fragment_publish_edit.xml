@@ -39,6 +39,7 @@
                 android:id="@+id/content_et"
                 android:layout_width="match_parent"
                 android:layout_height="130dp"
+                android:maxLength="300"
                 android:layout_marginLeft="20dp"
                 android:layout_marginRight="20dp"
                 android:background="@null"
@@ -61,7 +62,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
-                    android:text="256"
+                    android:text="300"
                     android:textColor="@color/main_green"
                     android:textSize="14sp" />
             </RelativeLayout>
