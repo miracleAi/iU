@@ -164,10 +164,8 @@ public class PostsListByTagActivity extends BaseActivity implements PullToRefres
             if (mData.size() > 0) {
                 Toast.makeText(this, getResources().getString(R.string.data_end), Toast.LENGTH_SHORT).show();
             }
-            stopLoad();
-        } else {
-            getPostsList(mData.get(mData.size() - 1).getCreateAt());
         }
+        getPostsList(mData.get(mData.size() - 1).getCreateAt());
     }
 
     @Override
