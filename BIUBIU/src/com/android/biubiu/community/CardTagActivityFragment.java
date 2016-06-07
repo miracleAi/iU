@@ -317,6 +317,7 @@ public class CardTagActivityFragment extends Fragment implements PullToRefreshBa
         HttpRequestUtils.commonRequest(getActivity(), requestObject, HttpContants.GET_TAGS, new HttpCallback() {
             @Override
             public void callback(JSONObject object, String error) {
+                mPullToRefreshListview.onRefreshComplete();
                 if (object != null) {
                     allTagLayout.setVisibility(View.VISIBLE);
                     try {
@@ -408,16 +409,16 @@ public class CardTagActivityFragment extends Fragment implements PullToRefreshBa
 
     @Override
     public void onPullUpToRefresh(PullToRefreshBase<ListView> refreshView) {
-        if (hasNext == Constants.HAS_NO_DATA) {
+        /*if (hasNext == Constants.HAS_NO_DATA) {
             Toast.makeText(getActivity(), "已经到底了", Toast.LENGTH_SHORT).show();
             stopLoad();
-        } else {
+        } else {*/
             getTagList(false);
-        }
+        //}
     }
 
     private void initSize() {
-// 动态设置listview 高度
+        // 动态设置listview 高度
         LinearLayout.LayoutParams recommentLinear = (LinearLayout.LayoutParams)recommendLv.getLayoutParams();
         recommentLinear.height = DensityUtil.dip2px(getActivity(), itemHeight) * recommendLsit.size();
         recommendLv.setLayoutParams(recommentLinear);
