@@ -367,6 +367,9 @@ public class MainSetActivityFragment extends Fragment implements View.OnClickLis
                         Toast.makeText(x.app(), error, Toast.LENGTH_SHORT).show();
                         return;
                     }
+                    SharePreferanceUtils.getInstance().putShared(getActivity(), SharePreferanceUtils.USER_NAME, "");
+                    SharePreferanceUtils.getInstance().putShared(getActivity(), SharePreferanceUtils.USER_HEAD, "");
+                    SharePreferanceUtils.getInstance().putShared(getActivity(), SharePreferanceUtils.USER_CODE, "");
 //					SharePreferanceUtils.getInstance().putShared(getApplicationContext(), SharePreferanceUtils.TOKEN, "");
                     exitHuanxin();
                 } catch (JSONException e) {
@@ -393,9 +396,6 @@ public class MainSetActivityFragment extends Fragment implements View.OnClickLis
                 SharePreferanceUtils.getInstance().putShared(getActivity(), SharePreferanceUtils.TOKEN, "");
                 SharePreferanceUtils.getInstance().putShared(getActivity(), SharePreferanceUtils.HX_USER_NAME, "");
                 SharePreferanceUtils.getInstance().putShared(getActivity(), SharePreferanceUtils.HX_USER_PASSWORD, "");
-                SharePreferanceUtils.getInstance().putShared(getActivity(), SharePreferanceUtils.USER_NAME, "");
-                SharePreferanceUtils.getInstance().putShared(getActivity(), SharePreferanceUtils.USER_HEAD, "");
-                SharePreferanceUtils.getInstance().putShared(getActivity(), SharePreferanceUtils.USER_CODE, "");
                 getActivity().setResult(Constant.EXIT_APP_SUCCESS);
                 getActivity().finish();
             }

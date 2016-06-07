@@ -105,6 +105,7 @@ public class PublishEditActivityFragment extends Fragment {
         initView();
         getInfo();
         titleView.setRightBackGround(R.drawable.title_btn_disable);
+        titleView.setRightTextColor(getResources().getColor(R.color.white));
         return rootView;
     }
 
@@ -165,7 +166,10 @@ public class PublishEditActivityFragment extends Fragment {
             @Override
             public void afterTextChanged(Editable s) {
                 if (s.length() != 0) {
+                    textCountTv.setText((300-s.length())+"");
                     completeState();
+                }else{
+                    textCountTv.setText("300");
                 }
             }
         });
@@ -179,15 +183,19 @@ public class PublishEditActivityFragment extends Fragment {
     private void completeState(){
         if (null == tagIdList || tagIdList.size() == 0) {
             titleView.setRightBackGround(R.drawable.title_btn_disable);
+            titleView.setRightTextColor(getResources().getColor(R.color.white));
             return;
         }
         if (mSelectPath != null && mSelectPath.size() > 0) {
-            titleView.setRightBackGround(R.drawable.biu_btn_normal);
+            titleView.setRightBackGround(R.drawable.biu_btn_white);
+            titleView.setRightTextColor(getResources().getColor(R.color.main_green));
         } else {
             if (null != contentEt.getText() && !"".equals(contentEt.getText().toString())) {
-                titleView.setRightBackGround(R.drawable.biu_btn_normal);
+                titleView.setRightBackGround(R.drawable.biu_btn_white);
+                titleView.setRightTextColor(getResources().getColor(R.color.main_green));
             } else {
-                titleView.setRightBackGround(R.drawable.biu_btn_disabled);
+                titleView.setRightBackGround(R.drawable.title_btn_disable);
+                titleView.setRightTextColor(getResources().getColor(R.color.white));
             }
         }
     }

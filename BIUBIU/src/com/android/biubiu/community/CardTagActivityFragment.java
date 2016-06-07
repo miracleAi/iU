@@ -142,6 +142,11 @@ public class CardTagActivityFragment extends Fragment implements PullToRefreshBa
         hotLv.setAdapter(hotAdapter);
         mListview.setAdapter(newAdapter);
 
+        if(searchEt.getText() != null && searchEt.getText().toString().length()>0){
+            cancelBtn.setVisibility(View.VISIBLE);
+        }else{
+            cancelBtn.setVisibility(View.GONE                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  );
+        }
         recommendLv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -409,12 +414,13 @@ public class CardTagActivityFragment extends Fragment implements PullToRefreshBa
 
     @Override
     public void onPullUpToRefresh(PullToRefreshBase<ListView> refreshView) {
-        /*if (hasNext == Constants.HAS_NO_DATA) {
+        if (hasNext == Constants.HAS_NO_DATA) {
             Toast.makeText(getActivity(), "已经到底了", Toast.LENGTH_SHORT).show();
             stopLoad();
-        } else {*/
+        } /*else {
             getTagList(false);
-        //}
+        }*/
+        getTagList(false);
     }
 
     private void initSize() {

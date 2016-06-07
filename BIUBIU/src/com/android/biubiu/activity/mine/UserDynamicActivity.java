@@ -138,8 +138,9 @@ public class UserDynamicActivity extends BaseActivity implements PullToRefreshBa
         if (hasNext == Constants.HAS_NO_DATA) {
             Toast.makeText(UserDynamicActivity.this, "已经到底了", Toast.LENGTH_SHORT).show();
             stopLoad();
-        } else {
+        } /*else {
             getDynamicList(false);
-        }
+        }*/
+        getDynamicList(false);
     }
 }
