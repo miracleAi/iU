@@ -118,7 +118,6 @@ public class PostsDetailActivity extends Activity implements AdapterView.OnItemC
                 return false;
             }
         });
-
         mListview.setOnScrollListener(new AbsListView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(AbsListView view, int scrollState) {
