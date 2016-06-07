@@ -149,7 +149,7 @@ public class DiscoveryFragment extends BaseFragment implements FragmentIndicator
         DiscoveryAdapter adapter = new DiscoveryAdapter(getFragmentManager());
         mViewPager.setAdapter(adapter);
         mIndicator.setViewPager(mViewPager);
-
+        mViewPager.setCurrentItem(1, true);
         IntentFilter filter = new IntentFilter();
         filter.addAction(Constant.PUBLISH_POST_ACTION);
         getActivity().registerReceiver(mReceiver, filter);

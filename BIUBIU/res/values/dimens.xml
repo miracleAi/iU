@@ -24,4 +24,5 @@
     <dimen name="posts_list_margin_two">25dp</dimen>
     <dimen name="posts_list_margin_three">30dp</dimen>
     <dimen name="found_tab_indicator_height">36dp</dimen>
+
 </resources>

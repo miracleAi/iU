@@ -41,10 +41,10 @@ public class SchoolDao {
 			item.setProvinceId(c.getString(c.getColumnIndex("province_id")));
 			item.setUnivsNameString(c.getString(c.getColumnIndex("school_name")));
 
-			System.out
+			/*System.out
 					.println("id=" + item.getUnivsId() + " 省= "
 							+ item.getProvinceId() + " 学校="
-							+ item.getUnivsNameString());
+							+ item.getUnivsNameString());*/
 
 			list.add(item);
 		}
@@ -80,10 +80,10 @@ public class SchoolDao {
 			item.setProvinceId(c.getString(c.getColumnIndex("province_id")));
 			item.setUnivsNameString(c.getString(c.getColumnIndex("school_name")));
 
-			System.out
+			/*System.out
 					.println("id=" + item.getUnivsId() + " 省= "
 							+ item.getProvinceId() + " 学校="
-							+ item.getUnivsNameString());
+							+ item.getUnivsNameString());*/
 
 			list.add(item);
 		}
@@ -115,8 +115,8 @@ public class SchoolDao {
 			item.setDepartmentName(c.getString(c
 					.getColumnIndex("department_name")));
 
-			System.out.println("id=" + item.getId() + " 学校= "
-					+ item.getSchoolId() + " 专业=" + item.getDepartmentName());
+			/*System.out.println("id=" + item.getId() + " 学校= "
+					+ item.getSchoolId() + " 专业=" + item.getDepartmentName());*/
 
 			list.add(item);
 		}
@@ -149,10 +149,10 @@ public class SchoolDao {
 			item.setProvinceId(c.getString(c.getColumnIndex("province_id")));
 			item.setUnivsNameString(c.getString(c.getColumnIndex("school_name")));
 
-			System.out
+			/*System.out
 					.println("id=" + item.getUnivsId() + " 省= "
 							+ item.getProvinceId() + " 学校="
-							+ item.getUnivsNameString());
+							+ item.getUnivsNameString());*/
 
 			list.add(item);
 		}
@@ -188,8 +188,8 @@ public class SchoolDao {
 			item.setDepartmentName(c.getString(c
 					.getColumnIndex("department_name")));
 
-			System.out.println("id=" + item.getId() + " 学校= "
-					+ item.getSchoolId() + " 专业=" + item.getDepartmentName());
+			/*System.out.println("id=" + item.getId() + " 学校= "
+					+ item.getSchoolId() + " 专业=" + item.getDepartmentName());*/
 
 			list.add(item);
 		} if(c != null)  

@@ -2,6 +2,8 @@ package com.android.biubiu.community.homepage;
 
 
 import android.content.Intent;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.TextUtils;
@@ -40,6 +42,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.xutils.common.Callback;
 import org.xutils.http.RequestParams;
+import org.xutils.image.ImageOptions;
 import org.xutils.x;
 
 import java.util.ArrayList;
@@ -79,7 +82,9 @@ public class PostsFragment extends BaseFragment implements PullToRefreshBase.OnR
     private boolean mScrollFlag;
     private int mLastVisibleItemPosition;
     private ITabPageIndicatorAnim mTabPageIndicatorAnim;
-    
+    private int mBannerH;
+    private ImageOptions mImgOptions;
+
     public PostsFragment() {
     }
 
@@ -140,9 +145,9 @@ public class PostsFragment extends BaseFragment implements PullToRefreshBase.OnR
             }
 
             *//**
-             * firstVisibleItem：当前能看见的第一个列表项ID（从0开始）
-             * visibleItemCount：当前能看见的列表项个数（小半个也算） totalItemCount：列表项共数
-             *//*
+         * firstVisibleItem：当前能看见的第一个列表项ID（从0开始）
+         * visibleItemCount：当前能看见的列表项个数（小半个也算） totalItemCount：列表项共数
+         *//*
             @Override
             public void onScroll(AbsListView view, int firstVisibleItem,
                                  int visibleItemCount, int totalItemCount) {
@@ -166,6 +171,11 @@ public class PostsFragment extends BaseFragment implements PullToRefreshBase.OnR
     }
 
     private void initData() {
+        mImgOptions = new ImageOptions.Builder()
+                .setImageScaleType(ImageView.ScaleType.CENTER_CROP)
+                .setFailureDrawableId(R.drawable.photo_fail)
+                .build();
+        mBannerH = getResources().getDimensionPixelSize(R.dimen.ad_banner_height);
         mListview.setOnItemClickListener(this);
 
         mType = getArguments().getInt("type", 0);
@@ -322,14 +332,36 @@ public class PostsFragment extends BaseFragment implements PullToRefreshBase.OnR
             mFuture = mService.scheduleAtFixedRate(new Task(), 1, Constant.BANNER_ANIM_INTERVAL, TimeUnit.SECONDS);
         }
         for (int i = 0; i < size; i++) {
-            ImageView bannerImageView = new ImageView(getActivity());
-            Banner banner = banners.get(i);
-            x.image().bind(bannerImageView, banner.getCover());
+            final ImageView bannerImageView = new ImageView(getActivity());
+            final Banner banner = banners.get(i);
+            System.out.println("i = " + i + " cover = " + banner.getCover());
+            final int finalI = i;
+            x.image().bind(bannerImageView, packageUrl(banner.getCover()), mImgOptions, new Callback.CommonCallback<Drawable>() {
+                @Override
+                public void onSuccess(Drawable drawable) {
+                    System.out.println("i = " + finalI + " drawable = " + drawable);
+                    bannerImageView.setImageDrawable(drawable);
+                }
+
+                @Override
+                public void onError(Throwable throwable, boolean b) {
+                    System.out.println("onError");
+                }
+
+                @Override
+                public void onCancelled(CancelledException e) {
+                    System.out.println("onCancelled");
+                }
+
+                @Override
+                public void onFinished() {
+
+                }
+            });
             bannerImageView.setTag(banner);
             bannerImageView.setId(i);
-            bannerImageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-            mFlipper.addView(bannerImageView, i);
-
+            ViewGroup.LayoutParams imgParams = new ViewGroup.LayoutParams(Constant.screenWidth, mBannerH);
+            mFlipper.addView(bannerImageView, i, imgParams);
             if (size > 1) {
                 View v = new View(getActivity());
                 v.setId(i);
@@ -342,6 +374,12 @@ public class PostsFragment extends BaseFragment implements PullToRefreshBase.OnR
                 mIndicatorLayout.addView(v, i, params);
             }
         }
+    }
+
+    private String packageUrl(String url) {
+        StringBuilder sb = new StringBuilder(url);
+        sb.append("@").append(mBannerH + "h_" + Constant.screenWidth + "w_0e");
+        return sb.toString();
     }
 
     private void stopLoad() {
@@ -361,10 +399,8 @@ public class PostsFragment extends BaseFragment implements PullToRefreshBase.OnR
             if (mData.size() > 0) {
                 Toast.makeText(getActivity(), getResources().getString(R.string.data_end), Toast.LENGTH_SHORT).show();
             }
-            stopLoad();
-        } else {
-            getData(mData.get(mData.size() - 1).getCreateAt());
         }
+        getData(mData.get(mData.size() - 1).getCreateAt());
     }
 
     private void slideToLeft() {// 向左动画方法

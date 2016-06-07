@@ -82,8 +82,9 @@ public class PostsDetailActivity extends Activity implements AdapterView.OnItemC
     private Comment mReplayComment;
     private int mUserCode;
 
-    private boolean mFromTagPostListPage, mFromCommNotifyPage,mKeyboardShow;
+    private boolean mFromTagPostListPage, mFromCommNotifyPage, mKeyboardShow;
     private int mTargetW;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -505,13 +506,13 @@ public class PostsDetailActivity extends Activity implements AdapterView.OnItemC
                 praise();
                 break;
             case R.id.comment_imageview:
-                if(!mKeyboardShow){
+                if (!mKeyboardShow) {
                     mCommentEt.setFocusable(true);
                     mCommentEt.setFocusableInTouchMode(true);
                     mCommentEt.requestFocus();
                     CommonUtils.showKeyboard(this, mCommentEt);
                     mKeyboardShow = true;
-                }else{
+                } else {
                     CommonUtils.hideKeyboard(this);
                     mKeyboardShow = false;
                 }
@@ -747,8 +748,15 @@ public class PostsDetailActivity extends Activity implements AdapterView.OnItemC
 
     @Override
     public void onPullUpToRefresh(PullToRefreshBase<ListView> refreshView) {
+        if (mHasNext == 0) {
+            if (mData.size() > 0) {
+                Toast.makeText(this, getResources().getString(R.string.data_end), Toast.LENGTH_SHORT).show();
+            }
+        }
         if (mData.size() > 0) {
             getPostsDetail(mData.get(mData.size() - 1).getCreateAt());
+        }else{
+            getPostsDetail(0);
         }
     }
 
