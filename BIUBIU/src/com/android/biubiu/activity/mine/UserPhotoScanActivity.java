@@ -37,6 +37,7 @@ import com.android.biubiu.BaseActivity;
 import com.android.biubiu.activity.biu.MyPagerActivity;
 import com.android.biubiu.adapter.ScanPagerAdapter;
 import com.android.biubiu.bean.UserPhotoBean;
+import com.android.biubiu.component.picpreview.HackyViewPager;
 import com.android.biubiu.component.picpreview.ImageDetailFragment;
 import com.android.biubiu.utils.HttpContants;
 import com.android.biubiu.utils.LogUtil;
@@ -46,7 +47,7 @@ public class UserPhotoScanActivity extends BaseActivity implements OnClickListen
     private RelativeLayout backRl;
     private TextView indexTv;
     private RelativeLayout deleteRl;
-    private ViewPager photoPager;
+    private HackyViewPager photoPager;
     private ArrayList<UserPhotoBean> photoList = new ArrayList<UserPhotoBean>();
     private int currentIndex = 0;
     private ScanPagerAdapter scanAdapter;
@@ -103,7 +104,7 @@ public class UserPhotoScanActivity extends BaseActivity implements OnClickListen
         backRl.setOnClickListener(this);
         indexTv = (TextView) findViewById(R.id.photo_index_tv);
         deleteRl = (RelativeLayout) findViewById(R.id.delete_rl);
-        photoPager = (ViewPager) findViewById(R.id.userphoto_scan_pager);
+        photoPager = (HackyViewPager) findViewById(R.id.userphoto_scan_pager);
 
         imageOptions = new ImageOptions.Builder()
                 .setImageScaleType(ImageView.ScaleType.CENTER_CROP)
