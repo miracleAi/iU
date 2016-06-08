@@ -1,10 +1,10 @@
 package com.android.biubiu.community.homepage;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.app.Activity;
 import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -27,7 +27,6 @@ import com.android.biubiu.activity.mine.UserPhotoScanActivity;
 import com.android.biubiu.bean.UserPhotoBean;
 import com.android.biubiu.bean.base.Data;
 import com.android.biubiu.bean.community.Comment;
-import com.android.biubiu.bean.community.DiscoveryData;
 import com.android.biubiu.bean.community.Img;
 import com.android.biubiu.bean.community.PostDetailData;
 import com.android.biubiu.bean.community.Posts;
@@ -43,7 +42,6 @@ import com.android.biubiu.utils.DateUtils;
 import com.android.biubiu.utils.HttpContants;
 import com.android.biubiu.utils.LogUtil;
 import com.android.biubiu.utils.SharePreferanceUtils;
-import com.baidu.mapapi.map.Text;
 import com.google.gson.reflect.TypeToken;
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
@@ -58,9 +56,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cc.imeetu.iu.R;
+import cn.bingoogolapple.refreshlayout.BGANormalRefreshViewHolder;
+import cn.bingoogolapple.refreshlayout.BGARefreshLayout;
 
 public class PostsDetailActivity extends Activity implements AdapterView.OnItemClickListener, View.OnClickListener,
-        PullToRefreshBase.OnRefreshListener2<ListView>, CommentAdapter.IRefreshUi {
+        PullToRefreshBase.OnRefreshListener2<ListView>, CommentAdapter.IRefreshUi,
+        BGARefreshLayout.BGARefreshLayoutDelegate{
     private static final String TAG = PostsDetailActivity.class.getSimpleName();
     private Posts mPosts;
     private int mPostsId;
@@ -85,6 +86,9 @@ public class PostsDetailActivity extends Activity implements AdapterView.OnItemC
     private boolean mFromTagPostListPage, mFromCommNotifyPage, mKeyboardShow;
     private int mTargetW;
 
+    private BGARefreshLayout mRefreshLayout;
+    private ListView mDataLv;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -104,10 +108,18 @@ public class PostsDetailActivity extends Activity implements AdapterView.OnItemC
             }
         });
         mPTRLV = (PullToRefreshListView) findViewById(R.id.pull_refresh_list);
-        mPTRLV.setMode(PullToRefreshBase.Mode.BOTH);
+        mPTRLV.setMode(PullToRefreshBase.Mode.DISABLED);
         mPTRLV.setOnRefreshListener(this);
         mPTRLV.setScrollingWhileRefreshingEnabled(true);
-        mListview = mPTRLV.getRefreshableView();
+//        mListview = mPTRLV.getRefreshableView();
+
+        mRefreshLayout = (BGARefreshLayout) findViewById(R.id.rl_listview_refresh);
+        mListview = (ListView) findViewById(R.id.lv_listview_data);
+        mRefreshLayout.setDelegate(this);
+
+        BGANormalRefreshViewHolder normalRefreshViewHolder = new BGANormalRefreshViewHolder(this, true);
+        mRefreshLayout.setRefreshViewHolder(normalRefreshViewHolder);
+
         mCommentEt = (EditText) findViewById(R.id.comment_edittext);
         mCommentEt.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
@@ -132,6 +144,7 @@ public class PostsDetailActivity extends Activity implements AdapterView.OnItemC
             }
         });
         mListview.setOnItemClickListener(this);
+
     }
 
     private void commentDone() {
@@ -295,17 +308,23 @@ public class PostsDetailActivity extends Activity implements AdapterView.OnItemC
 
             @Override
             public void onError(Throwable throwable, boolean b) {
-                mPTRLV.onRefreshComplete();
+//                mPTRLV.onRefreshComplete();
+                mRefreshLayout.endRefreshing();
+                mRefreshLayout.endLoadingMore();
             }
 
             @Override
             public void onCancelled(CancelledException e) {
-                mPTRLV.onRefreshComplete();
+//                mPTRLV.onRefreshComplete();
+                mRefreshLayout.endRefreshing();
+                mRefreshLayout.endLoadingMore();
             }
 
             @Override
             public void onFinished() {
-                mPTRLV.onRefreshComplete();
+//                mPTRLV.onRefreshComplete();
+                mRefreshLayout.endRefreshing();
+                mRefreshLayout.endLoadingMore();
             }
         });
     }
@@ -771,5 +790,25 @@ public class PostsDetailActivity extends Activity implements AdapterView.OnItemC
             i.putExtra(Constant.POSTS, mPosts);
             setResult(Constant.COMMENT_RESULT_CODE, i);
         }
+    }
+
+    @Override
+    public void onBGARefreshLayoutBeginRefreshing(BGARefreshLayout refreshLayout) {
+        getPostsDetail(0);
+    }
+
+    @Override
+    public boolean onBGARefreshLayoutBeginLoadingMore(BGARefreshLayout refreshLayout) {
+        if (mHasNext == 0) {
+            if (mData.size() > 0) {
+                Toast.makeText(this, getResources().getString(R.string.data_end), Toast.LENGTH_SHORT).show();
+            }
+        }
+        if (mData.size() > 0) {
+            getPostsDetail(mData.get(mData.size() - 1).getCreateAt());
+        } else {
+            getPostsDetail(0);
+        }
+        return true;
     }
 }

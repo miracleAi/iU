@@ -396,8 +396,7 @@
         <activity
             android:name="com.android.biubiu.MainActivity"
             android:label="@string/app_name"
-            android:screenOrientation="portrait"
-            />
+            android:screenOrientation="portrait" />
         <activity
             android:name="com.android.biubiu.activity.GuildActivity"
             android:label="@string/title_activity_biu_biu_send"

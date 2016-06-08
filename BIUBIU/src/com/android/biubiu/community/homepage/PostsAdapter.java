@@ -35,6 +35,7 @@ import com.android.biubiu.utils.DateUtils;
 import com.android.biubiu.utils.HttpContants;
 import com.android.biubiu.utils.SharePreferanceUtils;
 import com.google.gson.reflect.TypeToken;
+import com.squareup.picasso.Picasso;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -202,9 +203,21 @@ public class PostsAdapter extends BaseAdapter {
                 ImageView iv = new ImageView(mCon);
 
                 if (img.getW() != 0 && img.getH() != 0) {
-                    x.image().bind(iv, packageUrl(img.getW(), img.getH(), mTargetW, img.getUrl()));
+                    Picasso.with(mCon) //
+                            .load(packageUrl(img.getW(), img.getH(), mTargetW, img.getUrl())) //
+                            .placeholder(R.drawable.photo_imageview_fail) //
+                            .error(R.drawable.banner_fail) //
+                            .tag(img)
+                            .into(iv);
+//                    x.image().bind(iv, packageUrl(img.getW(), img.getH(), mTargetW, img.getUrl()));
                 } else {
-                    x.image().bind(iv, img.getUrl());
+                    Picasso.with(mCon) //
+                            .load(img.getUrl()) //
+                            .placeholder(R.drawable.photo_imageview_fail) //
+                            .error(R.drawable.banner_fail) //
+                            .tag(img)
+                            .into(iv);
+//                    x.image().bind(iv, img.getUrl());
                 }
                 iv.setScaleType(ImageView.ScaleType.CENTER_CROP);
                 LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(mTargetW,mTargetW);
@@ -286,7 +299,13 @@ public class PostsAdapter extends BaseAdapter {
 
     private void addImgView(final int index, final List<Img> imgs, boolean b, LinearLayout rowLayout, int targetSize) {
         ImageView imageView = new ImageView(mCon);
-        x.image().bind(imageView, packageUrl(imgs.get(index).getW(), imgs.get(index).getH(), targetSize, imgs.get(index).getUrl()));
+        Picasso.with(mCon) //
+                .load(packageUrl(imgs.get(index).getW(), imgs.get(index).getH(), targetSize, imgs.get(index).getUrl())) //
+                .placeholder(R.drawable.photo_imageview_fail) //
+                .error(R.drawable.banner_fail) //
+                .tag(imgs.get(index))
+                .into(imageView);
+//        x.image().bind(imageView, packageUrl(imgs.get(index).getW(), imgs.get(index).getH(), targetSize, imgs.get(index).getUrl()));
         imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(targetSize, targetSize);
         if (b) {

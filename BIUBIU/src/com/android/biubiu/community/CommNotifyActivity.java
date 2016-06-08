@@ -2,7 +2,6 @@ package com.android.biubiu.community;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.app.Activity;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.AdapterView;
@@ -11,12 +10,8 @@ import android.widget.Toast;
 
 import com.android.biubiu.BaseActivity;
 import com.android.biubiu.bean.base.Data;
-import com.android.biubiu.bean.community.CommBiuBean;
-import com.android.biubiu.bean.community.CommBiuListData;
 import com.android.biubiu.bean.community.CommNotify;
 import com.android.biubiu.bean.community.CommNotifyData;
-import com.android.biubiu.bean.community.PostDetailData;
-import com.android.biubiu.bean.community.Posts;
 import com.android.biubiu.bean.community.SimpleRespData;
 import com.android.biubiu.common.Constant;
 import com.android.biubiu.community.homepage.PostsDetailActivity;

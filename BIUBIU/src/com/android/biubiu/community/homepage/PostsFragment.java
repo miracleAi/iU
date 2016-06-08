@@ -3,8 +3,6 @@ package com.android.biubiu.community.homepage;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.TextUtils;
@@ -15,7 +13,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -33,7 +30,6 @@ import com.android.biubiu.component.viewflipper.ViewFlipperForListview;
 import com.android.biubiu.utils.CommonUtils;
 import com.android.biubiu.utils.HttpContants;
 import com.android.biubiu.utils.LogUtil;
-import com.android.biubiu.utils.ScreenUtil;
 import com.android.biubiu.utils.SharePreferanceUtils;
 import com.google.gson.reflect.TypeToken;
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
@@ -338,7 +334,6 @@ public class PostsFragment extends BaseFragment implements PullToRefreshBase.OnR
         for (int i = 0; i < size; i++) {
             final ImageView bannerImageView = new ImageView(getActivity());
             final Banner banner = banners.get(i);
-            System.out.println("i = " + i + " cover = " + banner.getCover());
             /*final int finalI = i;
             x.image().bind(bannerImageView, packageUrl(banner.getCover()), mImgOptions, new Callback.CommonCallback<Drawable>() {
                 @Override
