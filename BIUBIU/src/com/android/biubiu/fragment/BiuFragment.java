@@ -206,7 +206,12 @@ public class BiuFragment extends Fragment implements PushInterface, FragmentIndi
                 }*//*
             } else {
                 SharePreferanceUtils.getInstance().putShared(getActivity(), SharePreferanceUtils.EXCHANGE_FROUNT, true);
+<<<<<<< HEAD
+                SharePreferanceUtils.getInstance().putShared(getActivity(), SharePreferanceUtils.IS_APP_OPEN, false);
+               /* clearView();
+=======
                *//* clearView();
+>>>>>>> iUv_1.3
                 biuDao.deleteAll();
                 isBiuLoading = false;
                 isBiuLoaded = false;*//*
@@ -225,6 +230,7 @@ public class BiuFragment extends Fragment implements PushInterface, FragmentIndi
                 resumeDraw();
                 //如果返回时biu已结束，则清掉抢biu列表的相关状态
                 if (isBiuEnd) {
+                    grabBiuBean = null;
                     userBiuImv.setImageResource(R.drawable.biu_btn_biu);
                     userBiuImv.setVisibility(View.VISIBLE);
                     grabBiuBean = null;
@@ -1567,7 +1573,7 @@ public class BiuFragment extends Fragment implements PushInterface, FragmentIndi
             taskView.updeteTask(currentTime--);
             if (currentTime <= 0) {
                 if (getActivity() != null) {
-                    Toast.makeText(getActivity().getApplicationContext(), "你的biubiu暂时无人应答，请重新发送", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity().getApplicationContext(), "你的biubiu暂时没人接收呢", Toast.LENGTH_SHORT).show();
                 }
                 taskView.setVisibility(View.GONE);
                 userBiuImv.setImageResource(R.drawable.biu_btn_unfinished);

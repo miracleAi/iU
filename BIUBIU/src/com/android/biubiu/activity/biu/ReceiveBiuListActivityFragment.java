@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -44,6 +45,7 @@ import cc.imeetu.iu.R;
 public class ReceiveBiuListActivityFragment extends BaseFragment {
     private TopTitleView mTopTitle;
     private ListView mListview;
+    private LinearLayout nullTipLayout;
     private List<UserFriends> mData = new ArrayList<UserFriends>();
     private long mBiuTime, mBiuEndTime;
     private AlertDialog mValidDialog, mInvalidDialog;
@@ -62,6 +64,7 @@ public class ReceiveBiuListActivityFragment extends BaseFragment {
 
     private void initView() {
         mTopTitle = (TopTitleView) mRootview.findViewById(R.id.top_title_view);
+        nullTipLayout = (LinearLayout) mRootview.findViewById(R.id.null_tip_layout);
         mListview = (ListView) mRootview.findViewById(R.id.pull_refresh_list);
         mTopTitle.setRightOnClickListener(new View.OnClickListener() {
             @Override
@@ -276,8 +279,13 @@ public class ReceiveBiuListActivityFragment extends BaseFragment {
                     ArrayList<UserFriends> list = gson.fromJson(userArray.toString(), new TypeToken<List<UserFriends>>() {
                     }.getType());
                     if (list != null && list.size() > 0) {
+                        mListview.setVisibility(View.VISIBLE);
+                        nullTipLayout.setVisibility(View.GONE);
                         mData.addAll(list);
                         mAdapter.notifyDataSetChanged();
+                    }else{
+                        mListview.setVisibility(View.GONE);
+                        nullTipLayout.setVisibility(View.VISIBLE);
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();

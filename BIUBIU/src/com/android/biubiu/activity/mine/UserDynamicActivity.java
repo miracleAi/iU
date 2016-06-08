@@ -98,7 +98,7 @@ public class UserDynamicActivity extends BaseActivity implements PullToRefreshBa
         HttpRequestUtils.commonRequest(UserDynamicActivity.this, requestObject, HttpContants.USER_DYNAMIC, new HttpCallback() {
             @Override
             public void callback(JSONObject object, String error) {
-                stopLoad();
+                pulltoRefreshListview.onRefreshComplete();
                 if(object != null){
                     try {
                         hasNext = object.getInt("hasNext");
@@ -136,7 +136,6 @@ public class UserDynamicActivity extends BaseActivity implements PullToRefreshBa
     public void onPullUpToRefresh(PullToRefreshBase<ListView> refreshView) {
         if (hasNext == Constants.HAS_NO_DATA) {
             Toast.makeText(UserDynamicActivity.this, "已经到底了", Toast.LENGTH_SHORT).show();
-            stopLoad();
         } /*else {
             getDynamicList(false);
         }*/

@@ -408,12 +408,6 @@ public class MainActivity extends FragmentActivity implements AMapLocationListen
     protected void onPause() {
         super.onPause();
         MobclickAgent.onPause(this);
-        if (CommonUtils.isAppOnForeground(getApplicationContext())) {
-            SharePreferanceUtils.getInstance().putShared(getApplicationContext(), SharePreferanceUtils.IS_APP_OPEN, true);
-        } else {
-            SharePreferanceUtils.getInstance().putShared(getApplicationContext(), SharePreferanceUtils.IS_APP_OPEN, false);
-        }
-
     }
 
     //获取全局状态
@@ -669,7 +663,6 @@ public class MainActivity extends FragmentActivity implements AMapLocationListen
         if (BiuFragment.isUploadingPhoto) {
             return;
         }
-        SharePreferanceUtils.getInstance().putShared(getApplicationContext(), SharePreferanceUtils.IS_APP_OPEN, false);
         this.moveTaskToBack(true);
     }
 
