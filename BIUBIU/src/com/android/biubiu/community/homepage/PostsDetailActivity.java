@@ -45,6 +45,7 @@ import com.android.biubiu.utils.SharePreferanceUtils;
 import com.google.gson.reflect.TypeToken;
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
+import com.squareup.picasso.Picasso;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -393,9 +394,21 @@ public class PostsDetailActivity extends Activity implements AdapterView.OnItemC
                 Img img = imgs.get(0);
                 ImageView iv = new ImageView(this);
                 if (img.getW() != 0 && img.getH() != 0) {
-                    x.image().bind(iv, packageUrl(mTargetW, img.getUrl()));
+//                    x.image().bind(iv, packageUrl(mTargetW, img.getUrl()));
+                    Picasso.with(this) //
+                            .load(packageUrl(mTargetW, img.getUrl())) //
+                            .placeholder(R.drawable.photo_imageview_fail) //
+                            .error(R.drawable.banner_fail) //
+                            .tag(img)
+                            .into(iv);
                 } else {
-                    x.image().bind(iv, img.getUrl());
+//                    x.image().bind(iv, img.getUrl());
+                    Picasso.with(this) //
+                            .load(img.getUrl()) //
+                            .placeholder(R.drawable.photo_imageview_fail) //
+                            .error(R.drawable.banner_fail) //
+                            .tag(img)
+                            .into(iv);
                 }
                 iv.setScaleType(ImageView.ScaleType.CENTER_CROP);
                 LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(mTargetW, mTargetW);
@@ -462,7 +475,13 @@ public class PostsDetailActivity extends Activity implements AdapterView.OnItemC
 
     private void addImgView(final int index, final List<Img> imgs, boolean b, LinearLayout rowLayout, int targetSize) {
         ImageView imageView = new ImageView(this);
-        x.image().bind(imageView, packageUrl(targetSize, imgs.get(index).getUrl()));
+//        x.image().bind(imageView, packageUrl(targetSize, imgs.get(index).getUrl()));
+        Picasso.with(this) //
+                .load(packageUrl(targetSize, imgs.get(index).getUrl())) //
+                .placeholder(R.drawable.photo_imageview_fail) //
+                .error(R.drawable.banner_fail) //
+                .tag(imgs.get(index))
+                .into(imageView);
         imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(targetSize, targetSize);
         if (b) {
