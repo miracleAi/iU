@@ -187,7 +187,7 @@ public class DiscoveryFragment extends BaseFragment implements FragmentIndicator
 
         @Override
         public CharSequence getPageTitle(int position) {
-            return CONTENT[position % CONTENT.length].toUpperCase();
+            return CONTENT[position % CONTENT.length]/*.toUpperCase()*/;
         }
 
         @Override

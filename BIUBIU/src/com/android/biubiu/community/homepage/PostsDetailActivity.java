@@ -170,7 +170,7 @@ public class PostsDetailActivity extends Activity implements AdapterView.OnItemC
                     LogUtil.d(TAG, "create comment--" + s);
                     Data<PublishCommentData> response = CommonUtils.parseJsonToObj(s, new TypeToken<Data<PublishCommentData>>() {
                     });
-                    if(!CommonUtils.unifyResponse(Integer.parseInt(response.getState()),PostsDetailActivity.this)){
+                    if (!CommonUtils.unifyResponse(Integer.parseInt(response.getState()), PostsDetailActivity.this)) {
                         return;
                     }
                     PublishCommentData data = response.getData();
@@ -363,6 +363,9 @@ public class PostsDetailActivity extends Activity implements AdapterView.OnItemC
 
 
     private void setPic() {
+        if (mImgLayout.getChildCount() > 0) {
+            mImgLayout.removeAllViews();
+        }
         final List<Img> imgs = mPosts.getImgs();
         if (imgs != null && imgs.size() > 0) {
             mImgLayout.setVisibility(View.VISIBLE);

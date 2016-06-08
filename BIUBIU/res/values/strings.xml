@@ -27,7 +27,7 @@
     <!-- menuleft 页面相关 -->
     <string name="name_main">lucifer</string>
     <string name="name_regist_hint">登录注册</string>
-    <string name="left_menu_biubiu">biubiu</string>
+    <string name="left_menu_biubiu">BiuBiu</string>
     <string name="left_menu_message">消息</string>
     <string name="left_menu_matchSetting">匹配设置</string>
     <string name="left_menu_lead">新手引导</string>
