@@ -416,7 +416,6 @@ public class CardTagActivityFragment extends Fragment implements PullToRefreshBa
     public void onPullUpToRefresh(PullToRefreshBase<ListView> refreshView) {
         if (hasNext == Constants.HAS_NO_DATA) {
             Toast.makeText(getActivity(), "已经到底了", Toast.LENGTH_SHORT).show();
-            stopLoad();
         } /*else {
             getTagList(false);
         }*/

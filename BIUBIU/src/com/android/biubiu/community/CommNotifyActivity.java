@@ -164,7 +164,7 @@ public class CommNotifyActivity extends BaseActivity implements PullToRefreshBas
         x.http().post(params, new Callback.CommonCallback<String>() {
             @Override
             public void onSuccess(String s) {
-                stopLoad();
+                mPullToRefreshListview.onRefreshComplete();
                 Data<CommNotifyData> response = CommonUtils.parseJsonToObj(s, new TypeToken<Data<CommNotifyData>>() {
                 });
                 if (!CommonUtils.unifyResponse(Integer.parseInt(response.getState()), CommNotifyActivity.this)) {
@@ -192,17 +192,17 @@ public class CommNotifyActivity extends BaseActivity implements PullToRefreshBas
 
             @Override
             public void onError(Throwable throwable, boolean b) {
-                stopLoad();
+                mPullToRefreshListview.onRefreshComplete();
             }
 
             @Override
             public void onCancelled(CancelledException e) {
-                stopLoad();
+                mPullToRefreshListview.onRefreshComplete();
             }
 
             @Override
             public void onFinished() {
-                stopLoad();
+                mPullToRefreshListview.onRefreshComplete();
             }
         });
     }
@@ -224,10 +224,13 @@ public class CommNotifyActivity extends BaseActivity implements PullToRefreshBas
             if (mData.size() > 0) {
                 Toast.makeText(this, getResources().getString(R.string.data_end), Toast.LENGTH_SHORT).show();
             }
-            stopLoad();
         } /*else {
             getNotifyList(mData.get(mData.size() - 1).getCreateAt());
         }*/
-        getNotifyList(mData.get(mData.size() - 1).getCreateAt());
+        if(mData.size()>0){
+            getNotifyList(mData.get(mData.size() - 1).getCreateAt());
+        }else{
+            getNotifyList(0);
+        }
     }
 }

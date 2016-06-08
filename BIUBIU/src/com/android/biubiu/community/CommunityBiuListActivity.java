@@ -151,7 +151,7 @@ public class CommunityBiuListActivity extends Activity implements PullToRefreshB
         x.http().post(params, new Callback.CommonCallback<String>() {
             @Override
             public void onSuccess(String s) {
-                stopLoad();
+                mPullToRefreshListview.onRefreshComplete();
                 Data<CommBiuListData> response = CommonUtils.parseJsonToObj(s, new TypeToken<Data<CommBiuListData>>() {
                 });
                 if (!CommonUtils.unifyResponse(Integer.parseInt(response.getState()), CommunityBiuListActivity.this)) {
@@ -179,17 +179,17 @@ public class CommunityBiuListActivity extends Activity implements PullToRefreshB
 
             @Override
             public void onError(Throwable throwable, boolean b) {
-                stopLoad();
+                mPullToRefreshListview.onRefreshComplete();
             }
 
             @Override
             public void onCancelled(CancelledException e) {
-                stopLoad();
+                mPullToRefreshListview.onRefreshComplete();
             }
 
             @Override
             public void onFinished() {
-                stopLoad();
+                mPullToRefreshListview.onRefreshComplete();
             }
         });
     }
@@ -205,11 +205,14 @@ public class CommunityBiuListActivity extends Activity implements PullToRefreshB
             if (mData.size() > 0) {
                 Toast.makeText(this, getResources().getString(R.string.data_end), Toast.LENGTH_SHORT).show();
             }
-            stopLoad();
         } /*else {
             getBiuList(mData.get(mData.size() - 1).getCreateAt());
         }*/
-        getBiuList(mData.get(mData.size() - 1).getCreateAt());
+        if(mData.size()>0){
+            getBiuList(mData.get(mData.size() - 1).getCreateAt());
+        }else{
+            getBiuList(0);
+        }
     }
 
     private void stopLoad() {
