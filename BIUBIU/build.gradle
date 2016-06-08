@@ -8,11 +8,13 @@ dependencies {
     compile project(':EaseUI')
     compile project(':refreshlibrary')
     compile project(':staggerlibrary')
-    //compile project(':multi-image-selector')
+    compile project(':multi-image-selector')
     compile 'com.android.support:multidex:1.0.1'
     compile 'com.android.support:support-v4:22.2.0'
     compile 'com.android.support:recyclerview-v7:22.2.0'
     compile 'com.umeng.analytics:analytics:latest.integration'
+    compile 'org.xutils:xutils:3.3.34'
+    compile 'com.squareup.picasso:picasso:2.5.2'
 }
 
 android {

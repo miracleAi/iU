@@ -1,0 +1,114 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:top="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.android.biubiu.community.PublishEditActivityFragment">
+
+    <com.android.biubiu.component.title.TopTitleView
+        android:id="@+id/top_title_view"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/top_title_height"
+        android:background="@color/main_green"
+        top:bothSideSize="@dimen/top_title_height"
+        top:leftDrawable="@drawable/back_main"
+        top:rightDrawable="@drawable/biu_btn_normal"
+        top:rightPadding="20dp"
+        top:rightText="@string/complete"
+        top:title="@string/publish"
+        top:topTitleColor="@android:color/white"
+        top:topTitleSize="@dimen/top_title_size" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <TextView
+                android:id="@+id/tag_tv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="20dp"
+                android:text="@string/tag_description"
+                android:textColor="@color/main_green"
+                android:textSize="14sp" />
+
+            <EditText
+                android:id="@+id/content_et"
+                android:layout_width="match_parent"
+                android:layout_height="130dp"
+                android:maxLength="300"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:background="@null"
+                android:textColor="@color/black"
+                android:gravity="top"
+                android:hint="说点什么好呢？"
+                android:textColorHint="@color/send_biu_tag_hint"
+                android:textSize="14sp" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginTop="20dp">
+
+                <TextView
+                    android:id="@+id/text_count_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:text="300"
+                    android:textColor="@color/main_green"
+                    android:textSize="14sp" />
+            </RelativeLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:background="@color/gray" />
+
+            <LinearLayout
+                android:id="@+id/photo_layout"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:visibility="gone"
+                android:orientation="vertical">
+
+               <ScrollView
+                   android:layout_width="match_parent"
+                   android:layout_height="70dp"
+                   android:layout_marginTop="10dp"
+                   android:scrollbars="none">
+                   <HorizontalScrollView
+                       android:layout_width="match_parent"
+                       android:layout_height="70dp"
+                       android:scrollbars="none">
+                   <LinearLayout
+                       android:id="@+id/photo_scroll_layout"
+                       android:layout_width="match_parent"
+                       android:layout_height="70dp"
+                       android:orientation="horizontal">
+
+                   </LinearLayout>
+                   </HorizontalScrollView>
+               </ScrollView>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@color/gray" />
+            </LinearLayout>
+        </LinearLayout>
+        <include layout="@layout/loading_layout" />
+    </RelativeLayout>
+</LinearLayout>

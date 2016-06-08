@@ -196,7 +196,7 @@ public class ReceiveBiuListAdapter extends BaseAdapter {
                         user.setStatus(1);
                         notifyDataSetChanged();
                         Intent chat = new Intent(mCon, ChatActivity.class);
-                        chat.putExtra(Constant.EXTRA_USER_ID, user.getNickname());
+                        chat.putExtra(Constant.EXTRA_USER_ID, user.getUserCode());
                         mCon.startActivity(chat);
                     }
                 } catch (JSONException e) {

@@ -19,5 +19,31 @@ public class Constant extends EaseConstant {
     public static int biubiCnt;
     public static String headState;
 
+    //发布页面相关传递参数
+    public static final String PUBLISH_TYPE = "publish_type";
+    public static final String PUBLISH_TEXT = "publish_text";
+    public static final String PUBLISH_IMG = "publish_img";
+    public static final String PUBLISH_IMG_PATH = "publish_img_path";
+
+    //标签页面相关传递参数
+    public static final String TO_TAG_TYPE = "to_tag_type";
+    public static final String TAG_TYPE_PUBLISH = "tag_type_publish";
+    public static final String TAG_TYPE_SELSET = "tag_type_select";
+
+    public static final String POSTS = "posts";
+    public static final String TAG = "tag";
+    public static final String FROM_POSTLIST_BY_TAG = "from_postlist_by_tag";
+    public static final String FROM_COMM_NOTIFY_PAGE = "from_comm_notify_page";
+    public static final String POSTS_ID = "posts_id";
     public static final int EXIT_APP_SUCCESS = 10005;
+
+    public static final int DELETE_RESULT_CODE = EXIT_APP_SUCCESS + 1;
+    public static final int PRAISE_RESULT_CODE = DELETE_RESULT_CODE + 1;
+    public static final int COMMENT_RESULT_CODE = PRAISE_RESULT_CODE + 1;
+
+    public static final String PUBLISH_POST_ACTION = "publish_post_action";
+    public static final String PUBLISH_POST_ACTION_PERMISSION = "cc.imeetu.iu.PUBLISH_POST_ACTION_PERMISSION";
+
+    public static final int BANNER_ANIM_INTERVAL = 2;
+    public static int screenWidth, screenHeight;
 }

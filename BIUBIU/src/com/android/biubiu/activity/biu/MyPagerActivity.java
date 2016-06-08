@@ -105,7 +105,7 @@ public class MyPagerActivity extends BaseActivity implements OnClickListener {
     private ImageView userheadImv;
     private TextView usernameTv;
     private ImageView addPhotoImv;
-    private ViewPager photoPager;
+    //private ViewPager photoPager;
     private TextView userInfoTv;
     private TextView userInfoBigTv;
     private TextView userOpenTv;
@@ -220,7 +220,7 @@ public class MyPagerActivity extends BaseActivity implements OnClickListener {
         iconVerify = (TextView) findViewById(R.id.virify_tv);
         usernameTv = (TextView) findViewById(R.id.username_tv);
         addPhotoImv = (ImageView) findViewById(R.id.add_userphoto_imv);
-        photoPager = (ViewPager) findViewById(R.id.userphoto_pager);
+        //photoPager = (ViewPager) findViewById(R.id.userphoto_pager);
         userInfoTv = (TextView) findViewById(R.id.userinfo_tv);
         userInfoBigTv = (TextView) findViewById(R.id.userinfo_big_tv);
         userOpenTv = (TextView) findViewById(R.id.open_tv);
@@ -279,8 +279,8 @@ public class MyPagerActivity extends BaseActivity implements OnClickListener {
                 .setIgnoreGif(false)
                 .build();
 
-        photoPager.setOffscreenPageLimit(3);
-        photoPager.setPageMargin(DensityUtil.dip2px(getApplicationContext(), 10));
+       /* photoPager.setOffscreenPageLimit(3);
+        photoPager.setPageMargin(DensityUtil.dip2px(getApplicationContext(), 10));*/
     }
 
     private void initOnclick() {
@@ -458,7 +458,7 @@ public class MyPagerActivity extends BaseActivity implements OnClickListener {
 
     private void setUserPhotos(ArrayList<UserPhotoBean> photos) {
         photoAdapter = new UserPagerPhotoAdapter(getApplicationContext(), photos, imageOptions, isMyself);
-        photoPager.setAdapter(photoAdapter);
+        //photoPager.setAdapter(photoAdapter);
     }
 
     private void setInterestTags(ArrayList<InterestByCateBean> cates) {

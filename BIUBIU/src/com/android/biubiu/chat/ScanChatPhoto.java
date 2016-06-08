@@ -9,6 +9,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
 
+import org.xutils.common.Callback;
 import org.xutils.x;
 import org.xutils.common.Callback.CancelledException;
 import org.xutils.common.Callback.CommonCallback;
@@ -115,32 +116,32 @@ public class ScanChatPhoto extends BaseActivity{
 		isLoading = true;
 		toastShort("开始下载");
 	    EMImageMessageBody imgBody = (EMImageMessageBody) msgList.get(index).getBody();
-		x.image().loadFile(imgBody.getRemoteUrl(),null, new CommonCallback<File>() {
-			
+		x.image().loadFile(imgBody.getRemoteUrl(), null, new Callback.CacheCallback<File>() {
 			@Override
-			public void onSuccess(File arg0) {
-				// TODO Auto-generated method stub
+			public boolean onCache(File result) {
+				return false;
+			}
+
+			@Override
+			public void onSuccess(File result) {
 				isLoading = false;
 				toastShort("下载完成");
-				saveFile(arg0);
+				saveFile(result);
 			}
-			
+
 			@Override
-			public void onFinished() {
-				// TODO Auto-generated method stub
-				isLoading = false;
-			}
-			
-			@Override
-			public void onError(Throwable arg0, boolean arg1) {
-				// TODO Auto-generated method stub
+			public void onError(Throwable ex, boolean isOnCallback) {
 				isLoading = false;
 				toastShort("下载失败");
 			}
-			
+
 			@Override
-			public void onCancelled(CancelledException arg0) {
-				// TODO Auto-generated method stub
+			public void onCancelled(CancelledException cex) {
+				isLoading = false;
+			}
+
+			@Override
+			public void onFinished() {
 				isLoading = false;
 			}
 		});

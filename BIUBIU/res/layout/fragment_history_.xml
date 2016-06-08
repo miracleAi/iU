@@ -15,15 +15,6 @@
         top:bothSideSize="68dp"
         top:leftDrawable="@drawable/biu_btn_choose" />
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/id_recyclerview"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@+id/top_title_view"
-        android:layout_marginLeft="10dp"
-        android:scrollbars="none"
-        android:visibility="gone" />
-
     <com.android.biubiu.component.stagger.PullToRefreshStaggeredGridView
         android:id="@+id/pull_grid_view"
         android:layout_width="match_parent"

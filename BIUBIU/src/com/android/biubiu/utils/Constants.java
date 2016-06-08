@@ -99,4 +99,9 @@ public class Constants {
 	public static final int GRAB_BIU_RECEIVE = 3;
 	public static final int GRAB_NEED_COIN = 4;
 	public static final int GRAB_COIN_LESS = 2;
+	/**
+	 * 是否还有数据
+	 * */
+	public static final int HAS_NO_DATA = 0;
+	public static final int HAS_NEXT = 1;
 }

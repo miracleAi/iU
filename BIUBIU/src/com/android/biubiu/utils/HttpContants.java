@@ -2,9 +2,11 @@ package com.android.biubiu.utils;
 
 public class HttpContants {
     //正式服务器
-    public static final String HTTP_ADDRESS = "http://app.iu.imeetu.cc/meetu_maven_new/";
+//    public static final String HTTP_ADDRESS = "http://app.iu.imeetu.cc/meetu_maven_new/";
     //测试服务器
-//    public static final String HTTP_ADDRESS = "http://123.57.26.168:8080/meetu_maven_new/";
+    public static final String HTTP_ADDRESS = "http://123.57.26.168:8080/meetu_maven_new/";
+    //社区版Host
+    public static final String HTTP_COMMUNITY_ADDRESS = "http://123.57.26.168:8080/meetu_community/";
     //阿里云
     public static final String A_LI_YUN = "http://oss-cn-beijing.aliyuncs.com";
     /**
@@ -174,5 +176,84 @@ public class HttpContants {
      * 获取biu币的数量
      */
     public static final String GET_UM_COUNT = HTTP_ADDRESS + "app/biu/getVC";
+    /**
+     * 获取标签
+     */
+    public static final String GET_TAGS = HTTP_COMMUNITY_ADDRESS + "app/community/tag/getTagList";
+    /**
+     * 根据关键字获取标签
+     */
+    public static final String GET_TAGS_BY_NAME = HTTP_COMMUNITY_ADDRESS + "app/community/tag/getTagByName";
+    /**
+     * 创建标签
+     */
+    public static final String CREATE_TAG = HTTP_COMMUNITY_ADDRESS + "app/community/tag/createTag";
+
+    /**
+     * 发现首页接口,包括帖子列表和banner
+     */
+    public static final String POST_GETPOSTLISTBYTYPE = HTTP_COMMUNITY_ADDRESS + "app/community/post/getPostListByType";
+    /**
+     * 发布帖子
+     */
+    public static final String PUBLISH_POST = HTTP_COMMUNITY_ADDRESS + "app/community/post/createPost";
+    /**
+     * 帖子详情
+     */
+    public static final String POST_DETAIL = HTTP_COMMUNITY_ADDRESS + "app/community/post/getPostDetail";
+    /**
+     * 发布评论
+     */
+    public static final String COMMENT_CREATECOMMENT = HTTP_COMMUNITY_ADDRESS + "app/community/comment/createComment";
+    /**
+     * 点赞/取消赞
+     */
+    public static final String PRAISE_DOPRAISE = HTTP_COMMUNITY_ADDRESS + "app/community/praise/doPraise";
+    /**
+     * 获取个人动态
+     */
+    public static final String USER_DYNAMIC = HTTP_COMMUNITY_ADDRESS + "app/community/post/getMyPostList";
+    /**
+     * 社区抢biu
+     */
+    public static final String GRAB_COM_BIU = HTTP_COMMUNITY_ADDRESS + "app/community/combiu/grabComBiu";
+    /* 举报
+    */
+    public static final String REPORT_CREATEREPORT = HTTP_COMMUNITY_ADDRESS + "app/community/report/createReport";
+    /**
+     * 删除帖子
+     */
+    public static final String POST_DELETEPOST = HTTP_COMMUNITY_ADDRESS + "app/community/post/deletePost";
+    /**
+     * 删除评论
+     */
+    public static final String COMMENT_DELETECOMMENT = HTTP_COMMUNITY_ADDRESS + "app/community/comment/deleteComment";
+    /**
+     * 获取全局通知
+     */
+    public static final String GET_ALL_STATUS = HTTP_COMMUNITY_ADDRESS + "app/overall/getStatus";
+     /* 获取社区biu列表
+     */
+    public static final String COMBIU_GETCOMBIULIST = HTTP_COMMUNITY_ADDRESS + "app/community/combiu/getComBiuList";
+    /**
+     * 话题分类下的帖子
+     */
+    public static final String POST_GETPOSTLISTBYTAG = HTTP_COMMUNITY_ADDRESS + "app/community/post/getPostListByTag";
+    /**
+     * 接受社区biu我的人
+     */
+    public static final String COMBIU_ACCEPTCOMBIU = HTTP_COMMUNITY_ADDRESS + "app/community/combiu/acceptComBiu";
+    /**
+     * 清空社区biu我的人
+     */
+    public static final String COMBIU_DELETECOMBIU = HTTP_COMMUNITY_ADDRESS + "app/community/combiu/deleteComBiu";
+    /**
+     * 请求通知列表
+     */
+    public static final String NOTIFY_GETNOTIFYLIST = HTTP_COMMUNITY_ADDRESS + "app/community/notify/getNotifyList";
+    /**
+     * 清空通知
+     */
+    public static final String NOTIFY_DELETNOTIFIES = HTTP_COMMUNITY_ADDRESS + "app/community/notify/deletNotifies";
 
 }

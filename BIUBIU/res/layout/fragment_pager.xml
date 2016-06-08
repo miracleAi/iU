@@ -14,8 +14,7 @@
         top:leftDrawable="@drawable/main_nav_bar_icon_left"
         top:rightDrawable="@drawable/main_nav_bar_icon_right"
         top:topTitleColor="@android:color/white"
-        top:topTitleSize="@dimen/top_title_size"
-        />
+        top:topTitleSize="@dimen/top_title_size" />
 
     <include
         android:id="@+id/login_view"
@@ -23,16 +22,14 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/top_title_view"
-        android:visibility="gone"
-        />
+        android:visibility="gone" />
 
 
     <FrameLayout
         android:id="@+id/logined_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/top_title_view"
-       >
+        android:layout_below="@+id/top_title_view">
 
         <ScrollView
             android:layout_width="match_parent"
@@ -144,14 +141,15 @@
                         android:layout_marginTop="18dp"
                         android:textColor="@color/white"
                         android:textSize="12sp"
-                        android:visibility="gone"/>
+                        android:visibility="gone" />
 
                     <RelativeLayout
                         android:id="@+id/other_info_layout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_alignParentBottom="true"
-                        android:layout_marginBottom="11dp">
+                        android:layout_marginBottom="11dp"
+                        android:visibility="gone">
 
                         <LinearLayout
                             android:layout_width="wrap_content"
@@ -222,6 +220,60 @@
                                 android:textSize="11sp" />
                         </LinearLayout>
                     </RelativeLayout>
+
+                    <RelativeLayout
+                        android:id="@+id/my_info_layout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentBottom="true"
+                        android:layout_marginBottom="15dp">
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerInParent="true"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="今日访问："
+                                android:textColor="@color/yello_text"
+                                android:textSize="11sp" />
+
+                            <TextView
+                                android:id="@+id/today_tv"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="5.5dp"
+                                android:text="154"
+                                android:textColor="@color/white"
+                                android:textSize="11sp" />
+
+                            <View
+                                android:layout_width="1dp"
+                                android:layout_height="11dp"
+                                android:layout_marginLeft="11dp"
+                                android:background="@drawable/main_imageview_line" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="11dp"
+                                android:text="总访问："
+                                android:textColor="@color/yello_text"
+                                android:textSize="11sp" />
+
+                            <TextView
+                                android:id="@+id/total_tv"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="5.5dp"
+                                android:text="154"
+                                android:textColor="@color/white"
+                                android:textSize="11sp" />
+                        </LinearLayout>
+                    </RelativeLayout>
                 </RelativeLayout>
 
                 <RelativeLayout
@@ -231,26 +283,33 @@
                     android:layout_marginRight="10dp"
                     android:layout_marginTop="15dp">
 
-                    <LinearLayout
-                        android:id="@+id/userphoto_linear"
+                    <HorizontalScrollView
                         android:layout_width="match_parent"
                         android:layout_height="70dp"
-                        android:gravity="center_vertical"
-                        android:orientation="horizontal">
+                        android:scrollbars="none">
 
-                        <ImageView
-                            android:id="@+id/add_userphoto_imv"
-                            android:layout_width="70dp"
+                        <LinearLayout
+                            android:id="@+id/userphoto_linear"
+                            android:layout_width="match_parent"
                             android:layout_height="70dp"
-                            android:src="@drawable/main_btn_intopicture" />
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
 
-                        <android.support.v4.view.ViewPager
-                            android:id="@+id/userphoto_pager"
-                            android:layout_width="0dp"
-                            android:layout_height="70dp"
-                            android:layout_marginLeft="10dp"
-                            android:layout_weight="1"></android.support.v4.view.ViewPager>
-                    </LinearLayout>
+                            <ImageView
+                                android:id="@+id/add_userphoto_imv"
+                                android:layout_width="70dp"
+                                android:layout_height="70dp"
+                                android:src="@drawable/main_btn_intopicture" />
+
+                            <LinearLayout
+                                android:id="@+id/user_photo_layout"
+                                android:layout_width="match_parent"
+                                android:layout_height="70dp"
+                                android:orientation="horizontal">
+
+                            </LinearLayout>
+                        </LinearLayout>
+                    </HorizontalScrollView>
 
                     <TextView
                         android:id="@+id/no_photo"
@@ -295,13 +354,12 @@
                         android:layout_alignParentLeft="true"
                         android:layout_marginBottom="16dp"
                         android:layout_marginTop="16dp"
-                        android:paddingRight="19dp"
-                        android:lineSpacingMultiplier="1.2"
                         android:layout_toLeftOf="@+id/open_tv"
+                        android:lineSpacingMultiplier="1.2"
                         android:maxLines="3"
+                        android:paddingRight="19dp"
                         android:textColor="@color/page_text2"
-                        android:textSize="12sp"
-                        android:visibility="gone" />
+                        android:textSize="12sp" />
 
                     <TextView
                         android:id="@+id/userinfo_big_tv"
@@ -310,10 +368,10 @@
                         android:layout_alignParentLeft="true"
                         android:layout_marginBottom="16dp"
                         android:layout_marginTop="16dp"
-                        android:paddingRight="19dp"
-                        android:lineSpacingMultiplier="1.2"
                         android:layout_toLeftOf="@+id/open_tv"
+                        android:lineSpacingMultiplier="1.2"
                         android:maxLines="10"
+                        android:paddingRight="19dp"
                         android:text="关于我的信息"
                         android:textColor="@color/page_text2"
                         android:textSize="12sp" />
@@ -344,6 +402,50 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
+                    android:background="@drawable/main_line_long" />
+
+                <LinearLayout
+                    android:id="@+id/dynamic_linear"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="20dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="22dp"
+                        android:layout_height="22dp"
+                        android:src="@drawable/main_img_personal" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="8dp"
+                        android:text="@string/page_dynamic"
+                        android:textColor="@color/page_text4"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        android:id="@+id/dynamic_tv"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="right"
+                        android:textColor="@color/black"
+                        android:textSize="14sp" />
+
+                    <ImageView
+                        android:id="@+id/dynamic_arrow"
+                        android:layout_width="5dp"
+                        android:layout_height="11dp"
+                        android:layout_marginLeft="19dp"
+                        android:src="@drawable/main_btn_in" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     android:background="@drawable/main_line_long" />
 
                 <TextView
@@ -953,5 +1055,21 @@
             android:visibility="gone" />
     </FrameLayout>
 
+    <RelativeLayout
+        android:id="@+id/grab_biu_layout"
+        android:layout_width="match_parent"
+        android:layout_height="49dp"
+        android:layout_alignParentBottom="true"
+        android:background="@color/main_green"
+        android:visibility="gone">
 
+        <TextView
+            android:id="@+id/grab_biu_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="biu"
+            android:textColor="@color/white"
+            android:textSize="14sp" />
+    </RelativeLayout>
 </RelativeLayout>

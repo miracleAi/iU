@@ -62,6 +62,8 @@ import com.android.biubiu.activity.mine.MainSetActivity;
 import com.android.biubiu.activity.mine.PersonalityTagActivity;
 import com.android.biubiu.activity.mine.ScanUserHeadActivity;
 import com.android.biubiu.activity.mine.SuperMainInfoActivity;
+import com.android.biubiu.activity.mine.UserDynamicActivity;
+import com.android.biubiu.activity.mine.UserPhotoScanActivity;
 import com.android.biubiu.adapter.UserInterestAdapter;
 import com.android.biubiu.adapter.UserPagerPhotoAdapter;
 import com.android.biubiu.adapter.UserPagerTagAdapter;
@@ -71,9 +73,12 @@ import com.android.biubiu.bean.PersonalTagBean;
 import com.android.biubiu.bean.UserFriends;
 import com.android.biubiu.bean.UserInfoBean;
 import com.android.biubiu.bean.UserPhotoBean;
+import com.android.biubiu.callback.HttpCallback;
+import com.android.biubiu.chat.ChatActivity;
 import com.android.biubiu.chat.MyHintDialog;
 import com.android.biubiu.common.CommonDialog;
 import com.android.biubiu.common.Constant;
+import com.android.biubiu.community.PublishHomeActivity;
 import com.android.biubiu.component.indicator.FragmentIndicator;
 import com.android.biubiu.component.title.TopTitleView;
 import com.android.biubiu.sqlite.CityDao;
@@ -82,6 +87,7 @@ import com.android.biubiu.sqlite.UserDao;
 import com.android.biubiu.utils.Constants;
 import com.android.biubiu.utils.DensityUtil;
 import com.android.biubiu.utils.HttpContants;
+import com.android.biubiu.utils.HttpRequestUtils;
 import com.android.biubiu.utils.LogUtil;
 import com.android.biubiu.utils.LoginUtils;
 import com.android.biubiu.utils.NetUtils;
@@ -100,6 +106,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import cc.imeetu.iu.R;
@@ -117,10 +124,11 @@ public class PagerFragment extends BaseFragment implements View.OnClickListener,
     private static final int TO_LOGIN = 1007;
     private static final int TO_REGISTER = 1008;
     private static final int TO_SETTING = TO_REGISTER + 1;
+    private static final int TO_PREVIEW_PIC = TO_SETTING + 1;
     private ImageView userheadImv;
     private TextView usernameTv;
     private ImageView addPhotoImv;
-    private ViewPager photoPager;
+    private LinearLayout userPhotoLayout;
     private TextView userInfoTv;
     private TextView userInfoBigTv;
     private TextView userOpenTv;
@@ -151,6 +159,9 @@ public class PagerFragment extends BaseFragment implements View.OnClickListener,
     private RelativeLayout backRl;
     private RelativeLayout userInfoLinear;
     private RelativeLayout otherInfoLayout;
+    private LinearLayout dynamicLayout;
+    private TextView dynamicTv;
+    private ImageView dynamicArrow;
     private TextView locationTv;
     private TextView matchTv;
     private TextView timeTv;
@@ -169,9 +180,15 @@ public class PagerFragment extends BaseFragment implements View.OnClickListener,
     private ImageView sexArrow;
     private TextView noPhotoTv;
     private ImageView superManIv;
+    private RelativeLayout grabBiuLayout;
+    private TextView grabBiuTv;
+    private RelativeLayout myInfoLayout;
+    private TextView totalTv;
+    private TextView todayTv;
+
     private UserInfoBean infoBean;
     ImageOptions imageOptions;
-    private UserPagerPhotoAdapter photoAdapter;
+    // private UserPagerPhotoAdapter photoAdapter;
     //标记个人描述是否已经展开
     private boolean isOpen = false;
     private boolean isMyself = false;
@@ -195,8 +212,11 @@ public class PagerFragment extends BaseFragment implements View.OnClickListener,
     private FrameLayout mLoginedView;
     private Button register, login;
     Bundle b;
+    private int codeState = -1;
 
     private boolean mRequestSuccess;
+
+    private int currentPhotoIndex = -1;
 
     public PagerFragment() {
     }
@@ -228,7 +248,7 @@ public class PagerFragment extends BaseFragment implements View.OnClickListener,
         iconVerify = (TextView) mRootview.findViewById(R.id.virify_tv);
         usernameTv = (TextView) mRootview.findViewById(R.id.username_tv);
         addPhotoImv = (ImageView) mRootview.findViewById(R.id.add_userphoto_imv);
-        photoPager = (ViewPager) mRootview.findViewById(R.id.userphoto_pager);
+        userPhotoLayout = (LinearLayout) mRootview.findViewById(R.id.user_photo_layout);
         userInfoTv = (TextView) mRootview.findViewById(R.id.userinfo_tv);
         userInfoBigTv = (TextView) mRootview.findViewById(R.id.userinfo_big_tv);
         userOpenTv = (TextView) mRootview.findViewById(R.id.open_tv);
@@ -264,6 +284,16 @@ public class PagerFragment extends BaseFragment implements View.OnClickListener,
         locationTv = (TextView) mRootview.findViewById(R.id.location_tv);
         matchTv = (TextView) mRootview.findViewById(R.id.match_tv);
         timeTv = (TextView) mRootview.findViewById(R.id.time_tv);
+        myInfoLayout = (RelativeLayout) mRootview.findViewById(R.id.my_info_layout);
+        totalTv = (TextView) mRootview.findViewById(R.id.total_tv);
+        todayTv = (TextView) mRootview.findViewById(R.id.today_tv);
+        dynamicLayout = (LinearLayout) mRootview.findViewById(R.id.dynamic_linear);
+        dynamicLayout.setOnClickListener(this);
+        dynamicArrow = (ImageView) mRootview.findViewById(R.id.dynamic_arrow);
+        dynamicTv = (TextView) mRootview.findViewById(R.id.dynamic_tv);
+        grabBiuLayout = (RelativeLayout) mRootview.findViewById(R.id.grab_biu_layout);
+        grabBiuLayout.setOnClickListener(this);
+        grabBiuTv = (TextView) mRootview.findViewById(R.id.grab_biu_tv);
         aboutMeArrow = (ImageView) mRootview.findViewById(R.id.about_arrow);
         nickArrwo = (ImageView) mRootview.findViewById(R.id.nickname_arrow);
         birthArrow = (ImageView) mRootview.findViewById(R.id.birth_arrow);
@@ -287,8 +317,8 @@ public class PagerFragment extends BaseFragment implements View.OnClickListener,
                 .setIgnoreGif(false)
                 .build();
 
-        photoPager.setOffscreenPageLimit(3);
-        photoPager.setPageMargin(DensityUtil.dip2px(getActivity(), 10));
+       /* photoPager.setOffscreenPageLimit(3);
+        photoPager.setPageMargin(DensityUtil.dip2px(getActivity(), 10));*/
         mTopTitle.setLeftOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -363,7 +393,7 @@ public class PagerFragment extends BaseFragment implements View.OnClickListener,
             if (mLoginedView.getVisibility() == View.GONE) {
                 mLoginedView.setVisibility(View.VISIBLE);
             }
-            if(mTopTitle.getVisibility()==View.GONE){
+            if (mTopTitle.getVisibility() == View.GONE) {
                 mTopTitle.setVisibility(View.VISIBLE);
             }
             if (!mRequestSuccess) {
@@ -444,11 +474,14 @@ public class PagerFragment extends BaseFragment implements View.OnClickListener,
                     }
                     mRequestSuccess = true;
                     JSONObject data = jsons.getJSONObject("data");
-                    String info = data.getJSONObject("userinfo").toString();
+                    JSONObject info = data.getJSONObject("userinfo");
                     //					String token = data.getString("token");
                     //					SharePreferanceUtils.getInstance().putShared(getApplicationContext(), SharePreferanceUtils.TOKEN, token);
+                    if (!isMyself) {
+                        codeState = info.getInt("code");
+                    }
                     Gson gson = new Gson();
-                    UserInfoBean bean = gson.fromJson(info, UserInfoBean.class);
+                    UserInfoBean bean = gson.fromJson(info.toString(), UserInfoBean.class);
                     if (bean == null) {
                         toastShort("获取数据失败");
                         return;
@@ -485,9 +518,31 @@ public class PagerFragment extends BaseFragment implements View.OnClickListener,
         userDao.insertOrReplaceUser(item);
     }
 
-    private void setUserPhotos(ArrayList<UserPhotoBean> phos) {
-        photoAdapter = new UserPagerPhotoAdapter(getActivity(), phos, imageOptions, isMyself);
-        photoPager.setAdapter(photoAdapter);
+    private void setUserPhotos(final ArrayList<UserPhotoBean> phos) {
+        /*photoAdapter = new UserPagerPhotoAdapter(getActivity(), phos, imageOptions, isMyself);
+        photoPager.setAdapter(photoAdapter);*/
+        currentPhotoIndex = -1;
+        userPhotoLayout.removeAllViews();
+        for (int i = 0; i < phos.size(); i++) {
+            currentPhotoIndex = i;
+            ImageView imgView = new ImageView(getActivity());
+            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(DensityUtil.dip2px(getActivity(), 80), DensityUtil.dip2px(getActivity(), 70));
+            imgView.setLayoutParams(lp);
+            imgView.setId(i);
+            imgView.setPadding(DensityUtil.dip2px(getActivity(), 10), 0, 0, 0);
+            x.image().bind(imgView, phos.get(i).getPhotoThumbnail(), imageOptions);
+            userPhotoLayout.addView(imgView);
+            imgView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(getActivity(), UserPhotoScanActivity.class);
+                    intent.putExtra("photolist", (Serializable) phos);
+                    intent.putExtra("photoindex", currentPhotoIndex);
+                    intent.putExtra("isMyself", isMyself);
+                    startActivityForResult(intent, TO_PREVIEW_PIC);
+                }
+            });
+        }
     }
 
     private void setUserInfoView(UserInfoBean bean) {
@@ -506,7 +561,9 @@ public class PagerFragment extends BaseFragment implements View.OnClickListener,
             schoolArrow.setVisibility(View.VISIBLE);
             personalArrow.setVisibility(View.VISIBLE);
             interestArrow.setVisibility(View.VISIBLE);
-
+            myInfoLayout.setVisibility(View.VISIBLE);
+            todayTv.setText(bean.getTodayNum() + "");
+            totalTv.setText(bean.getTotalNum() + "");
         } else {
             if (bean.getDistance() > 1000) {
                 locationTv.setText(Math.round(bean.getDistance() / 1000) / 10.0 + "km");
@@ -523,6 +580,7 @@ public class PagerFragment extends BaseFragment implements View.OnClickListener,
             matchTv.setText("" + bean.getMatchScore() + "%");
             addPhotoImv.setVisibility(View.GONE);
             otherInfoLayout.setVisibility(View.VISIBLE);
+            myInfoLayout.setVisibility(View.GONE);
             aboutMeArrow.setVisibility(View.GONE);
             nickArrwo.setVisibility(View.GONE);
             birthArrow.setVisibility(View.GONE);
@@ -539,7 +597,6 @@ public class PagerFragment extends BaseFragment implements View.OnClickListener,
         x.image().bind(userheadImv, bean.getIconCircle(), imageOptions);
 
 
-//		if(isMyself){
         iconVerify.setVisibility(View.VISIBLE);
         if (bean.getIconVerify().equals("0")) {
             iconVerify.setText("待审核");
@@ -552,12 +609,16 @@ public class PagerFragment extends BaseFragment implements View.OnClickListener,
         } else {
             iconVerify.setText("未通过");
         }
-
-//		}else{
-//			iconVerify.setVisibility(View.GONE);
-//		}
-
-
+        if (isMyself) {
+            grabBiuLayout.setVisibility(View.GONE);
+        } else {
+            grabBiuLayout.setVisibility(View.VISIBLE);
+            if (codeState == 0) {
+                grabBiuTv.setText("biu");
+            } else if (codeState == 2) {
+                grabBiuTv.setText("和TA聊聊");
+            }
+        }
         usernameTv.setText(bean.getNickname());
         nicknameTv.setText(bean.getNickname());
         sexTv.setText(bean.getSexStr(bean.getSex()));
@@ -769,6 +830,11 @@ public class PagerFragment extends BaseFragment implements View.OnClickListener,
                 identityIntent.putExtra("userInfoBean", infoBean);
                 startActivityForResult(identityIntent, UPDATE_INFO);
                 break;
+            case R.id.dynamic_linear:
+                Intent dynamicIntent = new Intent(getActivity(), UserDynamicActivity.class);
+                dynamicIntent.putExtra("userCode", userCode);
+                startActivity(dynamicIntent);
+                break;
             case R.id.school_linear:
                 //if(infoBean.getIsStudent().equals(Constants.IS_STUDENT_FLAG)){
                 Intent schoolIntent = new Intent(getActivity(), ChangeSchoolActivity.class);
@@ -807,9 +873,45 @@ public class PagerFragment extends BaseFragment implements View.OnClickListener,
                 Intent login = new Intent(getActivity(), LoginActivity.class);
                 startActivityForResult(login, TO_LOGIN);
                 break;
+            case R.id.grab_biu_layout:
+                switch (codeState) {
+                    case 0:
+                    case 1:
+                        grabComBiu();
+                        break;
+                    case 2:
+                        //进入聊天界面
+                        Intent chatIntent = new Intent(getActivity(), ChatActivity.class);
+                        chatIntent.putExtra(Constant.EXTRA_USER_ID, userCode);
+                        startActivity(chatIntent);
+                        break;
+                }
+                break;
             default:
                 break;
         }
+    }
+
+    //社区biu
+    private void grabComBiu() {
+        JSONObject requestObject = new JSONObject();
+        try {
+            requestObject.put("userCode", userCode);
+            HttpRequestUtils.commonRequest(getActivity(), requestObject, HttpContants.GRAB_COM_BIU, new HttpCallback() {
+                @Override
+                public void callback(JSONObject object, String error) {
+                    if (object != null) {
+                        codeState = 1;
+                        toastShort("biubiu成功啦,等待对方确认");
+                    } else {
+                        toastShort("biubiu失败啦");
+                    }
+                }
+            });
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
     }
 
     /**
@@ -1024,18 +1126,23 @@ public class PagerFragment extends BaseFragment implements View.OnClickListener,
             case TO_REGISTER:
                 mRequestSuccess = false;
                 userCode = SharePreferanceUtils.getInstance().getUserCode(getActivity(), SharePreferanceUtils.USER_CODE, "");
-                if(mTopTitle.getVisibility()==View.GONE){
+                if (mTopTitle.getVisibility() == View.GONE) {
                     mTopTitle.setVisibility(View.VISIBLE);
                 }
                 switchView();
                 break;
             case TO_SETTING:
-                if(resultCode == Constant.EXIT_APP_SUCCESS){
+                if (resultCode == Constant.EXIT_APP_SUCCESS) {
 //                    mRequestSuccess = false;
-                    if(mTopTitle.getVisibility()==View.VISIBLE){
+                    if (mTopTitle.getVisibility() == View.VISIBLE) {
                         mTopTitle.setVisibility(View.GONE);
                     }
                     switchView();
+                }
+                break;
+            case TO_PREVIEW_PIC:
+                if (resultCode == Activity.RESULT_OK) {
+                    getUserInfo();
                 }
                 break;
             default:
@@ -1247,8 +1354,8 @@ public class PagerFragment extends BaseFragment implements View.OnClickListener,
                     bean.setPhotoOrigin(photoOrigin);
                     bean.setPhotoThumbnail(photoThumbnail);
                     ArrayList<UserPhotoBean> list = new ArrayList<UserPhotoBean>();
-                    list.addAll(infoBean.getUserPhotos());
                     list.add(bean);
+                    list.addAll(infoBean.getUserPhotos());
                     infoBean.setUserPhotos(list);
                     setUserPhotos(list);
                 } catch (JSONException e) {
