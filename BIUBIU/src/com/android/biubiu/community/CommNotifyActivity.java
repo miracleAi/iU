@@ -44,6 +44,7 @@ public class CommNotifyActivity extends BaseActivity implements PullToRefreshBas
     private List<CommNotify> mData = new ArrayList<CommNotify>();
     private CommNotifyAdapter mAdapter;
     private CommNotify mNotify;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -180,7 +181,9 @@ public class CommNotifyActivity extends BaseActivity implements PullToRefreshBas
                     mData.addAll(list);
                     mAdapter.notifyDataSetChanged();
                 } else {
-                    Toast.makeText(CommNotifyActivity.this, getResources().getString(R.string.comm_notify_null), Toast.LENGTH_SHORT).show();
+                    if (time == 0) {
+                        Toast.makeText(CommNotifyActivity.this, getResources().getString(R.string.comm_notify_null), Toast.LENGTH_SHORT).show();
+                    }
                 }
 
             }
@@ -222,9 +225,9 @@ public class CommNotifyActivity extends BaseActivity implements PullToRefreshBas
         } /*else {
             getNotifyList(mData.get(mData.size() - 1).getCreateAt());
         }*/
-        if(mData.size()>0){
+        if (mData.size() > 0) {
             getNotifyList(mData.get(mData.size() - 1).getCreateAt());
-        }else{
+        } else {
             getNotifyList(0);
         }
     }

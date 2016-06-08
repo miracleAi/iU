@@ -172,7 +172,9 @@ public class CommunityBiuListActivity extends Activity implements PullToRefreshB
                     mData.addAll(list);
                     mAdapter.notifyDataSetChanged();
                 } else {
-                    Toast.makeText(CommunityBiuListActivity.this, getResources().getString(R.string.comm_biu_null), Toast.LENGTH_SHORT).show();
+                    if (time == 0) {
+                        Toast.makeText(CommunityBiuListActivity.this, getResources().getString(R.string.comm_biu_null), Toast.LENGTH_SHORT).show();
+                    }
                 }
 
             }
@@ -208,9 +210,9 @@ public class CommunityBiuListActivity extends Activity implements PullToRefreshB
         } /*else {
             getBiuList(mData.get(mData.size() - 1).getCreateAt());
         }*/
-        if(mData.size()>0){
+        if (mData.size() > 0) {
             getBiuList(mData.get(mData.size() - 1).getCreateAt());
-        }else{
+        } else {
             getBiuList(0);
         }
     }
