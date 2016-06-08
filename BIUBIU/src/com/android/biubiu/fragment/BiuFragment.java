@@ -199,19 +199,23 @@ public class BiuFragment extends Fragment implements PushInterface, FragmentIndi
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
-            if (CommonUtils.isAppOnForeground(getActivity())) {
+           /* if (CommonUtils.isAppOnForeground(getActivity())) {
                 SharePreferanceUtils.getInstance().putShared(getActivity(), SharePreferanceUtils.EXCHANGE_FROUNT, false);
-               /* if (!LoginUtils.isLogin(getActivity())) {
+               *//* if (!LoginUtils.isLogin(getActivity())) {
                     clearView();
-                }*/
+                }*//*
             } else {
                 SharePreferanceUtils.getInstance().putShared(getActivity(), SharePreferanceUtils.EXCHANGE_FROUNT, true);
+<<<<<<< HEAD
                 SharePreferanceUtils.getInstance().putShared(getActivity(), SharePreferanceUtils.IS_APP_OPEN, false);
                /* clearView();
+=======
+               *//* clearView();
+>>>>>>> iUv_1.3
                 biuDao.deleteAll();
                 isBiuLoading = false;
-                isBiuLoaded = false;*/
-            }
+                isBiuLoaded = false;*//*
+            }*/
             if (!LoginUtils.isLogin(getActivity())) {
                 clearView();
             }
@@ -229,6 +233,7 @@ public class BiuFragment extends Fragment implements PushInterface, FragmentIndi
                     grabBiuBean = null;
                     userBiuImv.setImageResource(R.drawable.biu_btn_biu);
                     userBiuImv.setVisibility(View.VISIBLE);
+                    grabBiuBean = null;
                 } else {
                     if (null == grabBiuBean) {
                         userBiuImv.setImageResource(R.drawable.biu_btn_unfinished);
