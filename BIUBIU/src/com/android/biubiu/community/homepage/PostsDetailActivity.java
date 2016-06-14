@@ -25,6 +25,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.biubiu.BaseActivity;
 import com.android.biubiu.activity.biu.MyPagerActivity;
 import com.android.biubiu.activity.mine.UserPhotoScanActivity;
 import com.android.biubiu.bean.UserPhotoBean;
@@ -44,6 +45,7 @@ import com.android.biubiu.utils.CommonUtils;
 import com.android.biubiu.utils.DateUtils;
 import com.android.biubiu.utils.HttpContants;
 import com.android.biubiu.utils.LogUtil;
+import com.android.biubiu.utils.NetUtils;
 import com.android.biubiu.utils.SharePreferanceUtils;
 import com.google.gson.reflect.TypeToken;
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
@@ -63,7 +65,7 @@ import cc.imeetu.iu.R;
 import cn.bingoogolapple.refreshlayout.BGANormalRefreshViewHolder;
 import cn.bingoogolapple.refreshlayout.BGARefreshLayout;
 
-public class PostsDetailActivity extends Activity implements AdapterView.OnItemClickListener, View.OnClickListener,
+public class PostsDetailActivity extends BaseActivity implements AdapterView.OnItemClickListener, View.OnClickListener,
         PullToRefreshBase.OnRefreshListener2<ListView>, CommentAdapter.IRefreshUi,
         BGARefreshLayout.BGARefreshLayoutDelegate {
     private static final String TAG = PostsDetailActivity.class.getSimpleName();
@@ -93,7 +95,7 @@ public class PostsDetailActivity extends Activity implements AdapterView.OnItemC
     private BGARefreshLayout mRefreshLayout;
     private ListView mDataLv;
     private Button mSendBtn;
-
+    private long mNextStart;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -295,6 +297,24 @@ public class PostsDetailActivity extends Activity implements AdapterView.OnItemC
     }
 
     private void getPostsDetail(final long time) {
+        if (time == 0 && mData.size() == 0) {
+            showLoadingLayout(getResources().getString(R.string.loading));
+        }
+        if (!NetUtils.isNetworkConnected(this)) {
+            dismissLoadingLayout();
+            if (time == 0 && mData.size() == 0) {
+                showErrorLayout(new View.OnClickListener() {
+
+                    @Override
+                    public void onClick(View v) {
+                        dismissErrorLayout();
+                        getPostsDetail(mNextStart);
+                    }
+                });
+            }
+            toastShort(getResources().getString(R.string.net_error));
+            return;
+        }
         RequestParams params = new RequestParams(HttpContants.POST_DETAIL);
         JSONObject requestObject = new JSONObject();
         try {
@@ -309,6 +329,7 @@ public class PostsDetailActivity extends Activity implements AdapterView.OnItemC
         x.http().post(params, new Callback.CommonCallback<String>() {
             @Override
             public void onSuccess(String s) {
+                dismissLoadingLayout();
                 LogUtil.d(TAG, "getPostsDetail--" + s);
                 Data<PostDetailData> response = CommonUtils.parseJsonToObj(s, new TypeToken<Data<PostDetailData>>() {
                 });
@@ -339,13 +360,28 @@ public class PostsDetailActivity extends Activity implements AdapterView.OnItemC
             @Override
             public void onError(Throwable throwable, boolean b) {
 //                mPTRLV.onRefreshComplete();
+                dismissLoadingLayout();
                 mRefreshLayout.endRefreshing();
                 mRefreshLayout.endLoadingMore();
+                if (time == 0 && mData.size() == 0) {
+                    dismissLoadingLayout();
+                    showErrorLayout(new View.OnClickListener() {
+
+                        @Override
+                        public void onClick(View v) {
+                            dismissErrorLayout();
+                            getPostsDetail(mNextStart);
+                        }
+                    });
+                } else {
+                    toastShort(getResources().getString(R.string.pull_up_failed));
+                }
             }
 
             @Override
             public void onCancelled(CancelledException e) {
 //                mPTRLV.onRefreshComplete();
+                dismissLoadingLayout();
                 mRefreshLayout.endRefreshing();
                 mRefreshLayout.endLoadingMore();
             }
@@ -353,6 +389,7 @@ public class PostsDetailActivity extends Activity implements AdapterView.OnItemC
             @Override
             public void onFinished() {
 //                mPTRLV.onRefreshComplete();
+                dismissLoadingLayout();
                 mRefreshLayout.endRefreshing();
                 mRefreshLayout.endLoadingMore();
             }
@@ -824,6 +861,7 @@ public class PostsDetailActivity extends Activity implements AdapterView.OnItemC
             }
         }
         if (mData.size() > 0) {
+            mNextStart = mData.get(mData.size() - 1).getCreateAt();
             getPostsDetail(mData.get(mData.size() - 1).getCreateAt());
         } else {
             getPostsDetail(0);

@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import com.android.biubiu.utils.DensityUtil;
 import com.ant.liao.GifView;
+import com.baidu.mapapi.map.Text;
 import com.umeng.analytics.MobclickAgent;
 
 import cc.imeetu.iu.R;
@@ -84,6 +85,28 @@ public class BaseFragment extends Fragment {
         if (errorLayout == null) {
             errorLayout = (LinearLayout) mRootview.findViewById(R.id.error_layout);
         }
+        errorLayout.setVisibility(View.GONE);
+    }
+
+    public void showDataEmpty(View.OnClickListener listener, String empty) {
+        if (errorLayout == null) {
+            errorLayout = (LinearLayout) mRootview.findViewById(R.id.error_layout);
+        }
+        if (reloadLayout == null) {
+            reloadLayout = (LinearLayout) mRootview.findViewById(R.id.reloading_layout);
+        }
+        TextView emptyTv = (TextView) reloadLayout.findViewById(R.id.reload_tips_textview);
+        emptyTv.setText(empty);
+        reloadLayout.setOnClickListener(listener);
+        errorLayout.setVisibility(View.VISIBLE);
+    }
+
+    public void dismissDataEmpty() {
+        if (errorLayout == null) {
+            errorLayout = (LinearLayout) mRootview.findViewById(R.id.error_layout);
+        }
+        TextView emptyTv = (TextView) mRootview.findViewById(R.id.reload_tips_textview);
+        emptyTv.setText(getActivity().getResources().getString(R.string.reload_tips));
         errorLayout.setVisibility(View.GONE);
     }
 

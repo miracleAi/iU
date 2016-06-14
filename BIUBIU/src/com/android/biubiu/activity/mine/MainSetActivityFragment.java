@@ -496,7 +496,7 @@ public class MainSetActivityFragment extends Fragment implements View.OnClickLis
         oks.setTitleUrl("http://www.imeetu.cc");
         oks.setText("星星发亮，是为了让每一个人都能找到属于自己的星星。而从我到你，只有一个iU的距离。");
         oks.setImageUrl("http://protect-app.oss-cn-beijing.aliyuncs.com/app-resources/img/icon/ShareIconAndroid.png");
-        oks.setUrl("http://www.imeetu.cc/mobile-index.html");
+        oks.setUrl("http://www.imeetu.cc/mobile/index.html");
 
         // 启动分享GUI
         oks.show(getActivity());

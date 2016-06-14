@@ -9,6 +9,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.android.biubiu.BaseActivity;
 import com.android.biubiu.activity.biu.MyPagerActivity;
 import com.android.biubiu.bean.UserFriends;
 import com.android.biubiu.bean.base.Data;
@@ -19,6 +20,7 @@ import com.android.biubiu.bean.community.SimpleRespData;
 import com.android.biubiu.component.title.TopTitleView;
 import com.android.biubiu.utils.CommonUtils;
 import com.android.biubiu.utils.HttpContants;
+import com.android.biubiu.utils.NetUtils;
 import com.android.biubiu.utils.SharePreferanceUtils;
 import com.google.gson.reflect.TypeToken;
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
@@ -35,7 +37,7 @@ import java.util.List;
 
 import cc.imeetu.iu.R;
 
-public class CommunityBiuListActivity extends Activity implements PullToRefreshBase.OnRefreshListener2<ListView> {
+public class CommunityBiuListActivity extends BaseActivity implements PullToRefreshBase.OnRefreshListener2<ListView> {
     private TopTitleView mTopTitle;
 
     private int mHasNext;
@@ -44,7 +46,7 @@ public class CommunityBiuListActivity extends Activity implements PullToRefreshB
     private ListView mListview;
     private List<CommBiuBean> mData = new ArrayList<CommBiuBean>();
     private CommBiuListAdapter mAdapter;
-
+    private long mNextStart;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -138,6 +140,24 @@ public class CommunityBiuListActivity extends Activity implements PullToRefreshB
     }
 
     private void getBiuList(final long time) {
+        if (time == 0 && mData.size() == 0) {
+            showLoadingLayout(getResources().getString(R.string.loading));
+        }
+        if (!NetUtils.isNetworkConnected(this)) {
+            dismissLoadingLayout();
+            if (time == 0 && mData.size() == 0) {
+                showErrorLayout(new View.OnClickListener() {
+
+                    @Override
+                    public void onClick(View v) {
+                        dismissErrorLayout();
+                        getBiuList(mNextStart);
+                    }
+                });
+            }
+            toastShort(getResources().getString(R.string.net_error));
+            return;
+        }
         RequestParams params = new RequestParams(HttpContants.COMBIU_GETCOMBIULIST);
         JSONObject requestObject = new JSONObject();
         try {
@@ -151,6 +171,7 @@ public class CommunityBiuListActivity extends Activity implements PullToRefreshB
         x.http().post(params, new Callback.CommonCallback<String>() {
             @Override
             public void onSuccess(String s) {
+                dismissLoadingLayout();
                 mPullToRefreshListview.onRefreshComplete();
                 Data<CommBiuListData> response = CommonUtils.parseJsonToObj(s, new TypeToken<Data<CommBiuListData>>() {
                 });
@@ -173,7 +194,14 @@ public class CommunityBiuListActivity extends Activity implements PullToRefreshB
                     mAdapter.notifyDataSetChanged();
                 } else {
                     if (time == 0) {
-                        Toast.makeText(CommunityBiuListActivity.this, getResources().getString(R.string.comm_biu_null), Toast.LENGTH_SHORT).show();
+                        showDataEmpty(new View.OnClickListener() {
+
+                            @Override
+                            public void onClick(View v) {
+                                dismissDataEmpty();
+                                getBiuList(mNextStart);
+                            }
+                        }, getResources().getString(R.string.biu_me_null));
                     }
                 }
 
@@ -181,16 +209,32 @@ public class CommunityBiuListActivity extends Activity implements PullToRefreshB
 
             @Override
             public void onError(Throwable throwable, boolean b) {
+                dismissLoadingLayout();
                 mPullToRefreshListview.onRefreshComplete();
+                if (time == 0 && mData.size() == 0) {
+                    dismissLoadingLayout();
+                    showErrorLayout(new View.OnClickListener() {
+
+                        @Override
+                        public void onClick(View v) {
+                            dismissErrorLayout();
+                            getBiuList(mNextStart);
+                        }
+                    });
+                } else {
+                    toastShort(getResources().getString(R.string.pull_up_failed));
+                }
             }
 
             @Override
             public void onCancelled(CancelledException e) {
+                dismissLoadingLayout();
                 mPullToRefreshListview.onRefreshComplete();
             }
 
             @Override
             public void onFinished() {
+                dismissLoadingLayout();
                 mPullToRefreshListview.onRefreshComplete();
             }
         });
@@ -211,6 +255,7 @@ public class CommunityBiuListActivity extends Activity implements PullToRefreshB
             getBiuList(mData.get(mData.size() - 1).getCreateAt());
         }*/
         if (mData.size() > 0) {
+            mNextStart = mData.get(mData.size() - 1).getCreateAt();
             getBiuList(mData.get(mData.size() - 1).getCreateAt());
         } else {
             getBiuList(0);

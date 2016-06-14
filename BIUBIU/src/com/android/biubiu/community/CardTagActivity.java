@@ -18,9 +18,9 @@ public class CardTagActivity extends FragmentActivity {
         setContentView(R.layout.activity_card_tag);
         CardTagActivityFragment fragment = new CardTagActivityFragment();
         Bundle b = new Bundle();
-        b.putString(Constant.TO_TAG_TYPE,getIntent().getStringExtra(Constant.TO_TAG_TYPE));
+        b.putString(Constant.TO_TAG_TYPE, getIntent().getStringExtra(Constant.TO_TAG_TYPE));
         fragment.setArguments(b);
-        getSupportFragmentManager().beginTransaction().add(R.id.layout_body,fragment).commit();
+        getSupportFragmentManager().beginTransaction().add(R.id.layout_body, fragment).commit();
     }
 
 }

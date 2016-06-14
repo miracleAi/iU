@@ -17,6 +17,7 @@ import com.android.biubiu.component.title.TopTitleView;
 import com.android.biubiu.utils.Constants;
 import com.android.biubiu.utils.HttpContants;
 import com.android.biubiu.utils.HttpRequestUtils;
+import com.android.biubiu.utils.NetUtils;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
@@ -68,7 +69,7 @@ public class UserDynamicActivity extends BaseActivity implements PullToRefreshBa
             }
         });
 
-        postAdapter = new PostsAdapter(postList,UserDynamicActivity.this);
+        postAdapter = new PostsAdapter(postList, UserDynamicActivity.this);
         mListview.setAdapter(postAdapter);
         mListview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -84,6 +85,24 @@ public class UserDynamicActivity extends BaseActivity implements PullToRefreshBa
     }
 
     private void getDynamicList(final boolean isRefresh) {
+        if (lastTime == 0 && postList.size() == 0) {
+            showLoadingLayout(getResources().getString(R.string.loading));
+        }
+        if (!NetUtils.isNetworkConnected(this)) {
+            dismissLoadingLayout();
+            if (lastTime == 0 && postList.size() == 0) {
+                showErrorLayout(new View.OnClickListener() {
+
+                    @Override
+                    public void onClick(View v) {
+                        dismissErrorLayout();
+                        getDynamicList(lastTime == 0 ? true : false);
+                    }
+                });
+            }
+            toastShort(getResources().getString(R.string.net_error));
+            return;
+        }
         JSONObject requestObject = new JSONObject();
         try {
             if (isRefresh) {
@@ -91,42 +110,71 @@ public class UserDynamicActivity extends BaseActivity implements PullToRefreshBa
             } else {
                 requestObject.put("time", lastTime);
             }
-            requestObject.put("userCode",userCode);
+            requestObject.put("userCode", userCode);
         } catch (JSONException e) {
             e.printStackTrace();
         }
         HttpRequestUtils.commonRequest(UserDynamicActivity.this, requestObject, HttpContants.USER_DYNAMIC, new HttpCallback() {
             @Override
             public void callback(JSONObject object, String error) {
+                dismissLoadingLayout();
                 pulltoRefreshListview.onRefreshComplete();
-                if(object != null){
+                if (object != null) {
                     try {
                         hasNext = object.getInt("hasNext");
                         lastTime = object.getLong("time");
                         JSONArray postArray = object.optJSONArray("postList");
                         Gson gson = new Gson();
-                        ArrayList<Posts> list = gson.fromJson(postArray.toString(),new TypeToken<List<Posts>>(){}.getType());
-                        if(list != null && list.size()>0){
-                            if(isRefresh){
+                        ArrayList<Posts> list = gson.fromJson(postArray.toString(), new TypeToken<List<Posts>>() {
+                        }.getType());
+                        if (list != null && list.size() > 0) {
+                            if (isRefresh) {
                                 postList.clear();
                                 postList.addAll(list);
-                            }else{
+                            } else {
                                 postList.addAll(list);
                             }
                             postAdapter.notifyDataSetChanged();
+                        } else {
+                            if (lastTime == 0) {
+                                showDataEmpty(new View.OnClickListener() {
+
+                                    @Override
+                                    public void onClick(View v) {
+                                        dismissDataEmpty();
+                                        getDynamicList(true);
+                                    }
+                                }, getResources().getString(R.string.personal_dynamic_null));
+                            }
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();
+                    }
+                }else{
+                    if (lastTime == 0 && postList.size() == 0) {
+                        dismissLoadingLayout();
+                        showErrorLayout(new View.OnClickListener() {
+
+                            @Override
+                            public void onClick(View v) {
+                                dismissErrorLayout();
+                                getDynamicList(true);
+                            }
+                        });
+                    } else {
+                        toastShort(getResources().getString(R.string.pull_up_failed));
                     }
                 }
             }
         });
     }
+
     private void stopLoad() {
         if (pulltoRefreshListview.isRefreshing()) {
             pulltoRefreshListview.onRefreshComplete();
         }
     }
+
     @Override
     public void onPullDownToRefresh(PullToRefreshBase<ListView> refreshView) {
         getDynamicList(true);

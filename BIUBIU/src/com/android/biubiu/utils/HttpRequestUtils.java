@@ -34,19 +34,16 @@ public class HttpRequestUtils {
 
             @Override
             public void onCancelled(CancelledException arg0) {
-                // TODO Auto-generated method stub
 
             }
 
             @Override
             public void onError(Throwable arg0, boolean arg1) {
-                // TODO Auto-generated method stub
                 Log.d("mytest","error"+arg0.getMessage());
             }
 
             @Override
             public void onFinished() {
-                // TODO Auto-generated method stub
 
             }
 

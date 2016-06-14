@@ -5,7 +5,7 @@
     <string name="app_name">iU</string>
     <string name="action_settings">Settings</string>
     <string name="title_activity_biu_biu_send">BiuBiuSendActivity</string>
-    <string name="net_error">网络未连接</string>
+    <string name="net_error">网络连接异常</string>
     <!-- 加载中提示相关 -->
     <string name="logining">正在登录...</string>
     <string name="loading">正在加载...</string>
@@ -322,4 +322,13 @@
     <string name="exit_edit_tips">确定要退出内容编辑么？</string>
     <string name="exit">退出</string>
     <string name="reload_tips">呜呜，内容加载失败了\n点击重新加载</string>
+    <string name="pull_up_failed">上拉加载失败</string>
+    <string name="posts_biu_null">biubiu好友的内容动态会呈现在这里哦</string>
+    <string name="posts_fresh_null">最新的内容动态会呈现在这里哦</string>
+    <string name="posts_recommand_null">iU推荐的内容动态会呈现在这里哦</string>
+    <string name="notify_list_null">还没有通知消息呢\n先去勾搭一下呀 </string>
+    <string name="personal_dynamic_null">生活好像波澜不惊，一条动态也没有呢</string>
+    <string name="biu_me_null">呀，还没有人biu你呢\n去社区发动态，让更多人看见你</string>
+    <string name="biu_biu_null">还没有biubiu关系呢</string>
+    <string name="message_list_null">还没有聊天消息呢</string>
 </resources>

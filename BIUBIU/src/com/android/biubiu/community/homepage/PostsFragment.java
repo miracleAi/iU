@@ -30,6 +30,7 @@ import com.android.biubiu.component.viewflipper.ViewFlipperForListview;
 import com.android.biubiu.utils.CommonUtils;
 import com.android.biubiu.utils.HttpContants;
 import com.android.biubiu.utils.LogUtil;
+import com.android.biubiu.utils.NetUtils;
 import com.android.biubiu.utils.SharePreferanceUtils;
 import com.google.gson.reflect.TypeToken;
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
@@ -82,6 +83,8 @@ public class PostsFragment extends BaseFragment implements PullToRefreshBase.OnR
     private ITabPageIndicatorAnim mTabPageIndicatorAnim;
     private int mBannerH;
     private ImageOptions mImgOptions;
+    private long mNextStart;
+    private String mDataNullTips;
 
     public PostsFragment() {
     }
@@ -169,6 +172,13 @@ public class PostsFragment extends BaseFragment implements PullToRefreshBase.OnR
     }
 
     private void initData() {
+        if (mType == 0) {
+            mDataNullTips = getResources().getString(R.string.posts_fresh_null);
+        } else if (mType == 1) {
+            mDataNullTips = getResources().getString(R.string.posts_recommand_null);
+        } else {
+            mDataNullTips = getResources().getString(R.string.posts_biu_null);
+        }
         mImgOptions = new ImageOptions.Builder()
                 .setImageScaleType(ImageView.ScaleType.CENTER_CROP)
                 .setFailureDrawableId(R.drawable.banner_fail)
@@ -239,6 +249,24 @@ public class PostsFragment extends BaseFragment implements PullToRefreshBase.OnR
     }
 
     private void getData(final long time) {
+        if (time == 0 && mData.size() == 0) {
+            showLoadingLayout(getResources().getString(R.string.loading));
+        }
+        if (!NetUtils.isNetworkConnected(getActivity())) {
+            dismissLoadingLayout();
+            if (time == 0 && mData.size() == 0) {
+                showErrorLayout(new View.OnClickListener() {
+
+                    @Override
+                    public void onClick(View v) {
+                        dismissErrorLayout();
+                        getData(mNextStart);
+                    }
+                });
+            }
+            toastShort(getResources().getString(R.string.net_error));
+            return;
+        }
         RequestParams params = new RequestParams(HttpContants.POST_GETPOSTLISTBYTYPE);
         JSONObject requestObject = new JSONObject();
         try {
@@ -260,6 +288,19 @@ public class PostsFragment extends BaseFragment implements PullToRefreshBase.OnR
             @Override
             public void onError(Throwable arg0, boolean arg1) {
                 stopLoad();
+                if (time == 0 && mData.size() == 0) {
+                    dismissLoadingLayout();
+                    showErrorLayout(new View.OnClickListener() {
+
+                        @Override
+                        public void onClick(View v) {
+                            dismissErrorLayout();
+                            getData(mNextStart);
+                        }
+                    });
+                } else {
+                    toastShort(getResources().getString(R.string.pull_up_failed));
+                }
             }
 
             @Override
@@ -270,6 +311,7 @@ public class PostsFragment extends BaseFragment implements PullToRefreshBase.OnR
             @Override
             public void onSuccess(String result) {
                 stopLoad();
+                dismissLoadingLayout();
                 LogUtil.d(TAG, "getPostlist-- mType = " + mType + result);
                 Data<DiscoveryData> response = CommonUtils.parseJsonToObj(result, new TypeToken<Data<DiscoveryData>>() {
                 });
@@ -312,6 +354,17 @@ public class PostsFragment extends BaseFragment implements PullToRefreshBase.OnR
                 if (postsList != null && postsList.size() > 0) {
                     mData.addAll(postsList);
                     mAdapter.notifyDataSetChanged();
+                } else {
+                    if (time == 0) {
+                        showDataEmpty(new View.OnClickListener() {
+
+                            @Override
+                            public void onClick(View v) {
+                                dismissDataEmpty();
+                                getData(mNextStart);
+                            }
+                        }, mDataNullTips);
+                    }
                 }
             }
         });
@@ -408,6 +461,7 @@ public class PostsFragment extends BaseFragment implements PullToRefreshBase.OnR
                 Toast.makeText(getActivity(), getResources().getString(R.string.data_end), Toast.LENGTH_SHORT).show();
             }
         }
+        mNextStart = mData.get(mData.size() - 1).getCreateAt();
         getData(mData.get(mData.size() - 1).getCreateAt());
     }
 
