@@ -1,4 +1,4 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -7,6 +7,7 @@
     tools:context="com.android.biubiu.community.CardTagActivityFragment">
 
     <RelativeLayout
+        android:id="@+id/top_title_view"
         android:layout_width="match_parent"
         android:layout_height="@dimen/top_title_height"
         android:background="@color/main_green"
@@ -72,8 +73,12 @@
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent"
+        android:layout_below="@+id/top_title_view">
 
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
             <LinearLayout
                 android:id="@+id/all_tag_layout"
@@ -92,61 +97,68 @@
                     android:scrollbars="none" />
             </LinearLayout>
 
-        <include layout="@layout/loading_layout" />
-
-        <LinearLayout
-            android:id="@+id/search_tag_layout"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/white"
-            android:orientation="vertical"
-            android:visibility="gone"
-            >
+            <!--<include layout="@layout/loading_layout" />-->
 
             <LinearLayout
-                android:id="@+id/create_tag_layout"
+                android:id="@+id/search_tag_layout"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:visibility="gone"
-                >
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="36dp"
-                    android:layout_marginLeft="20dp"
-                    android:background="@null"
-                    android:gravity="center_vertical"
-                    android:text="@string/create_tag"
-                    android:textColor="@color/black"
-                    android:textSize="12sp" />
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="@color/set_divider2" />
-                <TextView
-                    android:id="@+id/no_tag_tv"
-                    android:layout_width="match_parent"
-                    android:layout_height="100dp"
-                    android:padding="10dp"
-                    android:gravity="center"
-                    android:background="@color/white"
-                    android:text="@string/no_tag_hint"
-                    android:textColor="@color/black"
-                    android:textSize="12sp"
-                    />
-            </LinearLayout>
-
-            <ListView
-                android:id="@+id/search_tag_lv"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:background="@color/white"
-                android:cacheColorHint="@null"
-                android:divider="@null"
-                android:dividerHeight="0dp"
-                android:scrollbars="none"></ListView>
-        </LinearLayout>
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <LinearLayout
+                    android:id="@+id/create_tag_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:visibility="gone">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="36dp"
+                        android:layout_marginLeft="20dp"
+                        android:background="@null"
+                        android:gravity="center_vertical"
+                        android:text="@string/create_tag"
+                        android:textColor="@color/black"
+                        android:textSize="12sp" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/set_divider2" />
+
+                    <TextView
+                        android:id="@+id/no_tag_tv"
+                        android:layout_width="match_parent"
+                        android:layout_height="100dp"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        android:padding="10dp"
+                        android:text="@string/no_tag_hint"
+                        android:textColor="@color/black"
+                        android:textSize="12sp" />
+                </LinearLayout>
+
+                <ListView
+                    android:id="@+id/search_tag_lv"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white"
+                    android:cacheColorHint="@null"
+                    android:divider="@null"
+                    android:dividerHeight="0dp"
+                    android:scrollbars="none" />
+            </LinearLayout>
+        </FrameLayout>
+
+        <include
+            layout="@layout/loading_layout"
+            android:visibility="gone" />
+
+        <include
+            layout="@layout/load_error_layout"
+            android:visibility="gone" />
     </FrameLayout>
-</LinearLayout>
+</RelativeLayout>

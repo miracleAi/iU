@@ -18,19 +18,33 @@
         top:topTitleColor="@android:color/white"
         top:topTitleSize="@dimen/top_title_size" />
 
-    <com.handmark.pulltorefresh.library.PullToRefreshListView
-        android:id="@+id/pull_refresh_list"
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/top_title_view"
-        android:cacheColorHint="#00000000"
-        android:divider="@null"
-        android:fadeScrollbars="false"
-        android:fadingEdge="none"
-        android:fastScrollEnabled="false"
-        android:footerDividersEnabled="false"
-        android:headerDividersEnabled="false"
-        android:listSelector="#00000000"
-        android:scrollbars="none"
-        android:smoothScrollbar="true" />
+        android:layout_below="@+id/top_title_view">
+
+        <com.handmark.pulltorefresh.library.PullToRefreshListView
+            android:id="@+id/pull_refresh_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/top_title_view"
+            android:cacheColorHint="#00000000"
+            android:divider="@null"
+            android:fadeScrollbars="false"
+            android:fadingEdge="none"
+            android:fastScrollEnabled="false"
+            android:footerDividersEnabled="false"
+            android:headerDividersEnabled="false"
+            android:listSelector="#00000000"
+            android:scrollbars="none"
+            android:smoothScrollbar="true" />
+
+        <include
+            layout="@layout/loading_layout"
+            android:visibility="gone" />
+
+        <include
+            layout="@layout/load_error_layout"
+            android:visibility="gone" />
+    </FrameLayout>
 </RelativeLayout>

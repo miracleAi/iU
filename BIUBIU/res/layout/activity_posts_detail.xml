@@ -2,8 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:top="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@android:color/white">
+    android:layout_height="match_parent">
 
     <com.android.biubiu.component.title.TopTitleView
         android:id="@+id/top_title_view"
@@ -15,96 +14,115 @@
         top:leftDrawable="@drawable/back_main"
         top:title="@string/detail" />
 
-    <com.handmark.pulltorefresh.library.PullToRefreshListView
-        android:id="@+id/pull_refresh_list"
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/comment_layout"
-        android:layout_below="@+id/top_title_view"
-        android:cacheColorHint="#00000000"
-        android:divider="@null"
-        android:fadeScrollbars="false"
-        android:fadingEdge="none"
-        android:fastScrollEnabled="false"
-        android:footerDividersEnabled="false"
-        android:headerDividersEnabled="false"
-        android:listSelector="#00000000"
-        android:scrollbars="none"
-        android:smoothScrollbar="true"
-        android:visibility="gone" />
-
-    <cn.bingoogolapple.refreshlayout.BGARefreshLayout
-        android:id="@+id/rl_listview_refresh"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_above="@+id/comment_layout"
         android:layout_below="@+id/top_title_view">
 
-        <ListView
-            android:id="@+id/lv_listview_data"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:cacheColorHint="#00000000"
-            android:divider="@null"
-            android:fadeScrollbars="false"
-            android:fadingEdge="none"
-            android:fastScrollEnabled="false"
-            android:footerDividersEnabled="false"
-            android:headerDividersEnabled="false"
-            android:listSelector="#00000000"
-            android:overScrollMode="never"
-            android:scrollbars="none"
-            android:smoothScrollbar="true" />
-    </cn.bingoogolapple.refreshlayout.BGARefreshLayout>
+            android:layout_height="match_parent"
+            android:background="@android:color/white">
 
-    <LinearLayout
-        android:id="@+id/comment_layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:orientation="vertical">
+            <com.handmark.pulltorefresh.library.PullToRefreshListView
+                android:id="@+id/pull_refresh_list"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_above="@+id/comment_layout"
+                android:cacheColorHint="#00000000"
+                android:divider="@null"
+                android:fadeScrollbars="false"
+                android:fadingEdge="none"
+                android:fastScrollEnabled="false"
+                android:footerDividersEnabled="false"
+                android:headerDividersEnabled="false"
+                android:listSelector="#00000000"
+                android:scrollbars="none"
+                android:smoothScrollbar="true"
+                android:visibility="gone" />
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="0.5dp"
-            android:background="#cccccc" />
+            <cn.bingoogolapple.refreshlayout.BGARefreshLayout
+                android:id="@+id/rl_listview_refresh"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_above="@+id/comment_layout"
+                >
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="43dp"
-            android:background="#f4f4f4"
-            android:gravity="center"
-            android:orientation="horizontal">
+                <ListView
+                    android:id="@+id/lv_listview_data"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:cacheColorHint="#00000000"
+                    android:divider="@null"
+                    android:fadeScrollbars="false"
+                    android:fadingEdge="none"
+                    android:fastScrollEnabled="false"
+                    android:footerDividersEnabled="false"
+                    android:headerDividersEnabled="false"
+                    android:listSelector="#00000000"
+                    android:overScrollMode="never"
+                    android:scrollbars="none"
+                    android:smoothScrollbar="true" />
+            </cn.bingoogolapple.refreshlayout.BGARefreshLayout>
 
-            <EditText
-                android:id="@+id/comment_edittext"
-                android:layout_width="0dip"
-                android:layout_height="30dp"
-                android:layout_marginLeft="15dp"
-                android:layout_marginRight="10dp"
-                android:layout_weight="1"
-                android:background="@drawable/comment_bg_shape"
-                android:hint="@string/comment_hint"
-                android:maxLength="300"
-                android:paddingLeft="15dp"
-                android:textColor="#333333"
-                android:textColorHint="#999999"
-                android:textSize="14sp" />
-            <!--android:imeActionLabel="@string/send"
-            android:imeOptions="actionSend"
-            android:singleLine="true"-->
-            <Button
-                android:id="@+id/send_button"
-                android:layout_width="60dp"
-                android:layout_height="30dp"
-                android:layout_marginRight="10dp"
-                android:background="@drawable/send_btn_disabled"
-                android:enabled="false"
-                android:gravity="center"
-                android:text="@string/send"
-                android:textColor="@android:color/white"
-                android:textSize="14sp" />
-        </LinearLayout>
-    </LinearLayout>
+            <LinearLayout
+                android:id="@+id/comment_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:orientation="vertical">
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:background="#cccccc" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="43dp"
+                    android:background="#f4f4f4"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <EditText
+                        android:id="@+id/comment_edittext"
+                        android:layout_width="0dip"
+                        android:layout_height="30dp"
+                        android:layout_marginLeft="15dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/comment_bg_shape"
+                        android:hint="@string/comment_hint"
+                        android:maxLength="300"
+                        android:paddingLeft="15dp"
+                        android:textColor="#333333"
+                        android:textColorHint="#999999"
+                        android:textSize="14sp" />
+                    <!--android:imeActionLabel="@string/send"
+                    android:imeOptions="actionSend"
+                    android:singleLine="true"-->
+                    <Button
+                        android:id="@+id/send_button"
+                        android:layout_width="60dp"
+                        android:layout_height="30dp"
+                        android:layout_marginRight="10dp"
+                        android:background="@drawable/send_btn_disabled"
+                        android:enabled="false"
+                        android:gravity="center"
+                        android:text="@string/send"
+                        android:textColor="@android:color/white"
+                        android:textSize="14sp" />
+                </LinearLayout>
+            </LinearLayout>
+        </RelativeLayout>
+
+        <include
+            layout="@layout/loading_layout"
+            android:visibility="gone" />
+
+        <include
+            layout="@layout/load_error_layout"
+            android:visibility="gone" />
+    </FrameLayout>
 </RelativeLayout>

@@ -18,6 +18,7 @@ import com.android.biubiu.community.homepage.PostsDetailActivity;
 import com.android.biubiu.component.title.TopTitleView;
 import com.android.biubiu.utils.CommonUtils;
 import com.android.biubiu.utils.HttpContants;
+import com.android.biubiu.utils.NetUtils;
 import com.android.biubiu.utils.SharePreferanceUtils;
 import com.google.gson.reflect.TypeToken;
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
@@ -44,7 +45,7 @@ public class CommNotifyActivity extends BaseActivity implements PullToRefreshBas
     private List<CommNotify> mData = new ArrayList<CommNotify>();
     private CommNotifyAdapter mAdapter;
     private CommNotify mNotify;
-
+    private long mNextStart;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -147,6 +148,24 @@ public class CommNotifyActivity extends BaseActivity implements PullToRefreshBas
     }
 
     private void getNotifyList(final long time) {
+        if (time == 0 && mData.size() == 0) {
+            showLoadingLayout(getResources().getString(R.string.loading));
+        }
+        if (!NetUtils.isNetworkConnected(this)) {
+            dismissLoadingLayout();
+            if (time == 0 && mData.size() == 0) {
+                showErrorLayout(new View.OnClickListener() {
+
+                    @Override
+                    public void onClick(View v) {
+                        dismissErrorLayout();
+                        getNotifyList(mNextStart);
+                    }
+                });
+            }
+            toastShort(getResources().getString(R.string.net_error));
+            return;
+        }
         RequestParams params = new RequestParams(HttpContants.NOTIFY_GETNOTIFYLIST);
         JSONObject requestObject = new JSONObject();
         try {
@@ -160,6 +179,7 @@ public class CommNotifyActivity extends BaseActivity implements PullToRefreshBas
         x.http().post(params, new Callback.CommonCallback<String>() {
             @Override
             public void onSuccess(String s) {
+                dismissLoadingLayout();
                 mPullToRefreshListview.onRefreshComplete();
                 Data<CommNotifyData> response = CommonUtils.parseJsonToObj(s, new TypeToken<Data<CommNotifyData>>() {
                 });
@@ -182,7 +202,14 @@ public class CommNotifyActivity extends BaseActivity implements PullToRefreshBas
                     mAdapter.notifyDataSetChanged();
                 } else {
                     if (time == 0) {
-                        Toast.makeText(CommNotifyActivity.this, getResources().getString(R.string.comm_notify_null), Toast.LENGTH_SHORT).show();
+                        showDataEmpty(new View.OnClickListener() {
+
+                            @Override
+                            public void onClick(View v) {
+                                dismissDataEmpty();
+                                getNotifyList(mNextStart);
+                            }
+                        }, getResources().getString(R.string.notify_list_null));
                     }
                 }
 
@@ -190,16 +217,32 @@ public class CommNotifyActivity extends BaseActivity implements PullToRefreshBas
 
             @Override
             public void onError(Throwable throwable, boolean b) {
+                dismissLoadingLayout();
                 mPullToRefreshListview.onRefreshComplete();
+                if (time == 0 && mData.size() == 0) {
+                    dismissLoadingLayout();
+                    showErrorLayout(new View.OnClickListener() {
+
+                        @Override
+                        public void onClick(View v) {
+                            dismissErrorLayout();
+                            getNotifyList(mNextStart);
+                        }
+                    });
+                } else {
+                    toastShort(getResources().getString(R.string.pull_up_failed));
+                }
             }
 
             @Override
             public void onCancelled(CancelledException e) {
+                dismissLoadingLayout();
                 mPullToRefreshListview.onRefreshComplete();
             }
 
             @Override
             public void onFinished() {
+                dismissLoadingLayout();
                 mPullToRefreshListview.onRefreshComplete();
             }
         });
@@ -226,6 +269,7 @@ public class CommNotifyActivity extends BaseActivity implements PullToRefreshBas
             getNotifyList(mData.get(mData.size() - 1).getCreateAt());
         }*/
         if (mData.size() > 0) {
+            mNextStart = mData.get(mData.size() - 1).getCreateAt();
             getNotifyList(mData.get(mData.size() - 1).getCreateAt());
         } else {
             getNotifyList(0);

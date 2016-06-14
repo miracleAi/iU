@@ -17,4 +17,11 @@
         android:scrollbars="none"
         android:smoothScrollbar="true" />
     <!--android:paddingTop="@dimen/found_tab_indicator_height"-->
+    <include
+        layout="@layout/loading_layout"
+        android:visibility="gone" />
+
+    <include
+        layout="@layout/load_error_layout"
+        android:visibility="gone" />
 </FrameLayout>

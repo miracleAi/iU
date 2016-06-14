@@ -19,6 +19,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.biubiu.BaseFragment;
 import com.android.biubiu.bean.TagBean;
 import com.android.biubiu.callback.HttpCallback;
 import com.android.biubiu.common.Constant;
@@ -27,6 +28,7 @@ import com.android.biubiu.utils.Constants;
 import com.android.biubiu.utils.DensityUtil;
 import com.android.biubiu.utils.HttpContants;
 import com.android.biubiu.utils.HttpRequestUtils;
+import com.android.biubiu.utils.NetUtils;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
@@ -45,8 +47,7 @@ import cc.imeetu.iu.R;
 /**
  * A placeholder fragment containing a simple view.
  */
-public class CardTagActivityFragment extends Fragment implements PullToRefreshBase.OnRefreshListener2<ListView> {
-    private View rootView;
+public class CardTagActivityFragment extends BaseFragment implements PullToRefreshBase.OnRefreshListener2<ListView> {
     private LinearLayout allTagLayout;
     private RelativeLayout backRl;
     private EditText searchEt;
@@ -87,45 +88,44 @@ public class CardTagActivityFragment extends Fragment implements PullToRefreshBa
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        rootView = inflater.inflate(R.layout.fragment_card_tag, container, false);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        mRootview = inflater.inflate(R.layout.fragment_card_tag, container, false);
         getInfo();
         initView();
         getTagList(true);
-        return rootView;
+        return mRootview;
     }
 
     public void getInfo() {
         Bundle b = getArguments();
-        if(b != null && null != b.getString(Constant.TO_TAG_TYPE)){
+        if (b != null && null != b.getString(Constant.TO_TAG_TYPE)) {
             toTagType = b.getString(Constant.TO_TAG_TYPE);
-        }else{
+        } else {
             toTagType = "";
         }
     }
 
     private void initView() {
-        backRl = (RelativeLayout) rootView.findViewById(R.id.back_rl);
-        allTagLayout = (LinearLayout) rootView.findViewById(R.id.all_tag_layout);
+        backRl = (RelativeLayout) mRootview.findViewById(R.id.back_rl);
+        allTagLayout = (LinearLayout) mRootview.findViewById(R.id.all_tag_layout);
         allTagLayout.setVisibility(View.GONE);
-        searchEt = (EditText) rootView.findViewById(R.id.search_tag_et);
-        if(toTagType.equals(Constant.TAG_TYPE_PUBLISH)){
+        searchEt = (EditText) mRootview.findViewById(R.id.search_tag_et);
+        if (toTagType.equals(Constant.TAG_TYPE_PUBLISH)) {
             searchEt.setHint(getResources().getString(R.string.publish_tag_hint));
-        }else{
+        } else {
             searchEt.setHint(getResources().getString(R.string.scan_tag_hint));
         }
-        countTv = (TextView) rootView.findViewById(R.id.count_tv);
-        cancelBtn = (Button) rootView.findViewById(R.id.cancel_btn);
-        searchTagLayout = (LinearLayout) rootView.findViewById(R.id.search_tag_layout);
+        countTv = (TextView) mRootview.findViewById(R.id.count_tv);
+        cancelBtn = (Button) mRootview.findViewById(R.id.cancel_btn);
+        searchTagLayout = (LinearLayout) mRootview.findViewById(R.id.search_tag_layout);
         searchTagLayout.setVisibility(View.GONE);
-        createTagLayout = (LinearLayout) rootView.findViewById(R.id.create_tag_layout);
-        noTagTv = (TextView) rootView.findViewById(R.id.no_tag_tv);
-        searchLv = (ListView) rootView.findViewById(R.id.search_tag_lv);
-        headerView = LayoutInflater.from(getActivity()).inflate(R.layout.tag_head_view,null);
+        createTagLayout = (LinearLayout) mRootview.findViewById(R.id.create_tag_layout);
+        noTagTv = (TextView) mRootview.findViewById(R.id.no_tag_tv);
+        searchLv = (ListView) mRootview.findViewById(R.id.search_tag_lv);
+        headerView = LayoutInflater.from(getActivity()).inflate(R.layout.tag_head_view, null);
         recommendLv = (ListView) headerView.findViewById(R.id.recommend_tag_lv);
         hotLv = (ListView) headerView.findViewById(R.id.hot_tag_lv);
-        mPullToRefreshListview = (PullToRefreshListView) rootView.findViewById(R.id.pull_refresh_list);
+        mPullToRefreshListview = (PullToRefreshListView) mRootview.findViewById(R.id.pull_refresh_list);
         mPullToRefreshListview.setMode(PullToRefreshBase.Mode.PULL_UP_TO_REFRESH);
         mPullToRefreshListview.setOnRefreshListener(this);
         mPullToRefreshListview.setScrollingWhileRefreshingEnabled(true);
@@ -142,10 +142,10 @@ public class CardTagActivityFragment extends Fragment implements PullToRefreshBa
         hotLv.setAdapter(hotAdapter);
         mListview.setAdapter(newAdapter);
 
-        if(searchEt.getText() != null && searchEt.getText().toString().length()>0){
+        if (searchEt.getText() != null && searchEt.getText().toString().length() > 0) {
             cancelBtn.setVisibility(View.VISIBLE);
-        }else{
-            cancelBtn.setVisibility(View.GONE                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  );
+        } else {
+            cancelBtn.setVisibility(View.GONE);
         }
         recommendLv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -156,8 +156,8 @@ public class CardTagActivityFragment extends Fragment implements PullToRefreshBa
                     getActivity().setResult(getActivity().RESULT_OK, intent);
                     getActivity().finish();
                 } else {
-                    Intent i = new Intent(getActivity(),PostsListByTagActivity.class);
-                    i.putExtra(Constant.TAG,recommendLsit.get(position));
+                    Intent i = new Intent(getActivity(), PostsListByTagActivity.class);
+                    i.putExtra(Constant.TAG, recommendLsit.get(position));
                     getActivity().startActivity(i);
                 }
 
@@ -172,8 +172,8 @@ public class CardTagActivityFragment extends Fragment implements PullToRefreshBa
                     getActivity().setResult(getActivity().RESULT_OK, intent);
                     getActivity().finish();
                 } else {
-                    Intent i = new Intent(getActivity(),PostsListByTagActivity.class);
-                    i.putExtra(Constant.TAG,hotList.get(position));
+                    Intent i = new Intent(getActivity(), PostsListByTagActivity.class);
+                    i.putExtra(Constant.TAG, hotList.get(position));
                     getActivity().startActivity(i);
                 }
             }
@@ -183,12 +183,12 @@ public class CardTagActivityFragment extends Fragment implements PullToRefreshBa
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 if (toTagType.equals(Constant.TAG_TYPE_PUBLISH)) {
                     Intent intent = new Intent();
-                    intent.putExtra("tagBean", (Serializable) newList.get(position-mListview.getHeaderViewsCount()));
+                    intent.putExtra("tagBean", (Serializable) newList.get(position - mListview.getHeaderViewsCount()));
                     getActivity().setResult(getActivity().RESULT_OK, intent);
                     getActivity().finish();
                 } else {
-                    Intent i = new Intent(getActivity(),PostsListByTagActivity.class);
-                    i.putExtra(Constant.TAG,newList.get(position-mListview.getHeaderViewsCount()));
+                    Intent i = new Intent(getActivity(), PostsListByTagActivity.class);
+                    i.putExtra(Constant.TAG, newList.get(position - mListview.getHeaderViewsCount()));
                     getActivity().startActivity(i);
                 }
             }
@@ -223,7 +223,7 @@ public class CardTagActivityFragment extends Fragment implements PullToRefreshBa
             public void afterTextChanged(Editable s) {
                 if (s.length() != 0) {
                     cancelBtn.setVisibility(View.VISIBLE);
-                    countTv.setText(""+(30-s.length()));
+                    countTv.setText("" + (30 - s.length()));
                     searchTagLayout.setVisibility(View.VISIBLE);
                     queryCount = queryCount + 1;
                     getTagByKeyword(s.toString(), queryCount);
@@ -255,7 +255,7 @@ public class CardTagActivityFragment extends Fragment implements PullToRefreshBa
                 searchTagLayout.setVisibility(View.GONE);
                 createTagLayout.setVisibility(View.GONE);
                 searchEt.setText("");
-                countTv.setText(30+"");
+                countTv.setText(30 + "");
             }
         });
     }
@@ -281,7 +281,7 @@ public class CardTagActivityFragment extends Fragment implements PullToRefreshBa
                         searchList.clear();
                         if (list != null && list.size() > 0) {
                             if (!list.get(0).getContent().equals(keyword)) {
-                                if(toTagType.equals(Constant.TAG_TYPE_PUBLISH)){
+                                if (toTagType.equals(Constant.TAG_TYPE_PUBLISH)) {
                                     createTagLayout.setVisibility(View.VISIBLE);
                                     noTagTv.setVisibility(View.GONE);
                                 }
@@ -289,8 +289,8 @@ public class CardTagActivityFragment extends Fragment implements PullToRefreshBa
                                 createTagLayout.setVisibility(View.GONE);
                             }
                             searchList.addAll(list);
-                        }else{
-                            if(toTagType.equals(Constant.TAG_TYPE_PUBLISH)){
+                        } else {
+                            if (toTagType.equals(Constant.TAG_TYPE_PUBLISH)) {
                                 createTagLayout.setVisibility(View.VISIBLE);
                                 noTagTv.setVisibility(View.VISIBLE);
                             }
@@ -307,6 +307,24 @@ public class CardTagActivityFragment extends Fragment implements PullToRefreshBa
 
     //获取标签列表
     private void getTagList(final boolean isRefresh) {
+        if (lastTime == 0 && recommendLsit.size() == 0 && hotList.size() == 0 && newList.size() == 0) {
+            showLoadingLayout(getResources().getString(R.string.loading));
+        }
+        if (!NetUtils.isNetworkConnected(getActivity())) {
+            dismissLoadingLayout();
+            if (lastTime == 0 && recommendLsit.size() == 0 && hotList.size() == 0 && newList.size() == 0) {
+                showErrorLayout(new View.OnClickListener() {
+
+                    @Override
+                    public void onClick(View v) {
+                        dismissErrorLayout();
+                        getTagList(lastTime == 0 ? true : false);
+                    }
+                });
+            }
+            toastShort(getResources().getString(R.string.net_error));
+            return;
+        }
         JSONObject requestObject = new JSONObject();
         try {
             if (isRefresh) {
@@ -323,13 +341,14 @@ public class CardTagActivityFragment extends Fragment implements PullToRefreshBa
             @Override
             public void callback(JSONObject object, String error) {
                 mPullToRefreshListview.onRefreshComplete();
+                dismissLoadingLayout();
                 if (object != null) {
                     allTagLayout.setVisibility(View.VISIBLE);
                     try {
                         hasNext = object.getInt("hasNext");
                         lastTime = object.getLong("time");
                         postNum = object.getInt("postNum");
-                        if(postNum < queryCount){
+                        if (postNum < queryCount) {
                             return;
                         }
                         JSONArray recommendArray = object.optJSONArray("recommend");
@@ -365,7 +384,19 @@ public class CardTagActivityFragment extends Fragment implements PullToRefreshBa
                     }
 
                 } else {
-                    Toast.makeText(getActivity(), "请求标签列表失败", Toast.LENGTH_SHORT).show();
+                    if (lastTime == 0 && recommendLsit.size() == 0 && hotList.size() == 0 && newList.size() == 0) {
+                        dismissLoadingLayout();
+                        showErrorLayout(new View.OnClickListener() {
+
+                            @Override
+                            public void onClick(View v) {
+                                dismissErrorLayout();
+                                getTagList(true);
+                            }
+                        });
+                    } else {
+                        toastShort(getResources().getString(R.string.pull_up_failed));
+                    }
                 }
             }
         });
@@ -424,11 +455,11 @@ public class CardTagActivityFragment extends Fragment implements PullToRefreshBa
 
     private void initSize() {
         // 动态设置listview 高度
-        LinearLayout.LayoutParams recommentLinear = (LinearLayout.LayoutParams)recommendLv.getLayoutParams();
+        LinearLayout.LayoutParams recommentLinear = (LinearLayout.LayoutParams) recommendLv.getLayoutParams();
         recommentLinear.height = DensityUtil.dip2px(getActivity(), itemHeight) * recommendLsit.size();
         recommendLv.setLayoutParams(recommentLinear);
 
-        LinearLayout.LayoutParams hotLinear = (LinearLayout.LayoutParams)hotLv.getLayoutParams();
+        LinearLayout.LayoutParams hotLinear = (LinearLayout.LayoutParams) hotLv.getLayoutParams();
         hotLinear.height = DensityUtil.dip2px(getActivity(), itemHeight) * hotList.size();
         hotLv.setLayoutParams(hotLinear);
 
