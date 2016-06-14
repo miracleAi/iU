@@ -120,7 +120,7 @@ public class PublishEditActivityFragment extends Fragment {
         titleView.setLeftOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-              showDialog();
+                showDialog();
             }
         });
         titleView.setRightOnClickListener(new View.OnClickListener() {
@@ -166,9 +166,9 @@ public class PublishEditActivityFragment extends Fragment {
             @Override
             public void afterTextChanged(Editable s) {
                 if (s.length() != 0) {
-                    textCountTv.setText((300-s.length())+"");
+                    textCountTv.setText((300 - s.length()) + "");
                     completeState();
-                }else{
+                } else {
                     textCountTv.setText("300");
                 }
             }
@@ -180,7 +180,8 @@ public class PublishEditActivityFragment extends Fragment {
                 .setIgnoreGif(false)
                 .build();
     }
-    private void completeState(){
+
+    private void completeState() {
         if (null == tagIdList || tagIdList.size() == 0) {
             titleView.setRightBackGround(R.drawable.title_btn_disable);
             titleView.setRightTextColor(getResources().getColor(R.color.white));
@@ -199,13 +200,14 @@ public class PublishEditActivityFragment extends Fragment {
             }
         }
     }
+
     private void setImgs(int i) {
         ImageView imgView = new ImageView(getActivity());
-        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(DensityUtil.dip2px(getActivity(),80),DensityUtil.dip2px(getActivity(),70));
+        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(DensityUtil.dip2px(getActivity(), 80), DensityUtil.dip2px(getActivity(), 70));
         imgView.setLayoutParams(lp);
         imgView.setId(i);
-        imgView.setPadding(DensityUtil.dip2px(getActivity(),10),0,0,0);
-        x.image().bind(imgView, mSelectPath.get(i),imageOptions);
+        imgView.setPadding(DensityUtil.dip2px(getActivity(), 10), 0, 0, 0);
+        x.image().bind(imgView, mSelectPath.get(i), imageOptions);
         photoScrollLayout.addView(imgView);
     }
 
@@ -215,8 +217,8 @@ public class PublishEditActivityFragment extends Fragment {
         if (typeStr.equals(Constant.PUBLISH_IMG)) {
             mSelectPath = b.getStringArrayList(Constant.PUBLISH_IMG_PATH);
             photoLayout.setVisibility(View.VISIBLE);
-            if(mSelectPath.size()>0){
-                for(int i=0;i<mSelectPath.size();i++){
+            if (mSelectPath.size() > 0) {
+                for (int i = 0; i < mSelectPath.size(); i++) {
                     setImgs(i);
                 }
             }
@@ -431,22 +433,27 @@ public class PublishEditActivityFragment extends Fragment {
         }
         loadingLayout.setVisibility(View.GONE);
     }
+
     //显示提示退出对话框
-    public void showDialog(){
-        if(contentEt.getText() != null && !contentEt.getText().toString().equals("") || imageList.size() > 0 || tagIdList.size()>0){
-            CommonDialog.doubleBtnDialog(getActivity(), "", "要退出内容编辑么？", "取消", "确定", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    dialog.dismiss();
-                }
-            }, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    getActivity().finish();
-                }
-            });
-        }else{
+    public void showDialog() {
+        if (contentEt.getText() != null && !contentEt.getText().toString().equals("") || imageList.size() > 0 || tagIdList.size() > 0) {
+            CommonDialog.doubleBtnDialog(getActivity(), getResources().getString(R.string.exit_edit_title),
+                    getResources().getString(R.string.exit_edit_tips),
+                    getResources().getString(R.string.cancel),
+                    getResources().getString(R.string.exit), new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    }, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            getActivity().finish();
+                        }
+                    });
+        } else {
             getActivity().finish();
         }
     }
+
 }

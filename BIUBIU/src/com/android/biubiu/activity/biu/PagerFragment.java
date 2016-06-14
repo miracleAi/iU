@@ -902,7 +902,7 @@ public class PagerFragment extends BaseFragment implements View.OnClickListener,
                 public void callback(JSONObject object, String error) {
                     if (object != null) {
                         codeState = 1;
-                        toastShort("biubiu成功啦,等待对方确认");
+                        toastShort("biu成功啦,等待对方确认");
                     } else {
                         toastShort("biubiu失败啦");
                     }

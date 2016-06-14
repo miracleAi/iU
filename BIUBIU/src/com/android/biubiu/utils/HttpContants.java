@@ -2,11 +2,13 @@ package com.android.biubiu.utils;
 
 public class HttpContants {
     //正式服务器
-//    public static final String HTTP_ADDRESS = "http://app.iu.imeetu.cc/meetu_maven_new/";
+    public static final String HTTP_ADDRESS = "http://app.iu.imeetu.cc/meetu_maven_new/";
     //测试服务器
-    public static final String HTTP_ADDRESS = "http://123.57.26.168:8080/meetu_maven_new/";
-    //社区版Host
-    public static final String HTTP_COMMUNITY_ADDRESS = "http://123.57.26.168:8080/meetu_community/";
+//    public static final String HTTP_ADDRESS = "http://123.57.26.168:8080/meetu_maven_new/";
+    //社区版正式Host
+    public static final String HTTP_COMMUNITY_ADDRESS = "http://app.iu.imeetu.cc/meetu_community/";
+    //社区版测试Host
+//    public static final String HTTP_COMMUNITY_ADDRESS = "http://123.57.26.168:8080/meetu_community/";
     //阿里云
     public static final String A_LI_YUN = "http://oss-cn-beijing.aliyuncs.com";
     /**
@@ -232,8 +234,8 @@ public class HttpContants {
      * 获取全局通知
      */
     public static final String GET_ALL_STATUS = HTTP_COMMUNITY_ADDRESS + "app/overall/getStatus";
-     /* 获取社区biu列表
-     */
+    /* 获取社区biu列表
+    */
     public static final String COMBIU_GETCOMBIULIST = HTTP_COMMUNITY_ADDRESS + "app/community/combiu/getComBiuList";
     /**
      * 话题分类下的帖子
