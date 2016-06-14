@@ -46,6 +46,7 @@ import com.android.biubiu.utils.LogUtil;
 import com.android.biubiu.utils.LoginUtils;
 import com.android.biubiu.utils.SharePreferanceUtils;
 import com.android.biubiu.utils.UploadImgUtils;
+import com.android.biubiu.utils.Utils;
 import com.android.biubiu.view.BiuView;
 import com.android.biubiu.view.HomeBgView;
 import com.android.biubiu.view.TaskView;
@@ -173,7 +174,6 @@ public class BiuFragment extends Fragment implements PushInterface, FragmentIndi
     private static final int SELECT_PHOTO = 1002;
     private static final int CROUP_PHOTO = 1003;
     private static final int ACTIVITY_LIST = 1004;
-    Bitmap userheadBitmap = null;
     String headPath = "";
     LinearLayout loadingLayout;
     GifView loadGif;
@@ -224,7 +224,7 @@ public class BiuFragment extends Fragment implements PushInterface, FragmentIndi
             super.handleMessage(msg);
             boolean isBiuEnd = SharePreferanceUtils.getInstance().isBiuEnd(getActivity(), SharePreferanceUtils.IS_BIU_END, true);
             if (LoginUtils.isLogin(getActivity())) {
-                if(isHome){
+                if (isHome) {
                     resumeDraw();
                 }
                 //如果返回时biu已结束，则清掉抢biu列表的相关状态
@@ -238,7 +238,7 @@ public class BiuFragment extends Fragment implements PushInterface, FragmentIndi
                         userBiuImv.setImageResource(R.drawable.biu_btn_unfinished);
                         userBiuImv.setVisibility(View.VISIBLE);
                         getGrabBiuUser();
-                    }else {
+                    } else {
                         updateBiuView(grabBiuBean);
                     }
                 }
@@ -1270,16 +1270,16 @@ public class BiuFragment extends Fragment implements PushInterface, FragmentIndi
                     JSONObject data = jsons.getJSONObject("data");
                     String headFlag = data.getString("iconStatus");
                     com.android.biubiu.common.Constant.headState = headFlag;
-                    if (headFlag.equals("2") || headFlag.equals("4")|| headFlag.equals("6")) {
+                    if (headFlag.equals("2") || headFlag.equals("4") || headFlag.equals("6")) {
                         showShenHeDaiog(Integer.parseInt(headFlag));
                     }
                     String recSex = data.getString("s_sex");
                     SharePreferanceUtils.getInstance().putShared(getActivity(), SharePreferanceUtils.RECEIVE_SEX, recSex);
                     String biuendStr = data.getString("is_biu_end");
-                    if(biuendStr.equals("0")){
-                        SharePreferanceUtils.getInstance().putShared(getActivity(),SharePreferanceUtils.IS_BIU_END,true);
-                    }else{
-                        SharePreferanceUtils.getInstance().putShared(getActivity(),SharePreferanceUtils.IS_BIU_END,false);
+                    if (biuendStr.equals("0")) {
+                        SharePreferanceUtils.getInstance().putShared(getActivity(), SharePreferanceUtils.IS_BIU_END, true);
+                    } else {
+                        SharePreferanceUtils.getInstance().putShared(getActivity(), SharePreferanceUtils.IS_BIU_END, false);
                     }
                     inveralTime = data.getInt("biu_time_interval");
                     minTime = data.getInt("biu_time_interval_min");
@@ -1451,22 +1451,12 @@ public class BiuFragment extends Fragment implements PushInterface, FragmentIndi
                 }
                 break;
             case CROUP_PHOTO:
-                try {
-                    if (data != null) {
-                        Bundle extras = data.getExtras();
-                        userheadBitmap = extras.getParcelable("data");
-                        if (userheadBitmap != null) {
-                            headPath = saveHeadImg(userheadBitmap);
-                            uploadPhoto(headPath);
-                        }
-                    }
-                } catch (NullPointerException e) {
-                    // TODO: handle exception
-                }
+                headPath = Utils.getImgPath();
+                uploadPhoto(headPath);
                 break;
             case SELECT_PHOTO:
                 if (data != null) {
-                    cropPhoto(data.getData());// 裁剪图片
+                    Utils.startPhotoZoom(getActivity(),data.getData(),CROUP_PHOTO);// 裁剪图片
                 }
                 break;
             case ACTIVITY_LIST:
@@ -1524,47 +1514,6 @@ public class BiuFragment extends Fragment implements PushInterface, FragmentIndi
         loadingLayout.setVisibility(View.GONE);
     }
 
-    /**
-     * 调用系统的裁剪功能
-     *
-     * @param uri
-     */
-    public void cropPhoto(Uri uri) {
-        // 调用拍照的裁剪功能
-        Intent intent = new Intent("com.android.camera.action.CROP");
-        intent.setDataAndType(uri, "image/*");
-        intent.putExtra("crop", "true");
-        // aspectX aspectY 是宽和搞的比例
-        intent.putExtra("aspectX", 1);
-        intent.putExtra("aspectY", 1);
-        // // outputX outputY 是裁剪图片宽高
-        intent.putExtra("outputX", 250);
-        intent.putExtra("outputY", 250);
-        intent.putExtra("return-data", false);
-        intent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
-        startActivityForResult(intent, CROUP_PHOTO);
-    }
-
-    public String saveHeadImg(Bitmap head) {
-        FileOutputStream fos = null;
-        String path = "";
-        path = Environment.getExternalStorageDirectory()
-                + "/biubiu/" + System.currentTimeMillis() + ".png";
-        File file = new File(path);
-        file.getParentFile().mkdirs();
-        try {
-            file.createNewFile();
-            fos = new FileOutputStream(file);
-            head.compress(CompressFormat.PNG, 100, fos);
-            fos.flush();
-            fos.close();
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-        return path;
-
-    }
 
     //倒计时线程
     Runnable taskR = new Runnable() {

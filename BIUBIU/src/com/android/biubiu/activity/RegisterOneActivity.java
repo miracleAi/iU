@@ -24,6 +24,7 @@ import com.android.biubiu.utils.CloseJianpan;
 import com.android.biubiu.utils.Constants;
 import com.android.biubiu.utils.DateUtils;
 import com.android.biubiu.utils.LogUtil;
+import com.android.biubiu.utils.Utils;
 
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
@@ -62,6 +63,8 @@ import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import org.xutils.x;
+
 public class RegisterOneActivity extends BaseActivity implements OnClickListener,OnWheelChangedListener2{
 	private RelativeLayout backLayout,brithdayLayout,sexLayout, userHeadLayout,nextLayout;
 	private TextView birthTv,uSexTv;
@@ -78,7 +81,6 @@ public class RegisterOneActivity extends BaseActivity implements OnClickListener
 
 	private static final int SELECT_PHOTO = 1001;
 	private static final int CROUP_PHOTO = 1002;
-	Bitmap userheadBitmap = null;
 	String headPath = "";
 
 	private RelativeLayout sexDiolagLayout;
@@ -86,7 +88,6 @@ public class RegisterOneActivity extends BaseActivity implements OnClickListener
 	private Boolean isSex=false;//是否点击了性别选择器
 	String phontNum = "";
 	String password = "";
-	Uri croupUri;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -348,7 +349,7 @@ public class RegisterOneActivity extends BaseActivity implements OnClickListener
 
 	private void nextStep() {
 		// TODO Auto-generated method stub
-		if(userheadBitmap == null){
+		if(headPath != null && !headPath.equals("")){
 			toastShort(getResources().getString(R.string.reg_one_no_userhead));
 			return;
 		}
@@ -450,47 +451,6 @@ public class RegisterOneActivity extends BaseActivity implements OnClickListener
 			}
 		});
 	}
-	/**
-	 * 调用系统的裁剪功能
-	 * 
-	 * @param uri
-	 */
-	public void cropPhoto(Uri uri) {
-		croupUri = uri;
-		// 调用拍照的裁剪功能
-		Intent intent = new Intent("com.android.camera.action.CROP");
-		intent.setDataAndType(uri, "image/*");
-		intent.putExtra("crop", "true");
-		// aspectX aspectY 是宽和搞的比例
-		intent.putExtra("aspectX", 1);
-		intent.putExtra("aspectY", 1);
-		// // outputX outputY 是裁剪图片宽高
-		intent.putExtra("outputX", 250);
-		intent.putExtra("outputY", 250);
-		intent.putExtra("return-data", false);
-		intent.putExtra(MediaStore.EXTRA_OUTPUT, croupUri);
-		startActivityForResult(intent, CROUP_PHOTO);
-	}
-	public String saveHeadImg(Bitmap head) {
-		FileOutputStream fos = null;
-		String path = "";
-		path = Environment.getExternalStorageDirectory()
-				+ "/biubiu/"+System.currentTimeMillis()+".png";
-		File file = new File(path);
-		file.getParentFile().mkdirs();
-		try {
-			file.createNewFile();
-			fos = new FileOutputStream(file);
-			head.compress(CompressFormat.PNG, 100, fos);
-			fos.flush();
-			fos.close();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return path;
-
-	}
 	private Bitmap decodeUriAsBitmap(Uri uri){
 	    Bitmap bitmap = null;
 	    try {
@@ -509,17 +469,14 @@ public class RegisterOneActivity extends BaseActivity implements OnClickListener
 		case SELECT_PHOTO:
 			if (resultCode == RESULT_OK) {
 				if(data != null){
-					cropPhoto(data.getData());// 裁剪图片
+					Utils.startPhotoZoom(RegisterOneActivity.this,data.getData(),CROUP_PHOTO);
 				}
 			}
 			break;
 		case CROUP_PHOTO:
-			try {
-				if (croupUri != null) {
-					userheadBitmap =  decodeUriAsBitmap(croupUri);
-					if(userheadBitmap != null){
-						headPath = saveHeadImg(userheadBitmap);
-						userHeadImv.setImageBitmap(userheadBitmap);
+				headPath = Utils.getImgPath();
+					if(headPath != null && !headPath.equals("")){
+						x.image().bind(userHeadImv,headPath);
 						addHeadTv.setVisibility(View.GONE);
 						verifyTv.setBackgroundResource(R.drawable.register_imageview_photo_bg);
 						verifyTv.setText("待审核");
@@ -529,10 +486,6 @@ public class RegisterOneActivity extends BaseActivity implements OnClickListener
 						addHeadTv.setVisibility(View.VISIBLE);
 						verifyTv.setVisibility(View.GONE);
 					}
-				}
-			} catch (NullPointerException e) {
-				// TODO: handle exception
-			}
 			break;
 		default:
 			break;

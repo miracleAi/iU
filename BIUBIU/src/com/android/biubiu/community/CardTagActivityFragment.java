@@ -283,15 +283,16 @@ public class CardTagActivityFragment extends BaseFragment implements PullToRefre
                             if (!list.get(0).getContent().equals(keyword)) {
                                 if (toTagType.equals(Constant.TAG_TYPE_PUBLISH)) {
                                     createTagLayout.setVisibility(View.VISIBLE);
-                                    noTagTv.setVisibility(View.GONE);
                                 }
                             } else {
                                 createTagLayout.setVisibility(View.GONE);
                             }
+                            noTagTv.setVisibility(View.GONE);
                             searchList.addAll(list);
                         } else {
                             if (toTagType.equals(Constant.TAG_TYPE_PUBLISH)) {
                                 createTagLayout.setVisibility(View.VISIBLE);
+                            }else{
                                 noTagTv.setVisibility(View.VISIBLE);
                             }
                         }

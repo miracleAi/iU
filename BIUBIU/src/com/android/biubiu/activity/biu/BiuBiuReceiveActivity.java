@@ -41,6 +41,7 @@ import com.android.biubiu.utils.LogUtil;
 import com.android.biubiu.utils.NetUtils;
 import com.android.biubiu.utils.SharePreferanceUtils;
 import com.android.biubiu.utils.UploadImgUtils;
+import com.android.biubiu.utils.Utils;
 import com.avos.avoscloud.LogUtil.log;
 import com.google.gson.Gson;
 
@@ -97,7 +98,6 @@ public class BiuBiuReceiveActivity extends BaseActivity {
 
     private static final int SELECT_PHOTO = 1002;
     private static final int CROUP_PHOTO = 1003;
-    Bitmap userheadBitmap = null;
     String headPath = "";
     private boolean isUploadingPhoto = false;
 
@@ -919,12 +919,8 @@ public class BiuBiuReceiveActivity extends BaseActivity {
             case CROUP_PHOTO:
                 try {
                     if (data != null) {
-                        Bundle extras = data.getExtras();
-                        userheadBitmap = extras.getParcelable("data");
-                        if (userheadBitmap != null) {
-                            headPath = saveHeadImg(userheadBitmap);
+                            headPath = Utils.getImgPath();
                             uploadPhoto(headPath);
-                        }
                     }
                 } catch (NullPointerException e) {
                     // TODO: handle exception
@@ -932,7 +928,7 @@ public class BiuBiuReceiveActivity extends BaseActivity {
                 break;
             case SELECT_PHOTO:
                 if (data != null) {
-                    cropPhoto(data.getData());// 裁剪图片
+                    Utils.startPhotoZoom(BiuBiuReceiveActivity.this,data.getData(),CROUP_PHOTO);// 裁剪图片
                 }
                 break;
             default:
@@ -958,47 +954,6 @@ public class BiuBiuReceiveActivity extends BaseActivity {
                 }
             }
         });
-    }
-
-    /**
-     * 调用系统的裁剪功能
-     *
-     * @param uri
-     */
-    public void cropPhoto(Uri uri) {
-        // 调用拍照的裁剪功能
-        Intent intent = new Intent("com.android.camera.action.CROP");
-        intent.setDataAndType(uri, "image/*");
-        intent.putExtra("crop", "true");
-        // aspectX aspectY 是宽和搞的比例
-        intent.putExtra("aspectX", 1);
-        intent.putExtra("aspectY", 1);
-        // // outputX outputY 是裁剪图片宽高
-        intent.putExtra("outputX", 250);
-        intent.putExtra("outputY", 250);
-        intent.putExtra("return-data", true);
-        startActivityForResult(intent, CROUP_PHOTO);
-    }
-
-    public String saveHeadImg(Bitmap head) {
-        FileOutputStream fos = null;
-        String path = "";
-        path = Environment.getExternalStorageDirectory()
-                + "/biubiu/" + System.currentTimeMillis() + ".png";
-        File file = new File(path);
-        file.getParentFile().mkdirs();
-        try {
-            file.createNewFile();
-            fos = new FileOutputStream(file);
-            head.compress(CompressFormat.PNG, 100, fos);
-            fos.flush();
-            fos.close();
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-        return path;
-
     }
 
     @Override
