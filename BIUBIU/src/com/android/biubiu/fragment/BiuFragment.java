@@ -1420,7 +1420,6 @@ public class BiuFragment extends Fragment implements PushInterface, FragmentIndi
 
     @Override
     public void onPause() {
-        // TODO Auto-generated method stub
         super.onPause();
         pauseDraw();
         mInvalidHandler.sendEmptyMessageDelayed(0, 1000);
