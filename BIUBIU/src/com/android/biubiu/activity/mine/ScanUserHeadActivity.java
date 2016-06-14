@@ -337,10 +337,9 @@ public class ScanUserHeadActivity extends BaseActivity implements OnClickListene
 		// // outputX outputY 是裁剪图片宽高
 		intent.putExtra("outputX", 250);
 		intent.putExtra("outputY", 250);
-		intent.putExtra("scale", true);
 		intent.putExtra("return-data", false);
-		intent.putExtra(MediaStore.EXTRA_OUTPUT, croupUri);
-		intent.putExtra("noFaceDetection", true); // no face detection
+		intent.putExtra(MediaStore.EXTRA_OUTPUT, croupUri);;
+		//intent.putExtra("noFaceDetection", true); // no face detection
 		startActivityForResult(intent, CROP_PHOTO);
 	}
 	private Bitmap decodeUriAsBitmap(Uri uri){
