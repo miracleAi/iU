@@ -356,14 +356,7 @@ public class PostsFragment extends BaseFragment implements PullToRefreshBase.OnR
                     mAdapter.notifyDataSetChanged();
                 } else {
                     if (time == 0) {
-                        showDataEmpty(new View.OnClickListener() {
-
-                            @Override
-                            public void onClick(View v) {
-                                dismissDataEmpty();
-                                getData(mNextStart);
-                            }
-                        }, mDataNullTips);
+                        showDataEmpty(null, mDataNullTips);
                     }
                 }
             }
@@ -617,6 +610,14 @@ public class PostsFragment extends BaseFragment implements PullToRefreshBase.OnR
         super.onPause();
         if (mFuture != null) {
             mFuture.cancel(true);
+        }
+    }
+
+    public void refreshData() {
+        if(getActivity()!=null){
+            if (mData.size() == 0) {
+                getData(0);
+            }
         }
     }
 }

@@ -194,14 +194,7 @@ public class CommunityBiuListActivity extends BaseActivity implements PullToRefr
                     mAdapter.notifyDataSetChanged();
                 } else {
                     if (time == 0) {
-                        showDataEmpty(new View.OnClickListener() {
-
-                            @Override
-                            public void onClick(View v) {
-                                dismissDataEmpty();
-                                getBiuList(mNextStart);
-                            }
-                        }, getResources().getString(R.string.biu_me_null));
+                        showDataEmpty(null, getResources().getString(R.string.biu_me_null));
                     }
                 }
 

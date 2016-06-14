@@ -275,14 +275,7 @@ public class UserListActivity extends BaseActivity {
                             userDao.insertOrReplaceUser(mData.get(i));
                         }
                     } else {
-                        showDataEmpty(new View.OnClickListener() {
-
-                            @Override
-                            public void onClick(View v) {
-                                dismissDataEmpty();
-                                initData();
-                            }
-                        }, getResources().getString(R.string.biu_biu_null));
+                        showDataEmpty(null, getResources().getString(R.string.biu_biu_null));
                     }
 
 

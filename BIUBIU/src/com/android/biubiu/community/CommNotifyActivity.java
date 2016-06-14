@@ -202,14 +202,7 @@ public class CommNotifyActivity extends BaseActivity implements PullToRefreshBas
                     mAdapter.notifyDataSetChanged();
                 } else {
                     if (time == 0) {
-                        showDataEmpty(new View.OnClickListener() {
-
-                            @Override
-                            public void onClick(View v) {
-                                dismissDataEmpty();
-                                getNotifyList(mNextStart);
-                            }
-                        }, getResources().getString(R.string.notify_list_null));
+                        showDataEmpty(null, getResources().getString(R.string.notify_list_null));
                     }
                 }
 

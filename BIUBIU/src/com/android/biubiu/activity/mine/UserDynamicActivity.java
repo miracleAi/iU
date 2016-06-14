@@ -137,14 +137,7 @@ public class UserDynamicActivity extends BaseActivity implements PullToRefreshBa
                             postAdapter.notifyDataSetChanged();
                         } else {
                             if (lastTime == 0) {
-                                showDataEmpty(new View.OnClickListener() {
-
-                                    @Override
-                                    public void onClick(View v) {
-                                        dismissDataEmpty();
-                                        getDynamicList(true);
-                                    }
-                                }, getResources().getString(R.string.personal_dynamic_null));
+                                showDataEmpty(null, getResources().getString(R.string.personal_dynamic_null));
                             }
                         }
                     } catch (JSONException e) {

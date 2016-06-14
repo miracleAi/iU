@@ -157,7 +157,9 @@ public class DiscoveryFragment extends BaseFragment implements FragmentIndicator
 
     @Override
     public void onTabClick() {
-
+        for(PostsFragment fragment:mFragments){
+            fragment.refreshData();
+        }
     }
 
     @Override
