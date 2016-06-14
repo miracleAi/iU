@@ -327,8 +327,6 @@ public class ScanUserHeadActivity extends BaseActivity implements OnClickListene
 	 */
 	public void cropPhoto(Uri uri) {
 		croupUri = uri;
-		LogUtil.d("mytest", "1uri--"+croupUri);
-		LogUtil.e("mytest", "1uri--"+croupUri);
 		// 调用拍照的裁剪功能
 		Intent intent = new Intent("com.android.camera.action.CROP");
 		intent.setDataAndType(uri, "image/*");

@@ -93,7 +93,7 @@ public class RegisterTwoActivity extends BaseCityActivity implements OnClickList
 	private RelativeLayout backRl;
 	boolean isStudent = true;
 	UserInfoBean userBean = new UserInfoBean();
-	Bitmap userheadBitmp;
+	//Bitmap userheadBitmp;
 	String headPath;
 	String phoneNum = "";
 	String password = "";
@@ -135,14 +135,14 @@ public class RegisterTwoActivity extends BaseCityActivity implements OnClickList
 	private void getinentInfo() {
 		// TODO Auto-generated method stub
 		UserInfoBean bean = (UserInfoBean) getIntent().getSerializableExtra("infoBean");
-		Bitmap bitmp = getIntent().getParcelableExtra("userhead");
+		//Bitmap bitmp = getIntent().getParcelableExtra("userhead");
 		headPath = getIntent().getStringExtra("headPath");
 		phoneNum = getIntent().getStringExtra("phone");
 		password = getIntent().getStringExtra("password");
 		userBean.setNickname(bean.getNickname());
 		userBean.setBirthday(bean.getBirthday());
 		userBean.setSex(bean.getSex());
-		userheadBitmp = bitmp;
+		//userheadBitmp = bitmp;
 	}
 	private void initView() {
 		// TODO Auto-generated method stub
@@ -161,7 +161,8 @@ public class RegisterTwoActivity extends BaseCityActivity implements OnClickList
 		graduateLinear = (LinearLayout) findViewById(R.id.graduate_linear);
 		graduateLinear.setOnClickListener(this);
 		userheadImv = (ImageView) findViewById(R.id.userhead_imv);
-		userheadImv.setImageBitmap(userheadBitmp);
+		x.image().bind(userheadImv,headPath);
+		//userheadImv.setImageBitmap(userheadBitmp);
 		backRl = (RelativeLayout) findViewById(R.id.back_rl);
 		backRl.setOnClickListener(this);
 
@@ -644,6 +645,7 @@ public class RegisterTwoActivity extends BaseCityActivity implements OnClickList
 				// TODO Auto-generated method stub
 				dismissLoadingLayout();
 				try {
+					LogUtil.d("mytest","register--"+arg0);
 					JSONObject jsons = new JSONObject(arg0);
 					String code = jsons.getString("state");
 					LogUtil.e(TAG, code);

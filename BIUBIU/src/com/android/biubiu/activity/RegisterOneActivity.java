@@ -374,7 +374,7 @@ public class RegisterOneActivity extends BaseActivity implements OnClickListener
 		bean.setSex(bean.getSexFlag(uSexTv.getText().toString()));
 		Intent intent=new Intent(this,RegisterTwoActivity.class);
 		intent.putExtra("infoBean", (Serializable)bean);
-		intent.putExtra("userhead", userheadBitmap);
+		//intent.putExtra("userhead", userheadBitmap);
 		intent.putExtra("headPath", headPath);
 		intent.putExtra("phone", phontNum);
 		intent.putExtra("password", password);
