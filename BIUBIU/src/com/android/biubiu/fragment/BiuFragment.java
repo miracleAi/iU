@@ -185,6 +185,8 @@ public class BiuFragment extends Fragment implements PushInterface, FragmentIndi
     private String mUserCode;
     //线程是否开启
     private boolean isShowRPost = false;
+    //标记是否在首页
+    private boolean isHome = true;
 
     BiubiuDao biuDao;
     //请求biu列表是否成功
@@ -206,12 +208,7 @@ public class BiuFragment extends Fragment implements PushInterface, FragmentIndi
                 }*//*
             } else {
                 SharePreferanceUtils.getInstance().putShared(getActivity(), SharePreferanceUtils.EXCHANGE_FROUNT, true);
-<<<<<<< HEAD
-                SharePreferanceUtils.getInstance().putShared(getActivity(), SharePreferanceUtils.IS_APP_OPEN, false);
-               /* clearView();
-=======
                *//* clearView();
->>>>>>> iUv_1.3
                 biuDao.deleteAll();
                 isBiuLoading = false;
                 isBiuLoaded = false;*//*
@@ -227,7 +224,9 @@ public class BiuFragment extends Fragment implements PushInterface, FragmentIndi
             super.handleMessage(msg);
             boolean isBiuEnd = SharePreferanceUtils.getInstance().isBiuEnd(getActivity(), SharePreferanceUtils.IS_BIU_END, true);
             if (LoginUtils.isLogin(getActivity())) {
-                resumeDraw();
+                if(isHome){
+                    resumeDraw();
+                }
                 //如果返回时biu已结束，则清掉抢biu列表的相关状态
                 if (isBiuEnd) {
                     grabBiuBean = null;
@@ -752,6 +751,7 @@ public class BiuFragment extends Fragment implements PushInterface, FragmentIndi
 
     @Override
     public void onTabClick() {
+        isHome = true;
         if (!LoginUtils.isLogin(getActivity()) && ((MainActivity) getActivity()).isReverse()) {
             ((MainActivity) getActivity()).reverseBack();
         }
@@ -762,6 +762,7 @@ public class BiuFragment extends Fragment implements PushInterface, FragmentIndi
 
     @Override
     public void onLeaveTab() {
+        isHome = false;
         if (LoginUtils.isLogin(getActivity())) {
             pauseDraw();
         }
