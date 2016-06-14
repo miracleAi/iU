@@ -203,10 +203,11 @@ public class PublishEditActivityFragment extends Fragment {
 
     private void setImgs(int i) {
         ImageView imgView = new ImageView(getActivity());
-        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(DensityUtil.dip2px(getActivity(), 80), DensityUtil.dip2px(getActivity(), 70));
+        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(DensityUtil.dip2px(getActivity(), 70), DensityUtil.dip2px(getActivity(), 70));
+        lp.setMargins(DensityUtil.dip2px(getActivity(), 10), 0, 0, 0);
         imgView.setLayoutParams(lp);
         imgView.setId(i);
-        imgView.setPadding(DensityUtil.dip2px(getActivity(), 10), 0, 0, 0);
+       // imgView.setPadding(DensityUtil.dip2px(getActivity(), 10), 0, 0, 0);
         x.image().bind(imgView, mSelectPath.get(i), imageOptions);
         photoScrollLayout.addView(imgView);
     }
