@@ -272,7 +272,7 @@
     <string name="exit_tips">确定要退出当前账号?</string>
     <string name="grab_biu_list">抢biu的人</string>
     <string name="tips">提示</string>
-    <string name="receive_biu_null">你的biubiu暂时还没有人接收呢，你可以继续等待或者重新发biu PS：抢你的人越多，你机会有越多奖励哟</string>
+    <string name="receive_biu_null">你的biubiu暂时还没有人接收呢，你可以继续等待或者重新发biu\nPS：抢你的人越多，你机会有越多奖励哟</string>
     <string name="title_activity_publish_home">PublishHomeActivity</string>
     <string name="title_activity_publish_edit">PublishEditActivity</string>
 
