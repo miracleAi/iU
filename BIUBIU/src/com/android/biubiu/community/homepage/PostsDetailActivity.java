@@ -96,6 +96,7 @@ public class PostsDetailActivity extends BaseActivity implements AdapterView.OnI
     private ListView mDataLv;
     private Button mSendBtn;
     private long mNextStart;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -585,8 +586,12 @@ public class PostsDetailActivity extends BaseActivity implements AdapterView.OnI
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        if (position != 0 && position != 1) {
-            Comment comment = mData.get(position - mListview.getHeaderViewsCount());
+        if (position != 0/* && position != 1*/) {
+            int index = position - mListview.getHeaderViewsCount();
+            if (index < 0) {
+                return;
+            }
+            Comment comment = mData.get(index);
             if (comment != null) {
                 mCommentEt.setHint(getResources().getString(R.string.reply_who, comment.getUserFromName()));
                 mReplayComment = comment;

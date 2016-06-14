@@ -21,7 +21,7 @@ public class WebviewActivity extends BaseActivity {
         b.putString(Constant.ACTIVITY_COVER, getIntent().getStringExtra(Constant.ACTIVITY_COVER));
         b.putString(Constant.ACTIVITY_URL, getIntent().getStringExtra(Constant.ACTIVITY_URL));
         fragment.setArguments(b);
-        getFragmentManager().beginTransaction().add(R.id.layout_body, fragment).commit();
+        getSupportFragmentManager().beginTransaction().add(R.id.layout_body, fragment).commit();
     }
 
 }

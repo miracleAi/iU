@@ -10,6 +10,7 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
+import com.android.biubiu.BaseFragment;
 import com.android.biubiu.common.Constant;
 import com.android.biubiu.component.title.TopTitleView;
 
@@ -18,8 +19,7 @@ import cc.imeetu.iu.R;
 /**
  * A placeholder fragment containing a simple view.
  */
-public class WebviewActivityFragment extends Fragment {
-    private View mRootview;
+public class WebviewActivityFragment extends BaseFragment {
     private WebView mWebview;
     private TopTitleView mToptitle;
     private String mAdName, mAdCover, mAdUrl;
@@ -62,6 +62,8 @@ public class WebviewActivityFragment extends Fragment {
                     .getAbsolutePath());
             mWebview.getSettings().setAppCacheMaxSize(Integer.MAX_VALUE);
             mWebview.requestFocus();
+
+            showLoadingLayout(getResources().getString(R.string.loading));
             mWebview.loadUrl(mAdUrl);
             mWebview.setWebViewClient(new WebViewClient() {
                 @Override
@@ -74,6 +76,12 @@ public class WebviewActivityFragment extends Fragment {
                 // 转向错误时的处理
                 public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
 
+                }
+
+                @Override
+                public void onPageFinished(WebView view, String url) {
+                    super.onPageFinished(view, url);
+                    dismissLoadingLayout();
                 }
             });
 

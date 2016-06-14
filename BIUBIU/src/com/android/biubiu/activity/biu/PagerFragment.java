@@ -216,7 +216,7 @@ public class PagerFragment extends BaseFragment implements View.OnClickListener,
 
     private boolean mRequestSuccess;
 
-    private int currentPhotoIndex = -1;
+//    private int currentPhotoIndex = -1;
 
     public PagerFragment() {
     }
@@ -521,10 +521,11 @@ public class PagerFragment extends BaseFragment implements View.OnClickListener,
     private void setUserPhotos(final ArrayList<UserPhotoBean> phos) {
         /*photoAdapter = new UserPagerPhotoAdapter(getActivity(), phos, imageOptions, isMyself);
         photoPager.setAdapter(photoAdapter);*/
-        currentPhotoIndex = -1;
+//        currentPhotoIndex = -1;
         userPhotoLayout.removeAllViews();
         for (int i = 0; i < phos.size(); i++) {
-            currentPhotoIndex = i;
+//            currentPhotoIndex = i;
+            final int index = i;
             ImageView imgView = new ImageView(getActivity());
             LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(DensityUtil.dip2px(getActivity(), 80), DensityUtil.dip2px(getActivity(), 70));
             imgView.setLayoutParams(lp);
@@ -537,7 +538,7 @@ public class PagerFragment extends BaseFragment implements View.OnClickListener,
                 public void onClick(View v) {
                     Intent intent = new Intent(getActivity(), UserPhotoScanActivity.class);
                     intent.putExtra("photolist", (Serializable) phos);
-                    intent.putExtra("photoindex", currentPhotoIndex);
+                    intent.putExtra("photoindex", index);
                     intent.putExtra("isMyself", isMyself);
                     startActivityForResult(intent, TO_PREVIEW_PIC);
                 }
