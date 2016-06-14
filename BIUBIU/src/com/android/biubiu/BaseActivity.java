@@ -128,6 +128,7 @@ public class BaseActivity extends FragmentActivity {
         }
         TextView emptyTv = (TextView) reloadLayout.findViewById(R.id.reload_tips_textview);
         emptyTv.setText(empty);
+        reloadLayout.findViewById(R.id.error_imageview).setVisibility(View.GONE);
         reloadLayout.setOnClickListener(listener);
         errorLayout.setVisibility(View.VISIBLE);
     }

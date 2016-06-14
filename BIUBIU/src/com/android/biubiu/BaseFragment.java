@@ -97,6 +97,7 @@ public class BaseFragment extends Fragment {
         }
         TextView emptyTv = (TextView) reloadLayout.findViewById(R.id.reload_tips_textview);
         emptyTv.setText(empty);
+        reloadLayout.findViewById(R.id.error_imageview).setVisibility(View.GONE);
         reloadLayout.setOnClickListener(listener);
         errorLayout.setVisibility(View.VISIBLE);
     }
@@ -107,6 +108,7 @@ public class BaseFragment extends Fragment {
         }
         TextView emptyTv = (TextView) mRootview.findViewById(R.id.reload_tips_textview);
         emptyTv.setText(getActivity().getResources().getString(R.string.reload_tips));
+        reloadLayout.findViewById(R.id.error_imageview).setVisibility(View.VISIBLE);
         errorLayout.setVisibility(View.GONE);
     }
 

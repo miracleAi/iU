@@ -12,6 +12,7 @@ public class CommNotify {
     private String userSchool;
     private String userHead;
     private long createAt;
+    private String userSex;
     private int type;//0表示评论 1表示赞
     private String desc;
     private String postContent;
@@ -78,6 +79,14 @@ public class CommNotify {
 
     public void setCreateAt(long createAt) {
         this.createAt = createAt;
+    }
+
+    public String getUserSex() {
+        return userSex;
+    }
+
+    public void setUserSex(String userSex) {
+        this.userSex = userSex;
     }
 
     public int getType() {

@@ -2,6 +2,7 @@ package com.android.biubiu.community;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -82,6 +83,11 @@ public class CommNotifyAdapter extends BaseAdapter {
         }
         x.image().bind(vh.head, notify.getUserHead(), imageOptions);
         vh.nickname.setText(notify.getUserName());
+        if ("1".equals(notify.getUserSex())) {
+            vh.nickname.setTextColor(Color.parseColor("#8883bc"));
+        } else if ("2".equals(notify.getUserSex())) {
+            vh.nickname.setTextColor(Color.parseColor("#f0637f"));
+        }
         if (notify.getIsRead() == 0) {
             vh.unread.setVisibility(View.VISIBLE);
         } else {
