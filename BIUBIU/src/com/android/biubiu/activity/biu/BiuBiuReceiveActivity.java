@@ -976,8 +976,7 @@ public class BiuBiuReceiveActivity extends BaseActivity {
         // // outputX outputY 是裁剪图片宽高
         intent.putExtra("outputX", 250);
         intent.putExtra("outputY", 250);
-        intent.putExtra("return-data", false);
-        intent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
+        intent.putExtra("return-data", true);
         startActivityForResult(intent, CROUP_PHOTO);
     }
 

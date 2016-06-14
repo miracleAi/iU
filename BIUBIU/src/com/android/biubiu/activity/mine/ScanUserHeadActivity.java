@@ -64,7 +64,7 @@ public class ScanUserHeadActivity extends BaseActivity implements OnClickListene
 	String accessKeySecret = "";
 	String securityToken = "";
 	String expiration = "";
-	Uri croupUri;
+	//Uri croupUri;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
@@ -326,7 +326,7 @@ public class ScanUserHeadActivity extends BaseActivity implements OnClickListene
 	 * @param uri
 	 */
 	public void cropPhoto(Uri uri) {
-		croupUri = uri;
+		//croupUri = uri;
 		// 调用拍照的裁剪功能
 		Intent intent = new Intent("com.android.camera.action.CROP");
 		intent.setDataAndType(uri, "image/*");
@@ -337,8 +337,7 @@ public class ScanUserHeadActivity extends BaseActivity implements OnClickListene
 		// // outputX outputY 是裁剪图片宽高
 		intent.putExtra("outputX", 250);
 		intent.putExtra("outputY", 250);
-		intent.putExtra("return-data", false);
-		intent.putExtra(MediaStore.EXTRA_OUTPUT, croupUri);;
+		intent.putExtra("return-data", true);
 		//intent.putExtra("noFaceDetection", true); // no face detection
 		startActivityForResult(intent, CROP_PHOTO);
 	}
@@ -363,11 +362,20 @@ public class ScanUserHeadActivity extends BaseActivity implements OnClickListene
 			}
 			break;
 		case CROP_PHOTO:
-			LogUtil.d("mytest", "uri--"+croupUri);
-			LogUtil.e("mytest", "uri--"+croupUri);
-			if (croupUri != null) {
+			/*if (croupUri != null) {
 				try {
 					Bitmap userheadBitmap = decodeUriAsBitmap(croupUri);
+					String headPath = saveHeadImg(userheadBitmap);
+					//上传图片鉴权
+					getOssToken(headPath);
+				} catch (NullPointerException e) {
+					// TODO: handle exception
+				}
+			}*/
+			if (data != null) {
+				try {
+					Bundle extras = data.getExtras();
+					Bitmap userheadBitmap = extras.getParcelable("data");
 					String headPath = saveHeadImg(userheadBitmap);
 					//上传图片鉴权
 					getOssToken(headPath);
