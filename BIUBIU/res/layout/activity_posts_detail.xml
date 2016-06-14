@@ -79,19 +79,31 @@
 
             <EditText
                 android:id="@+id/comment_edittext"
-                android:layout_width="match_parent"
+                android:layout_width="0dip"
                 android:layout_height="30dp"
                 android:layout_marginLeft="15dp"
-                android:layout_marginRight="15dp"
+                android:layout_marginRight="10dp"
+                android:layout_weight="1"
                 android:background="@drawable/comment_bg_shape"
                 android:hint="@string/comment_hint"
-                android:imeActionLabel="@string/send"
-                android:imeOptions="actionSend"
                 android:maxLength="300"
                 android:paddingLeft="15dp"
-                android:singleLine="true"
                 android:textColor="#333333"
                 android:textColorHint="#999999"
+                android:textSize="14sp" />
+            <!--android:imeActionLabel="@string/send"
+            android:imeOptions="actionSend"
+            android:singleLine="true"-->
+            <Button
+                android:id="@+id/send_button"
+                android:layout_width="60dp"
+                android:layout_height="30dp"
+                android:layout_marginRight="10dp"
+                android:background="@drawable/send_btn_disabled"
+                android:enabled="false"
+                android:gravity="center"
+                android:text="@string/send"
+                android:textColor="@android:color/white"
                 android:textSize="14sp" />
         </LinearLayout>
     </LinearLayout>

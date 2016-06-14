@@ -5,7 +5,9 @@ import android.app.AlertDialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +16,7 @@ import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -62,7 +65,7 @@ import cn.bingoogolapple.refreshlayout.BGARefreshLayout;
 
 public class PostsDetailActivity extends Activity implements AdapterView.OnItemClickListener, View.OnClickListener,
         PullToRefreshBase.OnRefreshListener2<ListView>, CommentAdapter.IRefreshUi,
-        BGARefreshLayout.BGARefreshLayoutDelegate{
+        BGARefreshLayout.BGARefreshLayoutDelegate {
     private static final String TAG = PostsDetailActivity.class.getSimpleName();
     private Posts mPosts;
     private int mPostsId;
@@ -89,6 +92,7 @@ public class PostsDetailActivity extends Activity implements AdapterView.OnItemC
 
     private BGARefreshLayout mRefreshLayout;
     private ListView mDataLv;
+    private Button mSendBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -122,7 +126,7 @@ public class PostsDetailActivity extends Activity implements AdapterView.OnItemC
         mRefreshLayout.setRefreshViewHolder(normalRefreshViewHolder);
 
         mCommentEt = (EditText) findViewById(R.id.comment_edittext);
-        mCommentEt.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+        /*mCommentEt.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_SEND) {
@@ -130,7 +134,7 @@ public class PostsDetailActivity extends Activity implements AdapterView.OnItemC
                 }
                 return false;
             }
-        });
+        });*/
         mListview.setOnScrollListener(new AbsListView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(AbsListView view, int scrollState) {
@@ -145,7 +149,32 @@ public class PostsDetailActivity extends Activity implements AdapterView.OnItemC
             }
         });
         mListview.setOnItemClickListener(this);
+        mSendBtn = (Button) findViewById(R.id.send_button);
+        mSendBtn.setOnClickListener(this);
+        mCommentEt.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (!TextUtils.isEmpty(s.toString())) {
+                    mSendBtn.setEnabled(true);
+                    mSendBtn.setBackgroundResource(R.drawable.send_btn_white);
+                    mSendBtn.setTextColor(getResources().getColor(R.color.main_green));
+                } else {
+                    mSendBtn.setEnabled(false);
+                    mSendBtn.setBackgroundResource(R.drawable.send_btn_disabled);
+                    mSendBtn.setTextColor(getResources().getColor(R.color.white));
+                }
+            }
+        });
     }
 
     private void commentDone() {
@@ -565,6 +594,9 @@ public class PostsDetailActivity extends Activity implements AdapterView.OnItemC
                 break;
             case R.id.nickname_textview:
                 mHeaderImg.performClick();
+                break;
+            case R.id.send_button:
+                sendComment();
                 break;
         }
     }

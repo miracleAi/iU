@@ -28,7 +28,7 @@ public class PublishEditActivity extends Activity {
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
+//        super.onBackPressed();
         if(fragment != null){
             fragment.showDialog();
         }
