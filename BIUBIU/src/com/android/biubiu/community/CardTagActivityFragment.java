@@ -19,6 +19,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.biubiu.BaseFragment;
 import com.android.biubiu.bean.TagBean;
 import com.android.biubiu.callback.HttpCallback;
 import com.android.biubiu.common.Constant;
@@ -45,7 +46,7 @@ import cc.imeetu.iu.R;
 /**
  * A placeholder fragment containing a simple view.
  */
-public class CardTagActivityFragment extends Fragment implements PullToRefreshBase.OnRefreshListener2<ListView> {
+public class CardTagActivityFragment extends BaseFragment implements PullToRefreshBase.OnRefreshListener2<ListView> {
     private View rootView;
     private LinearLayout allTagLayout;
     private RelativeLayout backRl;
