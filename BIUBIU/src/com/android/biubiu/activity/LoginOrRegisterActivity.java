@@ -20,12 +20,18 @@ public class LoginOrRegisterActivity extends BaseActivity{
 	private LinearLayout backLayout;
 	private static final int LOGIN_REQUEST = 1001;
 	private static final int REGISTER_REQUEST = 1002;
+	private boolean isStartMain = false;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.activity_login_or_register);
+		if(getIntent().getBooleanExtra("tag",false)){
+			isStartMain = true;
+		}else{
+			isStartMain = false;
+		}
 		initView();
 		initClick();
 	}
@@ -73,6 +79,10 @@ public class LoginOrRegisterActivity extends BaseActivity{
 		switch (requestCode) {
 		case LOGIN_REQUEST:
 			if(resultCode == RESULT_OK){
+				if(isStartMain){
+					Intent intent=new Intent(LoginOrRegisterActivity.this,MainActivity.class);
+					startActivity(intent);
+				}
 				finish();
 			}
 			break;

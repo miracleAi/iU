@@ -17,12 +17,17 @@ import com.hyphenate.easeui.controller.EaseUI;
 import com.melink.bqmmsdk.sdk.BQMM;
 
 import android.R.string;
+import android.app.Activity;
+import android.app.ActivityManager;
 import android.app.Application;
 import android.content.Context;
 //import android.support.multidex.MultiDexApplication;
 //import android.support.multidex.MultiDex;
 import android.support.multidex.MultiDex;
 import android.widget.Toast;
+
+import java.util.Set;
+import java.util.Stack;
 //import android.support.multidex.MultiDex;
 
 public class BiubiuApplication extends Application {
@@ -36,6 +41,14 @@ public class BiubiuApplication extends Application {
         MultiDex.install(this);
 
     }*/
+    private static BiubiuApplication application;
+    private final Stack<Activity> mActStack = new Stack<Activity>();
+    public static BiubiuApplication getInstance(){
+        if(application == null){
+            application = new BiubiuApplication();
+        }
+        return application;
+    }
     @Override
     public void onCreate() {
         // TODO Auto-generated method stub
@@ -85,6 +98,96 @@ public class BiubiuApplication extends Application {
     protected void attachBaseContext(Context base) {
         super.attachBaseContext(base);
         MultiDex.install(this);
+    }
+    /**
+     * 添加activity至Stack
+     *
+     * @param aInstance 待添加activity
+     */
+    public void addAppInstance(Activity aInstance) {
+
+        if (!mActStack.empty()) {
+            Activity mActivity = mActStack.lastElement();
+            String lastSimpleName = mActivity.getPackageName() + "." + mActivity.getClass().getSimpleName();
+            String simpleName = aInstance.getPackageName() + "." + aInstance.getClass().getSimpleName();
+            if (simpleName.equals(lastSimpleName)) {
+                delAppInstance(mActivity, true);
+                return;
+            }
+        }
+
+        mActStack.add(aInstance);
+    }
+
+    /**
+     * 删除当前指定activity
+     *
+     * @param aInstance 待删除activity
+     * @param bFinish 是否同时finish掉当前Activity，true为是，false为否
+     */
+    public void delAppInstance(Activity aInstance, boolean bFinish) {
+        mActStack.remove(aInstance);
+        if (bFinish) {
+            aInstance.finish();
+        }
+    }
+
+    /**
+     * 删除当前指定activity
+     *
+     * @param aInstance 待删除activity
+     */
+    public void delAppInstanceByAnim(Activity aInstance) {
+        mActStack.remove(aInstance);
+        aInstance.finish();
+        // aInstance.overridePendingTransition(R.anim.activity_show, R.anim.out_to_left);
+    }
+
+    /**
+     * 删除当前指定activity
+     *
+     * @param activity 待删除activity类名
+     * @param bFinish 是否同时finish掉当前Activity，true为是，false为否
+     */
+    public void delAppInstance(String activity, boolean bFinish) {
+        for (Activity a : mActStack) {
+            if (activity.equals(a.getClass().getSimpleName())) {
+                mActStack.remove(a);
+                if (bFinish) {
+                    a.finish();
+                }
+                return;
+            }
+        }
+
+
+    }
+
+    @SuppressWarnings("deprecation")
+    private void exitApp() {
+        try {
+            ActivityManager activityMgr = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
+            activityMgr.restartPackage(getPackageName());
+        } catch (Exception e) {}
+    }
+
+    private void exitAppSinceLevel8() {
+        try {
+            ActivityManager activityMgr = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
+            activityMgr.killBackgroundProcesses(getPackageCodePath());
+        } catch (Exception e) {}
+    }
+
+    public void clearAllActivity() {
+        for (int i = 0, size = mActStack.size(); i < size; i++) {
+            Activity activity = mActStack.get(i);
+            if (null != activity) {
+                if (!activity.isFinishing()) {
+                    activity.finish();
+                }
+            }
+        }
+        mActStack.clear();
     }
 
 }
