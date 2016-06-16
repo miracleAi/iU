@@ -36,6 +36,7 @@ import com.android.biubiu.push.MyPushReceiver;
 import com.android.biubiu.push.PushInterface;
 import com.android.biubiu.sqlite.BiubiuDao;
 import com.android.biubiu.sqlite.SchoolDao;
+import com.android.biubiu.transport.xg.XGMessageReceiver;
 import com.android.biubiu.utils.BiuUtil;
 import com.android.biubiu.utils.CommonUtils;
 import com.android.biubiu.utils.Constants;
@@ -278,7 +279,7 @@ public class BiuFragment extends Fragment implements PushInterface, FragmentIndi
             getAd();
         }
         //接口通信赋值
-        MyPushReceiver.setUpdateBean(this);
+        XGMessageReceiver.setPushInterface(this);
         //检查是否提交了channelID
         if (!SharePreferanceUtils.getInstance().getShared(getActivity(), SharePreferanceUtils.IS_COMMIT_CHANNEL, false)) {
             HttpUtils.commitChannelId(getActivity());

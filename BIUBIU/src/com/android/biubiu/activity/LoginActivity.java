@@ -15,6 +15,7 @@ import com.android.biubiu.BaseActivity;
 import com.android.biubiu.MainActivity;
 import com.android.biubiu.UserAgreementActivity;
 import com.android.biubiu.common.Constant;
+import com.android.biubiu.transport.xg.utils.XGUtils;
 import com.android.biubiu.utils.HttpContants;
 import com.android.biubiu.utils.LogUtil;
 import com.android.biubiu.utils.NetUtils;
@@ -170,7 +171,7 @@ public class LoginActivity extends BaseActivity{
 			requestObject.put("phone", uName);
 			requestObject.put("password", uPassword);
 			requestObject.put("device_code", deviceId);
-			//requestObject.put("device_code", "xxxxxx");
+			requestObject.put("device_type", Constant.DEVICE_TYPE);
 		} catch (JSONException e) {
 		
 			e.printStackTrace();
@@ -235,6 +236,7 @@ public class LoginActivity extends BaseActivity{
 					LogUtil.e(TAG, "hxName=="+hxName+"||"+"HxPassword=="+HxPassword);
 					//统计登录用户
 					MobclickAgent.onProfileSignIn(userCode);
+					XGUtils.getInstance(LoginActivity.this.getApplicationContext()).registerPush();
 					setResult(RESULT_OK);
 					finish();
 					/*Intent intent=new Intent(LoginActivity.this,MainActivity.class);

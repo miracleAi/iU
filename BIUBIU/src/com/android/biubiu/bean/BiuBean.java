@@ -1,11 +1,12 @@
 package com.android.biubiu.bean;
 
+import com.android.biubiu.transport.xg.model.XGMessage;
 import com.google.gson.annotations.SerializedName;
 
 /**
  * Created by meetu on 2016/5/17.
  */
-public class BiuBean {
+public class BiuBean extends XGMessage{
     @SerializedName("icon_thumbnailUrl")
     private String iconUrl;
     @SerializedName("user_code")
@@ -27,6 +28,7 @@ public class BiuBean {
     @SerializedName("time")
     private long time;
 
+    private int biu_vc;
     //biubiu是否已显示过
     private String isRead;
     //bean在圆圈上的位置index
@@ -116,6 +118,14 @@ public class BiuBean {
 
     public void setTime(long time) {
         this.time = time;
+    }
+
+    public int getBiu_vc() {
+        return biu_vc;
+    }
+
+    public void setBiu_vc(int biu_vc) {
+        this.biu_vc = biu_vc;
     }
 
     public String getIsRead() {

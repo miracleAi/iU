@@ -46,4 +46,5 @@ public class Constant extends EaseConstant {
 
     public static final int BANNER_ANIM_INTERVAL = 2;
     public static int screenWidth, screenHeight;
+    public static final int DEVICE_TYPE = 3;
 }

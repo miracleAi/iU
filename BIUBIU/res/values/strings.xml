@@ -331,4 +331,9 @@
     <string name="biu_me_null">呀，还没有人biu你呢\n去社区发动态，让更多人看见你</string>
     <string name="biu_biu_null">还没有biubiu关系呢</string>
     <string name="message_list_null">还没有聊天消息呢</string>
+    <string name="receive_biu_tip">你收到一条biubiu</string>
+    <string name="grab_biu_tip">你收到一条biubiu</string>
+    <string name="male">男</string>
+    <string name="female">女</string>
+    <string name="age">%1$d岁</string>
 </resources>

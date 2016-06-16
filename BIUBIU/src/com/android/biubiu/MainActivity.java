@@ -1,6 +1,5 @@
 package com.android.biubiu;
 
-import android.animation.ObjectAnimator;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.BroadcastReceiver;
@@ -39,10 +38,10 @@ import com.android.biubiu.component.indicator.FragmentIndicator;
 import com.android.biubiu.component.indicator.Indicator;
 import com.android.biubiu.fragment.BiuFragment;
 import com.android.biubiu.fragment.DiscoveryFragment;
-import com.android.biubiu.fragment.MenuLeftFragment;
 import com.android.biubiu.fragment.MenuRightFragment;
 import com.android.biubiu.sqlite.PushMatchDao;
-import com.android.biubiu.utils.CommonUtils;
+import com.android.biubiu.transport.xg.constant.XGConstant;
+import com.android.biubiu.transport.xg.utils.XGUtils;
 import com.android.biubiu.utils.Constants;
 import com.android.biubiu.utils.HttpContants;
 import com.android.biubiu.utils.HttpRequestUtils;
@@ -50,14 +49,13 @@ import com.android.biubiu.utils.LocationUtils;
 import com.android.biubiu.utils.LogUtil;
 import com.android.biubiu.utils.LoginUtils;
 import com.android.biubiu.utils.SharePreferanceUtils;
-import com.avos.avoscloud.LogUtil.log;
-import com.baidu.android.pushservice.PushConstants;
-import com.baidu.android.pushservice.PushManager;
 import com.hyphenate.EMCallBack;
 import com.hyphenate.EMConnectionListener;
 import com.hyphenate.EMError;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.util.NetUtils;
+import com.tencent.android.tpush.XGIOperateCallback;
+import com.tencent.android.tpush.XGPushManager;
 import com.umeng.analytics.MobclickAgent;
 import com.umeng.update.UmengUpdateAgent;
 import com.umeng.update.UmengUpdateListener;
@@ -245,11 +243,14 @@ public class MainActivity extends FragmentActivity implements AMapLocationListen
      * //启动百度云推送
      */
     private void initPush() {
-        PushManager.startWork(getApplicationContext(), PushConstants.LOGIN_TYPE_API_KEY, "v3FkYC4w53w46uuvw9L6qBF1");
+        if(LoginUtils.isLogin(this)){
+            XGUtils.getInstance(getApplicationContext()).registerPush();
+        }
+        /*PushManager.startWork(getApplicationContext(), PushConstants.LOGIN_TYPE_API_KEY, "v3FkYC4w53w46uuvw9L6qBF1");
         pushDao = new PushMatchDao(getApplicationContext());
         if (!com.android.biubiu.utils.NetUtils.isNetworkConnected(getApplicationContext())) {
             Toast.makeText(getApplicationContext(), "网络未连接", Toast.LENGTH_SHORT).show();
-        }
+        }*/
     }
 
     private void checkUpdate() {
@@ -397,7 +398,7 @@ public class MainActivity extends FragmentActivity implements AMapLocationListen
         super.onResume();
         MobclickAgent.onResume(this);
         if (SharePreferanceUtils.getInstance().isExchange(MainActivity.this, SharePreferanceUtils.EXCHANGE_FROUNT, true)) {
-            if(LoginUtils.isLogin(MainActivity.this)){
+            if (LoginUtils.isLogin(MainActivity.this)) {
                 getallStatus();
             }
         }
@@ -422,15 +423,15 @@ public class MainActivity extends FragmentActivity implements AMapLocationListen
                     try {
                         int notifyNum = object.getInt("notifyNum");
                         int biuNum = object.getInt("comBiuNum");
-                        if(fCom != null){
+                        if (fCom != null) {
                             ((DiscoveryFragment) fCom).updateNotify(notifyNum);
-                        }else{
+                        } else {
                             fCom = new DiscoveryFragment();
                             ((DiscoveryFragment) fCom).updateNotify(notifyNum);
                         }
-                        if(fMsg != null){
+                        if (fMsg != null) {
                             ((MenuRightFragment) fMsg).updateNewMsg(biuNum);
-                        }else{
+                        } else {
                             fMsg = new MenuRightFragment();
                             ((MenuRightFragment) fMsg).updateNewMsg(biuNum);
                         }
@@ -654,6 +655,7 @@ public class MainActivity extends FragmentActivity implements AMapLocationListen
     public void setUnReadVisible(boolean visible) {
         mIndicator.setUnReadVisible(R.id.tab_message, visible);
     }
+
     public void setDisUnReadVisible(boolean visible) {
         mIndicator.setUnReadVisible(R.id.tab_discovery, visible);
     }
