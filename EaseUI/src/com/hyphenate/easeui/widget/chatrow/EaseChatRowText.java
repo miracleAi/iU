@@ -90,7 +90,7 @@ public class EaseChatRowText extends EaseChatRow{
 		if (message.direct() == EMMessage.Direct.SEND) {
 			setMessageSendCallback();
 			switch (message.status()) {
-			case CREATE: 
+			case CREATE:
 				progressBar.setVisibility(View.GONE);
 				statusView.setVisibility(View.VISIBLE);
 				// 发送消息

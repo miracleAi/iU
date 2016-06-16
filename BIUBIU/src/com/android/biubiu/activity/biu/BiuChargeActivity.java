@@ -317,7 +317,7 @@ public class BiuChargeActivity extends BaseActivity implements OnClickListener{
 		try {
 			requestObject.put("token", SharePreferanceUtils.getInstance().getToken(this, SharePreferanceUtils.TOKEN, ""));
 			requestObject.put("device_code", SharePreferanceUtils.getInstance().getDeviceId(getApplicationContext(), SharePreferanceUtils.DEVICE_ID, ""));
-			requestObject.put("bill_type","Um");
+			requestObject.put("bill_type","1");
 			if(isZfbPay){
 				requestObject.put("channel","ALI");
 			}else{
