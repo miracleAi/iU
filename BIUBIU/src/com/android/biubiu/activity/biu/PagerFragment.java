@@ -47,6 +47,7 @@ import com.alibaba.sdk.android.oss.model.PutObjectRequest;
 import com.alibaba.sdk.android.oss.model.PutObjectResult;
 import com.android.biubiu.BaseFragment;
 import com.android.biubiu.activity.LoginActivity;
+import com.android.biubiu.activity.LoginOrRegisterActivity;
 import com.android.biubiu.activity.RegisterThreeActivity;
 import com.android.biubiu.activity.mine.AboutMeActivity;
 import com.android.biubiu.activity.mine.ChangeBrithdayActivity;

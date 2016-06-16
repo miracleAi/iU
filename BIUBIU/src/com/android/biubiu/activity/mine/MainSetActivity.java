@@ -5,9 +5,11 @@ import android.app.Activity;
 import android.view.KeyEvent;
 import android.view.Window;
 
+import com.android.biubiu.BaseActivity;
+
 import cc.imeetu.iu.R;
 
-public class MainSetActivity extends Activity {
+public class MainSetActivity extends BaseActivity {
 
     MainSetActivityFragment fragment;
     @Override

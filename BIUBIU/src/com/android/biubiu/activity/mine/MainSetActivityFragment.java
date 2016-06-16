@@ -14,11 +14,13 @@ import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.android.biubiu.AboutOurActivity;
+import com.android.biubiu.activity.LoginOrRegisterActivity;
 import com.android.biubiu.bean.PersonalTagBean;
 import com.android.biubiu.bean.SettingBean;
 import com.android.biubiu.common.CommonDialog;
 import com.android.biubiu.common.Constant;
 import com.android.biubiu.component.title.TopTitleView;
+import com.android.biubiu.myapplication.BiubiuApplication;
 import com.android.biubiu.utils.HttpContants;
 import com.android.biubiu.utils.NetUtils;
 import com.android.biubiu.utils.SharePreferanceUtils;
@@ -397,6 +399,10 @@ public class MainSetActivityFragment extends Fragment implements View.OnClickLis
                 SharePreferanceUtils.getInstance().putShared(getActivity(), SharePreferanceUtils.HX_USER_PASSWORD, "");
                 getActivity().setResult(Constant.EXIT_APP_SUCCESS);
                 getActivity().finish();
+                /*Intent intent = new Intent(getActivity(), LoginOrRegisterActivity.class);
+                intent.putExtra("tag",true);
+                startActivity(intent);
+                ((BiubiuApplication)getActivity().getApplication()).clearAllActivity();*/
             }
 
             @Override

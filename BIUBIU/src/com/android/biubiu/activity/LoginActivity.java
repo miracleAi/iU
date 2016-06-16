@@ -235,7 +235,6 @@ public class LoginActivity extends BaseActivity{
 					LogUtil.e(TAG, "hxName=="+hxName+"||"+"HxPassword=="+HxPassword);
 					//统计登录用户
 					MobclickAgent.onProfileSignIn(userCode);
-					
 					setResult(RESULT_OK);
 					finish();
 					/*Intent intent=new Intent(LoginActivity.this,MainActivity.class);

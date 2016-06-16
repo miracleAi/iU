@@ -349,11 +349,7 @@ public class RegisterOneActivity extends BaseActivity implements OnClickListener
 
 	private void nextStep() {
 		// TODO Auto-generated method stub
-		if(headPath != null && !headPath.equals("")){
-			toastShort(getResources().getString(R.string.reg_one_no_userhead));
-			return;
-		}
-		if(headPath.equals("")){
+		if(headPath == null || headPath.equals("")){
 			toastShort(getResources().getString(R.string.reg_one_no_userhead));
 			return;
 		}
@@ -475,6 +471,7 @@ public class RegisterOneActivity extends BaseActivity implements OnClickListener
 			break;
 		case CROUP_PHOTO:
 				headPath = Utils.getImgPath();
+			toastShort(headPath);
 					if(headPath != null && !headPath.equals("")){
 						x.image().bind(userHeadImv,headPath);
 						addHeadTv.setVisibility(View.GONE);

@@ -2,6 +2,7 @@ package com.android.biubiu;
 
 import cc.imeetu.iu.R;
 
+import com.android.biubiu.myapplication.BiubiuApplication;
 import com.android.biubiu.utils.DensityUtil;
 import com.android.biubiu.utils.SharePreferanceUtils;
 import com.ant.liao.GifView;
@@ -24,6 +25,7 @@ public class BaseActivity extends FragmentActivity {
     private TextView loadTv;
     private LinearLayout errorLayout;
     private LinearLayout reloadLayout;
+    private BiubiuApplication biuApplication;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +33,8 @@ public class BaseActivity extends FragmentActivity {
         super.requestWindowFeature(Window.FEATURE_NO_TITLE);
         super.onCreate(savedInstanceState);
         SharePreferanceUtils.getInstance().putShared(getApplicationContext(), SharePreferanceUtils.IS_APP_OPEN, true);
+        /*biuApplication = (BiubiuApplication)this.getApplication();
+        biuApplication.addAppInstance(this);*/
     }
 
     @Override

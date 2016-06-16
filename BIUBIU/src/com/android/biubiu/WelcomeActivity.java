@@ -5,8 +5,10 @@ import cc.imeetu.iu.R;
 import com.android.biubiu.activity.GuildActivity;
 
 
+import com.android.biubiu.activity.LoginOrRegisterActivity;
 import com.android.biubiu.sqlite.DBManager;
 import com.android.biubiu.sqlite.DBManagerCity;
+import com.android.biubiu.utils.LoginUtils;
 import com.android.biubiu.utils.SharePreferanceUtils;
 import com.avos.avoscloud.LogUtil.log;
 
@@ -77,8 +79,14 @@ public class WelcomeActivity extends BaseActivity {
 			public void run() {
 				// TODO Auto-generated method stub
 				// 允许用户使用应用
-				Intent intent = new Intent(WelcomeActivity.this,MainActivity.class);
-				startActivity(intent);
+				/*if(!LoginUtils.isLogin(WelcomeActivity.this)){
+					Intent intent = new Intent(WelcomeActivity.this,LoginOrRegisterActivity.class);
+					intent.putExtra("tag",true);
+					startActivity(intent);
+				}else{*/
+					Intent intent = new Intent(WelcomeActivity.this,MainActivity.class);
+					startActivity(intent);
+			//	}
 				finish();
 			}
 		}, 2000);

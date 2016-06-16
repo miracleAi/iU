@@ -152,7 +152,6 @@ public class Utils {
 				file.mkdir();
 			}
 		} catch (Exception e) {
-
 		}
 	}
 	public static void startPhotoZoom(Context con, Uri uri,int resultCode) {
