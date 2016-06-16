@@ -18,7 +18,6 @@ android {
             renderscript.srcDirs = ['src']
             res.srcDirs = ['res']
             assets.srcDirs = ['assets']
-            jniLibs.srcDirs = ['libs']//用于copy so 文件
         }
 
         // Move the tests to tests/java, tests/res, etc...

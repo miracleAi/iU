@@ -11,7 +11,7 @@ import android.text.StaticLayout;
 
 public class MySqliteDBHelper extends SQLiteOpenHelper {
 
-	private static final int VERSION = 2;
+	private static final int VERSION = 3;
 
 	public MySqliteDBHelper(Context context) {
 		super(context, DbConstents.DBNAME, null, VERSION);
@@ -35,7 +35,7 @@ public class MySqliteDBHelper extends SQLiteOpenHelper {
 		user.append(DbConstents.USER_FRIEND_AGE + " Integer ");
 		user.append(")");
 		db.execSQL(user.toString());
-		
+		//推送缓存
 		StringBuffer push = new StringBuffer();
 		push.append("create table if not exists ");
 		push.append(DbConstents.PUSH_MATCH + "(");
@@ -43,6 +43,24 @@ public class MySqliteDBHelper extends SQLiteOpenHelper {
 		push.append(DbConstents.PUSH_TIME + " Integer ");
 		push.append(")");
 		db.execSQL(push.toString());
+		//biubiu列表缓存
+		StringBuffer biuStr = new StringBuffer();
+		biuStr.append("create table if not exists ");
+		biuStr.append(DbConstents.BIU_LIST_DB + "(");
+		biuStr.append(DbConstents.USER_CODE + " Integer primary key,");
+		biuStr.append(DbConstents.ICON_THUM_URL + " varchar(100), ");
+		biuStr.append(DbConstents.NICKNAME + " varchar(100), ");
+		biuStr.append(DbConstents.SEX + " varchar(100), ");
+		biuStr.append(DbConstents.AGE + " Integer, ");
+		biuStr.append(DbConstents.STARSIGN + " varchar(100), ");
+		biuStr.append(DbConstents.SCHOOL + " varchar(100), ");
+		biuStr.append(DbConstents.MACH_SCORE + " Integer, ");
+		biuStr.append(DbConstents.DISTANCE + " Integer, ");
+		biuStr.append(DbConstents.TIME + " Integer, ");
+		biuStr.append(DbConstents.IS_READ + " varchar(100) ");
+		biuStr.append(")");
+		db.execSQL(biuStr.toString());
+
 	}
 
 	@Override
@@ -58,6 +76,24 @@ public class MySqliteDBHelper extends SQLiteOpenHelper {
 			push.append(")");
 			db.execSQL(push.toString());
 			break;
+			case 2:
+				StringBuffer biuStr = new StringBuffer();
+				biuStr.append("create table if not exists ");
+				biuStr.append(DbConstents.BIU_LIST_DB + "(");
+				biuStr.append(DbConstents.USER_CODE + " Integer primary key,");
+				biuStr.append(DbConstents.ICON_THUM_URL + " varchar(100), ");
+				biuStr.append(DbConstents.NICKNAME + " varchar(100), ");
+				biuStr.append(DbConstents.SEX + " varchar(100), ");
+				biuStr.append(DbConstents.AGE + " Integer, ");
+				biuStr.append(DbConstents.STARSIGN + " varchar(100), ");
+				biuStr.append(DbConstents.SCHOOL + " varchar(100), ");
+				biuStr.append(DbConstents.MACH_SCORE + " Integer, ");
+				biuStr.append(DbConstents.DISTANCE + " Integer, ");
+				biuStr.append(DbConstents.TIME + " Integer, ");
+				biuStr.append(DbConstents.IS_READ + " varchar(100) ");
+				biuStr.append(")");
+				db.execSQL(biuStr.toString());
+				break;
 		}
 	}
 

@@ -3,41 +3,20 @@ package com.android.biubiu;
 import cc.imeetu.iu.R;
 
 import com.android.biubiu.activity.GuildActivity;
+
+
 import com.android.biubiu.activity.LoginOrRegisterActivity;
-import com.android.biubiu.activity.RegisterOneActivity;
-import com.android.biubiu.activity.RegisterTwoActivity;
-import com.android.biubiu.activity.biu.BiuBiuReceiveActivity;
-import com.android.biubiu.activity.biu.MyPagerActivity;
-import com.android.biubiu.activity.mine.ChangeCityActivity;
-import com.android.biubiu.activity.mine.ChangeConstellationActivity;
-
-
-
-import com.android.biubiu.activity.mine.InterestLabelActivity;
-import com.android.biubiu.chat.LoadUserFriend;
-import com.android.biubiu.chat.UserListActivity;
 import com.android.biubiu.sqlite.DBManager;
 import com.android.biubiu.sqlite.DBManagerCity;
-import com.android.biubiu.utils.LogUtil;
+import com.android.biubiu.utils.LoginUtils;
 import com.android.biubiu.utils.SharePreferanceUtils;
-import com.android.biubiu.utils.Utils;
 import com.avos.avoscloud.LogUtil.log;
-import com.baidu.android.pushservice.PushConstants;
-import com.baidu.android.pushservice.PushManager;
 
-import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.nfc.Tag;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Message;
-import android.test.suitebuilder.TestMethod;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.Toast;
 
 public class WelcomeActivity extends BaseActivity {
 	private String TAG="WelcomeActivity";
@@ -100,8 +79,14 @@ public class WelcomeActivity extends BaseActivity {
 			public void run() {
 				// TODO Auto-generated method stub
 				// 允许用户使用应用
-				Intent intent = new Intent(WelcomeActivity.this,MainActivity.class);  
-				startActivity(intent);
+				/*if(!LoginUtils.isLogin(WelcomeActivity.this)){
+					Intent intent = new Intent(WelcomeActivity.this,LoginOrRegisterActivity.class);
+					intent.putExtra("tag",true);
+					startActivity(intent);
+				}else{*/
+					Intent intent = new Intent(WelcomeActivity.this,MainActivity.class);
+					startActivity(intent);
+			//	}
 				finish();
 			}
 		}, 2000);

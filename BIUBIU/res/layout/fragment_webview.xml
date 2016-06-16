@@ -1,0 +1,30 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:top="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.android.biubiu.component.title.TopTitleView
+        android:id="@+id/top_title_view"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/top_title_height"
+        android:background="@color/main_green"
+        top:leftDrawable="@drawable/back_main"
+        top:topTitleColor="@android:color/white"
+        top:topTitleSize="@dimen/top_title_size" />
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/top_title_view">
+
+        <WebView
+            android:id="@+id/webview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <include
+            layout="@layout/loading_layout"
+            android:visibility="gone" />
+    </FrameLayout>
+
+</RelativeLayout>

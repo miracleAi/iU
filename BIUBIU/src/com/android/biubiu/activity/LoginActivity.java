@@ -14,6 +14,7 @@ import cc.imeetu.iu.R;
 import com.android.biubiu.BaseActivity;
 import com.android.biubiu.MainActivity;
 import com.android.biubiu.UserAgreementActivity;
+import com.android.biubiu.common.Constant;
 import com.android.biubiu.utils.HttpContants;
 import com.android.biubiu.utils.LogUtil;
 import com.android.biubiu.utils.NetUtils;
@@ -229,12 +230,11 @@ public class LoginActivity extends BaseActivity{
 					SharePreferanceUtils.getInstance().putShared(getApplicationContext(), SharePreferanceUtils.USER_HEAD, userHead);
 					String userCode = obj.getString("code");
 					SharePreferanceUtils.getInstance().putShared(getApplicationContext(), SharePreferanceUtils.USER_CODE, userCode);
-					
+
 					loginHuanXin(hxName,HxPassword);
 					LogUtil.e(TAG, "hxName=="+hxName+"||"+"HxPassword=="+HxPassword);
 					//统计登录用户
 					MobclickAgent.onProfileSignIn(userCode);
-					
 					setResult(RESULT_OK);
 					finish();
 					/*Intent intent=new Intent(LoginActivity.this,MainActivity.class);

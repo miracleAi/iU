@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
+    <string name="complete">完成</string>
+    <string name="cancel">取消</string>
     <string name="app_name">iU</string>
     <string name="action_settings">Settings</string>
     <string name="title_activity_biu_biu_send">BiuBiuSendActivity</string>
-    <string name="net_error">网络未连接</string>
+    <string name="net_error">网络连接异常</string>
     <!-- 加载中提示相关 -->
     <string name="logining">正在登录...</string>
     <string name="loading">正在加载...</string>
@@ -26,7 +27,7 @@
     <!-- menuleft 页面相关 -->
     <string name="name_main">lucifer</string>
     <string name="name_regist_hint">登录注册</string>
-    <string name="left_menu_biubiu">biubiu</string>
+    <string name="left_menu_biubiu">BiuBiu</string>
     <string name="left_menu_message">消息</string>
     <string name="left_menu_matchSetting">匹配设置</string>
     <string name="left_menu_lead">新手引导</string>
@@ -80,12 +81,13 @@
     <string name="mine_selectoe_username_title">修改昵称</string>
     <string name="mine_selectoe_company_title">修改公司</string>
     <string name="mine_selectoe_city_title">选择你的城市</string>
-     <string name="mine_selectoe_birth_title">选择生日</string>
+    <string name="mine_selectoe_birth_title">选择生日</string>
 
     <!-- 个人主页 -->
     <string name="page_aboutme">关于我</string>
     <string name="page_no_aboutme">关于我的信息不能为空</string>
     <string name="page_userinfo">基本信息</string>
+    <string name="page_dynamic">个人动态</string>
     <string name="page_school">学校</string>
     <string name="page_identity">身份</string>
     <string name="page_tall">身高体重</string>
@@ -118,6 +120,7 @@
     <string name="setting_character_tags">个性标签</string>
     <string name="setting_character_tags_her">Ta的个性标签</string>
     <string name="setting_new_message_notice">新消息通知</string>
+    <string name="setting_page_title">biubiu消息通知</string>
     <string name="setting_voice">声音</string>
     <string name="setting_shock">震动</string>
     <string name="setting_exit">退出登录</string>
@@ -143,7 +146,7 @@
     <!-- 发送biubiu -->
     <string name="send_biu_title">发出我的biu</string>
     <string name="send_biu_back">取消</string>
-    <string name="send_biu_add_topic_tags">添加话题标签</string>
+    <string name="send_biu_add_topic_tags">输入话题内容：有趣的，生活的，情感的...</string>
     <string name="send_biu_send">发送</string>
     <string name="send_biu_number">0</string>
     <string name="send_biu_allNumber">/50</string>
@@ -166,6 +169,8 @@
     <string name="dialog_dismiss">取消</string>
     <string name="dialog_goLogin">登录</string>
     <string name="dialog_hint_receivebiu">登陆后就能抢他的biu了</string>
+    <string name="chat_tag">TA的话题</string>
+    <string name="interest_tag">兴趣爱好</string>
 
     <!-- chat 相关 -->
     <string name="chat_userlist_title">biubiu的人</string>
@@ -216,4 +221,114 @@
     <string name="head_no_egis_info2">你修改的头像审核未通过，将恢复原来头像，点击重新上传更换头像</string>
     <string name="head_egis_info">你的头像审核通过啦，可以愉快的玩耍了</string>
 
+    <string name="mine">我的</string>
+    <string name="sort">筛选</string>
+    <string name="title_activity_activity_list">ActivityListActivity</string>
+    <string name="title_activity_webview">WebviewActivity</string>
+    <string name="act_center">活动中心</string>
+    <string name="title_activity_main_set">设置</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="biu_msg">biubiu消息</string>
+    <string name="other">其它</string>
+    <string name="about_iu">关于iU</string>
+    <string name="share_content">分享带来满天繁星</string>
+    <string name="title_activity_history_">History_Activity</string>
+    <string name="biu_compatibility">匹配度:</string>
+    <string name="biu_time">%1$s前</string>
+    <string name="biu_distance">%1$skm</string>
+    <string name="school_age">%1$s&#160;&#160;•&#160;&#160;%2$s岁</string>
+    <string name="date_soon">刚刚</string>
+    <string name="date_min">分钟前</string>
+    <string name="date_hour">小时前</string>
+    <string name="date_day">天前</string>
+    <string name="date_yesterday">昨天</string>
+    <string name="date_before_yesterday">前天</string>
+    <string name="tab_history">历史</string>
+    <!-- 抢biu页面，biubiu已结束 -->
+    <string name="biu_end">本次biubiu已结束</string>
+    <!-- 抢biu页面，biubiu已被接受 -->
+    <string name="biu_receive">已收biu</string>
+    <string name="again_grab">再次抢biu</string>
+
+    <string name="title_activity_receive_biu_list">ReceiveBiuListActivity</string>
+    <string name="receive_biu_list">收biu的人</string>
+    <string name="end_this">结束本次</string>
+    <string name="accept">接受</string>
+    <string name="accepted">已接受</string>
+    <string name="give_U">已赠%1$dU米</string>
+    <string name="accept_fail">接受失败</string>
+    <string name="end_biu_title">结束本次biubiu</string>
+    <string name="biu_valid">每个biu都值得珍惜，90s后再结束本次biu呗</string>
+    <string name="biu_valid_btn">我会珍惜哒</string>
+    <string name="biu_invalid">结束后，本次biubiu将失效，也可以重新发biu哦</string>
+    <string name="sure">确定</string>
+    <string name="end_biu_suc">本次biu已结束</string>
+
+    <string name="send_biu_tag_tip">你发出的话题将会作为你们聊天的第一句话哦</string>
+    <string name="grab_biu_tag">#&#160;获取iU随机话题&#160;#</string>
+    <string name="data_end">已经到底啦!</string>
+    <string name="exit_tips">确定要退出当前账号?</string>
+    <string name="grab_biu_list">抢biu的人</string>
+    <string name="tips">提示</string>
+    <string name="receive_biu_null">你的biubiu暂时还没有人接收呢\n你可以继续等待或者重新发biu\nPS：抢你的人越多，你机会有越多奖励哟</string>
+    <string name="title_activity_publish_home">PublishHomeActivity</string>
+    <string name="title_activity_publish_edit">PublishEditActivity</string>
+
+    <string name="publish">发布</string>
+    <string name="tag_description">#添加话题标签，更容易找到同类哦(必选)#</string>
+    <string name="title_activity_card_tag">CardTagActivity</string>
+    <string name="discovery">发现</string>
+    <string name="recommand">推荐</string>
+    <string name="fresh">新鲜</string>
+    <string name="publish_tag_hint">创建/选择话题标签</string>
+    <string name="scan_tag_hint">选择话题标签</string>
+    <string name="create_tag">#创建话题标签</string>
+    <string name="no_tag_hint">还没有人创建这个标签呢</string>
+    <string name="recommend_tag">iU推荐</string>
+    <string name="hot_tag">热门</string>
+    <string name="new_tag">新鲜</string>
+    <string name="praise_num">赞&#160;%1$d</string>
+    <string name="comment_num">评论&#160;%1$d</string>
+    <string name="tag">#&#160;%1$s&#160;#</string>
+    <string name="title_activity_posts_detail">PostsDetailActivity</string>
+    <string name="detail">详情</string>
+    <string name="comment_hint">你想说点什么呢？</string>
+    <string name="reply_comment">回复&#160;%1$s&#160;:&#160;%2$s</string>
+    <string name="reply_who">回复&#160;%1$s:</string>
+    <string name="send">发送</string>
+    <string name="comment_not_null">评论不能为空!</string>
+    <string name="comment_success">评论成功!</string>
+    <string name="title_activity_user_dynamic">个人动态</string>
+    <string name="delete">删除</string>
+    <string name="delete_tips">嗨~确定要删除它吗？</string>
+    <string name="delete_title">删除它</string>
+    <string name="report_tips">嗨~确定要举报它吗？</string>
+    <string name="report_title">举报它</string>
+    <string name="delete_success">删除成功</string>
+    <string name="report_success">举报成功</string>
+    <string name="title_activity_posts_list_by_tag">PostsListByTagActivity</string>
+    <string name="posts_is_null">亲，这个话题还没人发帖呢</string>
+    <string name="title_activity_community_biu_list">CommunityBiuListActivity</string>
+    <string name="community_biu_title">biu我的人</string>
+    <string name="clear">清空</string>
+    <string name="comm_biu_null">亲，还没有人biu过你呢</string>
+    <string name="title_activity_comm_notify">CommNotifyActivity</string>
+    <string name="comm_notify">通知</string>
+    <string name="comm_notify_null">还没有通知呢！</string>
+    <string name="default_school">清华大学</string>
+    <string name="exit_edit_title">退出编辑</string>
+    <string name="exit_edit_tips">确定要退出内容编辑么？</string>
+    <string name="exit">退出</string>
+    <string name="reload_tips">呜呜，内容加载失败了\n点击重新加载</string>
+    <string name="pull_up_failed">上拉加载失败</string>
+    <string name="posts_biu_null">biubiu好友的内容动态会呈现在这里哦</string>
+    <string name="posts_fresh_null">最新的内容动态会呈现在这里哦</string>
+    <string name="posts_recommand_null">iU推荐的内容动态会呈现在这里哦</string>
+    <string name="notify_list_null">还没有通知消息呢\n先去勾搭一下呀 </string>
+    <string name="personal_dynamic_null">生活好像波澜不惊，一条动态也没有呢</string>
+    <string name="biu_me_null">呀，还没有人biu你呢\n去社区发动态，让更多人看见你</string>
+    <string name="biu_biu_null">还没有biubiu关系呢</string>
+    <string name="message_list_null">还没有聊天消息呢</string>
 </resources>

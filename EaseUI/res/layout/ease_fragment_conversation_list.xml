@@ -6,43 +6,39 @@
     android:background="@color/common_bg"
     android:orientation="vertical">
 
-	<com.hyphenate.easeui.widget.EaseTitleBar 
-	    android:id="@+id/title_bar"
-	    android:layout_width="match_parent"
-	    android:layout_height="wrap_content"
-	    hyphenate:titleBarTitle="@string/session"
-	    />
-    
-    <include layout="@layout/ease_search_bar" 
-        android:visibility="gone"/>
-    
-    <FrameLayout
+    <com.hyphenate.easeui.widget.EaseTitleBar
+        android:id="@+id/title_bar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/top_title_height"
+        hyphenate:titleBarTitle="@string/session" />
+
+    <include
+        layout="@layout/ease_search_bar"
+        android:visibility="gone" />
+
+    <FrameLayout
         android:id="@+id/fl_error_item"
-        >
-    </FrameLayout>
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 
 
-        <android.support.v4.widget.SwipeRefreshLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
+    <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/conversation_swipe_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/white" >
-	
-  	  <com.hyphenate.easeui.widget.EaseConversationList
-        android:id="@+id/list"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"   
-        android:listSelector="@android:color/transparent"  
-        android:cacheColorHint="#00000000"
-        android:fadingEdge="none"
-        android:divider="#00000000"
-        android:dividerHeight="0dp"    
-        android:scrollingCache="false"       
-        hyphenate:cvsListPrimaryTextSize="16sp"
-         />
-      </android.support.v4.widget.SwipeRefreshLayout>
+        android:background="@color/white">
+
+        <com.hyphenate.easeui.widget.EaseConversationList
+            android:id="@+id/list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:cacheColorHint="#00000000"
+            android:divider="#00000000"
+            android:dividerHeight="0dp"
+            android:fadingEdge="none"
+            android:listSelector="@android:color/transparent"
+            android:scrollingCache="false"
+            hyphenate:cvsListPrimaryTextSize="16sp" />
+    </android.support.v4.widget.SwipeRefreshLayout>
 
 </LinearLayout>

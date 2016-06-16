@@ -8,18 +8,8 @@ import com.google.gson.annotations.SerializedName;
 import android.R.integer;
 
 public class BiuDetialBean {
-	
-	/**
-	 * 我的biu币
-	 */
-	private int havevc;
-	/**
-	 * 抢一次需要消耗的biu 币
-	 */
-	private int needvc;
-	
+	@SerializedName("nickname")
 	private String nickname;
-	
 	@SerializedName("token")
 	private String token;
 	/**
@@ -40,8 +30,10 @@ public class BiuDetialBean {
 	@SerializedName("distance")
 	private long distance;
 	
-	@SerializedName("description")
-	private String description;
+	@SerializedName("chat_tags")
+	private String chatTags;
+	@SerializedName("time")
+	private long time;
 	/**
 	 * 匹配度
 	 */
@@ -56,24 +48,14 @@ public class BiuDetialBean {
 	 */
 	@SerializedName("starsign")
 	private String starsign;
-	/**
-	 * 是否毕业
-	 */
-	@SerializedName("isgraduated")
-	private String isgraduated;
+	@SerializedName("superman")
+	private int superMan;
 	/**
 	 * 学校
 	 */
 	@SerializedName("school")
 	private String school;
 	
-	@SerializedName("timebefore")
-	private int timebefore;
-	/**
-	 * 公司
-	 */
-	@SerializedName("company")
-	private String company;
 	/**
 	 * 命中个性标签个数
 	 */
@@ -82,95 +64,22 @@ public class BiuDetialBean {
 	
 	@SerializedName("hit_tags")
 	private List<PersonalTagBean> hit_tags;
-	@SerializedName("chatTag")
-	private String chat_tags;
-	
-	public int getIsGrabed() {
-		return isGrabed;
-	}
-
-
-	public void setIsGrabed(int isGrabed) {
-		this.isGrabed = isGrabed;
-	}
-
-
 	/**
 	 * 共同兴趣个数
 	 */
 	@SerializedName("interested_tags_num")
 	private int interested_tags_num;
-	@SerializedName("carrer")
-	private String carrer;
 	@SerializedName("interested_tags")
 	private ArrayList<InterestByCateBean> interested_tags;
-	@SerializedName("superman")
-	private int superMan;
-	@SerializedName("isGrabbed")
-	private int isGrabed;
-	
-	public int getSuperMan() {
-		return superMan;
-	}
-
-
-	public void setSuperMan(int superMan) {
-		this.superMan = superMan;
-	}
-
-
-	public String getIconOrigin() {
-		return iconOrigin;
-	}
-
-
-	public void setIconOrigin(String iconOrigin) {
-		this.iconOrigin = iconOrigin;
-	}
-
-
-	public String getToken() {
-		return token;
-	}
-	
-
-	public int getHavevc() {
-		return havevc;
-	}
-
-
-	public void setHavevc(int havevc) {
-		this.havevc = havevc;
-	}
-
-
-	public int getNeedvc() {
-		return needvc;
-	}
-
-
-	public void setNeedvc(int needvc) {
-		this.needvc = needvc;
-	}
-
+	@SerializedName("message")
+	private String biuState;
 
 	public String getNickname() {
 		return nickname;
 	}
 
-
 	public void setNickname(String nickname) {
 		this.nickname = nickname;
-	}
-
-
-	public void setDistance(long distance) {
-		this.distance = distance;
-	}
-
-
-	public void setToken(String token) {
-		this.token = token;
 	}
 
 	public String getIcon_thumbnailUrl() {
@@ -179,6 +88,14 @@ public class BiuDetialBean {
 
 	public void setIcon_thumbnailUrl(String icon_thumbnailUrl) {
 		this.icon_thumbnailUrl = icon_thumbnailUrl;
+	}
+
+	public String getIconOrigin() {
+		return iconOrigin;
+	}
+
+	public void setIconOrigin(String iconOrigin) {
+		this.iconOrigin = iconOrigin;
 	}
 
 	public String getUser_code() {
@@ -193,8 +110,24 @@ public class BiuDetialBean {
 		return distance;
 	}
 
-	public void setDistance(Long distance) {
+	public void setDistance(long distance) {
 		this.distance = distance;
+	}
+
+	public String getChatTags() {
+		return chatTags;
+	}
+
+	public void setChatTags(String chatTags) {
+		this.chatTags = chatTags;
+	}
+
+	public long getTime() {
+		return time;
+	}
+
+	public void setTime(long time) {
+		this.time = time;
 	}
 
 	public int getMatching_score() {
@@ -229,12 +162,12 @@ public class BiuDetialBean {
 		this.starsign = starsign;
 	}
 
-	public String getIsgraduated() {
-		return isgraduated;
+	public int getSuperMan() {
+		return superMan;
 	}
 
-	public void setIsgraduated(String isgraduated) {
-		this.isgraduated = isgraduated;
+	public void setSuperMan(int superMan) {
+		this.superMan = superMan;
 	}
 
 	public String getSchool() {
@@ -243,14 +176,6 @@ public class BiuDetialBean {
 
 	public void setSchool(String school) {
 		this.school = school;
-	}
-
-	public String getCompany() {
-		return company;
-	}
-
-	public void setCompany(String company) {
-		this.company = company;
 	}
 
 	public int getHit_tags_num() {
@@ -285,41 +210,11 @@ public class BiuDetialBean {
 		this.interested_tags = interested_tags;
 	}
 
-	public String getDescription() {
-		return description;
+	public String getBiuState() {
+		return biuState;
 	}
 
-	public void setDescription(String description) {
-		this.description = description;
+	public void setBiuState(String biuState) {
+		this.biuState = biuState;
 	}
-
-	public int getTimebefore() {
-		return timebefore;
-	}
-
-	public void setTimebefore(int timebefore) {
-		this.timebefore = timebefore;
-	}
-
-	public String getCarrer() {
-		return carrer;
-	}
-
-	public void setCarrer(String carrer) {
-		this.carrer = carrer;
-	}
-
-
-	public String getChat_tags() {
-		return chat_tags;
-	}
-
-
-	public void setChat_tags(String chat_tags) {
-		this.chat_tags = chat_tags;
-	}
-	
-	
-
-
 }

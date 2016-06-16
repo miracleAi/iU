@@ -19,7 +19,7 @@ public abstract class EaseBaseFragment extends Fragment{
         super.onActivityCreated(savedInstanceState);
         inputMethodManager = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
         titleBar = (EaseTitleBar) getView().findViewById(R.id.title_bar);
-        
+
         initView();
         setUpView();
     }

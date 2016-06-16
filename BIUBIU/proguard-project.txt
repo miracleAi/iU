@@ -105,9 +105,8 @@
 -keep class com.android.internal.http.multipart.**{*;}
 -keep class org.apache.**{*;}
 #依赖工程 BQMM_Lib jar
--keep class com.melink.**{*;}
--keep class com.thirdparty.bumptech.glide.**{*;}
-
+-keep class com.melink.** {*;}
+-keep class com.thirdparty.** {*;}
 
 -keepattributes *Annotation*
 -keepattributes *JavascriptInterface*
@@ -144,6 +143,11 @@
 
 -keepclassmembers class **.R$* {
     public static <fields>;
+    public static final int *;
+}
+
+-keep class **.R$* {
+*;
 }
 
 # The support library contains references to newer platform versions.
@@ -210,3 +214,6 @@
 -dontwarn  u.upd.**
 -dontwarn  android.backport.webp.**
 -dontwarn  org.xutils.**
+-dontwarn  com.hyphenate.**
+-dontwarn com.melink.**
+-dontwarn com.thirdparty.**

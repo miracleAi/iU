@@ -20,12 +20,18 @@ public class LoginOrRegisterActivity extends BaseActivity{
 	private LinearLayout backLayout;
 	private static final int LOGIN_REQUEST = 1001;
 	private static final int REGISTER_REQUEST = 1002;
+	//private boolean isStartMain = false;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.activity_login_or_register);
+		/*if(getIntent().getBooleanExtra("tag",false)){
+			isStartMain = true;
+		}else{
+			isStartMain = false;
+		}*/
 		initView();
 		initClick();
 	}
@@ -38,27 +44,27 @@ public class LoginOrRegisterActivity extends BaseActivity{
 	private void initClick() {
 		// TODO Auto-generated method stub
 		loginBtn.setOnClickListener(new OnClickListener() {
-			
+
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
 				Intent loginIntent = new Intent(LoginOrRegisterActivity.this,LoginActivity.class);
 				startActivityForResult(loginIntent, LOGIN_REQUEST);
-			//	overridePendingTransition(R.anim.right_in_anim,R.anim.no_anim); 
+			//	overridePendingTransition(R.anim.right_in_anim,R.anim.no_anim);
 			}
 		});
 		registerBtn.setOnClickListener(new OnClickListener() {
-			
+
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
 				Intent RegisterIntent = new Intent(LoginOrRegisterActivity.this,RegisterThreeActivity.class);
 				startActivityForResult(RegisterIntent,REGISTER_REQUEST);
-			//	overridePendingTransition(R.anim.right_in_anim,R.anim.no_anim); 
+			//	overridePendingTransition(R.anim.right_in_anim,R.anim.no_anim);
 			}
 		});
 		backLayout.setOnClickListener(new OnClickListener() {
-			
+
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
@@ -73,6 +79,10 @@ public class LoginOrRegisterActivity extends BaseActivity{
 		switch (requestCode) {
 		case LOGIN_REQUEST:
 			if(resultCode == RESULT_OK){
+				//if(isStartMain){
+					Intent intent=new Intent(LoginOrRegisterActivity.this,MainActivity.class);
+					startActivity(intent);
+				//}
 				finish();
 			}
 			break;

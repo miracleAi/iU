@@ -6,9 +6,17 @@ dependencies {
     //只加入了jar包，需要在下面加入jniLibs.srcDirs = ['libs']来copy so 文件
     compile fileTree(include: '*.jar', dir: 'libs')
     compile project(':EaseUI')
+    compile project(':refreshlibrary')
+    compile project(':staggerlibrary')
+    compile project(':multi-image-selector')
     compile 'com.android.support:multidex:1.0.1'
     compile 'com.android.support:support-v4:22.2.0'
-    compile 'com.android.support:recyclerview-v7:22.2.0'
+    compile 'com.umeng.analytics:analytics:latest.integration'
+    compile 'org.xutils:xutils:3.3.34'
+    compile 'com.squareup.picasso:picasso:2.5.2'
+    compile 'com.android.support:recyclerview-v7:23.4.0'
+    compile 'com.nineoldandroids:library:2.4.0'
+    compile 'cn.bingoogolapple:bga-refreshlayout:1.1.5@aar'
 }
 
 android {
@@ -40,14 +48,14 @@ android {
     }
 
     dexOptions {
-//        incremental true
+        incremental true
         preDexLibraries = false
         javaMaxHeapSize "2g"
     }
 
     defaultConfig {
-        versionCode 20160505
-        versionName "1.1.0"
+        versionCode 20160615
+        versionName "2.0.1"
         //Enabling multidex support.
         multiDexEnabled true
     }

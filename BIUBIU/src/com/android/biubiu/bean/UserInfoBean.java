@@ -52,12 +52,32 @@ public class UserInfoBean implements Serializable{
 	@SerializedName("distance")
 	private long distance;
 	@SerializedName("time")
-	private int time;
+	private long time;
 	@SerializedName("activity_time")
 	private long activityTime;
 	@SerializedName("superman")
 	private int superMan;
-	
+	@SerializedName("today_num")
+	private int todayNum;
+	@SerializedName("total_num")
+	private int totalNum;
+
+	public int getTodayNum() {
+		return todayNum;
+	}
+
+	public void setTodayNum(int todayNum) {
+		this.todayNum = todayNum;
+	}
+
+	public int getTotalNum() {
+		return totalNum;
+	}
+
+	public void setTotalNum(int totalNum) {
+		this.totalNum = totalNum;
+	}
+
 	public int getSuperMan() {
 		return superMan;
 	}
@@ -82,10 +102,10 @@ public class UserInfoBean implements Serializable{
 	public void setDistance(long distance) {
 		this.distance = distance;
 	}
-	public int getTime() {
+	public long getTime() {
 		return time;
 	}
-	public void setTime(int time) {
+	public void setTime(long time) {
 		this.time = time;
 	}
 	public String getIconOrigin() {

@@ -1,7 +1,6 @@
 package com.android.biubiu.activity;
 
 import org.xutils.x;
-import org.xutils.common.Callback.CancelledException;
 import org.xutils.common.Callback.CommonCallback;
 import org.xutils.http.RequestParams;
 import org.json.JSONException;
@@ -15,29 +14,23 @@ import com.android.biubiu.utils.HttpContants;
 import com.android.biubiu.utils.LogUtil;
 import com.android.biubiu.utils.NetUtils;
 import com.android.biubiu.utils.SharePreferanceUtils;
-import com.android.biubiu.utils.Utils;
-import com.ant.liao.GifView;
 import com.avos.avoscloud.AVException;
 import com.avos.avoscloud.AVMobilePhoneVerifyCallback;
 import com.avos.avoscloud.AVOSCloud;
 import com.avos.avoscloud.RequestMobileCodeCallback;
-import com.avos.avoscloud.UpdatePasswordCallback;
 import com.avos.avoscloud.LogUtil.log;
 import com.hyphenate.EMCallBack;
 import com.hyphenate.chat.EMClient;
 
 import android.os.Bundle;
 import android.os.Handler;
-import android.app.Activity;
 import android.content.Intent;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
-import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;

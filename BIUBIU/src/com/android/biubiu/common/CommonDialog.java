@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.Window;
 import android.view.View.OnClickListener;
@@ -68,14 +69,13 @@ public class CommonDialog {
 	 */
 	public static AlertDialog singleBtnDialog(final Context mContext,String title,String msg,String strBtn,final DialogInterface.OnClickListener click1) {
 
-		final AlertDialog portraidlg = new AlertDialog.Builder(mContext)
-		.create();
+		final AlertDialog portraidlg = new AlertDialog.Builder(mContext).create();
 		portraidlg.show();
 		Window win = portraidlg.getWindow();
 		win.setContentView(R.layout.dialog_my);
 		TextView titleTv = (TextView) win.findViewById(R.id.title_my_hint_dialog_tv);
 		TextView messageTv = (TextView) win.findViewById(R.id.message_dralog_tv);
-		if(null != title && !"".equals(title)){
+		if(!TextUtils.isEmpty(title)){
 			titleTv.setText(title);
 			titleTv.setVisibility(View.VISIBLE);
 		}else{
@@ -91,7 +91,6 @@ public class CommonDialog {
 
 			@Override
 			public void onClick(View v) {
-				// TODO Auto-generated method stub
 				click1.onClick(portraidlg, R.id.no_dialog_my_rl);
 			}
 		});
@@ -113,7 +112,7 @@ public class CommonDialog {
 		win.setContentView(R.layout.dialog_my);
 		TextView titleTv = (TextView) win.findViewById(R.id.title_my_hint_dialog_tv);
 		TextView messageTv = (TextView) win.findViewById(R.id.message_dralog_tv);
-		if(null != title && !"".equals(title)){
+		if(!TextUtils.isEmpty(title)){
 			titleTv.setText(title);
 			titleTv.setVisibility(View.VISIBLE);
 		}else{
@@ -130,7 +129,6 @@ public class CommonDialog {
 
 			@Override
 			public void onClick(View v) {
-				// TODO Auto-generated method stub
 				click1.onClick(portraidlg, R.id.no_dialog_my_rl);
 			}
 		});
@@ -138,7 +136,6 @@ public class CommonDialog {
 			
 			@Override
 			public void onClick(View v) {
-				// TODO Auto-generated method stub
 				click2.onClick(portraidlg, R.id.ok_dialog_my_rl);
 			}
 		});

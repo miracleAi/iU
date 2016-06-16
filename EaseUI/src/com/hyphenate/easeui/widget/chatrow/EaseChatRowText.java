@@ -37,6 +37,7 @@ import com.melink.bqmmsdk.widget.UpdateListener;
 
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.FileInputStream;
 import java.io.InputStream;
@@ -158,10 +159,14 @@ public class EaseChatRowText extends EaseChatRow{
 		// 判断是否是表情文本
 		String msgType;
 		String dataStr;
+		String msg;
+		JSONObject msgBody;
 		try {
-			msgType = message.getStringAttribute("txt_msgType");
-			dataStr = parseMsgData(message.getJSONArrayAttribute("msg_data"));
-		} catch (HyphenateException e) {
+			msg = message.getStringAttribute("mm_ext");
+			msgBody = new JSONObject(msg);
+			msgType = msgBody.getString("txt_msgType");
+			dataStr = parseMsgData(msgBody.getJSONArray("msg_data"));
+		} catch (HyphenateException|JSONException e1) {
 			msgType = "";
 			dataStr = "";
 		}

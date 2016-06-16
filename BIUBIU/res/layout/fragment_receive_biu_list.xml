@@ -1,0 +1,51 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:top="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.android.biubiu.component.title.TopTitleView
+        android:id="@+id/top_title_view"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/top_title_height"
+        android:background="@color/main_green"
+        top:bothSideSize="@dimen/top_title_height"
+        top:leftDrawable="@drawable/back_main"
+        top:rightPadding="20dp"
+        top:rightText="@string/end_this"
+        top:title="@string/grab_biu_list"
+        top:topTitleColor="@android:color/white"
+        top:topTitleSize="@dimen/top_title_size" />
+    <LinearLayout
+        android:id="@+id/null_tip_layout"
+        android:layout_below="@+id/top_title_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:visibility="gone">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="13sp"
+            android:gravity="start"
+            android:layout_marginTop="122dp"
+            android:layout_marginLeft="50dp"
+            android:layout_marginRight="50dp"
+            android:lineSpacingExtra="5dp"
+            android:textColor="@color/about_gray_txt"
+            android:text="@string/receive_biu_null"
+            />
+    </LinearLayout>
+
+    <ListView
+        android:id="@+id/pull_refresh_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:divider="@null"
+        android:cacheColorHint="#00000000"
+        android:fastScrollEnabled="true"
+        android:scrollbars="none"
+        android:fadingEdge="none"
+        android:fadeScrollbars="false"
+        android:listSelector="#e7eeed"
+        android:layout_below="@+id/top_title_view"/>
+</RelativeLayout>

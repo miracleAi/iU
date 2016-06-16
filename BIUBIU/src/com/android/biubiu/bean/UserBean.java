@@ -40,7 +40,7 @@ public class UserBean implements Serializable{
 	int x;
 	//bean的y坐标
 	int y;
-	
+
 	public int getX() {
 		return x;
 	}

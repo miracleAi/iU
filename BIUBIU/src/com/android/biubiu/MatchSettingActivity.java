@@ -19,6 +19,7 @@ import com.android.biubiu.bean.SettingBean;
 import com.android.biubiu.bean.UserInfoBean;
 import com.android.biubiu.chat.MyHintDialog;
 import com.android.biubiu.chat.MyHintDialog.OnDialogClick;
+import com.android.biubiu.common.Constant;
 import com.android.biubiu.utils.Constants;
 import com.android.biubiu.utils.HttpContants;
 import com.android.biubiu.utils.LogUtil;
@@ -62,26 +63,17 @@ public class MatchSettingActivity extends BaseActivity implements OnClickListene
 	private TextView ageMaxTv;
 	private RelativeLayout personalTagRl;
 	private MyGridView tagGv;
-	private ImageView newMsgToggle;
-	private ImageView voiceToggle;
-	private ImageView shockToggle;
-	private RelativeLayout logoutRl;
 	private LinearLayout seekLinear;
 	private UserPagerTagAdapter setTagAdapter;
 	private RelativeLayout boyLayout;
 	private RelativeLayout girlLayout;
 	private RelativeLayout cityLayout;
 	private RelativeLayout unLimitLayout;
-	private RelativeLayout msgLayout;
-	private RelativeLayout voiceLayout;
-	private RelativeLayout shockLayout;
 	RangeSeekBar<Integer> seekBar;
 
 	private boolean isSelBoy = true;
 	private boolean isSameCity = true;
-	private boolean isRecvMsg = true;
-	private boolean isOpenVoice = true;
-	private boolean isOpenShck = true;
+
 	SettingBean setBean;
 	
 	/**
@@ -112,11 +104,6 @@ public class MatchSettingActivity extends BaseActivity implements OnClickListene
 		personalTagRl = (RelativeLayout) findViewById(R.id.personal_rl);
 		personalTagRl.setOnClickListener(this);
 		tagGv = (MyGridView) findViewById(R.id.interest_tag_gv);
-		newMsgToggle = (ImageView) findViewById(R.id.newmsg_toggle);
-		voiceToggle = (ImageView) findViewById(R.id.voice_toggle);
-		shockToggle = (ImageView) findViewById(R.id.shock_toggle);
-		logoutRl = (RelativeLayout) findViewById(R.id.logout_rl);
-		logoutRl.setOnClickListener(this);
 		seekLinear = (LinearLayout) findViewById(R.id.seek_linear);
 		boyLayout = (RelativeLayout) findViewById(R.id.boy_layout);
 		boyLayout.setOnClickListener(this);
@@ -126,12 +113,6 @@ public class MatchSettingActivity extends BaseActivity implements OnClickListene
 		cityLayout.setOnClickListener(this);
 		unLimitLayout = (RelativeLayout) findViewById(R.id.unlimit_layout);
 		unLimitLayout.setOnClickListener(this);
-		msgLayout = (RelativeLayout) findViewById(R.id.msg_layout);
-		msgLayout.setOnClickListener(this);
-		voiceLayout = (RelativeLayout) findViewById(R.id.voice_layout);
-		voiceLayout.setOnClickListener(this);
-		shockLayout = (RelativeLayout) findViewById(R.id.shock_layout);
-		shockLayout.setOnClickListener(this);
 
 		seekBar = new RangeSeekBar<Integer>(16, 40, this);
 
@@ -164,6 +145,7 @@ public class MatchSettingActivity extends BaseActivity implements OnClickListene
 		seekBar.setSelectedMinValue(setBean.getAgeDown());
 	}
 	protected void setToggle() {
+		SharePreferanceUtils.getInstance().putShared(MatchSettingActivity.this,SharePreferanceUtils.RECEIVE_SEX,setBean.getSex());
 		// 1--选择男生 2--选择女生
 		if(setBean.getSex().equals(Constants.SEX_MALE)){
 			isSelBoy = true;
@@ -171,8 +153,8 @@ public class MatchSettingActivity extends BaseActivity implements OnClickListene
 			girlToggle.setImageResource(R.drawable.setting_btn_yes);
 		}else{
 			isSelBoy = false;
-			boyToggle.setImageResource(R.drawable.setting_btn_yes);;
-			girlToggle.setImageResource(R.drawable.setting_btn_no);;
+			boyToggle.setImageResource(R.drawable.setting_btn_yes);
+			girlToggle.setImageResource(R.drawable.setting_btn_no);
 		}
 		//1--同城 2--不限
 		if(setBean.getCity().equals(Constants.SAME_CITY)){
@@ -183,44 +165,6 @@ public class MatchSettingActivity extends BaseActivity implements OnClickListene
 			isSameCity = false;
 			cityToggle.setImageResource(R.drawable.setting_btn_yes);
 			unLimitToggle.setImageResource(R.drawable.setting_btn_no);
-		}
-		//声音 0--关闭 1--打开
-		if(setBean.getSound() == 0){
-			SharePreferanceUtils.getInstance().putShared(getApplicationContext(), SharePreferanceUtils.IS_OPEN_VOICE, false);
-			log.d("SharePreferanceUtils"+SharePreferanceUtils.getInstance().isOpenVoice(getApplicationContext(), SharePreferanceUtils.IS_OPEN_VOICE, true));
-			isOpenVoice = false;
-			voiceToggle.setImageResource(R.drawable.setting_btn_yes);
-		}else{
-			SharePreferanceUtils.getInstance().putShared(getApplicationContext(), SharePreferanceUtils.IS_OPEN_VOICE, true);
-			log.d("SharePreferanceUtils"+SharePreferanceUtils.getInstance().isOpenVoice(getApplicationContext(), SharePreferanceUtils.IS_OPEN_VOICE, false));
-			isOpenVoice = true;
-			voiceToggle.setImageResource(R.drawable.setting_btn_no);
-		}
-		//振动 0--关闭 1--打开
-		if(setBean.getVibration() == 0){
-			SharePreferanceUtils.getInstance().putShared(getApplicationContext(), SharePreferanceUtils.IS_SHOCK, false);
-			isOpenShck = false;
-			shockToggle.setImageResource(R.drawable.setting_btn_yes);
-		}else{
-			SharePreferanceUtils.getInstance().putShared(getApplicationContext(), SharePreferanceUtils.IS_SHOCK, true);
-			isOpenShck = true;
-			shockToggle.setImageResource(R.drawable.setting_btn_no);
-		}
-		//接收消息 0--关闭，不接收  1--打开，接收
-		if(setBean.getMessage() == 0){
-			SharePreferanceUtils.getInstance().putShared(getApplicationContext(), SharePreferanceUtils.IS_SHOCK, false);
-			SharePreferanceUtils.getInstance().putShared(getApplicationContext(), SharePreferanceUtils.IS_OPEN_VOICE, false);
-			SharePreferanceUtils.getInstance().putShared(getApplicationContext(), SharePreferanceUtils.IS_RECEIVE_MSG, false);
-			isRecvMsg = false;
-			newMsgToggle.setImageResource(R.drawable.setting_btn_yes);
-			isOpenVoice = false;
-			voiceToggle.setImageResource(R.drawable.setting_btn_yes);
-			isOpenShck = false;
-			shockToggle.setImageResource(R.drawable.setting_btn_yes);
-		}else{
-			SharePreferanceUtils.getInstance().putShared(getApplicationContext(), SharePreferanceUtils.IS_RECEIVE_MSG, true);
-			isRecvMsg = true;
-			newMsgToggle.setImageResource(R.drawable.setting_btn_no);
 		}
 	}
 	@Override
@@ -279,41 +223,6 @@ public class MatchSettingActivity extends BaseActivity implements OnClickListene
 				unLimitToggle.setImageResource(R.drawable.setting_btn_yes);
 			}
 			break;
-		case R.id.msg_layout:
-			if(isRecvMsg){
-				isRecvMsg = false;
-				newMsgToggle.setImageResource(R.drawable.setting_btn_yes);
-				isOpenVoice = false;
-				voiceToggle.setImageResource(R.drawable.setting_btn_yes);
-				isOpenShck = false;
-				shockToggle.setImageResource(R.drawable.setting_btn_yes);
-			}else{
-				isRecvMsg = true;
-				newMsgToggle.setImageResource(R.drawable.setting_btn_no);
-			}
-			break;
-		case R.id.voice_layout:
-			if(isOpenVoice){
-				isOpenVoice = false;
-				voiceToggle.setImageResource(R.drawable.setting_btn_yes);
-			}else{
-				isRecvMsg = true;
-				newMsgToggle.setImageResource(R.drawable.setting_btn_no);
-				isOpenVoice = true;
-				voiceToggle.setImageResource(R.drawable.setting_btn_no);
-			}
-			break;
-		case R.id.shock_layout:
-			if(isOpenShck){
-				isOpenShck = false;
-				shockToggle.setImageResource(R.drawable.setting_btn_yes);
-			}else{
-				isRecvMsg = true;
-				newMsgToggle.setImageResource(R.drawable.setting_btn_no);
-				isOpenShck = true;
-				shockToggle.setImageResource(R.drawable.setting_btn_no);
-			}
-			break;
 		case R.id.back_rl:
 			saveSetInfo();
 			break;
@@ -322,7 +231,7 @@ public class MatchSettingActivity extends BaseActivity implements OnClickListene
 			
 			if(isCheckMyTags==false){
 
-				MyHintDialog.getDialog(this, "完善个性标签", "想让iU的恋爱公式发生作用么  要先完善你自己的个性标签哦", "完善个性标签", new OnDialogClick() {
+				MyHintDialog.getDialog(this, "完善个性标签", "想让iU的恋爱公式发生作用么\n要先完善你自己的个性标签哦", "完善个性标签", new OnDialogClick() {
 					
 					@Override
 					public void onOK() {
@@ -347,10 +256,6 @@ public class MatchSettingActivity extends BaseActivity implements OnClickListene
 				startActivityForResult(intent, PERSONAL_TAG);
 			}
 	
-			break;
-		case R.id.logout_rl:
-			//退出
-			exitApp();
 			break;
 		default:
 			break;
@@ -426,11 +331,6 @@ public class MatchSettingActivity extends BaseActivity implements OnClickListene
 					jsons = new JSONObject(arg0);
 					String code = jsons.getString("state");
 					if(!code.equals("200")){
-						if(code.equals("303")){
-							toastShort("登录过期，请重新登录");
-							exitHuanxin();
-							return;
-						}
 //						showErrorLayout(new OnClickListener() {
 //
 //							@Override
@@ -486,6 +386,7 @@ public class MatchSettingActivity extends BaseActivity implements OnClickListene
 			return;
 		}
 		updateSetBean();
+		SharePreferanceUtils.getInstance().putShared(MatchSettingActivity.this,SharePreferanceUtils.RECEIVE_SEX,setBean.getSex());
 		RequestParams params = new RequestParams(HttpContants.HTTP_ADDRESS+HttpContants.UPDATE_SETTING);
 		JSONObject requestObject = new JSONObject();
 		try {
@@ -550,7 +451,9 @@ public class MatchSettingActivity extends BaseActivity implements OnClickListene
 						toastShort("保存失败");
 						return;
 					}
-					
+					JSONObject obj = jsons.getJSONObject("data");
+					String recSex = obj.getString("s_sex");
+					SharePreferanceUtils.getInstance().putShared(getApplicationContext(), SharePreferanceUtils.RECEIVE_SEX, recSex);
 					if(setBean.getSound() == 0){
 						SharePreferanceUtils.getInstance().putShared(getApplicationContext(), SharePreferanceUtils.IS_OPEN_VOICE, false);
 						
@@ -612,120 +515,8 @@ public class MatchSettingActivity extends BaseActivity implements OnClickListene
 		}else{
 			setBean.setCity(Constants.UN_LIMIT);
 		}
-		if(isOpenVoice){
-			setBean.setSound(1);
-		}else{
-			setBean.setSound(0);
-		}
-		if(isRecvMsg){
-			setBean.setMessage(1);
-		}else{
-			setBean.setMessage(0);
-		}
-		if(isOpenShck){
-			setBean.setVibration(1);
-		}else{
-			setBean.setVibration(0);
-		}
 	}
-	/**
-	 * 退出登录
-	 */
-	private void exitApp() {
-		if(!NetUtils.isNetworkConnected(getApplicationContext())){
-			toastShort(getResources().getString(R.string.net_error));
-			return;
-		}
-		RequestParams params = new RequestParams(""+HttpContants.HTTP_ADDRESS+HttpContants.EXIT);
-		JSONObject requestObject = new JSONObject();
-		try {
-			requestObject.put("token", SharePreferanceUtils.getInstance().getToken(this, SharePreferanceUtils.TOKEN, ""));
-			requestObject.put("device_code", SharePreferanceUtils.getInstance().getDeviceId(this, SharePreferanceUtils.DEVICE_ID, ""));
-			requestObject.put("user_code", SharePreferanceUtils.getInstance().getUserCode(getApplicationContext(), SharePreferanceUtils.USER_CODE, ""));
-		} catch (JSONException e) {
 
-			e.printStackTrace();
-		}
-		params.addBodyParameter("data",requestObject.toString());
-		x.http().post(params, new CommonCallback<String>() {
-
-			@Override
-			public void onCancelled(CancelledException arg0) {
-				// TODO Auto-generated method stub
-
-			}
-
-			@Override
-			public void onError(Throwable arg0, boolean arg1) {
-				// TODO Auto-generated method stub
-				Toast.makeText(x.app(), arg0.getMessage(), Toast.LENGTH_SHORT).show();
-			}
-
-			@Override
-			public void onFinished() {
-				// TODO Auto-generated method stub
-
-			}
-
-			@Override
-			public void onSuccess(String arg0) {
-				PushManager.stopWork(getApplicationContext());
-				JSONObject jsons;
-				try {
-					jsons = new JSONObject(arg0);
-					String code = jsons.getString("state");
-					LogUtil.d(TAG, ""+code);
-					if(!code.equals("200")){
-						String error=jsons.getString("error");
-						toastShort(error);
-						return;
-					}
-//					SharePreferanceUtils.getInstance().putShared(getApplicationContext(), SharePreferanceUtils.TOKEN, "");
-					exitHuanxin();
-				} catch (JSONException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-
-			}
-		});
-
-	}
-	/**
-	 * 退出环信登录
-	 */
-	public void exitHuanxin(){
-		EMClient.getInstance().logout(true ,new EMCallBack() {
-
-			@Override
-			public void onSuccess() {
-				// TODO Auto-generated method stub
-				LogUtil.e(TAG, "环信退出成功");
-				//清空本地token
-				SharePreferanceUtils.getInstance().putShared(getApplicationContext(), SharePreferanceUtils.TOKEN, "");
-				SharePreferanceUtils.getInstance().putShared(getApplicationContext(), SharePreferanceUtils.HX_USER_NAME, "");
-				SharePreferanceUtils.getInstance().putShared(getApplicationContext(), SharePreferanceUtils.HX_USER_PASSWORD, "");
-				SharePreferanceUtils.getInstance().putShared(getApplicationContext(), SharePreferanceUtils.USER_NAME, "");
-				SharePreferanceUtils.getInstance().putShared(getApplicationContext(), SharePreferanceUtils.USER_HEAD, "");
-				SharePreferanceUtils.getInstance().putShared(getApplicationContext(), SharePreferanceUtils.USER_CODE, "");
-				LogUtil.d("mytest", "tok---"+SharePreferanceUtils.getInstance().getToken(getApplicationContext(), SharePreferanceUtils.TOKEN, ""));
-				finish();
-			}
-
-			@Override
-			public void onProgress(int arg0, String arg1) {
-				// TODO Auto-generated method stub
-
-			}
-
-			@Override
-			public void onError(int arg0, String arg1) {
-				// TODO Auto-generated method stub
-				LogUtil.e(TAG, "环信退出失败"+arg1);
-			}
-		});
-		
-	}
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		// TODO Auto-generated method stub
@@ -751,13 +542,5 @@ public class MatchSettingActivity extends BaseActivity implements OnClickListene
 		default:
 			break;
 		}
-	}
-	@Override
-	public boolean onKeyDown(int keyCode, KeyEvent event) {
-		// TODO Auto-generated method stub
-		if(keyCode == KeyEvent.KEYCODE_BACK){
-			saveSetInfo();
-		}
-		return super.onKeyDown(keyCode, event);
 	}
 }

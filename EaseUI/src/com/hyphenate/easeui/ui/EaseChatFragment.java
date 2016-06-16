@@ -67,6 +67,8 @@ import com.melink.bqmmsdk.task.BQMMPopupViewTask;
 import com.melink.bqmmsdk.widget.BQMMSendButton;
 
 import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -266,12 +268,23 @@ public class EaseChatFragment extends EaseBaseFragment {
 			EMTextMessageBody txtBody = new EMTextMessageBody(content);
 			// 设置消息body
 			message.addBody(txtBody);
-			message.setAttribute("txt_msgType", type);
+			JSONObject msgBody = new JSONObject();
+			try{
+				msgBody.put("txt_msgType", type);
+				msgBody.put("msg_data", msgData);
+				message.setAttribute("mm_ext",msgBody.toString());
+				// 设置要发给谁,用户username或者群聊groupid
+				message.setReceipt(toChatUsername);
+				sendMessage(message);
+			}catch (JSONException e){
+				e.printStackTrace();
+			}
+		/*	message.setAttribute("txt_msgType", type);
 			message.setAttribute("msg_data", msgData);
 
 			// 设置要发给谁,用户username或者群聊groupid
 			message.setReceipt(toChatUsername);
-			sendMessage(message);
+			sendMessage(message);*/
 			//发送大表情时，不清空EditView
 			//            if(!type.equals(FACETYPE)){
 			//                bqmmEditText.setText("");
@@ -624,6 +637,7 @@ public class EaseChatFragment extends EaseBaseFragment {
 		if(chatRoomChangeListener != null){
 			EMClient.getInstance().chatroomManager().removeChatRoomChangeListener(chatRoomChangeListener);
 		}
+		BQMM.getInstance().destory();
 	}
 
 	public void onBackPressed() {

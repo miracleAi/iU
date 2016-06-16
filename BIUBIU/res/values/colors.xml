@@ -7,6 +7,7 @@
     <color name="main_text_gray">#565656</color>
     <color name="white">#FFFFFF</color>
     <color name="black">#333333</color>
+    <color name="yello_text">#fcfcc8</color>
     <color name="ruoqu">#1a000000</color>
     <color name="gray">#cccccc</color>
     <color name="gray_user_list">#e7eeed</color>
@@ -23,7 +24,7 @@
     <color name="super_text_orange">#ff9694</color>
     <color name="super_text_black">#333333</color>
     <!-- 关于 页面相关 -->
-     <color name="about_bg">#fcfcf4</color>
+    <color name="about_bg">#fcfcf4</color>
     <color name="about_gray2_txt">#a0a0a0</color>
     <color name="about_gray_txt">#999999</color>
     <color name="about_darkgary_txt">#515151</color>
@@ -72,7 +73,7 @@
     <color name="set_tag_bg">#f8f6f4</color>
     <color name="set_tag_text">#808080</color>
     <color name="set_divider1">#6cd1c9</color>
-    <color name="set_divider2">#f8f6f4</color>
+    <color name="set_divider2">#ececec</color>
     <color name="set_seek_sel">#6cc1ba</color>
     <color name="set_seek_nosel">#7e7f7f</color>
 
@@ -80,4 +81,10 @@
     <color name="set_biu_bg">#efebe8</color>
     <color name="hui">#e7eeed</color>
 
+    <color name="red">#e62828</color>
+    <color name="tab_bg">#324047</color>
+
+    <color name="send_biu_tag_hint">#999999</color>
+    <color name="send_biu_tag">#333333</color>
+    <color name="search_tag_bg">#f8f6f4</color>
 </resources>

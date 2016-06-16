@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:top="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#eeeeee">
+
+    <com.android.biubiu.component.title.TopTitleView
+        android:id="@+id/top_title_view"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/top_title_height"
+        android:background="@color/main_green"
+        top:bothSideSize="@dimen/top_title_height"
+        top:leftDrawable="@drawable/back_main"
+        top:rightPadding="10dp"
+        top:rightText="@string/clear"
+        top:title="@string/comm_notify"
+        top:topTitleColor="@android:color/white"
+        top:topTitleSize="@dimen/top_title_size" />
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/top_title_view">
+
+        <com.handmark.pulltorefresh.library.PullToRefreshListView
+            android:id="@+id/pull_refresh_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/top_title_view"
+            android:layout_margin="10dp"
+            android:cacheColorHint="#00000000"
+            android:divider="@android:color/transparent"
+            android:dividerHeight="7dp"
+            android:fadeScrollbars="false"
+            android:fadingEdge="none"
+            android:fastScrollEnabled="false"
+            android:footerDividersEnabled="false"
+            android:headerDividersEnabled="false"
+            android:listSelector="#00000000"
+            android:scrollbars="none"
+            android:smoothScrollbar="true" />
+
+        <include
+            layout="@layout/loading_layout"
+            android:visibility="gone" />
+
+        <include
+            layout="@layout/load_error_layout"
+            android:visibility="gone" />
+    </FrameLayout>
+</RelativeLayout>

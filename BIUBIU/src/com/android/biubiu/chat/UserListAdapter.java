@@ -22,6 +22,7 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 public class UserListAdapter extends BaseAdapter {
@@ -72,10 +73,12 @@ public class UserListAdapter extends BaseAdapter {
 			holder.age=(TextView) convertView.findViewById(R.id.userInfo_chat_user_List_tv);
 			holder.star=(TextView) convertView.findViewById(R.id.userXingzuo_chat_user_List_tv);
 			holder.school=(TextView) convertView.findViewById(R.id.userJob_chat_user_List_tv);
+			holder.rightLayout = (RelativeLayout) convertView.findViewById(R.id.grab_layout);
 			convertView.setTag(holder);
 		}else{
 			holder = (ViewHolder) convertView.getTag();
 		}
+		holder.rightLayout.setVisibility(View.GONE);
 		holder.userName.setText(item.getNickname());
 		holder.age.setText(item.getAge()+"岁");
 		holder.star.setText(item.getStarsign()+"");
@@ -109,6 +112,7 @@ public class UserListAdapter extends BaseAdapter {
 		private TextView age;
 		private TextView star;
 		private TextView school;
+		private RelativeLayout rightLayout;
 	}
 
 

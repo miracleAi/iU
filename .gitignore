@@ -53,13 +53,9 @@ proguard/
 # Log Files
 *.log
 
-*.iml
-hockey.json
 testand/
 testjava/
-.idea/workspace.xml
-
-.idea/workspace.xml
 
 BIUBIU/.project
 BIUBIU/project.properties
+lib/
