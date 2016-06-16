@@ -33,8 +33,8 @@ public class BaseActivity extends FragmentActivity {
         super.requestWindowFeature(Window.FEATURE_NO_TITLE);
         super.onCreate(savedInstanceState);
         SharePreferanceUtils.getInstance().putShared(getApplicationContext(), SharePreferanceUtils.IS_APP_OPEN, true);
-        biuApplication = (BiubiuApplication)this.getApplication();
-        biuApplication.addAppInstance(this);
+        /*biuApplication = (BiubiuApplication)this.getApplication();
+        biuApplication.addAppInstance(this);*/
     }
 
     @Override
@@ -54,7 +54,6 @@ public class BaseActivity extends FragmentActivity {
     @Override
     protected void onDestroy() {
         // TODO Auto-generated method stub
-        biuApplication.delAppInstanceByAnim(this);
         super.onDestroy();
 
     }

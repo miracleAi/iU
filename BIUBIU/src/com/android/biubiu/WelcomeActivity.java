@@ -79,14 +79,14 @@ public class WelcomeActivity extends BaseActivity {
 			public void run() {
 				// TODO Auto-generated method stub
 				// 允许用户使用应用
-				if(!LoginUtils.isLogin(WelcomeActivity.this)){
+				/*if(!LoginUtils.isLogin(WelcomeActivity.this)){
 					Intent intent = new Intent(WelcomeActivity.this,LoginOrRegisterActivity.class);
 					intent.putExtra("tag",true);
 					startActivity(intent);
-				}else{
+				}else{*/
 					Intent intent = new Intent(WelcomeActivity.this,MainActivity.class);
 					startActivity(intent);
-				}
+			//	}
 				finish();
 			}
 		}, 2000);

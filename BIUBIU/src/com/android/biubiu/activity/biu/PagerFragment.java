@@ -1136,14 +1136,10 @@ public class PagerFragment extends BaseFragment implements View.OnClickListener,
             case TO_SETTING:
                 if (resultCode == Constant.EXIT_APP_SUCCESS) {
 //                    mRequestSuccess = false;
-                   /* if (mTopTitle.getVisibility() == View.VISIBLE) {
+                    if (mTopTitle.getVisibility() == View.VISIBLE) {
                         mTopTitle.setVisibility(View.GONE);
                     }
-                    switchView();*/
-                    Intent intent = new Intent(getActivity(), LoginOrRegisterActivity.class);
-                    intent.putExtra("tag",true);
-                    startActivity(intent);
-                    getActivity().finish();
+                    switchView();
                 }
                 break;
             case TO_PREVIEW_PIC:
