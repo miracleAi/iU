@@ -1099,6 +1099,7 @@ public class PagerFragment extends BaseFragment implements View.OnClickListener,
                 infoBean.setIconCircle(thumUrl);
                 infoBean.setIconOrigin(headUrl);
                 x.image().bind(userheadImv, thumUrl, imageOptions);
+                updateHeadStatus();
                 break;
             case UPDATE_INTEREST_TAG:
                 if (resultCode != Activity.RESULT_OK) {
