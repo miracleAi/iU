@@ -5,6 +5,15 @@ package com.android.biubiu.transport.xg.model;
  */
 public class HeadVerify {
     private String iconStatus;
+    private long time;
+
+    public long getTime() {
+        return time;
+    }
+
+    public void setTime(long time) {
+        this.time = time;
+    }
 
     public String getIconStatus() {
         return iconStatus;

@@ -17,7 +17,7 @@ public class Constant extends EaseConstant {
     public static final String ACTIVITY_URL = "act_url";
     public static final String ACTIVITY_COVER = "act_cover";
     public static int biubiCnt;
-    public static String headState;
+    public static volatile String headState;
 
     //发布页面相关传递参数
     public static final String PUBLISH_TYPE = "publish_type";

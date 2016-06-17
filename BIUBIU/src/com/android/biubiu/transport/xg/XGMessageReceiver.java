@@ -82,7 +82,7 @@ public class XGMessageReceiver extends XGPushBaseReceiver {
             boolean isOpenVoice = SharePreferanceUtils.getInstance().isOpenVoice(context, SharePreferanceUtils.IS_OPEN_VOICE, true);
             boolean isShock = SharePreferanceUtils.getInstance().isOpenVoice(context, SharePreferanceUtils.IS_SHOCK, true);
             boolean isPlaySound = false;
-            BiuBean bean = null;
+            BiuBean bean;
             switch (type) {
                 case XGConstant.MSG_TYPE_MATCH:
                 case XGConstant.MSG_TYPE_GRAB:
@@ -99,6 +99,7 @@ public class XGMessageReceiver extends XGPushBaseReceiver {
                 case XGConstant.HEAD_VERIFY:
                     HeadVerify verify = message.getIconState();
                     Constant.headState = verify.getIconStatus();
+                    showNotifyVerify(context, Integer.parseInt(Constant.headState), verify.getTime() * 1000);
                     break;
             }
             switch (type) {
@@ -188,6 +189,31 @@ public class XGMessageReceiver extends XGPushBaseReceiver {
         mBuilder.setContentIntent(pendingIntent);
         mNotificationManager.notify(0, mBuilder.build());
     }
+
+    private void showNotifyVerify(Context context, int type, long time) {
+        NotificationManager mNotificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context);
+        mBuilder.setAutoCancel(true)
+                .setWhen(time)
+                .setPriority(Notification.PRIORITY_DEFAULT)//设置该通知优先级
+                .setSmallIcon(cc.imeetu.iu.R.drawable.icon);
+        if (type == Constants.HEAD_VERIFYSUC) {
+            mBuilder.setContentTitle(context.getResources().getString(R.string.head_egis))
+                    .setContentText(context.getResources().getString(R.string.head_egis_info))
+                    .setTicker(context.getResources().getString(R.string.head_egis_info));
+        } else if (type == Constants.HEAD_VERIFYFAIL) {
+            mBuilder.setContentTitle(context.getResources().getString(R.string.head_no_egis))
+                    .setContentText(context.getResources().getString(R.string.head_no_egis_info1))
+                    .setTicker(context.getResources().getString(R.string.head_no_egis_info1));
+        }
+        mBuilder.setDefaults(Notification.DEFAULT_VIBRATE);
+        Intent resultIntent = new Intent(context.getApplicationContext(), MainActivity.class);
+        PendingIntent pendingIntent = PendingIntent.getActivity(context.getApplicationContext(), 0, resultIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        mBuilder.setContentIntent(pendingIntent);
+        playSound(context);
+        mNotificationManager.notify(0, mBuilder.build());
+    }
+
 
     @Override
     public void onNotifactionClickedResult(Context context, XGPushClickedResult xgPushClickedResult) {
