@@ -190,18 +190,11 @@ public class BiuBiuReceiveActivity extends BaseActivity {
                 } else {
                     String headFlag = com.android.biubiu.common.Constant.headState;
                     if (null != headFlag && !"".equals(headFlag)) {
-                        switch (Integer.parseInt(headFlag)) {
-                            case Constants.HEAD_VERIFYSUC_UNREAD:
-                            case Constants.HEAD_VERIFYFAIL_UNREAD:
-                            case Constants.HEAD_VERIFYFAIL:
-                            case Constants.HEAD_VERIFYFAIL_UPDATE:
-                                showShenHeDaiog(Integer.parseInt(headFlag));
-                                break;
-
-                            default:
-                                grabBiu();
-                                Umutils.count(BiuBiuReceiveActivity.this, Umutils.RECEIVE_BIU_TOTAL);
-                                break;
+                        if (Integer.parseInt(headFlag) == Constants.HEAD_VERIFYFAIL) {
+                            showShenHeDaiog(Integer.parseInt(headFlag));
+                        } else {
+                            grabBiu();
+                            Umutils.count(BiuBiuReceiveActivity.this, Umutils.RECEIVE_BIU_TOTAL);
                         }
                     } else {
                         grabBiu();
@@ -275,78 +268,25 @@ public class BiuBiuReceiveActivity extends BaseActivity {
         String msg = "";
         String strBtn1 = "";
         String strBtn2 = "";
-        switch (flag) {
-            case 2:
-                title = getResources().getString(R.string.head_egis);
-                msg = getResources().getString(R.string.head_egis_info);
-                strBtn1 = "我知道了";
-                break;
-            case 4:
-            case 5:
-                title = getResources().getString(R.string.head_no_egis);
-                msg = getResources().getString(R.string.head_no_egis_info1);
-                strBtn1 = "取消";
-                strBtn2 = "重新上传";
-                break;
-            case 6:
-                title = getResources().getString(R.string.head_no_egis);
-                msg = getResources().getString(R.string.head_no_egis_info2);
-                strBtn1 = "取消";
-                strBtn2 = "重新上传";
-                break;
-            default:
-                break;
-        }
-        if (flag == 2) {
-            CommonDialog.singleBtnDialog(BiuBiuReceiveActivity.this, title, msg, strBtn1, new DialogInterface.OnClickListener() {
+        title = getResources().getString(R.string.head_no_egis);
+        msg = getResources().getString(R.string.head_no_egis_info1);
+        strBtn1 = "取消";
+        strBtn2 = "重新上传";
+        CommonDialog.doubleBtnDialog(BiuBiuReceiveActivity.this, title, msg, strBtn1, strBtn2, new DialogInterface.OnClickListener() {
 
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    // TODO Auto-generated method stub
-                    HttpUtils.commitIconState(BiuBiuReceiveActivity.this, flag);
-                    dialog.dismiss();
-                }
-            });
-        } else {
-            CommonDialog.doubleBtnDialog(BiuBiuReceiveActivity.this, title, msg, strBtn1, strBtn2, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // TODO Auto-generated method stub
+                dialog.dismiss();
+            }
+        }, new DialogInterface.OnClickListener() {
 
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    // TODO Auto-generated method stub
-                    switch (flag) {
-                        case Constants.HEAD_VERIFYFAIL_UNREAD:
-                            HttpUtils.commitIconState(BiuBiuReceiveActivity.this, flag);
-                            break;
-                        case Constants.HEAD_VERIFYFAIL_UPDATE:
-                            HttpUtils.commitIconState(BiuBiuReceiveActivity.this, flag);
-                            break;
-                        case Constants.HEAD_VERIFYFAIL:
-                            HttpUtils.commitIconState(BiuBiuReceiveActivity.this, flag);
-                            break;
-                        default:
-                            break;
-                    }
-                    dialog.dismiss();
-                }
-            }, new DialogInterface.OnClickListener() {
-
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    // TODO Auto-generated method stub
-                    switch (flag) {
-                        case 4:
-                            showHeadDialog();
-                            break;
-                        case 6:
-                            showHeadDialog();
-                            break;
-                        default:
-                            break;
-                    }
-                    dialog.dismiss();
-                }
-            });
-        }
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                showHeadDialog();
+                dialog.dismiss();
+            }
+        });
     }
 
     public void showHeadDialog() {
@@ -919,8 +859,8 @@ public class BiuBiuReceiveActivity extends BaseActivity {
             case CROUP_PHOTO:
                 try {
                     if (data != null) {
-                            headPath = Utils.getImgPath();
-                            uploadPhoto(headPath);
+                        headPath = Utils.getImgPath();
+                        uploadPhoto(headPath);
                     }
                 } catch (NullPointerException e) {
                     // TODO: handle exception
@@ -928,7 +868,7 @@ public class BiuBiuReceiveActivity extends BaseActivity {
                 break;
             case SELECT_PHOTO:
                 if (data != null) {
-                    Utils.startPhotoZoom(BiuBiuReceiveActivity.this,data.getData(),CROUP_PHOTO);// 裁剪图片
+                    Utils.startPhotoZoom(BiuBiuReceiveActivity.this, data.getData(), CROUP_PHOTO);// 裁剪图片
                 }
                 break;
             default:
@@ -947,6 +887,8 @@ public class BiuBiuReceiveActivity extends BaseActivity {
                 // TODO Auto-generated method stub
                 isUploadingPhoto = false;
                 if (result) {
+                    com.android.biubiu.common.Constant.headState = Constants.HEAD_VERIFYING+"";
+                    Toast.makeText(BiuBiuReceiveActivity.this, "上传照片成功", Toast.LENGTH_SHORT).show();
                     dismissLoadingLayout();
                 } else {
                     Toast.makeText(getApplicationContext(), "上传照片失败", Toast.LENGTH_SHORT).show();

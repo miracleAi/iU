@@ -253,47 +253,40 @@ public class MenuRightFragment extends EaseConversationListFragment implements F
     }
 
     public void headStateCharge(int toflag, final String userName) {
-        // 头像审核flag：0：待审核  1：审核中 2：审核成功未读 3：审核成功已读  4:审核失败（第一次）未读 5：审核失败已读 6：审核失败 (未回滚)
         String headFlag = Constant.headState;
         int flag = 0;
         if (!TextUtils.isEmpty(headFlag)) {
             flag = Integer.parseInt(headFlag);
         }
-        switch (flag) {
-            case Constants.HEAD_VERIFYSUC_UNREAD:
-            case Constants.HEAD_VERIFYFAIL_UNREAD:
-            case Constants.HEAD_VERIFYFAIL:
-            case Constants.HEAD_VERIFYFAIL_UPDATE:
-                showShenHeDaiog(flag);
-                break;
-            default:
-                if (toflag == TO_CHAT) {
-                    // 进入聊天页面
-                    Intent intent = new Intent(getActivity(), ChatActivity.class);
-                    intent.putExtra(Constant.EXTRA_USER_ID, userName);
-                    startActivityForResult(intent, TO_CHATPAGE);
-                } else if (toflag == TO_FRIENDS) {
-                    startActivityForResult(new Intent(getActivity(), UserListActivity.class),TO_FRIENDS);
-                } else if (toflag == DELETE_CHAT) {
-                    MyHintDialog.getDialog(getActivity(), "删除会话", "嗨~确定要删除会话吗", "确定", new OnDialogClick() {
+        if(flag == Constants.HEAD_VERIFYFAIL){
+            showShenHeDaiog(flag);
+        }else{
+            if (toflag == TO_CHAT) {
+                // 进入聊天页面
+                Intent intent = new Intent(getActivity(), ChatActivity.class);
+                intent.putExtra(Constant.EXTRA_USER_ID, userName);
+                startActivityForResult(intent, TO_CHATPAGE);
+            } else if (toflag == TO_FRIENDS) {
+                startActivityForResult(new Intent(getActivity(), UserListActivity.class),TO_FRIENDS);
+            } else if (toflag == DELETE_CHAT) {
+                MyHintDialog.getDialog(getActivity(), "删除会话", "嗨~确定要删除会话吗", "确定", new OnDialogClick() {
 
-                        @Override
-                        public void onOK() {
-                            // TODO Auto-generated method stub
-                            // 删除此会话
-                            EMClient.getInstance().chatManager().deleteConversation(userName, true);
-                            refresh();
-                            ((MainActivity) getActivity()).setUnReadVisible(showUnread());
-                            Toast.makeText(getActivity(), "删除成功", Toast.LENGTH_SHORT).show();
-                        }
-                        @Override
-                        public void onDismiss() {
-                            // TODO Auto-generated method stub
+                    @Override
+                    public void onOK() {
+                        // TODO Auto-generated method stub
+                        // 删除此会话
+                        EMClient.getInstance().chatManager().deleteConversation(userName, true);
+                        refresh();
+                        ((MainActivity) getActivity()).setUnReadVisible(showUnread());
+                        Toast.makeText(getActivity(), "删除成功", Toast.LENGTH_SHORT).show();
+                    }
+                    @Override
+                    public void onDismiss() {
+                        // TODO Auto-generated method stub
 
-                        }
-                    });
-                }
-                break;
+                    }
+                });
+            }
         }
     }
 
@@ -302,79 +295,25 @@ public class MenuRightFragment extends EaseConversationListFragment implements F
         String msg = "";
         String strBtn1 = "";
         String strBtn2 = "";
-        switch (flag) {
-            case Constants.HEAD_VERIFYSUC_UNREAD:
-                title = getResources().getString(R.string.head_egis);
-                msg = getResources().getString(R.string.head_egis_info);
-                strBtn1 = "我知道了";
-                break;
-            case Constants.HEAD_VERIFYFAIL_UNREAD:
-            case Constants.HEAD_VERIFYFAIL:
-                title = getResources().getString(R.string.head_no_egis);
-                msg = getResources().getString(R.string.head_no_egis_info1);
-                strBtn1 = "取消";
-                strBtn2 = "重新上传";
-                break;
-            case Constants.HEAD_VERIFYFAIL_UPDATE:
-                title = getResources().getString(R.string.head_no_egis);
-                msg = getResources().getString(R.string.head_no_egis_info2);
-                strBtn1 = "取消";
-                strBtn2 = "重新上传";
-                break;
-            default:
-                break;
-        }
-        if (flag == Constants.HEAD_VERIFYSUC_UNREAD) {
-            CommonDialog.singleBtnDialog(getActivity(), title, msg, strBtn1, new DialogInterface.OnClickListener() {
+        title = getResources().getString(R.string.head_no_egis);
+        msg = getResources().getString(R.string.head_no_egis_info1);
+        strBtn1 = "取消";
+        strBtn2 = "重新上传";
+        CommonDialog.doubleBtnDialog(getActivity(), title, msg, strBtn1, strBtn2, new DialogInterface.OnClickListener() {
 
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    dialog.dismiss();
-                }
-            });
-            HttpUtils.commitIconState(getActivity(), flag);
-        } else {
-            CommonDialog.doubleBtnDialog(getActivity(), title, msg, strBtn1, strBtn2, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // TODO Auto-generated method stub
+                dialog.dismiss();
+            }
+        }, new DialogInterface.OnClickListener() {
 
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    switch (flag) {
-                        case Constants.HEAD_VERIFYFAIL_UNREAD:
-                            HttpUtils.commitIconState(getActivity(), flag);
-                            break;
-                        case Constants.HEAD_VERIFYFAIL_UPDATE:
-                            HttpUtils.commitIconState(getActivity(), flag);
-                            break;
-                        case Constants.HEAD_VERIFYFAIL:
-                            HttpUtils.commitIconState(getActivity(), flag);
-                            break;
-                        default:
-                            break;
-                    }
-                    dialog.dismiss();
-                }
-            }, new DialogInterface.OnClickListener() {
-
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    // TODO Auto-generated method stub
-                    switch (flag) {
-                        case Constants.HEAD_VERIFYFAIL_UNREAD:
-                            showHeadDialog();
-                            break;
-                        case Constants.HEAD_VERIFYFAIL:
-                            showHeadDialog();
-                            break;
-                        case Constants.HEAD_VERIFYFAIL_UPDATE:
-                            showHeadDialog();
-                            break;
-                        default:
-                            break;
-                    }
-                    dialog.dismiss();
-                }
-            });
-        }
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                showHeadDialog();
+                dialog.dismiss();
+            }
+        });
     }
 
     public void showHeadDialog() {
@@ -459,7 +398,7 @@ public class MenuRightFragment extends EaseConversationListFragment implements F
                 // TODO Auto-generated method stub
                 isUploadingPhoto = false;
                 if (result) {
-                    Constant.headState = "3";
+                    Constant.headState = Constants.HEAD_VERIFYING+"";
                     Toast.makeText(getActivity(), "上传照片成功", Toast.LENGTH_SHORT).show();
                 } else {
                     Toast.makeText(getActivity(), "上传照片失败", Toast.LENGTH_SHORT).show();
