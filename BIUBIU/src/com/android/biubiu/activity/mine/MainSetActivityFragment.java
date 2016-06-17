@@ -291,7 +291,6 @@ public class MainSetActivityFragment extends Fragment implements View.OnClickLis
 //					String token = (jsons.getJSONObject("data").getString("token"));
 //					SharePreferanceUtils.getInstance().putShared(getApplicationContext(), SharePreferanceUtils.TOKEN, token);
                 } catch (JSONException e) {
-                    // TODO Auto-generated catch block
                     e.printStackTrace();
                 }
             }

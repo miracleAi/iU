@@ -2,6 +2,7 @@ package com.android.biubiu;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.app.NotificationManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -40,7 +41,6 @@ import com.android.biubiu.fragment.BiuFragment;
 import com.android.biubiu.fragment.DiscoveryFragment;
 import com.android.biubiu.fragment.MenuRightFragment;
 import com.android.biubiu.sqlite.PushMatchDao;
-import com.android.biubiu.transport.xg.constant.XGConstant;
 import com.android.biubiu.transport.xg.utils.XGUtils;
 import com.android.biubiu.utils.Constants;
 import com.android.biubiu.utils.HttpContants;
@@ -54,8 +54,6 @@ import com.hyphenate.EMConnectionListener;
 import com.hyphenate.EMError;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.util.NetUtils;
-import com.tencent.android.tpush.XGIOperateCallback;
-import com.tencent.android.tpush.XGPushManager;
 import com.umeng.analytics.MobclickAgent;
 import com.umeng.update.UmengUpdateAgent;
 import com.umeng.update.UmengUpdateListener;
@@ -701,4 +699,5 @@ public class MainActivity extends FragmentActivity implements AMapLocationListen
     public boolean isReverse() {
         return mReverse;
     }
+
 }
