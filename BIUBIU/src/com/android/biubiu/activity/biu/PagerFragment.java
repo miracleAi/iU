@@ -217,7 +217,17 @@ public class PagerFragment extends BaseFragment implements View.OnClickListener,
 
     private boolean mRequestSuccess;
 
-//    private int currentPhotoIndex = -1;
+    //    private int currentPhotoIndex = -1;
+    private BroadcastReceiver mReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (intent != null) {
+                if (Constant.HEAD_VERIFY_ACTION.equals(intent.getAction())) {
+                    updateHeadStatus();
+                }
+            }
+        }
+    };
 
     public PagerFragment() {
     }
@@ -373,6 +383,11 @@ public class PagerFragment extends BaseFragment implements View.OnClickListener,
                 isMyself = false;
                 switchView();
             }
+        }
+        if (isMyself) {
+            IntentFilter filter = new IntentFilter();
+            filter.addAction(Constant.HEAD_VERIFY_ACTION);
+            getActivity().registerReceiver(mReceiver, filter);
         }
     }
 
@@ -1372,6 +1387,9 @@ public class PagerFragment extends BaseFragment implements View.OnClickListener,
     @Override
     public void onDestroy() {
         super.onDestroy();
+        if(isMyself){
+            getActivity().unregisterReceiver(mReceiver);
+        }
     }
 
     @Override

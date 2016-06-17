@@ -99,6 +99,8 @@ public class XGMessageReceiver extends XGPushBaseReceiver {
                 case XGConstant.HEAD_VERIFY:
                     HeadVerify verify = message.getIconState();
                     Constant.headState = verify.getIconStatus();
+                    Intent i = new Intent(Constant.HEAD_VERIFY_ACTION);
+                    context.sendBroadcast(i, Constant.PUBLISH_POST_ACTION_PERMISSION);
                     showNotifyVerify(context, Integer.parseInt(Constant.headState), verify.getTime() * 1000);
                     break;
             }

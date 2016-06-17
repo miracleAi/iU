@@ -10,6 +10,7 @@
         android:minSdkVersion="17"
         android:targetSdkVersion="21" />
     <permission android:name="cc.imeetu.iu.PUBLISH_POST_ACTION_PERMISSION" />
+    <permission android:name="cc.imeetu.iu.HEAD_VERIFY_PERMISSION" />
     <!-- oss文件上传相关权限 -->
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -78,6 +79,7 @@
 
 
     <uses-permission android:name="cc.imeetu.iu.PUBLISH_POST_ACTION_PERMISSION" />
+    <uses-permission android:name="cc.imeetu.iu.HEAD_VERIFY_PERMISSION" />
 
     <application
         android:name="com.android.biubiu.myapplication.BiubiuApplication"
