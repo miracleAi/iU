@@ -6,7 +6,7 @@ import com.google.gson.annotations.SerializedName;
 /**
  * Created by meetu on 2016/5/17.
  */
-public class BiuBean extends XGMessage{
+public class BiuBean {
     @SerializedName("icon_thumbnailUrl")
     private String iconUrl;
     @SerializedName("user_code")

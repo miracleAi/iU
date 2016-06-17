@@ -14,13 +14,18 @@ import android.support.v4.app.NotificationCompat;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.android.biubiu.MainActivity;
 import com.android.biubiu.activity.biu.BiuBiuReceiveActivity;
 import com.android.biubiu.bean.BiuBean;
 import com.android.biubiu.bean.UserFriends;
+import com.android.biubiu.common.Constant;
 import com.android.biubiu.push.PushInterface;
 import com.android.biubiu.sqlite.UserDao;
 import com.android.biubiu.transport.xg.constant.XGConstant;
+import com.android.biubiu.transport.xg.model.HeadVerify;
+import com.android.biubiu.transport.xg.model.XGMessage;
 import com.android.biubiu.utils.CommonUtils;
 import com.android.biubiu.utils.Constants;
 import com.android.biubiu.utils.SharePreferanceUtils;
@@ -70,24 +75,35 @@ public class XGMessageReceiver extends XGPushBaseReceiver {
                 + " title = " + xgPushTextMessage.getTitle());
         String customContent = xgPushTextMessage.getCustomContent();
         if (!TextUtils.isEmpty(customContent)) {
-            if (mUserDao == null) {
-                mUserDao = new UserDao(context);
-            }
+            XGMessage message = CommonUtils.parseJsonToObj(customContent, new TypeToken<XGMessage>() {
+            });
+            int type = Integer.parseInt(message.getMessageType());
             boolean isOpen = SharePreferanceUtils.getInstance().isAppOpen(context, SharePreferanceUtils.IS_APP_OPEN, false);
             boolean isOpenVoice = SharePreferanceUtils.getInstance().isOpenVoice(context, SharePreferanceUtils.IS_OPEN_VOICE, true);
             boolean isShock = SharePreferanceUtils.getInstance().isOpenVoice(context, SharePreferanceUtils.IS_SHOCK, true);
-            String lastSound = SharePreferanceUtils.getInstance().getBiuSoundTime(context, SharePreferanceUtils.BIU_SOUND_TIME, "0");
-            boolean isPlaySound;
-            if ((System.currentTimeMillis() - Long.parseLong(lastSound)) < 5 * 1000) {
-                isPlaySound = false;
-            } else {
-                isPlaySound = true;
-            }
-            BiuBean bean = CommonUtils.parseJsonToObj(customContent, new TypeToken<BiuBean>() {
-            });
-            int type = Integer.parseInt(bean.getMessageType());
+            boolean isPlaySound = false;
+            BiuBean bean = null;
             switch (type) {
                 case XGConstant.MSG_TYPE_MATCH:
+                case XGConstant.MSG_TYPE_GRAB:
+                    String lastSound = SharePreferanceUtils.getInstance().getBiuSoundTime(context, SharePreferanceUtils.BIU_SOUND_TIME, "0");
+                    if ((System.currentTimeMillis() - Long.parseLong(lastSound)) < 5 * 1000) {
+                        isPlaySound = false;
+                    } else {
+                        isPlaySound = true;
+                    }
+                    if (mUserDao == null) {
+                        mUserDao = new UserDao(context);
+                    }
+                    break;
+                case XGConstant.HEAD_VERIFY:
+                    HeadVerify verify = message.getIconState();
+                    Constant.headState = verify.getIconStatus();
+                    break;
+            }
+            switch (type) {
+                case XGConstant.MSG_TYPE_MATCH:
+                    bean = message.getSendBiu();
                     if (isOpen) {
                         if (isPlaySound) {
                             SharePreferanceUtils.getInstance().putShared(context, SharePreferanceUtils.BIU_SOUND_TIME, String.valueOf(System.currentTimeMillis()));
@@ -106,6 +122,7 @@ public class XGMessageReceiver extends XGPushBaseReceiver {
                     }
                     break;
                 case XGConstant.MSG_TYPE_GRAB:
+                    bean = message.getGrabBiu();
                     saveUserFriend(bean);
                     if (isOpen) {
                         if (isOpenVoice) {
