@@ -582,22 +582,16 @@ public class BiuFragment extends Fragment implements PushInterface, FragmentIndi
                 //  String sendTimeStr = SharePreferanceUtils.getInstance().getBiuTime(getActivity(), SharePreferanceUtils.SEND_BIU_TIME, "");
                 //启动发送biubiu界面
                 if (!TextUtils.isEmpty(headFlag)) {
-                    switch (Integer.parseInt(headFlag)) {
-                        case Constants.HEAD_VERIFYSUC_UNREAD:
-                        case Constants.HEAD_VERIFYFAIL_UNREAD:
-                        case Constants.HEAD_VERIFYFAIL:
-                        case Constants.HEAD_VERIFYFAIL_UPDATE:
-                            showShenHeDaiog(Integer.parseInt(headFlag));
-                            break;
-                        default:
-                            if (SharePreferanceUtils.getInstance().isBiuEnd(getActivity(), SharePreferanceUtils.IS_BIU_END, true)) {
-                                Intent intent = new Intent(getActivity(), BiuBiuSendActivity.class);
-                                startActivityForResult(intent, SEND_BIU_REQUEST);
-                            } else {
-                                Intent intent = new Intent(getActivity(), ReceiveBiuListActivity.class);
-                                startActivity(intent);
-                            }
-                            break;
+                    if (Integer.parseInt(headFlag) == Constants.HEAD_VERIFYFAIL) {
+                        showShenHeDaiog(Integer.parseInt(headFlag));
+                    } else {
+                        if (SharePreferanceUtils.getInstance().isBiuEnd(getActivity(), SharePreferanceUtils.IS_BIU_END, true)) {
+                            Intent intent = new Intent(getActivity(), BiuBiuSendActivity.class);
+                            startActivityForResult(intent, SEND_BIU_REQUEST);
+                        } else {
+                            Intent intent = new Intent(getActivity(), ReceiveBiuListActivity.class);
+                            startActivity(intent);
+                        }
                     }
                 } else {
                     if (SharePreferanceUtils.getInstance().isBiuEnd(getActivity(), SharePreferanceUtils.IS_BIU_END, true)) {
@@ -617,81 +611,25 @@ public class BiuFragment extends Fragment implements PushInterface, FragmentIndi
         String msg = "";
         String strBtn1 = "";
         String strBtn2 = "";
-        switch (flag) {
-            case Constants.HEAD_VERIFYSUC_UNREAD:
-                title = getResources().getString(R.string.head_egis);
-                msg = getResources().getString(R.string.head_egis_info);
-                strBtn1 = "我知道了";
-                break;
-            case Constants.HEAD_VERIFYFAIL_UNREAD:
-            case Constants.HEAD_VERIFYFAIL:
-                title = getResources().getString(R.string.head_no_egis);
-                msg = getResources().getString(R.string.head_no_egis_info1);
-                strBtn1 = "取消";
-                strBtn2 = "重新上传";
-                break;
-            case Constants.HEAD_VERIFYFAIL_UPDATE:
-                title = getResources().getString(R.string.head_no_egis);
-                msg = getResources().getString(R.string.head_no_egis_info2);
-                strBtn1 = "取消";
-                strBtn2 = "重新上传";
-                break;
-            default:
-                break;
-        }
-        if (flag == Constants.HEAD_VERIFYSUC_UNREAD) {
-            CommonDialog.singleBtnDialog(getActivity(), title, msg, strBtn1, new DialogInterface.OnClickListener() {
+        title = getResources().getString(R.string.head_no_egis);
+        msg = getResources().getString(R.string.head_no_egis_info1);
+        strBtn1 = "取消";
+        strBtn2 = "重新上传";
+        CommonDialog.doubleBtnDialog(getActivity(), title, msg, strBtn1, strBtn2, new DialogInterface.OnClickListener() {
 
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    dialog.dismiss();
-                    HttpUtils.commitIconState(getActivity(), flag);
-                }
-            });
-        } else {
-            CommonDialog.doubleBtnDialog(getActivity(), title, msg, strBtn1, strBtn2, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // TODO Auto-generated method stub
+                dialog.dismiss();
+            }
+        }, new DialogInterface.OnClickListener() {
 
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    // TODO Auto-generated method stub
-                    dialog.dismiss();
-                    switch (flag) {
-                        case Constants.HEAD_VERIFYFAIL_UNREAD:
-                            HttpUtils.commitIconState(getActivity(), flag);
-                            break;
-                        case Constants.HEAD_VERIFYFAIL_UPDATE:
-                            HttpUtils.commitIconState(getActivity(), flag);
-                            break;
-                        case Constants.HEAD_VERIFYFAIL:
-                            HttpUtils.commitIconState(getActivity(), flag);
-                            break;
-                        default:
-                            break;
-                    }
-                }
-            }, new DialogInterface.OnClickListener() {
-
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    // TODO Auto-generated method stub
-                    switch (flag) {
-                        case Constants.HEAD_VERIFYFAIL_UNREAD:
-                            showHeadDialog();
-                            break;
-                        case Constants.HEAD_VERIFYFAIL:
-                            showHeadDialog();
-                            break;
-                        case Constants.HEAD_VERIFYFAIL_UPDATE:
-                            showHeadDialog();
-                            break;
-                        default:
-                            break;
-                    }
-                    dialog.dismiss();
-                }
-            });
-        }
-
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                showHeadDialog();
+                dialog.dismiss();
+            }
+        });
     }
 
     public void showHeadDialog() {
@@ -1271,9 +1209,6 @@ public class BiuFragment extends Fragment implements PushInterface, FragmentIndi
                     JSONObject data = jsons.getJSONObject("data");
                     String headFlag = data.getString("iconStatus");
                     com.android.biubiu.common.Constant.headState = headFlag;
-                    if (headFlag.equals("2") || headFlag.equals("4") || headFlag.equals("6")) {
-                        showShenHeDaiog(Integer.parseInt(headFlag));
-                    }
                     String recSex = data.getString("s_sex");
                     SharePreferanceUtils.getInstance().putShared(getActivity(), SharePreferanceUtils.RECEIVE_SEX, recSex);
                     String biuendStr = data.getString("is_biu_end");
@@ -1479,7 +1414,7 @@ public class BiuFragment extends Fragment implements PushInterface, FragmentIndi
                 // TODO Auto-generated method stub
                 isUploadingPhoto = false;
                 if (result) {
-                    com.android.biubiu.common.Constant.headState = "3";
+                    com.android.biubiu.common.Constant.headState = Constants.HEAD_VERIFYING+"";
                     dismissLoadingLayout();
                 } else {
                     Toast.makeText(getActivity(), "上传照片失败", Toast.LENGTH_SHORT).show();
