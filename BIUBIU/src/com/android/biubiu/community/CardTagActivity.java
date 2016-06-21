@@ -22,5 +22,4 @@ public class CardTagActivity extends FragmentActivity {
         fragment.setArguments(b);
         getSupportFragmentManager().beginTransaction().add(R.id.layout_body, fragment).commit();
     }
-
 }
