@@ -681,7 +681,6 @@ public class MainActivity extends FragmentActivity implements AMapLocationListen
         transaction.commit();
         mReverse = true;
         ((BiuFragment) biuFragment).pauseDraw();
-
     }
 
     public void reverseBack() {
