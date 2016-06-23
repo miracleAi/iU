@@ -92,26 +92,32 @@ public class DiscoveryFragment extends BaseFragment implements FragmentIndicator
         mTopTitle.setLeftOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(getActivity(), CommNotifyActivity.class);
-                startActivityForResult(i, TO_NOTIFY_PAGE);
+                if (LoginUtils.isLogin(getActivity())) {
+                    Intent i = new Intent(getActivity(), CommNotifyActivity.class);
+                    startActivityForResult(i, TO_NOTIFY_PAGE);
+                }
             }
         });
 
         mTopTitle.setRightOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(getActivity(), PublishHomeActivity.class);
-                startActivityForResult(i, TO_PUBLISH_PAGE);
-                getActivity().overridePendingTransition(R.anim.alpha_in_anim, R.anim.alpha_out_anim);
+                if (LoginUtils.isLogin(getActivity())) {
+                    Intent i = new Intent(getActivity(), PublishHomeActivity.class);
+                    startActivityForResult(i, TO_PUBLISH_PAGE);
+                    getActivity().overridePendingTransition(R.anim.alpha_in_anim, R.anim.alpha_out_anim);
+                }
             }
         });
 
         mTopTitle.setCenterOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(getActivity(), CardTagActivity.class);
-                i.putExtra(Constant.TO_TAG_TYPE, Constant.TAG_TYPE_SELSET);
-                startActivityForResult(i, TO_PUBLISH_PAGE);
+                if(LoginUtils.isLogin(getActivity())){
+                    Intent i = new Intent(getActivity(), CardTagActivity.class);
+                    i.putExtra(Constant.TO_TAG_TYPE, Constant.TAG_TYPE_SELSET);
+                    startActivityForResult(i, TO_PUBLISH_PAGE);
+                }
             }
         });
         mIndicator = (PagerSlidingTabStrip) mRootview.findViewById(R.id.indicator);
@@ -157,7 +163,7 @@ public class DiscoveryFragment extends BaseFragment implements FragmentIndicator
 
     @Override
     public void onTabClick() {
-        for(PostsFragment fragment:mFragments){
+        for (PostsFragment fragment : mFragments) {
             fragment.refreshData();
         }
     }
