@@ -181,8 +181,10 @@ public class MenuRightFragment extends EaseConversationListFragment implements F
         titleBar.setLeftLayoutClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(getActivity(), CommunityBiuListActivity.class);
-                startActivityForResult(i,TO_BIU_PAGE);
+                if(LoginUtils.isLogin(getActivity())){
+                    Intent i = new Intent(getActivity(), CommunityBiuListActivity.class);
+                    startActivityForResult(i,TO_BIU_PAGE);
+                }
             }
         });
 
@@ -245,7 +247,9 @@ public class MenuRightFragment extends EaseConversationListFragment implements F
             if (noLoginView.getVisibility() == View.GONE) {
                 noLoginView.setVisibility(View.VISIBLE);
             }
+            swipeRefreshLayout.setVisibility(View.GONE);
         } else {
+            swipeRefreshLayout.setVisibility(View.VISIBLE);
             errorItemContainer.setVisibility(View.GONE);
             refresh();
             ((MainActivity) getActivity()).setUnReadVisible(showUnread());
