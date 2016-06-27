@@ -21,6 +21,7 @@ import com.android.biubiu.common.CommonDialog;
 import com.android.biubiu.common.Constant;
 import com.android.biubiu.component.title.TopTitleView;
 import com.android.biubiu.myapplication.BiubiuApplication;
+import com.android.biubiu.transport.xg.utils.XGUtils;
 import com.android.biubiu.utils.HttpContants;
 import com.android.biubiu.utils.NetUtils;
 import com.android.biubiu.utils.SharePreferanceUtils;
@@ -290,7 +291,6 @@ public class MainSetActivityFragment extends Fragment implements View.OnClickLis
 //					String token = (jsons.getJSONObject("data").getString("token"));
 //					SharePreferanceUtils.getInstance().putShared(getApplicationContext(), SharePreferanceUtils.TOKEN, token);
                 } catch (JSONException e) {
-                    // TODO Auto-generated catch block
                     e.printStackTrace();
                 }
             }
@@ -397,6 +397,7 @@ public class MainSetActivityFragment extends Fragment implements View.OnClickLis
                 SharePreferanceUtils.getInstance().putShared(getActivity(), SharePreferanceUtils.TOKEN, "");
                 SharePreferanceUtils.getInstance().putShared(getActivity(), SharePreferanceUtils.HX_USER_NAME, "");
                 SharePreferanceUtils.getInstance().putShared(getActivity(), SharePreferanceUtils.HX_USER_PASSWORD, "");
+                XGUtils.getInstance(getActivity()).unRegisterPush();
                 getActivity().setResult(Constant.EXIT_APP_SUCCESS);
                 getActivity().finish();
                 /*Intent intent = new Intent(getActivity(), LoginOrRegisterActivity.class);

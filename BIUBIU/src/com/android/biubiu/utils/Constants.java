@@ -66,14 +66,11 @@ public class Constants {
 	public static final int SUPER_ONE_USER = 1;
 	public static final int SUPER_TWO_USER = 2;
 	public static final int SUPER_THREE_USER = 3;
-	//头像审核flag：0：待审核  1：审核中 2：审核成功未读 3：审核成功已读  4:审核失败（第一次）未读 5：审核失败已读 6：审核失败 (未回滚)
+	//头像审核flag：0：待审核  1：审核中  3：审核成功   5：审核失败
 	public static final int HEAD_VERIFY_READY = 0;
 	public static final int HEAD_VERIFYING = 1;
-	public static final int HEAD_VERIFYSUC_UNREAD = 2;
 	public static final int HEAD_VERIFYSUC = 3;
-	public static final int HEAD_VERIFYFAIL_UNREAD = 4;
 	public static final int HEAD_VERIFYFAIL = 5;
-	public static final int HEAD_VERIFYFAIL_UPDATE = 6;
 	/**
 	 * 标记biubiu是否已读
 	 * */

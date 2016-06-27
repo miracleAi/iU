@@ -47,6 +47,8 @@ import com.alibaba.sdk.android.oss.internal.OSSAsyncTask;
 import com.alibaba.sdk.android.oss.model.PutObjectRequest;
 import com.alibaba.sdk.android.oss.model.PutObjectResult;
 import com.android.biubiu.BaseActivity;
+import com.android.biubiu.common.Constant;
+import com.android.biubiu.utils.Constants;
 import com.android.biubiu.utils.HttpContants;
 import com.android.biubiu.utils.LogUtil;
 import com.android.biubiu.utils.SharePreferanceUtils;
@@ -324,6 +326,8 @@ public class ScanUserHeadActivity extends BaseActivity implements OnClickListene
                     intent.putExtra("headUrl", photoUrl);
                     intent.putExtra("thumUrl", photoUrl_thum);
                     SharePreferanceUtils.getInstance().putShared(getApplicationContext(), SharePreferanceUtils.USER_HEAD, photoUrl_thum);
+                   //上传头像之后头像状态改为审核中
+                    Constant.headState = Constants.HEAD_VERIFYING+"";
                     setResult(RESULT_OK, intent);
                     finish();
                 } catch (JSONException e) {

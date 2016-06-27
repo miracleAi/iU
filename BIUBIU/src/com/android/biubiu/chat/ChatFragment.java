@@ -62,7 +62,6 @@ public class ChatFragment extends EaseChatFragment implements
         // 设置标题栏点击事件
         titleBar.setLeftImageResource(R.drawable.back_main);
         titleBar.setRightImageResource(R.drawable.mes_btn_right);
-        titleBar.setTitle(getArguments() != null ? getArguments().getString(Constant.EXTRA_USER_NAME) : "");
         titleBar.setRightLayoutClickListener(new OnClickListener() {
 
             @Override

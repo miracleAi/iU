@@ -84,7 +84,7 @@ public class HttpUtils {
 		});
 	}
 	//修改头像状态
-	public static void commitIconState(final Context context, final int headState) {
+	/*public static void commitIconState(final Context context, final int headState) {
 		// TODO Auto-generated method stub
 		RequestParams params = new RequestParams(HttpContants.HTTP_ADDRESS+HttpContants.UPDATE_HEAD_STATE);
 		JSONObject requestObject = new JSONObject();
@@ -138,5 +138,5 @@ public class HttpUtils {
 				}
 			}
 		});
-	}
+	}*/
 }
