@@ -3,8 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="cc.imeetu.iu"
     android:installLocation="preferExternal"
-    android:versionCode="20160615"
-    android:versionName="2.0.1">
+    android:versionCode="20160625"
+    android:versionName="2.0.2">
 
     <uses-sdk
         android:minSdkVersion="17"
