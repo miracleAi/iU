@@ -71,6 +71,7 @@ public class CommNotifyActivity extends BaseActivity implements PullToRefreshBas
             }
         });
         mPullToRefreshListview = (PullToRefreshListView) findViewById(R.id.pull_refresh_list);
+        mPullToRefreshListview.setSexFlag(CommNotifyActivity.this,SharePreferanceUtils.getInstance().getUserSex(CommNotifyActivity.this,SharePreferanceUtils.USER_SEX,0));
         mPullToRefreshListview.setMode(PullToRefreshBase.Mode.BOTH);
         mPullToRefreshListview.setOnRefreshListener(this);
         mPullToRefreshListview.setScrollingWhileRefreshingEnabled(true);

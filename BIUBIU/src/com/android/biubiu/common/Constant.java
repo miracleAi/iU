@@ -45,6 +45,8 @@ public class Constant extends EaseConstant {
     public static final String PUBLISH_POST_ACTION_PERMISSION = "cc.imeetu.iu.PUBLISH_POST_ACTION_PERMISSION";
     public static final String HEAD_VERIFY_ACTION = "head_verify_action";
     public static final String HEAD_VERIFY_PERMISSION = "cc.imeetu.iu.HEAD_VERIFY_PERMISSION";
+    public static final String COM_BIU_ACTION = "com_biu_action";
+    public static final String NOTIFU_ACTION = "notify_action";
 
     public static final int BANNER_ANIM_INTERVAL = 2;
     public static int screenWidth, screenHeight;

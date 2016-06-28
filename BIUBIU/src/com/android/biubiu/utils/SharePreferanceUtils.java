@@ -13,6 +13,7 @@ public class SharePreferanceUtils {
     public static String USER_NAME = "username";
     public static String USER_HEAD = "userhead";
     public static String USER_CODE = "usercode";
+    public static String USER_SEX = "usersex";
     public static String IS_APP_OPEN = "is_app_open";
     public static String CHANNEL_ID = "channel_id";
     public static String IS_COMMIT_CHANNEL = "is_commit_channel";
@@ -158,6 +159,10 @@ public class SharePreferanceUtils {
 
     //获取用户编码
     public String getUserCode(Context context, String prefKey, String defValue) {
+        return getShared(context, prefKey, defValue);
+    }
+    //获取用户性别
+    public int getUserSex(Context context, String prefKey, int defValue) {
         return getShared(context, prefKey, defValue);
     }
 

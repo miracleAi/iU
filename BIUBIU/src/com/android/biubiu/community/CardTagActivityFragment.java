@@ -29,6 +29,7 @@ import com.android.biubiu.utils.DensityUtil;
 import com.android.biubiu.utils.HttpContants;
 import com.android.biubiu.utils.HttpRequestUtils;
 import com.android.biubiu.utils.NetUtils;
+import com.android.biubiu.utils.SharePreferanceUtils;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
@@ -126,6 +127,7 @@ public class CardTagActivityFragment extends BaseFragment implements PullToRefre
         recommendLv = (ListView) headerView.findViewById(R.id.recommend_tag_lv);
         hotLv = (ListView) headerView.findViewById(R.id.hot_tag_lv);
         mPullToRefreshListview = (PullToRefreshListView) mRootview.findViewById(R.id.pull_refresh_list);
+        mPullToRefreshListview.setSexFlag(getActivity(),SharePreferanceUtils.getInstance().getUserSex(getActivity(),SharePreferanceUtils.USER_SEX,0));
         mPullToRefreshListview.setMode(PullToRefreshBase.Mode.PULL_UP_TO_REFRESH);
         mPullToRefreshListview.setOnRefreshListener(this);
         mPullToRefreshListview.setScrollingWhileRefreshingEnabled(true);

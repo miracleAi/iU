@@ -420,8 +420,8 @@ public class MainActivity extends FragmentActivity implements AMapLocationListen
                     Fragment fMsg = mFragmentManager.findFragmentByTag(getResources().getString(R.string.left_menu_message));
                     Fragment fCom = mFragmentManager.findFragmentByTag(getResources().getString(R.string.discovery));
                     try {
-                        int notifyNum = object.getInt("notifyNum");
-                        int biuNum = object.getInt("comBiuNum");
+                        int notifyNum = object.getInt("noticeCount");
+                        int biuNum = object.getInt("comBiuCount");
                         if (fCom != null) {
                             ((DiscoveryFragment) fCom).updateNotify(notifyNum);
                         } else {

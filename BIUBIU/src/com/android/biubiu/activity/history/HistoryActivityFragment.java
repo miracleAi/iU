@@ -89,6 +89,7 @@ public class HistoryActivityFragment extends BaseFragment implements PullToRefre
         });
 
         mPullToRefreshStaggerdGridView = (PullToRefreshStaggeredGridView) mRootview.findViewById(R.id.pull_grid_view);
+        mPullToRefreshStaggerdGridView.setSexFlag(getActivity(),SharePreferanceUtils.getInstance().getUserSex(getActivity(),SharePreferanceUtils.USER_SEX,0));
         mPullToRefreshStaggerdGridView.setMode(PullToRefreshBase.Mode.BOTH);
         mPullToRefreshStaggerdGridView.setOnRefreshListener(this);
         mPullToRefreshStaggerdGridView.setScrollingWhileRefreshingEnabled(true);

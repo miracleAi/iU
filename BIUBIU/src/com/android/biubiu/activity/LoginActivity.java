@@ -231,7 +231,11 @@ public class LoginActivity extends BaseActivity{
 					SharePreferanceUtils.getInstance().putShared(getApplicationContext(), SharePreferanceUtils.USER_HEAD, userHead);
 					String userCode = obj.getString("code");
 					SharePreferanceUtils.getInstance().putShared(getApplicationContext(), SharePreferanceUtils.USER_CODE, userCode);
-
+					String userSexStr = obj.getString("sex");
+					if(null != userSexStr && !"".equals(userSexStr)){
+						int userSex = Integer.parseInt(userSexStr);
+						SharePreferanceUtils.getInstance().putShared(getApplicationContext(), SharePreferanceUtils.USER_SEX,userSex);
+					}
 					loginHuanXin(hxName,HxPassword);
 					LogUtil.e(TAG, "hxName=="+hxName+"||"+"HxPassword=="+HxPassword);
 					//统计登录用户

@@ -10,6 +10,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,6 +28,8 @@ import com.android.biubiu.community.PublishHomeActivity;
 import com.android.biubiu.component.indicator.FragmentIndicator;
 import com.android.biubiu.component.indicator.PagerSlidingTabStrip;
 import com.android.biubiu.component.title.TopTitleView;
+import com.android.biubiu.utils.Constants;
+import com.android.biubiu.utils.LogUtil;
 import com.android.biubiu.utils.LoginUtils;
 
 import java.util.ArrayList;
@@ -52,8 +55,14 @@ public class DiscoveryFragment extends BaseFragment implements FragmentIndicator
     private BroadcastReceiver mReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            if (intent.getAction().equals(Constant.PUBLISH_POST_ACTION)) {
-                mNeedRefresh = true;
+            String action = intent.getAction();
+            if (!TextUtils.isEmpty(action)) {
+                if (action.equals(Constant.PUBLISH_POST_ACTION)) {
+                    mNeedRefresh = true;
+                }else if(action.equals(Constant.NOTIFU_ACTION)){
+                    int notifyCount = intent.getIntExtra("notifu_count",1);
+                    updateNotify(notifyCount);
+                }
             }
         }
     };
@@ -86,7 +95,6 @@ public class DiscoveryFragment extends BaseFragment implements FragmentIndicator
             mNeedRefresh = false;
         }
     }
-
     private void initView() {
         mTopTitle = (TopTitleView) mRootview.findViewById(R.id.top_title_view);
         mTopTitle.setLeftOnClickListener(new View.OnClickListener() {
@@ -158,6 +166,7 @@ public class DiscoveryFragment extends BaseFragment implements FragmentIndicator
         mViewPager.setCurrentItem(1, true);
         IntentFilter filter = new IntentFilter();
         filter.addAction(Constant.PUBLISH_POST_ACTION);
+        filter.addAction(Constant.NOTIFU_ACTION);
         getActivity().registerReceiver(mReceiver, filter);
     }
 

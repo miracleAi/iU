@@ -37,6 +37,7 @@ import com.tencent.android.tpush.XGPushShowedResult;
 import com.tencent.android.tpush.XGPushTextMessage;
 
 import cc.imeetu.iu.R;
+import me.leolin.shortcutbadger.ShortcutBadger;
 
 /**
  * Created by yanghj on 16/6/16.
@@ -73,10 +74,12 @@ public class XGMessageReceiver extends XGPushBaseReceiver {
     public void onTextMessage(Context context, XGPushTextMessage xgPushTextMessage) {
         Log.d(XGConstant.TAG, "content = " + xgPushTextMessage.getContent() + " customContent = " + xgPushTextMessage.getCustomContent()
                 + " title = " + xgPushTextMessage.getTitle());
+        Log.d("mytest1",xgPushTextMessage.toString());
         String customContent = xgPushTextMessage.getCustomContent();
         if (!TextUtils.isEmpty(customContent)) {
             XGMessage message = CommonUtils.parseJsonToObj(customContent, new TypeToken<XGMessage>() {
             });
+            exeCount(context,message);
             int type = Integer.parseInt(message.getMessageType());
             boolean isOpen = SharePreferanceUtils.getInstance().isAppOpen(context, SharePreferanceUtils.IS_APP_OPEN, false);
             boolean isOpenVoice = SharePreferanceUtils.getInstance().isOpenVoice(context, SharePreferanceUtils.IS_OPEN_VOICE, true);
@@ -142,6 +145,24 @@ public class XGMessageReceiver extends XGPushBaseReceiver {
                     }
                     break;
             }
+        }
+    }
+
+    private void exeCount(Context context,XGMessage message) {
+        int totleCount = message.getBadge();
+        int comCount = message.getComBiuCount();
+        int notifyCount = message.getNoticeCount();
+        ShortcutBadger.applyCount(context, totleCount);
+        Log.d("mytest1","zhixing"+totleCount);
+        if(comCount>0){
+            Intent i = new Intent(Constant.COM_BIU_ACTION);
+            i.putExtra("com_count",comCount);
+            context.sendBroadcast(i);
+        }
+        if(notifyCount>0){
+            Intent i = new Intent(Constant.NOTIFU_ACTION);
+            i.putExtra("notify_count",notifyCount);
+            context.sendBroadcast(i);
         }
     }
 

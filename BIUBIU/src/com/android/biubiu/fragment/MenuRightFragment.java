@@ -108,6 +108,7 @@ public class MenuRightFragment extends EaseConversationListFragment implements F
         receiveBroadCast = new ReceiveBroadCast();
         IntentFilter filter = new IntentFilter();
         filter.addAction(Constants.FLAG_RECEIVE);    //只有持有相同的action的接受者才能接收此广播
+        filter.addAction(Constant.COM_BIU_ACTION);
         getActivity().registerReceiver(receiveBroadCast, filter);
 
         setConversationListItemClickListener(new EaseConversationListItemClickListener() {
@@ -146,6 +147,10 @@ public class MenuRightFragment extends EaseConversationListFragment implements F
                     LogUtil.e(TAG, "收到刷新广播");
                     handler.sendEmptyMessage(MSG_REFRESH);
 //                    refresh();
+                }
+                if(action.equals(Constant.COM_BIU_ACTION)){
+                    int comBiuCount = intent.getIntExtra("com_count",1);
+                    updateNewMsg(comBiuCount);
                 }
             }
         }

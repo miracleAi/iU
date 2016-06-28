@@ -72,6 +72,7 @@ public class CommunityBiuListActivity extends BaseActivity implements PullToRefr
             }
         });
         mPullToRefreshListview = (PullToRefreshListView) findViewById(R.id.pull_refresh_list);
+        mPullToRefreshListview.setSexFlag(CommunityBiuListActivity.this,SharePreferanceUtils.getInstance().getUserSex(CommunityBiuListActivity.this,SharePreferanceUtils.USER_SEX,0));
         mPullToRefreshListview.setMode(PullToRefreshBase.Mode.BOTH);
         mPullToRefreshListview.setOnRefreshListener(this);
         mPullToRefreshListview.setScrollingWhileRefreshingEnabled(true);

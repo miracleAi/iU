@@ -676,7 +676,11 @@ public class RegisterTwoActivity extends BaseCityActivity implements OnClickList
                     SharePreferanceUtils.getInstance().putShared(getApplicationContext(), SharePreferanceUtils.USER_HEAD, userHead);
                     String userCode = obj.getString("code");
                     SharePreferanceUtils.getInstance().putShared(getApplicationContext(), SharePreferanceUtils.USER_CODE, userCode);
-
+                    String userSexStr = obj.getString("sex");
+                    if(null != userSexStr && !"".equals(userSexStr)){
+                        int userSex = Integer.parseInt(userSexStr);
+                        SharePreferanceUtils.getInstance().putShared(getApplicationContext(), SharePreferanceUtils.USER_SEX,userSex);
+                    }
                     LogUtil.e(TAG, "username==" + username + "||||passwprd==" + passwprd);
 
                     loginHuanXin(username, passwprd, token);

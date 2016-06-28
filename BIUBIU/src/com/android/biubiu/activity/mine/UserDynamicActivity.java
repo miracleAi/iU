@@ -18,6 +18,7 @@ import com.android.biubiu.utils.Constants;
 import com.android.biubiu.utils.HttpContants;
 import com.android.biubiu.utils.HttpRequestUtils;
 import com.android.biubiu.utils.NetUtils;
+import com.android.biubiu.utils.SharePreferanceUtils;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
@@ -57,6 +58,7 @@ public class UserDynamicActivity extends BaseActivity implements PullToRefreshBa
     private void initView() {
         titleView = (TopTitleView) findViewById(R.id.top_title_view);
         pulltoRefreshListview = (PullToRefreshListView) findViewById(R.id.pull_refresh_list);
+        pulltoRefreshListview.setSexFlag(UserDynamicActivity.this,SharePreferanceUtils.getInstance().getUserSex(UserDynamicActivity.this,SharePreferanceUtils.USER_SEX,0));
         pulltoRefreshListview.setMode(PullToRefreshBase.Mode.BOTH);
         pulltoRefreshListview.setOnRefreshListener(this);
         pulltoRefreshListview.setScrollingWhileRefreshingEnabled(true);

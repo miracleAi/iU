@@ -86,6 +86,7 @@ public class PostsFragment extends BaseFragment implements PullToRefreshBase.OnR
     private ImageOptions mImgOptions;
     private long mNextStart;
     private String mDataNullTips;
+    private int sexFlag;
 
     public PostsFragment() {
     }
@@ -108,10 +109,10 @@ public class PostsFragment extends BaseFragment implements PullToRefreshBase.OnR
         initData();
         return mRootview;
     }
-
     private void initView() {
         mPullToRefreshListview = (PullToRefreshListView) mRootview.findViewById(R.id.pull_refresh_list);
-       // mPullToRefreshListview.setSexFlag(1);
+        sexFlag = SharePreferanceUtils.getInstance().getUserSex(getActivity(),SharePreferanceUtils.USER_SEX,0);
+        mPullToRefreshListview.setSexFlag(getActivity(),sexFlag);
         mPullToRefreshListview.setMode(PullToRefreshBase.Mode.BOTH);
         mPullToRefreshListview.setOnRefreshListener(this);
         mPullToRefreshListview.setScrollingWhileRefreshingEnabled(true);
