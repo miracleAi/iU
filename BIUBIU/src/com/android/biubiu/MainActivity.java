@@ -71,6 +71,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cc.imeetu.iu.R;
+import me.leolin.shortcutbadger.ShortcutBadger;
 
 import com.android.biubiu.component.indicator.FragmentIndicator.OnIndicateListener;
 
@@ -238,10 +239,10 @@ public class MainActivity extends FragmentActivity implements AMapLocationListen
     }
 
     /**
-     * //启动百度云推送
+     * //启动推送
      */
     private void initPush() {
-        if(LoginUtils.isLogin(this)){
+        if (LoginUtils.isLogin(this)) {
             XGUtils.getInstance(getApplicationContext()).registerPush();
         }
         /*PushManager.startWork(getApplicationContext(), PushConstants.LOGIN_TYPE_API_KEY, "v3FkYC4w53w46uuvw9L6qBF1");
@@ -432,6 +433,12 @@ public class MainActivity extends FragmentActivity implements AMapLocationListen
                         } else {
                             fMsg = new MenuRightFragment();
                             ((MenuRightFragment) fMsg).updateNewMsg(biuNum);
+                        }
+                        int cntUnread = notifyNum + biuNum;
+                        if (cntUnread > 0) {
+                            ShortcutBadger.applyCount(MainActivity.this, cntUnread);
+                        } else {
+                            ShortcutBadger.applyCount(MainActivity.this, cntUnread);
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();
