@@ -111,6 +111,7 @@ public class PostsFragment extends BaseFragment implements PullToRefreshBase.OnR
 
     private void initView() {
         mPullToRefreshListview = (PullToRefreshListView) mRootview.findViewById(R.id.pull_refresh_list);
+       // mPullToRefreshListview.setSexFlag(1);
         mPullToRefreshListview.setMode(PullToRefreshBase.Mode.BOTH);
         mPullToRefreshListview.setOnRefreshListener(this);
         mPullToRefreshListview.setScrollingWhileRefreshingEnabled(true);
