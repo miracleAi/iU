@@ -10,7 +10,7 @@ import android.widget.Toast;
 
 import com.android.biubiu.BaseActivity;
 import com.android.biubiu.bean.TagBean;
-import com.android.biubiu.transport.http.model.response.base.Data;
+import com.android.biubiu.transport.http.response.base.Data;
 import com.android.biubiu.transport.http.response.community.Posts;
 import com.android.biubiu.transport.http.response.community.PostsListTagData;
 import com.android.biubiu.common.Constant;

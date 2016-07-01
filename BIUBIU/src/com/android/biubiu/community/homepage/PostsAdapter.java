@@ -20,7 +20,7 @@ import android.widget.Toast;
 import com.android.biubiu.activity.biu.MyPagerActivity;
 import com.android.biubiu.activity.mine.UserPhotoScanActivity;
 import com.android.biubiu.bean.UserPhotoBean;
-import com.android.biubiu.transport.http.model.response.base.Data;
+import com.android.biubiu.transport.http.response.base.Data;
 import com.android.biubiu.transport.http.response.community.Img;
 import com.android.biubiu.transport.http.response.community.Posts;
 import com.android.biubiu.transport.http.response.community.PraiseData;

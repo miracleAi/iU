@@ -10,7 +10,7 @@ import android.widget.Toast;
 
 import com.android.biubiu.BaseActivity;
 import com.android.biubiu.activity.biu.MyPagerActivity;
-import com.android.biubiu.transport.http.model.response.base.Data;
+import com.android.biubiu.transport.http.response.base.Data;
 import com.android.biubiu.transport.http.response.community.CommBiuBean;
 import com.android.biubiu.transport.http.response.community.CommBiuListData;
 import com.android.biubiu.transport.http.response.community.SimpleRespData;

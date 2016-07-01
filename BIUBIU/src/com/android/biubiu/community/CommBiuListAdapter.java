@@ -10,7 +10,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.android.biubiu.transport.http.model.response.base.Data;
+import com.android.biubiu.transport.http.response.base.Data;
 import com.android.biubiu.transport.http.response.community.CommBiuBean;
 import com.android.biubiu.transport.http.response.community.SimpleRespData;
 import com.android.biubiu.chat.ChatActivity;

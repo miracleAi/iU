@@ -9,7 +9,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.android.biubiu.BaseActivity;
-import com.android.biubiu.transport.http.model.response.base.Data;
+import com.android.biubiu.transport.http.response.base.Data;
 import com.android.biubiu.transport.http.response.community.CommNotify;
 import com.android.biubiu.transport.http.response.community.CommNotifyData;
 import com.android.biubiu.transport.http.response.community.SimpleRespData;

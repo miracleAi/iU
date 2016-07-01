@@ -21,7 +21,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.biubiu.activity.biu.MyPagerActivity;
-import com.android.biubiu.transport.http.model.response.base.Data;
+import com.android.biubiu.transport.http.response.base.Data;
 import com.android.biubiu.transport.http.response.community.Comment;
 import com.android.biubiu.transport.http.response.community.SimpleRespData;
 import com.android.biubiu.chat.MyHintDialog;
