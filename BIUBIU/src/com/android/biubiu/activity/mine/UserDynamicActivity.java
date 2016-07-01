@@ -8,7 +8,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.android.biubiu.BaseActivity;
-import com.android.biubiu.bean.community.Posts;
+import com.android.biubiu.transport.http.response.community.Posts;
 import com.android.biubiu.callback.HttpCallback;
 import com.android.biubiu.common.Constant;
 import com.android.biubiu.community.homepage.PostsAdapter;

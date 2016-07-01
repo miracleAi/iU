@@ -1,4 +1,4 @@
-package com.android.biubiu.bean.community;
+package com.android.biubiu.transport.http.response.community;
 
 import com.android.biubiu.bean.TagBean;
 

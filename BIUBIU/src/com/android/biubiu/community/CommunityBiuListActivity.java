@@ -2,7 +2,6 @@ package com.android.biubiu.community;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.app.Activity;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.AdapterView;
@@ -11,12 +10,10 @@ import android.widget.Toast;
 
 import com.android.biubiu.BaseActivity;
 import com.android.biubiu.activity.biu.MyPagerActivity;
-import com.android.biubiu.bean.UserFriends;
-import com.android.biubiu.bean.base.Data;
-import com.android.biubiu.bean.community.CommBiuBean;
-import com.android.biubiu.bean.community.CommBiuListData;
-import com.android.biubiu.bean.community.PostDetailData;
-import com.android.biubiu.bean.community.SimpleRespData;
+import com.android.biubiu.transport.http.model.response.base.Data;
+import com.android.biubiu.transport.http.response.community.CommBiuBean;
+import com.android.biubiu.transport.http.response.community.CommBiuListData;
+import com.android.biubiu.transport.http.response.community.SimpleRespData;
 import com.android.biubiu.component.title.TopTitleView;
 import com.android.biubiu.utils.CommonUtils;
 import com.android.biubiu.utils.HttpContants;

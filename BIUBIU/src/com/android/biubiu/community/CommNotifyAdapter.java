@@ -12,7 +12,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.android.biubiu.activity.biu.MyPagerActivity;
-import com.android.biubiu.bean.community.CommNotify;
+import com.android.biubiu.transport.http.response.community.CommNotify;
 import com.android.biubiu.sqlite.SchoolDao;
 import com.android.biubiu.utils.DateUtils;
 

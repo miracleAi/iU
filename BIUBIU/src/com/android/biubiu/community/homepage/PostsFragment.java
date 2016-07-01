@@ -21,10 +21,10 @@ import android.widget.Toast;
 
 import com.android.biubiu.BaseFragment;
 import com.android.biubiu.activity.act.WebviewActivity;
-import com.android.biubiu.bean.community.Banner;
-import com.android.biubiu.bean.base.Data;
-import com.android.biubiu.bean.community.DiscoveryData;
-import com.android.biubiu.bean.community.Posts;
+import com.android.biubiu.transport.http.response.community.Banner;
+import com.android.biubiu.transport.http.response.base.Data;
+import com.android.biubiu.transport.http.response.community.DiscoveryData;
+import com.android.biubiu.transport.http.response.community.Posts;
 import com.android.biubiu.common.Constant;
 import com.android.biubiu.component.viewflipper.ViewFlipperForListview;
 import com.android.biubiu.utils.CommonUtils;

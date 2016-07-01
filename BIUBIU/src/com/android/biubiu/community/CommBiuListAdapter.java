@@ -8,22 +8,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.android.biubiu.bean.UserFriends;
-import com.android.biubiu.bean.base.Data;
-import com.android.biubiu.bean.base.SimpleData;
-import com.android.biubiu.bean.community.CommBiuBean;
-import com.android.biubiu.bean.community.PostDetailData;
-import com.android.biubiu.bean.community.SimpleRespData;
+import com.android.biubiu.transport.http.model.response.base.Data;
+import com.android.biubiu.transport.http.response.community.CommBiuBean;
+import com.android.biubiu.transport.http.response.community.SimpleRespData;
 import com.android.biubiu.chat.ChatActivity;
 import com.android.biubiu.common.Constant;
 import com.android.biubiu.sqlite.SchoolDao;
 import com.android.biubiu.utils.CommonUtils;
 import com.android.biubiu.utils.HttpContants;
-import com.android.biubiu.utils.LogUtil;
 import com.android.biubiu.utils.SharePreferanceUtils;
 import com.google.gson.reflect.TypeToken;
 

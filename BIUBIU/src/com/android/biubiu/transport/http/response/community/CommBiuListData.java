@@ -1,15 +1,23 @@
-package com.android.biubiu.bean.community;
+package com.android.biubiu.transport.http.response.community;
 
 import java.util.ArrayList;
 
 /**
  * Created by yanghj on 16/6/3.
  */
-public class CommNotifyData {
+public class CommBiuListData {
+    private ArrayList<CommBiuBean> biuList;
     private int hasNext;
-    private ArrayList<CommNotify> notifies;
     private long time;
     private String token;
+
+    public ArrayList<CommBiuBean> getBiuList() {
+        return biuList;
+    }
+
+    public void setBiuList(ArrayList<CommBiuBean> biuList) {
+        this.biuList = biuList;
+    }
 
     public int getHasNext() {
         return hasNext;
@@ -17,14 +25,6 @@ public class CommNotifyData {
 
     public void setHasNext(int hasNext) {
         this.hasNext = hasNext;
-    }
-
-    public ArrayList<CommNotify> getNotifies() {
-        return notifies;
-    }
-
-    public void setNotifies(ArrayList<CommNotify> notifies) {
-        this.notifies = notifies;
     }
 
     public long getTime() {

@@ -1,12 +1,10 @@
 package com.android.biubiu.community.homepage;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.text.TextUtils;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,11 +20,11 @@ import android.widget.Toast;
 import com.android.biubiu.activity.biu.MyPagerActivity;
 import com.android.biubiu.activity.mine.UserPhotoScanActivity;
 import com.android.biubiu.bean.UserPhotoBean;
-import com.android.biubiu.bean.base.Data;
-import com.android.biubiu.bean.community.Img;
-import com.android.biubiu.bean.community.Posts;
-import com.android.biubiu.bean.community.PraiseData;
-import com.android.biubiu.bean.community.SimpleRespData;
+import com.android.biubiu.transport.http.model.response.base.Data;
+import com.android.biubiu.transport.http.response.community.Img;
+import com.android.biubiu.transport.http.response.community.Posts;
+import com.android.biubiu.transport.http.response.community.PraiseData;
+import com.android.biubiu.transport.http.response.community.SimpleRespData;
 import com.android.biubiu.chat.MyHintDialog;
 import com.android.biubiu.common.Constant;
 import com.android.biubiu.sqlite.SchoolDao;
@@ -43,7 +41,6 @@ import org.xutils.common.Callback;
 import org.xutils.http.RequestParams;
 import org.xutils.x;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 

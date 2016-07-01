@@ -1,4 +1,4 @@
-package com.android.biubiu.bean.community;
+package com.android.biubiu.transport.http.response.community;
 
 /**
  * Created by yanghj on 16/6/1.
