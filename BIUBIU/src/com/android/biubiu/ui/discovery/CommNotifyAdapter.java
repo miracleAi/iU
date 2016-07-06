@@ -1,4 +1,4 @@
-package com.android.biubiu.community;
+package com.android.biubiu.ui.discovery;
 
 import android.content.Context;
 import android.content.Intent;
@@ -11,7 +11,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.android.biubiu.activity.biu.MyPagerActivity;
+import com.android.biubiu.ui.mine.MyPagerActivity;
 import com.android.biubiu.transport.http.response.community.CommNotify;
 import com.android.biubiu.sqlite.SchoolDao;
 import com.android.biubiu.utils.DateUtils;

@@ -2,14 +2,13 @@ package com.android.biubiu.chat;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.zip.Inflater;
 
 import org.xutils.x;
 import org.xutils.image.ImageOptions;
 
 import cc.imeetu.iu.R;
 
-import com.android.biubiu.activity.biu.MyPagerActivity;
+import com.android.biubiu.ui.mine.MyPagerActivity;
 import com.android.biubiu.bean.UserFriends;
 import com.android.biubiu.sqlite.SchoolDao;
 

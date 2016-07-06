@@ -10,10 +10,8 @@ import cn.sharesdk.onekeyshare.OnekeyShare;
 
 import com.android.biubiu.AboutOurActivity;
 import com.android.biubiu.BeginGuiderActivity;
-import com.android.biubiu.MainActivity;
-import com.android.biubiu.MatchSettingActivity;
 import com.android.biubiu.activity.LoginOrRegisterActivity;
-import com.android.biubiu.activity.biu.MyPagerActivity;
+import com.android.biubiu.ui.mine.MyPagerActivity;
 import com.android.biubiu.activity.mine.MainSetActivity;
 import com.android.biubiu.utils.LoginUtils;
 import com.android.biubiu.utils.SharePreferanceUtils;

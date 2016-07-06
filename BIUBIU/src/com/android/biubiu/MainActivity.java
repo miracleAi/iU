@@ -26,7 +26,7 @@ import com.amap.api.location.AMapLocationClient;
 import com.amap.api.location.AMapLocationClientOption;
 import com.amap.api.location.AMapLocationClientOption.AMapLocationMode;
 import com.amap.api.location.AMapLocationListener;
-import com.android.biubiu.activity.biu.PagerFragment;
+import com.android.biubiu.ui.mine.PagerFragment;
 import com.android.biubiu.callback.HttpCallback;
 import com.android.biubiu.component.indicator.FragmentIndicator;
 import com.android.biubiu.component.indicator.Indicator;

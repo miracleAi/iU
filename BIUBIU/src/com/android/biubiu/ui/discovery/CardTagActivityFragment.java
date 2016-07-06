@@ -1,12 +1,9 @@
-package com.android.biubiu.community;
+package com.android.biubiu.ui.discovery;
 
-import android.app.Fragment;
 import android.content.Intent;
-import android.nfc.Tag;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,7 +20,7 @@ import com.android.biubiu.BaseFragment;
 import com.android.biubiu.bean.TagBean;
 import com.android.biubiu.callback.HttpCallback;
 import com.android.biubiu.common.Constant;
-import com.android.biubiu.community.homepage.PostsListByTagActivity;
+import com.android.biubiu.ui.discovery.homepage.PostsListByTagActivity;
 import com.android.biubiu.utils.Constants;
 import com.android.biubiu.utils.DensityUtil;
 import com.android.biubiu.utils.HttpContants;

@@ -1,4 +1,4 @@
-package com.android.biubiu.community.homepage;
+package com.android.biubiu.ui.discovery.homepage;
 
 import android.app.AlertDialog;
 import android.content.Context;
@@ -17,7 +17,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.biubiu.activity.biu.MyPagerActivity;
+import com.android.biubiu.ui.mine.MyPagerActivity;
 import com.android.biubiu.activity.mine.UserPhotoScanActivity;
 import com.android.biubiu.bean.UserPhotoBean;
 import com.android.biubiu.transport.http.response.base.Data;

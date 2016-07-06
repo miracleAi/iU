@@ -1,4 +1,4 @@
-package com.android.biubiu.community;
+package com.android.biubiu.ui.discovery;
 
 import android.os.Bundle;
 import android.app.Activity;

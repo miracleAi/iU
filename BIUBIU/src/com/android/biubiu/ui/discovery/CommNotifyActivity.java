@@ -1,4 +1,4 @@
-package com.android.biubiu.community;
+package com.android.biubiu.ui.discovery;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -14,7 +14,7 @@ import com.android.biubiu.transport.http.response.community.CommNotify;
 import com.android.biubiu.transport.http.response.community.CommNotifyData;
 import com.android.biubiu.transport.http.response.community.SimpleRespData;
 import com.android.biubiu.common.Constant;
-import com.android.biubiu.community.homepage.PostsDetailActivity;
+import com.android.biubiu.ui.discovery.homepage.PostsDetailActivity;
 import com.android.biubiu.component.title.TopTitleView;
 import com.android.biubiu.utils.CommonUtils;
 import com.android.biubiu.utils.HttpContants;

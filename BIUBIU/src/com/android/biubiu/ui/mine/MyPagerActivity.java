@@ -1,4 +1,4 @@
-package com.android.biubiu.activity.biu;
+package com.android.biubiu.ui.mine;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -24,7 +24,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
-import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -50,7 +49,6 @@ import com.alibaba.sdk.android.oss.common.OSSLog;
 import com.alibaba.sdk.android.oss.common.auth.OSSCredentialProvider;
 import com.alibaba.sdk.android.oss.common.auth.OSSFederationCredentialProvider;
 import com.alibaba.sdk.android.oss.common.auth.OSSFederationToken;
-import com.alibaba.sdk.android.oss.common.auth.OSSPlainTextAKSKCredentialProvider;
 import com.alibaba.sdk.android.oss.internal.OSSAsyncTask;
 import com.alibaba.sdk.android.oss.model.PutObjectRequest;
 import com.alibaba.sdk.android.oss.model.PutObjectResult;
@@ -58,7 +56,6 @@ import com.android.biubiu.BaseActivity;
 import com.android.biubiu.activity.mine.AboutMeActivity;
 import com.android.biubiu.activity.mine.ChangeBrithdayActivity;
 import com.android.biubiu.activity.mine.ChangeCityActivity;
-import com.android.biubiu.activity.mine.ChangeCompanyActivity;
 import com.android.biubiu.activity.mine.ChangeConstellationActivity;
 import com.android.biubiu.activity.mine.ChangeHeightWeightActivity;
 import com.android.biubiu.activity.mine.ChangeHomeTwonActivity;
@@ -91,7 +88,6 @@ import com.android.biubiu.utils.LogUtil;
 import com.android.biubiu.utils.NetUtils;
 import com.android.biubiu.utils.SharePreferanceUtils;
 import com.android.biubiu.view.MyGridView;
-import com.avos.avoscloud.LogUtil.log;
 import com.google.gson.Gson;
 
 public class MyPagerActivity extends BaseActivity implements OnClickListener {

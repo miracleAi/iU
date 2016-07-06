@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:background="@color/search_tag_bg"
     android:orientation="vertical"
-    tools:context="com.android.biubiu.community.CardTagActivityFragment">
+    tools:context="com.android.biubiu.ui.discovery.CardTagActivityFragment">
 
     <RelativeLayout
         android:id="@+id/top_title_view"

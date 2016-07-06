@@ -1,4 +1,4 @@
-package com.android.biubiu.community.homepage;
+package com.android.biubiu.ui.discovery.homepage;
 
 
 import android.content.Intent;

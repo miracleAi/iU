@@ -14,22 +14,17 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
-import android.view.animation.TranslateAnimation;
 
 import com.android.biubiu.BaseFragment;
 import com.android.biubiu.MainActivity;
 import com.android.biubiu.common.Constant;
-import com.android.biubiu.community.CardTagActivity;
-import com.android.biubiu.community.CommNotifyActivity;
-import com.android.biubiu.community.homepage.PostsFragment;
-import com.android.biubiu.community.PublishHomeActivity;
+import com.android.biubiu.ui.discovery.CardTagActivity;
+import com.android.biubiu.ui.discovery.CommNotifyActivity;
+import com.android.biubiu.ui.discovery.homepage.PostsFragment;
+import com.android.biubiu.ui.discovery.PublishHomeActivity;
 import com.android.biubiu.component.indicator.FragmentIndicator;
 import com.android.biubiu.component.indicator.PagerSlidingTabStrip;
 import com.android.biubiu.component.title.TopTitleView;
-import com.android.biubiu.utils.Constants;
-import com.android.biubiu.utils.LogUtil;
 import com.android.biubiu.utils.LoginUtils;
 
 import java.util.ArrayList;

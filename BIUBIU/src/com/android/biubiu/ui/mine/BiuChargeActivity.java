@@ -1,11 +1,10 @@
-package com.android.biubiu.activity.biu;
+package com.android.biubiu.ui.mine;
 
 import java.util.HashMap;
 import java.util.Map;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.xutils.common.Callback;
 import org.xutils.x;
 import org.xutils.common.Callback.CommonCallback;
 import org.xutils.http.RequestParams;
@@ -28,11 +27,9 @@ import cn.beecloud.async.BCResult;
 import cn.beecloud.entity.BCPayResult;
 
 import com.android.biubiu.BaseActivity;
-import com.android.biubiu.common.Constant;
 import com.android.biubiu.utils.Constants;
 import com.android.biubiu.utils.HttpContants;
 import com.android.biubiu.utils.LogUtil;
-import com.android.biubiu.utils.NetUtils;
 import com.android.biubiu.utils.SharePreferanceUtils;
 
 public class BiuChargeActivity extends BaseActivity implements OnClickListener{

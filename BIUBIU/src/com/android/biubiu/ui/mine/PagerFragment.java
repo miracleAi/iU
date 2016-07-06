@@ -1,4 +1,4 @@
-package com.android.biubiu.activity.biu;
+package com.android.biubiu.ui.mine;
 
 
 import android.app.Activity;
@@ -71,7 +71,6 @@ import com.android.biubiu.bean.PersonalTagBean;
 import com.android.biubiu.bean.UserFriends;
 import com.android.biubiu.bean.UserInfoBean;
 import com.android.biubiu.bean.UserPhotoBean;
-import com.android.biubiu.callback.HttpCallback;
 import com.android.biubiu.chat.MyHintDialog;
 import com.android.biubiu.common.CommonDialog;
 import com.android.biubiu.common.Constant;
@@ -83,7 +82,6 @@ import com.android.biubiu.sqlite.UserDao;
 import com.android.biubiu.utils.Constants;
 import com.android.biubiu.utils.DensityUtil;
 import com.android.biubiu.utils.HttpContants;
-import com.android.biubiu.utils.HttpRequestUtils;
 import com.android.biubiu.utils.LogUtil;
 import com.android.biubiu.utils.LoginUtils;
 import com.android.biubiu.utils.NetUtils;

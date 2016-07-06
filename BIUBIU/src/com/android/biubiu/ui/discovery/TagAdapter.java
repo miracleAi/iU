@@ -1,4 +1,4 @@
-package com.android.biubiu.community;
+package com.android.biubiu.ui.discovery;
 
 import android.content.Context;
 import android.view.LayoutInflater;

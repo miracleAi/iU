@@ -1,9 +1,7 @@
-package com.android.biubiu.community;
+package com.android.biubiu.ui.discovery;
 
-import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;

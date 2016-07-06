@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.android.biubiu.community.PublishEditActivityFragment">
+    tools:context="com.android.biubiu.ui.discovery.PublishEditActivityFragment">
 
     <com.android.biubiu.component.title.TopTitleView
         android:id="@+id/top_title_view"
