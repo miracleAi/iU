@@ -22,9 +22,6 @@ import com.android.biubiu.utils.NetUtils;
 import com.android.biubiu.utils.SharePreferanceUtils;
 import com.android.biubiu.utils.Utils;
 import com.avos.avoscloud.LogUtil.log;
-import com.hyphenate.EMCallBack;
-import com.hyphenate.chat.EMClient;
-import com.mob.tools.utils.SharePrefrenceHelper;
 import com.umeng.analytics.MobclickAgent;
 
 import android.content.Intent;
@@ -218,8 +215,6 @@ public class LoginActivity extends BaseActivity{
 					String token = obj.getString("token");
 					String hxName=obj.getString("username");
 					String HxPassword=obj.getString("password");
-					SharePreferanceUtils.getInstance().putShared(getApplicationContext(), SharePreferanceUtils.HX_USER_NAME, hxName);
-					SharePreferanceUtils.getInstance().putShared(getApplicationContext(), SharePreferanceUtils.HX_USER_PASSWORD, HxPassword);
 					if(token!=null&&!token.equals("")){
 						log.d("mytest", "toke--"+token);
 						SharePreferanceUtils.getInstance().putShared(LoginActivity.this, SharePreferanceUtils.TOKEN, token);
@@ -236,7 +231,6 @@ public class LoginActivity extends BaseActivity{
 						int userSex = Integer.parseInt(userSexStr);
 						SharePreferanceUtils.getInstance().putShared(getApplicationContext(), SharePreferanceUtils.USER_SEX,userSex);
 					}
-					loginHuanXin(hxName,HxPassword);
 					LogUtil.e(TAG, "hxName=="+hxName+"||"+"HxPassword=="+HxPassword);
 					//统计登录用户
 					MobclickAgent.onProfileSignIn(userCode);
@@ -264,33 +258,4 @@ public class LoginActivity extends BaseActivity{
 		}
 		return super.onKeyDown(keyCode, event);
 	}
-	/**
-	 * 登录环信客户端 建立长连接
-	 * @param username
-	 * @param password
-	 */
-	public void loginHuanXin(String username,String password){
-		EMClient.getInstance().login(username, password, new EMCallBack() {
-			
-			@Override
-			public void onSuccess() {
-				LogUtil.e(TAG, "登录成功环信");
-				
-			}
-			
-			@Override
-			public void onProgress(int arg0, String arg1) {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			@Override
-			public void onError(int arg0, String arg1) {
-				// TODO Auto-generated method stub
-				Log.e(TAG, "登陆聊天服务器失败！");
-			}
-		});
-		
-	}
-	
 }

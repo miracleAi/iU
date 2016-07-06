@@ -5,7 +5,6 @@ apply plugin: 'com.android.application'
 dependencies {
     //只加入了jar包，需要在下面加入jniLibs.srcDirs = ['libs']来copy so 文件
     compile fileTree(include: '*.jar', dir: 'libs')
-    compile project(':EaseUI')
     compile project(':refreshlibrary')
     compile project(':staggerlibrary')
     compile project(':multi-image-selector')

@@ -24,8 +24,6 @@ public class SharePreferanceUtils {
     public static String BIU_SOUND_TIME = "biu_sound_time";
     public static String RECEIVE_SEX = "receive_sex";
 
-    public static String HX_USER_NAME = "hx_user_name";
-    public static String HX_USER_PASSWORD = "hx_user_password";
     public static String LAST_SEND_BIU_TAG = "last_send_biu_tag";
 
     //活动相关

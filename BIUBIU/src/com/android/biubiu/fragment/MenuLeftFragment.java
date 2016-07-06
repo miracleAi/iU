@@ -98,8 +98,7 @@ public class MenuLeftFragment extends Fragment implements OnClickListener {
 		}else{
 			isLogin = false;
 			userName.setText("登录注册");
-
-			userHead.setImageResource(R.drawable.ease_default_avatar);
+			userHead.setImageResource(R.drawable.photo_fail);
 		}
 	}
 

@@ -114,31 +114,6 @@
             android:value="A284KRB8C1DF" />
         <!-- 定位需要的服务 -->
         <service android:name="com.amap.api.location.APSService" />
-        <!-- 声明sdk所需的service SDK核心功能 -->
-        <service
-            android:name="com.hyphenate.chat.EMChatService"
-            android:exported="true" />
-
-        <!-- 声明sdk所需的receiver -->
-        <receiver android:name="com.hyphenate.chat.EMMonitorReceiver">
-            <intent-filter>
-                <action android:name="android.intent.action.PACKAGE_REMOVED" />
-
-                <data android:scheme="package" />
-            </intent-filter>
-            <!-- 可选filter -->
-            <intent-filter>
-                <action android:name="android.intent.action.BOOT_COMPLETED" />
-                <action android:name="android.intent.action.USER_PRESENT" />
-            </intent-filter>
-        </receiver>
-
-        <!-- 百度地图所需的service -->
-        <service
-            android:name="com.baidu.location.f"
-            android:enabled="true"
-            android:process=":remote" />
-
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"
             android:value="3ecea51f560650b1ed8a4b99808f52e8" />
@@ -217,14 +192,6 @@
 
 
         <!-- 开机自启动服务 -->
-        <receiver android:name="com.android.biubiu.chat.StartServiceReceiver">
-            <intent-filter android:priority="1000">
-                <action android:name="android.intent.action.BOOT_COMPLETED" />
-                <action android:name="android.intent.action.QUICKBOOT_POWERON" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </receiver>
         <!-- 信鸽用到的广播和服务 start -->
         <!-- 【必须】 (2.30及以上版新增)展示通知的activity -->
         <!-- 【注意】 如果被打开的activity是启动模式为SingleTop，SingleTask或SingleInstance，请根据通知的异常自查列表第8点处理-->
@@ -411,54 +378,6 @@
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
 
-        <!-- 表情云相关 -->
-        <activity
-            android:name="com.melink.bqmmsdk.ui.store.EmojiPackageList"
-            android:launchMode="singleTask"
-            android:screenOrientation="portrait"
-            android:theme="@style/horizontal_slide"
-            android:windowSoftInputMode="adjustPan" />
-        <activity
-            android:name="com.melink.bqmmsdk.ui.store.EmojiDetail"
-            android:launchMode="singleTask"
-            android:screenOrientation="portrait"
-            android:theme="@style/horizontal_slide"
-            android:windowSoftInputMode="adjustPan" />
-        <activity
-            android:name="com.melink.bqmmsdk.ui.store.EmojiPackageDetail"
-            android:launchMode="singleTask"
-            android:screenOrientation="portrait"
-            android:theme="@style/horizontal_slide"
-            android:windowSoftInputMode="adjustPan" />
-        <activity
-            android:name="com.melink.bqmmsdk.ui.store.EmojiPackageDown"
-            android:launchMode="singleTask"
-            android:screenOrientation="portrait"
-            android:theme="@style/horizontal_slide"
-            android:windowSoftInputMode="adjustPan" />
-        <activity
-            android:name="com.melink.bqmmsdk.ui.store.EmojiPackageMyCollection"
-            android:launchMode="singleTask"
-            android:screenOrientation="portrait"
-            android:theme="@style/horizontal_slide"
-            android:windowSoftInputMode="adjustPan" />
-        <activity
-            android:name="com.melink.bqmmsdk.ui.store.EmojiPackageSetting"
-            android:launchMode="singleTask"
-            android:screenOrientation="portrait"
-            android:theme="@style/horizontal_slide"
-            android:windowSoftInputMode="adjustPan" />
-        <activity
-            android:name="com.melink.bqmmsdk.ui.store.ServiceDeclaration"
-            android:launchMode="singleTask"
-            android:screenOrientation="portrait"
-            android:theme="@style/horizontal_slide"
-            android:windowSoftInputMode="adjustPan" />
-        <activity
-            android:name="com.melink.bqmmsdk.ui.store.EmojiPackageSort"
-            android:screenOrientation="portrait"
-            android:theme="@style/bqmm_horizontal_slide" />
-        <!-- 表情云相关结束 -->
         <activity
             android:name="com.android.biubiu.WelcomeActivity"
             android:label="@string/app_name"
@@ -498,10 +417,6 @@
             android:screenOrientation="portrait" />
         <activity
             android:name="com.android.biubiu.activity.RegisterThreeActivity"
-            android:label="@string/title_activity_biu_biu_send"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name="com.android.biubiu.activity.biu.BiuBiuSendActivity"
             android:label="@string/title_activity_biu_biu_send"
             android:screenOrientation="portrait" />
         <activity
@@ -593,39 +508,9 @@
             android:label="@string/title_activity_forget_password"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.android.biubiu.activity.biu.BiuBiuReceiveActivity"
-            android:label="@string/title_activity_biu_biu_receive"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name="com.android.biubiu.chat.ChatActivity"
-            android:label="@string/title_activity_chat"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name="com.android.biubiu.chat.ScanChatPhoto"
-            android:screenOrientation="portrait" />
-        <activity
             android:name="com.android.biubiu.chat.UserListActivity"
             android:label="@string/title_activity_user_list"
             android:screenOrientation="portrait" />
-        <activity
-            android:name="com.android.biubiu.ContextMenuActivity"
-            android:label="@string/title_activity_context_menu"
-            android:screenOrientation="portrait" />
-
-        <!-- 显示下载大图页面 -->
-        <activity
-            android:name="com.hyphenate.easeui.ui.EaseShowBigImageActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/horizontal_slide" />
-        <!-- 地图 -->
-        <activity
-            android:name="com.hyphenate.easeui.ui.EaseBaiduMapActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/horizontal_slide" />
-        <activity
-            android:name="com.hyphenate.easeui.ui.EaseShowNormalFileActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/horizontal_slide" />
         <activity
             android:name="com.android.biubiu.AboutOurActivity"
             android:label="@string/app_name"
@@ -639,12 +524,6 @@
         <activity
             android:name="com.android.biubiu.activity.act.WebviewActivity"
             android:label="@string/title_activity_webview" />
-        <activity
-            android:name="com.android.biubiu.activity.history.History_Activity"
-            android:label="@string/title_activity_history_" />
-        <activity
-            android:name="com.android.biubiu.activity.biu.ReceiveBiuListActivity"
-            android:label="@string/title_activity_receive_biu_list" />
         <activity
             android:name="com.android.biubiu.community.PublishHomeActivity"
             android:label="@string/title_activity_publish_home" />
@@ -671,10 +550,6 @@
         <activity
             android:name="com.android.biubiu.activity.mine.UserDynamicActivity"
             android:label="@string/title_activity_user_dynamic" />
-        <activity
-            android:name="com.android.biubiu.community.CommunityBiuListActivity"
-            android:label="@string/title_activity_community_biu_list"
-            android:theme="@android:style/Theme.NoTitleBar" />
         <activity
             android:name="com.android.biubiu.community.CommNotifyActivity"
             android:label="@string/title_activity_comm_notify"

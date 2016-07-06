@@ -12,7 +12,6 @@ import android.widget.Toast;
 
 import com.android.biubiu.utils.DensityUtil;
 import com.ant.liao.GifView;
-import com.baidu.mapapi.map.Text;
 import com.umeng.analytics.MobclickAgent;
 
 import cc.imeetu.iu.R;

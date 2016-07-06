@@ -19,8 +19,6 @@ import com.avos.avoscloud.AVMobilePhoneVerifyCallback;
 import com.avos.avoscloud.AVOSCloud;
 import com.avos.avoscloud.RequestMobileCodeCallback;
 import com.avos.avoscloud.LogUtil.log;
-import com.hyphenate.EMCallBack;
-import com.hyphenate.chat.EMClient;
 
 import android.os.Bundle;
 import android.os.Handler;
@@ -386,7 +384,6 @@ public class ForgetPasswordActivity extends BaseActivity implements OnClickListe
 					SharePreferanceUtils.getInstance().putShared(getApplicationContext(), SharePreferanceUtils.USER_HEAD, userHead);
 					String userCode = obj.getString("code");
 					SharePreferanceUtils.getInstance().putShared(getApplicationContext(), SharePreferanceUtils.USER_CODE, userCode);
-					loginHuanXin(hxName,HxPassword,token);
 					LogUtil.e(TAG, "hxName=="+hxName+"||"+"HxPassword=="+HxPassword);
 					Intent intent=new Intent(ForgetPasswordActivity.this,MainActivity.class);
 					intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -399,39 +396,6 @@ public class ForgetPasswordActivity extends BaseActivity implements OnClickListe
 
 			}
 		});
-	}
-	/**
-	 * 登录环信客户端 建立长连接
-	 * @param username
-	 * @param password
-	 */
-	public void loginHuanXin(String username,String password,final String token){
-		EMClient.getInstance().login(username, password, new EMCallBack() {
-
-			@Override
-			public void onSuccess() {
-				LogUtil.e(TAG, "登录成功环信");
-//				//把token 存在本地
-//				SharePreferanceUtils.getInstance().putShared(ForgetPasswordActivity.this, SharePreferanceUtils.TOKEN, token);
-				Intent intent=new Intent(ForgetPasswordActivity.this,MainActivity.class);
-				intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-				startActivity(intent);
-
-			}
-
-			@Override
-			public void onProgress(int arg0, String arg1) {
-				// TODO Auto-generated method stub
-
-			}
-
-			@Override
-			public void onError(int arg0, String arg1) {
-				// TODO Auto-generated method stub
-				Log.e(TAG, "登陆聊天服务器失败！");
-			}
-		});
-
 	}
 	@Override
 	public void onClick(View v) {

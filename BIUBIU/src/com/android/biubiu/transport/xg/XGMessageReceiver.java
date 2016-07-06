@@ -14,14 +14,10 @@ import android.support.v4.app.NotificationCompat;
 import android.text.TextUtils;
 import android.util.Log;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
 import com.android.biubiu.MainActivity;
-import com.android.biubiu.activity.biu.BiuBiuReceiveActivity;
 import com.android.biubiu.bean.BiuBean;
 import com.android.biubiu.bean.UserFriends;
 import com.android.biubiu.common.Constant;
-import com.android.biubiu.push.PushInterface;
 import com.android.biubiu.sqlite.UserDao;
 import com.android.biubiu.transport.xg.constant.XGConstant;
 import com.android.biubiu.transport.xg.model.HeadVerify;
@@ -44,12 +40,6 @@ import me.leolin.shortcutbadger.ShortcutBadger;
  */
 public class XGMessageReceiver extends XGPushBaseReceiver {
     private UserDao mUserDao;
-    private static PushInterface mPushInterface;
-
-    public static void setPushInterface(PushInterface pushInterface) {
-        mPushInterface = pushInterface;
-    }
-
     @Override
     public void onRegisterResult(Context context, int i, XGPushRegisterResult xgPushRegisterResult) {
         System.out.println("token = " + xgPushRegisterResult.getToken());
@@ -87,62 +77,12 @@ public class XGMessageReceiver extends XGPushBaseReceiver {
             boolean isPlaySound = false;
             BiuBean bean;
             switch (type) {
-                case XGConstant.MSG_TYPE_MATCH:
-                case XGConstant.MSG_TYPE_GRAB:
-                    String lastSound = SharePreferanceUtils.getInstance().getBiuSoundTime(context, SharePreferanceUtils.BIU_SOUND_TIME, "0");
-                    if ((System.currentTimeMillis() - Long.parseLong(lastSound)) < 5 * 1000) {
-                        isPlaySound = false;
-                    } else {
-                        isPlaySound = true;
-                    }
-                    if (mUserDao == null) {
-                        mUserDao = new UserDao(context);
-                    }
-                    break;
                 case XGConstant.HEAD_VERIFY:
                     HeadVerify verify = message.getIconState();
                     Constant.headState = verify.getIconStatus();
                     Intent i = new Intent(Constant.HEAD_VERIFY_ACTION);
                     context.sendBroadcast(i, Constant.PUBLISH_POST_ACTION_PERMISSION);
                     showNotifyVerify(context, Integer.parseInt(Constant.headState), verify.getTime() * 1000);
-                    break;
-            }
-            switch (type) {
-                case XGConstant.MSG_TYPE_MATCH:
-                    bean = message.getSendBiu();
-                    if (isOpen) {
-                        if (isPlaySound) {
-                            SharePreferanceUtils.getInstance().putShared(context, SharePreferanceUtils.BIU_SOUND_TIME, String.valueOf(System.currentTimeMillis()));
-                            if (isOpenVoice) {
-                                playSound(context);
-                            }
-                            if (isShock) {
-                                shock(context);
-                            }
-                        }
-                        if (mPushInterface != null) {
-                            mPushInterface.updateView(bean, type);
-                        }
-                    } else {
-                        showNotification(context, isShock, isOpenVoice, bean, type);
-                    }
-                    break;
-                case XGConstant.MSG_TYPE_GRAB:
-                    bean = message.getGrabBiu();
-                    saveUserFriend(bean);
-                    if (isOpen) {
-                        if (isOpenVoice) {
-                            playSound(context);
-                        }
-                        if (isShock) {
-                            shock(context);
-                        }
-                        if (mPushInterface != null) {
-                            mPushInterface.updateView(bean, type);
-                        }
-                    } else {
-                        showNotification(context, isShock, isOpenVoice, bean, type);
-                    }
                     break;
             }
         }
@@ -166,7 +106,7 @@ public class XGMessageReceiver extends XGPushBaseReceiver {
         }
     }
 
-    private void showNotification(Context context, boolean isShock, boolean isOpenVoice, BiuBean bean, int type) {
+   /* private void showNotification(Context context, boolean isShock, boolean isOpenVoice, BiuBean bean, int type) {
         NotificationManager mNotificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context);
         mBuilder.setContentTitle(context.getResources().getString(R.string.receive_biu_tip))
@@ -211,7 +151,7 @@ public class XGMessageReceiver extends XGPushBaseReceiver {
         PendingIntent pendingIntent = PendingIntent.getActivity(context.getApplicationContext(), 0, resultIntent, PendingIntent.FLAG_UPDATE_CURRENT);
         mBuilder.setContentIntent(pendingIntent);
         mNotificationManager.notify(0, mBuilder.build());
-    }
+    }*/
 
     private void showNotifyVerify(Context context, int type, long time) {
         NotificationManager mNotificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);

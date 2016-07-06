@@ -2,7 +2,6 @@ package com.android.biubiu;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.app.NotificationManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -15,15 +14,12 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
-import android.widget.Toast;
 
 import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationClient;
@@ -31,10 +27,7 @@ import com.amap.api.location.AMapLocationClientOption;
 import com.amap.api.location.AMapLocationClientOption.AMapLocationMode;
 import com.amap.api.location.AMapLocationListener;
 import com.android.biubiu.activity.biu.PagerFragment;
-import com.android.biubiu.activity.history.HistoryActivityFragment;
 import com.android.biubiu.callback.HttpCallback;
-import com.android.biubiu.chat.DemoHelper;
-import com.android.biubiu.chat.LoadUserFriend;
 import com.android.biubiu.component.indicator.FragmentIndicator;
 import com.android.biubiu.component.indicator.Indicator;
 import com.android.biubiu.fragment.BiuFragment;
@@ -49,11 +42,6 @@ import com.android.biubiu.utils.LocationUtils;
 import com.android.biubiu.utils.LogUtil;
 import com.android.biubiu.utils.LoginUtils;
 import com.android.biubiu.utils.SharePreferanceUtils;
-import com.hyphenate.EMCallBack;
-import com.hyphenate.EMConnectionListener;
-import com.hyphenate.EMError;
-import com.hyphenate.chat.EMClient;
-import com.hyphenate.util.NetUtils;
 import com.umeng.analytics.MobclickAgent;
 import com.umeng.update.UmengUpdateAgent;
 import com.umeng.update.UmengUpdateListener;
@@ -92,7 +80,7 @@ public class MainActivity extends FragmentActivity implements AMapLocationListen
     private FragmentIndicator mIndicator;
     private FragmentManager mFragmentManager;
     private List<Indicator> mIndicators = new ArrayList<Indicator>();
-    private boolean mReverse;
+    //private boolean mReverse;
     OnIndicateListener mOnIndicateListener = new OnIndicateListener() {
         @Override
         public void onIndicate(int id) {
@@ -101,21 +89,21 @@ public class MainActivity extends FragmentActivity implements AMapLocationListen
                 if (id == i.getId()) {
                     Fragment f = null;
                     if (i.getTitle() == R.string.left_menu_biubiu) {
-                        if (mReverse) {
+                       /* if (mReverse) {
                             f = mFragmentManager.findFragmentByTag(getResources().getString(R.string.tab_history));
-                        } else {
+                        } else {*/
                             f = mFragmentManager.findFragmentByTag(getResources().getString(R.string.left_menu_biubiu));
-                        }
+                       // }
                     } else {
                         f = mFragmentManager.findFragmentByTag(getResources().getString(i.getTitle()));
                     }
                     if (f != null) {
-                        if (mReverse && id == R.id.tab_biu) {
+                       /* if (mReverse && id == R.id.tab_biu) {
                             transaction.show(f);
-                        } else {
+                        } else {*/
                             transaction.show(i.getFragment());
                             i.setClickTime(i.getClickTime() + 1);
-                        }
+                        //}
                         if (id == R.id.tab_mine) {
                             ((PagerFragment) f).updateHeadStatus();
                         }
@@ -128,21 +116,21 @@ public class MainActivity extends FragmentActivity implements AMapLocationListen
                 } else {
                     Fragment f = null;
                     if (i.getTitle() == R.string.left_menu_biubiu) {
-                        if (mReverse && i.getId() == R.id.tab_biu) {
+                        /*if (mReverse && i.getId() == R.id.tab_biu) {
                             f = mFragmentManager.findFragmentByTag(getResources().getString(R.string.tab_history));
-                        } else {
+                        } else {*/
                             f = mFragmentManager.findFragmentByTag(getResources().getString(R.string.left_menu_biubiu));
-                        }
+                       // }
                     } else {
                         f = mFragmentManager.findFragmentByTag(getResources().getString(i.getTitle()));
                     }
                     if (f != null) {
-                        if (mReverse && i.getId() == R.id.tab_biu) {
+                        /*if (mReverse && i.getId() == R.id.tab_biu) {
                             transaction.hide(f);
-                        } else {
+                        } else {*/
                             transaction.hide(i.getFragment());
                             i.setClickTime(0);
-                        }
+                       // }
                     }
                 }
             }
@@ -174,11 +162,6 @@ public class MainActivity extends FragmentActivity implements AMapLocationListen
         initPush();
         initBeginGuid();
         initFragments();
-        initEase();
-        if (!SharePreferanceUtils.getInstance().getToken(getApplicationContext(), SharePreferanceUtils.TOKEN, "").equals("")) {
-            LogUtil.e(TAG, "有token");
-            LoadUserFriend.getUserFriends(this);
-        }
         location();
         //更新活跃时间
         updateActivityTime();
@@ -191,18 +174,6 @@ public class MainActivity extends FragmentActivity implements AMapLocationListen
         registerReceiver(receiveBroadCast, filter);
     }
 
-    private void initEase() {
-        if (DemoHelper.getInstance().isLoggedIn() == false) {
-            LogUtil.e(TAG, "未登录环信");
-            if (!TextUtils.isEmpty(SharePreferanceUtils.getInstance().getToken(getApplicationContext(), SharePreferanceUtils.TOKEN, ""))) {
-                LogUtil.e(TAG, "有token");
-                loginHuanXin(SharePreferanceUtils.getInstance().getHxUserName(getApplicationContext(), SharePreferanceUtils.HX_USER_NAME, ""),
-                        SharePreferanceUtils.getInstance().getHxUserName(getApplicationContext(), SharePreferanceUtils.HX_USER_PASSWORD, ""));
-            }
-        } else {
-
-        }
-    }
 
     private void initFragments() {
         mFragmentManager = getSupportFragmentManager();
@@ -417,24 +388,24 @@ public class MainActivity extends FragmentActivity implements AMapLocationListen
             @Override
             public void callback(JSONObject object, String error) {
                 if (object != null) {
-                    Fragment fMsg = mFragmentManager.findFragmentByTag(getResources().getString(R.string.left_menu_message));
+                   // Fragment fMsg = mFragmentManager.findFragmentByTag(getResources().getString(R.string.left_menu_message));
                     Fragment fCom = mFragmentManager.findFragmentByTag(getResources().getString(R.string.discovery));
                     try {
                         int notifyNum = object.getInt("noticeCount");
-                        int biuNum = object.getInt("comBiuCount");
+                       // int biuNum = object.getInt("comBiuCount");
                         if (fCom != null) {
                             ((DiscoveryFragment) fCom).updateNotify(notifyNum);
                         } else {
                             fCom = new DiscoveryFragment();
                             ((DiscoveryFragment) fCom).updateNotify(notifyNum);
                         }
-                        if (fMsg != null) {
+                       /* if (fMsg != null) {
                             ((MenuRightFragment) fMsg).updateNewMsg(biuNum);
                         } else {
                             fMsg = new MenuRightFragment();
                             ((MenuRightFragment) fMsg).updateNewMsg(biuNum);
-                        }
-                        int cntUnread = notifyNum + biuNum;
+                        }*/
+                        int cntUnread = notifyNum ;
                         if (cntUnread > 0) {
                             ShortcutBadger.applyCount(MainActivity.this, cntUnread);
                         } else {
@@ -551,39 +522,6 @@ public class MainActivity extends FragmentActivity implements AMapLocationListen
         });
     }
 
-    /**
-     * 实现环信 ConnectionListener接口
-     *
-     * @author lucifer
-     */
-    private class MyConnectionListener implements EMConnectionListener {
-        @Override
-        public void onConnected() {
-        }
-
-        @Override
-        public void onDisconnected(final int error) {
-            runOnUiThread(new Runnable() {
-
-                @Override
-                public void run() {
-                    if (error == EMError.USER_REMOVED) {
-                        // 显示帐号已经被移除
-                    } else if (error == EMError.USER_LOGIN_ANOTHER_DEVICE) {
-                        // 显示帐号在其他设备登陆
-                    } else {
-                        if (NetUtils.hasNetwork(MainActivity.this)) {
-                            //连接不到聊天服务器
-                            Toast.makeText(getApplicationContext(), "连接不到聊天服务器", Toast.LENGTH_SHORT).show();
-                        } else {
-                            //当前网络不可用，请检查网络设置
-                            Toast.makeText(getApplicationContext(), "当前网络不可用，请检查网络设置", Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                }
-            });
-        }
-    }
 
     @Override
     public void onLocationChanged(AMapLocation loc) {
@@ -615,51 +553,18 @@ public class MainActivity extends FragmentActivity implements AMapLocationListen
 //		EMClient.getInstance().chatManager().removeMessageListener(msgListener);
     }
 
-    /**
-     * 登录环信客户端 建立长连接
-     *
-     * @param username
-     * @param password
-     */
-    public void loginHuanXin(String username, String password) {
-        if (password.equals("") || username.equals("")) {
-            return;
-        }
-        EMClient.getInstance().login(username, password, new EMCallBack() {
-
-            @Override
-            public void onSuccess() {
-                LogUtil.e(TAG, "登录成功环信");
-                Intent intent = new Intent(MainActivity.this, MainActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(intent);
-
-            }
-
-            @Override
-            public void onProgress(int arg0, String arg1) {
-
-            }
-
-            @Override
-            public void onError(int arg0, String arg1) {
-                Log.e(TAG, "登陆环信失败！");
-            }
-        });
-
-    }
 
     public class ReceiveBroadCast extends BroadcastReceiver {
 
         @Override
         public void onReceive(Context context, Intent intent) {
-            setUnReadVisible(true);
+            //setUnReadVisible(true);
         }
     }
 
-    public void setUnReadVisible(boolean visible) {
+   /* public void setUnReadVisible(boolean visible) {
         mIndicator.setUnReadVisible(R.id.tab_message, visible);
-    }
+    }*/
 
     public void setDisUnReadVisible(boolean visible) {
         mIndicator.setUnReadVisible(R.id.tab_discovery, visible);
@@ -673,7 +578,7 @@ public class MainActivity extends FragmentActivity implements AMapLocationListen
         this.moveTaskToBack(true);
     }
 
-    public void reverse() {
+    /*public void reverse() {
         Fragment fragment = mFragmentManager.findFragmentByTag(getResources().getString(R.string.tab_history));
         Fragment biuFragment = mFragmentManager.findFragmentByTag(getResources().getString(R.string.left_menu_biubiu));
         FragmentTransaction transaction = mFragmentManager.beginTransaction();
@@ -686,8 +591,6 @@ public class MainActivity extends FragmentActivity implements AMapLocationListen
         }
         transaction.hide(biuFragment);
         transaction.commit();
-        mReverse = true;
-        ((BiuFragment) biuFragment).pauseDraw();
     }
 
     public void reverseBack() {
@@ -698,12 +601,10 @@ public class MainActivity extends FragmentActivity implements AMapLocationListen
         transaction.show(biuFragment);
         transaction.hide(fragment);
         transaction.commit();
-        mReverse = false;
-        ((BiuFragment) biuFragment).resumeDraw();
     }
 
     public boolean isReverse() {
         return mReverse;
-    }
+    }*/
 
 }

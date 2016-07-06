@@ -20,8 +20,6 @@ import com.android.biubiu.utils.LogUtil;
 import com.android.biubiu.utils.SharePreferanceUtils;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.hyphenate.EMCallBack;
-import com.hyphenate.chat.EMClient;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -115,7 +113,6 @@ public class ActivityListActivityFragment extends Fragment {
                         SharePreferanceUtils.getInstance().putShared(getActivity(), SharePreferanceUtils.USER_HEAD, "");
                         SharePreferanceUtils.getInstance().putShared(getActivity(), SharePreferanceUtils.USER_CODE, "");
                         LogUtil.d("mytest", "tok---" + SharePreferanceUtils.getInstance().getToken(getActivity(), SharePreferanceUtils.TOKEN, ""));
-                        exitHuanxin();
                         return;
                     }
                     if (!state.equals("200")) {
@@ -153,30 +150,6 @@ public class ActivityListActivityFragment extends Fragment {
         });
     }
 
-    /**
-     * 退出环信登录
-     */
-    public void exitHuanxin() {
-        EMClient.getInstance().logout(true, new EMCallBack() {
-
-            @Override
-            public void onSuccess() {
-                //清空本地token
-                SharePreferanceUtils.getInstance().putShared(getActivity(), SharePreferanceUtils.HX_USER_NAME, "");
-                SharePreferanceUtils.getInstance().putShared(getActivity(), SharePreferanceUtils.HX_USER_PASSWORD, "");
-            }
-
-            @Override
-            public void onProgress(int arg0, String arg1) {
-
-            }
-
-            @Override
-            public void onError(int arg0, String arg1) {
-            }
-        });
-
-    }
 
     private class ActAdapter extends BaseAdapter {
 
