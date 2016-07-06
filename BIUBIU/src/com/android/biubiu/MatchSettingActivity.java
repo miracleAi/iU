@@ -32,8 +32,6 @@ import com.android.biubiu.view.RangeSeekBar.OnRangeSeekBarChangeListener;
 import com.avos.avoscloud.LogUtil.log;
 import com.baidu.android.pushservice.PushManager;
 import com.google.gson.Gson;
-import com.hyphenate.EMCallBack;
-import com.hyphenate.chat.EMClient;
 
 import android.content.Intent;
 import android.os.Bundle;

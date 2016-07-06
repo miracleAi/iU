@@ -28,8 +28,6 @@ import com.android.biubiu.utils.SharePreferanceUtils;
 import com.avos.avoscloud.LogUtil;
 import com.baidu.android.pushservice.PushManager;
 import com.google.gson.Gson;
-import com.hyphenate.EMCallBack;
-import com.hyphenate.chat.EMClient;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -177,7 +175,10 @@ public class MainSetActivityFragment extends Fragment implements View.OnClickLis
                         if (!code.equals("200")) {
                             if (code.equals("303")) {
                                 Toast.makeText(x.app(), "登录过期，请重新登录", Toast.LENGTH_SHORT).show();
-                                exitHuanxin();
+                                SharePreferanceUtils.getInstance().putShared(getActivity(), SharePreferanceUtils.TOKEN, "");
+                                XGUtils.getInstance(getActivity()).unRegisterPush();
+                                getActivity().setResult(Constant.EXIT_APP_SUCCESS);
+                                getActivity().finish();
                                 return;
                             }
                             return;
@@ -371,8 +372,10 @@ public class MainSetActivityFragment extends Fragment implements View.OnClickLis
                     SharePreferanceUtils.getInstance().putShared(getActivity(), SharePreferanceUtils.USER_NAME, "");
                     SharePreferanceUtils.getInstance().putShared(getActivity(), SharePreferanceUtils.USER_HEAD, "");
                     SharePreferanceUtils.getInstance().putShared(getActivity(), SharePreferanceUtils.USER_CODE, "");
-//					SharePreferanceUtils.getInstance().putShared(getApplicationContext(), SharePreferanceUtils.TOKEN, "");
-                    exitHuanxin();
+                    SharePreferanceUtils.getInstance().putShared(getActivity(), SharePreferanceUtils.TOKEN, "");
+                    XGUtils.getInstance(getActivity()).unRegisterPush();
+                    getActivity().setResult(Constant.EXIT_APP_SUCCESS);
+                    getActivity().finish();
                 } catch (JSONException e) {
                     // TODO Auto-generated catch block
                     e.printStackTrace();
@@ -383,43 +386,6 @@ public class MainSetActivityFragment extends Fragment implements View.OnClickLis
 
     }
 
-    /**
-     * 退出环信登录
-     */
-    public void exitHuanxin() {
-        EMClient.getInstance().logout(true, new EMCallBack() {
-
-            @Override
-            public void onSuccess() {
-                // TODO Auto-generated method stub
-                com.android.biubiu.utils.LogUtil.e("set", "环信退出成功");
-                //清空本地token
-                SharePreferanceUtils.getInstance().putShared(getActivity(), SharePreferanceUtils.TOKEN, "");
-                SharePreferanceUtils.getInstance().putShared(getActivity(), SharePreferanceUtils.HX_USER_NAME, "");
-                SharePreferanceUtils.getInstance().putShared(getActivity(), SharePreferanceUtils.HX_USER_PASSWORD, "");
-                XGUtils.getInstance(getActivity()).unRegisterPush();
-                getActivity().setResult(Constant.EXIT_APP_SUCCESS);
-                getActivity().finish();
-                /*Intent intent = new Intent(getActivity(), LoginOrRegisterActivity.class);
-                intent.putExtra("tag",true);
-                startActivity(intent);
-                ((BiubiuApplication)getActivity().getApplication()).clearAllActivity();*/
-            }
-
-            @Override
-            public void onProgress(int arg0, String arg1) {
-                // TODO Auto-generated method stub
-
-            }
-
-            @Override
-            public void onError(int arg0, String arg1) {
-                // TODO Auto-generated method stub
-                com.android.biubiu.utils.LogUtil.e("set", "环信退出失败" + arg1);
-            }
-        });
-
-    }
 
     @Override
     public void onClick(View v) {

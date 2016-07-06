@@ -15,8 +15,6 @@ import cc.imeetu.iu.R;
 import com.android.biubiu.BaseActivity;
 import com.android.biubiu.bean.UserFriends;
 import com.android.biubiu.chat.MyHintDialog.OnDialogClick;
-import com.android.biubiu.common.Constant;
-import com.android.biubiu.fragment.FriendsListFragment;
 import com.android.biubiu.sqlite.UserDao;
 import com.android.biubiu.utils.HttpContants;
 import com.android.biubiu.utils.LogUtil;
@@ -25,33 +23,20 @@ import com.android.biubiu.utils.SharePreferanceUtils;
 import com.avos.avoscloud.LogUtil.log;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.hyphenate.chat.EMClient;
-import com.hyphenate.easeui.EaseConstant;
-import com.hyphenate.easeui.ui.EaseChatFragment;
-import com.hyphenate.easeui.ui.EaseContactListFragment;
-import com.hyphenate.easeui.widget.EaseTitleBar;
-import com.hyphenate.exceptions.HyphenateException;
 
-import android.nfc.Tag;
 import android.os.Bundle;
 import android.os.Handler;
-import android.app.Activity;
 import android.content.Intent;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
-import android.util.Log;
-import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
 import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
-import android.widget.Toast;
 
 public class UserListActivity extends BaseActivity {
     private RelativeLayout backLayout;
@@ -88,8 +73,8 @@ public class UserListActivity extends BaseActivity {
         mListView = (ListView) findViewById(R.id.chat_user_list_listView);
 
         swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.id_swipeRefreshlayout_userlist);
-        swipeRefreshLayout.setColorSchemeResources(R.color.holo_blue_bright, R.color.holo_green_light,
-                R.color.holo_orange_light, R.color.holo_red_light);
+        /*swipeRefreshLayout.setColorSchemeResources(R.color.holo_blue_bright, R.color.holo_green_light,
+                R.color.holo_orange_light, R.color.holo_red_light);*/
         swipeRefreshLayout.setOnRefreshListener(new OnRefreshListener() {
 
             @Override
@@ -125,19 +110,6 @@ public class UserListActivity extends BaseActivity {
 
         mAdapter = new UserListAdapter(this, mData);
         mListView.setAdapter(mAdapter);
-
-
-        mListView.setOnItemClickListener(new OnItemClickListener() {
-
-            @Override
-            public void onItemClick(AdapterView<?> arg0, View arg1, int position,
-                                    long arg3) {
-                // TODO Auto-generated method stub
-                Intent intent = new Intent(UserListActivity.this, ChatActivity.class);
-                intent.putExtra(Constant.EXTRA_USER_ID, mData.get(position).getUserCode());
-                startActivityForResult(intent, 0);
-            }
-        });
 
         mListView.setOnItemLongClickListener(new OnItemLongClickListener() {
 

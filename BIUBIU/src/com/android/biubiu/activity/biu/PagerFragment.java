@@ -15,7 +15,6 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
-import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -47,7 +46,6 @@ import com.alibaba.sdk.android.oss.model.PutObjectRequest;
 import com.alibaba.sdk.android.oss.model.PutObjectResult;
 import com.android.biubiu.BaseFragment;
 import com.android.biubiu.activity.LoginActivity;
-import com.android.biubiu.activity.LoginOrRegisterActivity;
 import com.android.biubiu.activity.RegisterThreeActivity;
 import com.android.biubiu.activity.mine.AboutMeActivity;
 import com.android.biubiu.activity.mine.ChangeBrithdayActivity;
@@ -66,7 +64,6 @@ import com.android.biubiu.activity.mine.SuperMainInfoActivity;
 import com.android.biubiu.activity.mine.UserDynamicActivity;
 import com.android.biubiu.activity.mine.UserPhotoScanActivity;
 import com.android.biubiu.adapter.UserInterestAdapter;
-import com.android.biubiu.adapter.UserPagerPhotoAdapter;
 import com.android.biubiu.adapter.UserPagerTagAdapter;
 import com.android.biubiu.bean.InterestByCateBean;
 import com.android.biubiu.bean.InterestTagBean;
@@ -75,11 +72,9 @@ import com.android.biubiu.bean.UserFriends;
 import com.android.biubiu.bean.UserInfoBean;
 import com.android.biubiu.bean.UserPhotoBean;
 import com.android.biubiu.callback.HttpCallback;
-import com.android.biubiu.chat.ChatActivity;
 import com.android.biubiu.chat.MyHintDialog;
 import com.android.biubiu.common.CommonDialog;
 import com.android.biubiu.common.Constant;
-import com.android.biubiu.community.PublishHomeActivity;
 import com.android.biubiu.component.indicator.FragmentIndicator;
 import com.android.biubiu.component.title.TopTitleView;
 import com.android.biubiu.sqlite.CityDao;
@@ -181,8 +176,6 @@ public class PagerFragment extends BaseFragment implements View.OnClickListener,
     private ImageView sexArrow;
     private TextView noPhotoTv;
     private ImageView superManIv;
-    private RelativeLayout grabBiuLayout;
-    private TextView grabBiuTv;
     private RelativeLayout myInfoLayout;
     private TextView totalTv;
     private TextView todayTv;
@@ -302,9 +295,6 @@ public class PagerFragment extends BaseFragment implements View.OnClickListener,
         dynamicLayout.setOnClickListener(this);
         dynamicArrow = (ImageView) mRootview.findViewById(R.id.dynamic_arrow);
         dynamicTv = (TextView) mRootview.findViewById(R.id.dynamic_tv);
-        grabBiuLayout = (RelativeLayout) mRootview.findViewById(R.id.grab_biu_layout);
-        grabBiuLayout.setOnClickListener(this);
-        grabBiuTv = (TextView) mRootview.findViewById(R.id.grab_biu_tv);
         aboutMeArrow = (ImageView) mRootview.findViewById(R.id.about_arrow);
         nickArrwo = (ImageView) mRootview.findViewById(R.id.nickname_arrow);
         birthArrow = (ImageView) mRootview.findViewById(R.id.birth_arrow);
@@ -626,16 +616,6 @@ public class PagerFragment extends BaseFragment implements View.OnClickListener,
         } else {
             iconVerify.setText("未通过");
         }
-        if (isMyself) {
-            grabBiuLayout.setVisibility(View.GONE);
-        } else {
-            grabBiuLayout.setVisibility(View.VISIBLE);
-            if (codeState == 0) {
-                grabBiuTv.setText("biu");
-            } else if (codeState == 2) {
-                grabBiuTv.setText("和TA聊聊");
-            }
-        }
         usernameTv.setText(bean.getNickname());
         nicknameTv.setText(bean.getNickname());
         sexTv.setText(bean.getSexStr(bean.getSex()));
@@ -890,46 +870,11 @@ public class PagerFragment extends BaseFragment implements View.OnClickListener,
                 Intent login = new Intent(getActivity(), LoginActivity.class);
                 startActivityForResult(login, TO_LOGIN);
                 break;
-            case R.id.grab_biu_layout:
-                switch (codeState) {
-                    case 0:
-                    case 1:
-                        grabComBiu();
-                        break;
-                    case 2:
-                        //进入聊天界面
-                        Intent chatIntent = new Intent(getActivity(), ChatActivity.class);
-                        chatIntent.putExtra(Constant.EXTRA_USER_ID, userCode);
-                        startActivity(chatIntent);
-                        break;
-                }
-                break;
             default:
                 break;
         }
     }
 
-    //社区biu
-    private void grabComBiu() {
-        JSONObject requestObject = new JSONObject();
-        try {
-            requestObject.put("userCode", userCode);
-            HttpRequestUtils.commonRequest(getActivity(), requestObject, HttpContants.GRAB_COM_BIU, new HttpCallback() {
-                @Override
-                public void callback(JSONObject object, String error) {
-                    if (object != null) {
-                        codeState = 1;
-                        toastShort("biu成功啦,等待对方确认");
-                    } else {
-                        toastShort("biubiu失败啦");
-                    }
-                }
-            });
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-    }
 
     /**
      * 更多

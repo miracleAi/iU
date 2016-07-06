@@ -93,7 +93,6 @@ import com.android.biubiu.utils.SharePreferanceUtils;
 import com.android.biubiu.view.MyGridView;
 import com.avos.avoscloud.LogUtil.log;
 import com.google.gson.Gson;
-import com.hyphenate.chat.EMClient;
 
 public class MyPagerActivity extends BaseActivity implements OnClickListener {
     private static final int UPDATE_INFO = 1001;

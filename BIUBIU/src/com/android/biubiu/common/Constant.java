@@ -1,8 +1,7 @@
 package com.android.biubiu.common;
 
-import com.hyphenate.easeui.EaseConstant;
 
-public class Constant extends EaseConstant {
+public class Constant {
     public static final String NEW_FRIENDS_USERNAME = "item_new_friends";
     public static final String GROUP_USERNAME = "item_groups";
     public static final String CHAT_ROOM = "item_chatroom";

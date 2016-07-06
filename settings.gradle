@@ -1,7 +1,5 @@
-include ':EaseUI' ,':BQMM_Lib',':BIUBIU',':refreshlibrary','staggerlibrary','multi-image-selector',
-        'ShortcutBadger','app'
+include ':BIUBIU',':refreshlibrary','staggerlibrary','multi-image-selector','ShortcutBadger'
 project(':refreshlibrary').projectDir = new File(rootDir, "../Android-PullToRefresh/refreshlibrary");
 project(':staggerlibrary').projectDir = new File(rootDir, "../AndroidStaggeredGrid/staggerlibrary");
 project(':multi-image-selector').projectDir = new File(rootDir, "../MultiImageSelector/multi-image-selector");
 project(':ShortcutBadger').projectDir = new File(rootDir, "../ShortcutBadger/ShortcutBadger");
-project(':app').projectDir = new File(rootDir,"../TIMLibrary/app");

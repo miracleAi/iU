@@ -50,8 +50,6 @@ import com.android.biubiu.utils.HttpContants;
 import com.android.biubiu.utils.LogUtil;
 import com.android.biubiu.utils.NetUtils;
 import com.android.biubiu.utils.SharePreferanceUtils;
-import com.hyphenate.EMCallBack;
-import com.hyphenate.chat.EMClient;
 import com.umeng.analytics.MobclickAgent;
 
 import android.content.Intent;
@@ -490,7 +488,7 @@ public class RegisterTwoActivity extends BaseCityActivity implements OnClickList
             toastShort(getResources().getString(R.string.net_error));
             return;
         }
-        showLoadingLayout(getResources().getString(R.string.register));
+        showLoadingLayout("正在注册");
         RequestParams params = new RequestParams(HttpContants.HTTP_ADDRESS + HttpContants.REGISTER_OSS);
         x.http().post(params, new CommonCallback<String>() {
 
@@ -667,8 +665,6 @@ public class RegisterTwoActivity extends BaseCityActivity implements OnClickList
                     JSONObject obj = jsons.getJSONObject("data");
                     String username = obj.getString("username");
                     String passwprd = obj.getString("password");
-                    SharePreferanceUtils.getInstance().putShared(getApplicationContext(), SharePreferanceUtils.HX_USER_NAME, username);
-                    SharePreferanceUtils.getInstance().putShared(getApplicationContext(), SharePreferanceUtils.HX_USER_PASSWORD, passwprd);
                     String token = obj.getString("token");
                     String nickname = obj.getString("nickname");
                     SharePreferanceUtils.getInstance().putShared(getApplicationContext(), SharePreferanceUtils.USER_NAME, nickname);
@@ -683,7 +679,6 @@ public class RegisterTwoActivity extends BaseCityActivity implements OnClickList
                     }
                     LogUtil.e(TAG, "username==" + username + "||||passwprd==" + passwprd);
 
-                    loginHuanXin(username, passwprd, token);
                     MobclickAgent.onProfileSignIn(userCode);
                     //把token 存在本地
                     if (token != null && token.length() > 0) {
@@ -702,38 +697,5 @@ public class RegisterTwoActivity extends BaseCityActivity implements OnClickList
                 }
             }
         });
-    }
-
-    /**
-     * 登录环信客户端 建立长连接
-     *
-     * @param username
-     * @param password
-     */
-    public void loginHuanXin(String username, String password, final String token) {
-        EMClient.getInstance().login(username, password, new EMCallBack() {
-
-            @Override
-            public void onSuccess() {
-
-                //	Toast.makeText(TAG, "注册成功", Toast.LENGTH_SHORT).show();
-                //				LogUtil.e(TAG, "登录成功环信");
-                //				//把token 存在本地
-                //				SharePreferanceUtils.getInstance().putShared(RegisterTwoActivity.this, SharePreferanceUtils.TOKEN, token);
-            }
-
-            @Override
-            public void onProgress(int arg0, String arg1) {
-                // TODO Auto-generated method stub
-
-            }
-
-            @Override
-            public void onError(int arg0, String arg1) {
-                // TODO Auto-generated method stub
-                Log.e(TAG, "登陆聊天服务器失败！");
-            }
-        });
-
     }
 }
