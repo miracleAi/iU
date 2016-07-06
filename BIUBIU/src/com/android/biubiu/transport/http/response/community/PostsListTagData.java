@@ -1,22 +1,22 @@
-package com.android.biubiu.bean.community;
+package com.android.biubiu.transport.http.response.community;
 
 import java.util.ArrayList;
 
 /**
- * Created by yanghj on 16/6/3.
+ * Created by yanghj on 16/6/2.
  */
-public class CommBiuListData {
-    private ArrayList<CommBiuBean> biuList;
+public class PostsListTagData {
+    private ArrayList<Posts> postList;
     private int hasNext;
     private long time;
     private String token;
 
-    public ArrayList<CommBiuBean> getBiuList() {
-        return biuList;
+    public ArrayList<Posts> getPostList() {
+        return postList;
     }
 
-    public void setBiuList(ArrayList<CommBiuBean> biuList) {
-        this.biuList = biuList;
+    public void setPostList(ArrayList<Posts> postList) {
+        this.postList = postList;
     }
 
     public int getHasNext() {

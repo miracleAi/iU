@@ -9,10 +9,10 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.android.biubiu.BaseActivity;
-import com.android.biubiu.bean.base.Data;
-import com.android.biubiu.bean.community.CommNotify;
-import com.android.biubiu.bean.community.CommNotifyData;
-import com.android.biubiu.bean.community.SimpleRespData;
+import com.android.biubiu.transport.http.response.base.Data;
+import com.android.biubiu.transport.http.response.community.CommNotify;
+import com.android.biubiu.transport.http.response.community.CommNotifyData;
+import com.android.biubiu.transport.http.response.community.SimpleRespData;
 import com.android.biubiu.common.Constant;
 import com.android.biubiu.community.homepage.PostsDetailActivity;
 import com.android.biubiu.component.title.TopTitleView;
