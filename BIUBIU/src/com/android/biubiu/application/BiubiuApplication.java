@@ -1,4 +1,4 @@
-package com.android.biubiu.myapplication;
+package com.android.biubiu.application;
 
 import org.xutils.BuildConfig;
 import org.xutils.x;

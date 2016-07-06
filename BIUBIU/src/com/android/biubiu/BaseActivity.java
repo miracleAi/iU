@@ -2,14 +2,13 @@ package com.android.biubiu;
 
 import cc.imeetu.iu.R;
 
-import com.android.biubiu.myapplication.BiubiuApplication;
+import com.android.biubiu.application.BiubiuApplication;
 import com.android.biubiu.utils.DensityUtil;
 import com.android.biubiu.utils.SharePreferanceUtils;
 import com.ant.liao.GifView;
 import com.ant.liao.GifView.GifImageType;
 import com.umeng.analytics.MobclickAgent;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.view.View;

@@ -81,7 +81,7 @@
     <uses-permission android:name="cc.imeetu.iu.HEAD_VERIFY_PERMISSION" />
 
     <application
-        android:name="com.android.biubiu.myapplication.BiubiuApplication"
+        android:name="com.android.biubiu.application.BiubiuApplication"
         android:allowBackup="true"
         android:icon="@drawable/icon"
         android:label="@string/app_name"
