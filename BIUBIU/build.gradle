@@ -4,7 +4,7 @@ apply plugin: 'com.android.application'
 
 dependencies {
     //只加入了jar包，需要在下面加入jniLibs.srcDirs = ['libs']来copy so 文件
-    compile fileTree(include: '*.jar', dir: 'libs')
+    compile fileTree(dir: 'libs', include: '*.jar')
     compile project(':EaseUI')
     compile project(':refreshlibrary')
     compile project(':staggerlibrary')
@@ -22,7 +22,7 @@ dependencies {
 }
 
 android {
-    compileSdkVersion 19
+    compileSdkVersion 23
     buildToolsVersion "23.0.3"
     sourceSets {
         main {
@@ -107,6 +107,10 @@ android {
         }
 
 
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_7
+        targetCompatibility JavaVersion.VERSION_1_7
     }
 }
 
