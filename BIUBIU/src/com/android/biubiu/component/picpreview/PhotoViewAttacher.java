@@ -313,8 +313,8 @@ public class PhotoViewAttacher implements IPhotoView, View.OnTouchListener, OnGe
 
     @Override
     public float getScale() {
-        return FloatMath.sqrt((float) Math.pow(getValue(mSuppMatrix, Matrix.MSCALE_X), 2)
-                + (float) Math.pow(getValue(mSuppMatrix, Matrix.MSKEW_Y), 2));
+        return (float) Math.sqrt(Math.pow(getValue(mSuppMatrix, Matrix.MSCALE_X), 2)
+                + Math.pow(getValue(mSuppMatrix, Matrix.MSKEW_Y), 2));
     }
 
     @Override
@@ -635,7 +635,7 @@ public class PhotoViewAttacher implements IPhotoView, View.OnTouchListener, OnGe
          * PhotoView.
          */
         if (null != imageView && !(imageView instanceof IPhotoView)) {
-            if(imageView.getScaleType()!=ScaleType.MATRIX){
+            if (imageView.getScaleType() != ScaleType.MATRIX) {
                 imageView.setScaleType(ScaleType.MATRIX);
             }
             if (!ScaleType.MATRIX.equals(imageView.getScaleType())) {
@@ -741,7 +741,7 @@ public class PhotoViewAttacher implements IPhotoView, View.OnTouchListener, OnGe
     /**
      * Helper method that 'unpacks' a Matrix and returns the required value
      *
-     * @param matrix - Matrix to unpack
+     * @param matrix     - Matrix to unpack
      * @param whichValue - Which value from Matrix.M* to return
      * @return float - returned value
      */
@@ -878,8 +878,8 @@ public class PhotoViewAttacher implements IPhotoView, View.OnTouchListener, OnGe
          * the actual photo, tapping on 'whitespace' will be ignored.
          *
          * @param view - View the user tapped.
-         * @param x - where the user tapped from the of the Drawable, as percentage of the Drawable width.
-         * @param y - where the user tapped from the top of the Drawable, as percentage of the Drawable height.
+         * @param x    - where the user tapped from the of the Drawable, as percentage of the Drawable width.
+         * @param y    - where the user tapped from the top of the Drawable, as percentage of the Drawable height.
          */
         void onPhotoTap(View view, float x, float y);
     }
@@ -896,8 +896,8 @@ public class PhotoViewAttacher implements IPhotoView, View.OnTouchListener, OnGe
          * anywhere on the view, tapping on 'whitespace' will not be ignored.
          *
          * @param view - View the user tapped.
-         * @param x - where the user tapped from the left of the View.
-         * @param y - where the user tapped from the top of the View.
+         * @param x    - where the user tapped from the left of the View.
+         * @param y    - where the user tapped from the top of the View.
          */
         void onViewTap(View view, float x, float y);
     }

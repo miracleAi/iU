@@ -3,7 +3,7 @@ package com.android.biubiu.view;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.android.biubiu.utils.LogUtil;
+import com.android.biubiu.component.util.LogUtil;
 
 import android.content.Context;
 import android.util.AttributeSet;

@@ -39,12 +39,12 @@ import com.android.biubiu.callback.HttpCallback;
 import com.android.biubiu.common.CommonDialog;
 import com.android.biubiu.common.Constant;
 import com.android.biubiu.component.title.TopTitleView;
-import com.android.biubiu.utils.DensityUtil;
-import com.android.biubiu.utils.HttpContants;
-import com.android.biubiu.utils.HttpRequestUtils;
-import com.android.biubiu.utils.LogUtil;
-import com.android.biubiu.utils.NetUtils;
-import com.android.biubiu.utils.SharePreferanceUtils;
+import com.android.biubiu.component.util.DensityUtil;
+import com.android.biubiu.transport.http.HttpContants;
+import com.android.biubiu.component.util.HttpRequestUtils;
+import com.android.biubiu.component.util.LogUtil;
+import com.android.biubiu.component.util.NetUtils;
+import com.android.biubiu.component.util.SharePreferanceUtils;
 import com.ant.liao.GifView;
 import com.google.gson.Gson;
 

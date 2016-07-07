@@ -1,4 +1,4 @@
-package com.android.biubiu.utils;
+package com.android.biubiu.component.util;
 
 public class Constants {
 	//身份是学生

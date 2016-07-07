@@ -33,9 +33,9 @@ import com.android.biubiu.adapter.ScanPagerAdapter;
 import com.android.biubiu.bean.UserPhotoBean;
 import com.android.biubiu.component.picpreview.HackyViewPager;
 import com.android.biubiu.component.picpreview.ImageDetailFragment;
-import com.android.biubiu.utils.HttpContants;
-import com.android.biubiu.utils.LogUtil;
-import com.android.biubiu.utils.SharePreferanceUtils;
+import com.android.biubiu.transport.http.HttpContants;
+import com.android.biubiu.component.util.LogUtil;
+import com.android.biubiu.component.util.SharePreferanceUtils;
 
 public class UserPhotoScanActivity extends BaseActivity implements OnClickListener {
     private RelativeLayout backRl;

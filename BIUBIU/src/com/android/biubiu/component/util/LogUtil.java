@@ -1,4 +1,4 @@
-package com.android.biubiu.utils;
+package com.android.biubiu.component.util;
 /** 
  * @author  lucifer 
  * @date 2015-12-21

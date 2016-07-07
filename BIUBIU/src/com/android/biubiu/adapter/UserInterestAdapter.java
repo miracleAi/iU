@@ -10,11 +10,8 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 import cc.imeetu.iu.R;
 
-import com.android.biubiu.adapter.UserPagerTagAdapter.ViewHolder;
 import com.android.biubiu.bean.InterestTagBean;
-import com.android.biubiu.bean.PersonalTagBean;
-import com.android.biubiu.utils.Constants;
-import com.android.biubiu.utils.LogUtil;
+import com.android.biubiu.component.util.Constants;
 
 public class UserInterestAdapter extends BaseAdapter{
 

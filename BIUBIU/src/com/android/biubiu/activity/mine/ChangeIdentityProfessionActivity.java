@@ -3,28 +3,22 @@ package com.android.biubiu.activity.mine;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.xutils.x;
-import org.xutils.common.Callback.CancelledException;
 import org.xutils.common.Callback.CommonCallback;
 import org.xutils.http.RequestParams;
 
 import cc.imeetu.iu.R;
 
 import com.android.biubiu.BaseActivity;
-import com.android.biubiu.bean.Schools;
 import com.android.biubiu.bean.UserInfoBean;
-import com.android.biubiu.common.city.ArrayWheelAdapter;
 import com.android.biubiu.common.city.OnWheelChangedListener;
 import com.android.biubiu.common.city.WheelView;
-import com.android.biubiu.utils.Constants;
-import com.android.biubiu.utils.HttpContants;
-import com.android.biubiu.utils.HttpUtils;
-import com.android.biubiu.utils.LogUtil;
-import com.android.biubiu.utils.SharePreferanceUtils;
+import com.android.biubiu.component.util.Constants;
+import com.android.biubiu.transport.http.HttpContants;
+import com.android.biubiu.component.util.LogUtil;
+import com.android.biubiu.component.util.SharePreferanceUtils;
 
 import android.os.Bundle;
-import android.app.Activity;
 import android.content.Intent;
-import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;

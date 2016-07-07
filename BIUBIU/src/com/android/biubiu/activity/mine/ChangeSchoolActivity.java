@@ -7,7 +7,6 @@ import java.util.List;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.xutils.x;
-import org.xutils.common.Callback.CancelledException;
 import org.xutils.common.Callback.CommonCallback;
 import org.xutils.http.RequestParams;
 
@@ -18,17 +17,14 @@ import com.android.biubiu.adapter.SchoolListAllAdapter;
 import com.android.biubiu.bean.Schools;
 import com.android.biubiu.bean.UserInfoBean;
 import com.android.biubiu.sqlite.SchoolDao;
-import com.android.biubiu.utils.HttpContants;
-import com.android.biubiu.utils.HttpUtils;
-import com.android.biubiu.utils.LogUtil;
-import com.android.biubiu.utils.SharePreferanceUtils;
+import com.android.biubiu.transport.http.HttpContants;
+import com.android.biubiu.component.util.LogUtil;
+import com.android.biubiu.component.util.SharePreferanceUtils;
 
 import android.os.Bundle;
-import android.app.Activity;
 import android.content.Intent;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
@@ -39,7 +35,6 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.Toast;
 
 public class ChangeSchoolActivity extends BaseActivity implements OnClickListener{
 

@@ -25,7 +25,7 @@ import com.android.biubiu.ui.discovery.PublishHomeActivity;
 import com.android.biubiu.component.indicator.FragmentIndicator;
 import com.android.biubiu.component.indicator.PagerSlidingTabStrip;
 import com.android.biubiu.component.title.TopTitleView;
-import com.android.biubiu.utils.LoginUtils;
+import com.android.biubiu.component.util.LoginUtils;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,20 +1,15 @@
 package com.android.biubiu.adapter;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import cc.imeetu.iu.R;
 
-import com.android.biubiu.MainActivity;
 import com.android.biubiu.activity.mine.InterestLabelActivity;
 import com.android.biubiu.bean.InterestByCateBean;
 import com.android.biubiu.bean.InterestTagBean;
-import com.android.biubiu.bean.Schools;
-import com.android.biubiu.utils.DensityUtil;
+import com.android.biubiu.component.util.DensityUtil;
 import com.avos.avoscloud.LogUtil.log;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;

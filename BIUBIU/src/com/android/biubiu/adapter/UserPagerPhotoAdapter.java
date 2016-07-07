@@ -10,14 +10,12 @@ import cc.imeetu.iu.R;
 
 import com.android.biubiu.activity.mine.UserPhotoScanActivity;
 import com.android.biubiu.bean.UserPhotoBean;
-import com.android.biubiu.utils.DensityUtil;
-import com.android.biubiu.utils.DisplayUtils;
-import com.android.biubiu.utils.LogUtil;
+import com.android.biubiu.component.util.DensityUtil;
+import com.android.biubiu.component.util.DisplayUtils;
 
 import android.content.Context;
 import android.content.Intent;
 import android.support.v4.view.PagerAdapter;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;

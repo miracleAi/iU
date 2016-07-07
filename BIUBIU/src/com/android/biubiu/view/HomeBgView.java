@@ -3,8 +3,6 @@ package com.android.biubiu.view;
 
 import cc.imeetu.iu.R;
 
-import com.android.biubiu.utils.LogUtil;
-
 import android.animation.Animator;
 import android.animation.Animator.AnimatorListener;
 import android.animation.AnimatorSet;

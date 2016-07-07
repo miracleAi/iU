@@ -1,11 +1,8 @@
 package com.android.biubiu.activity.mine;
 
-import java.util.ArrayList;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.xutils.x;
-import org.xutils.common.Callback.CancelledException;
 import org.xutils.common.Callback.CommonCallback;
 import org.xutils.http.RequestParams;
 
@@ -21,12 +18,10 @@ import android.widget.TextView;
 import cc.imeetu.iu.R;
 
 import com.android.biubiu.BaseActivity;
-import com.android.biubiu.bean.InterestTagBean;
 import com.android.biubiu.bean.UserInfoBean;
-import com.android.biubiu.utils.HttpContants;
-import com.android.biubiu.utils.HttpUtils;
-import com.android.biubiu.utils.LogUtil;
-import com.android.biubiu.utils.SharePreferanceUtils;
+import com.android.biubiu.transport.http.HttpContants;
+import com.android.biubiu.component.util.LogUtil;
+import com.android.biubiu.component.util.SharePreferanceUtils;
 
 public class ChangeCompanyActivity extends BaseActivity implements OnClickListener{
 	private RelativeLayout backRl;

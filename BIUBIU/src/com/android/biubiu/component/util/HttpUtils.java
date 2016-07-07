@@ -1,21 +1,14 @@
-package com.android.biubiu.utils;
-
-import java.util.ArrayList;
+package com.android.biubiu.component.util;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.xutils.x;
-import org.xutils.common.Callback.CancelledException;
 import org.xutils.common.Callback.CommonCallback;
 import org.xutils.http.RequestParams;
 
 import android.content.Context;
-import android.util.Log;
 
-import com.android.biubiu.bean.InterestTagBean;
-import com.android.biubiu.bean.PersonalTagBean;
-import com.android.biubiu.bean.UserInfoBean;
-import com.android.biubiu.common.Constant;
+import com.android.biubiu.transport.http.HttpContants;
 
 public class HttpUtils {
 	

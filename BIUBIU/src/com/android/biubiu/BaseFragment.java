@@ -1,16 +1,13 @@
 package com.android.biubiu;
 
 
-import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.biubiu.utils.DensityUtil;
+import com.android.biubiu.component.util.DensityUtil;
 import com.ant.liao.GifView;
 import com.umeng.analytics.MobclickAgent;
 

@@ -5,11 +5,9 @@ import cc.imeetu.iu.R;
 import com.android.biubiu.activity.GuildActivity;
 
 
-import com.android.biubiu.activity.LoginOrRegisterActivity;
 import com.android.biubiu.sqlite.DBManager;
 import com.android.biubiu.sqlite.DBManagerCity;
-import com.android.biubiu.utils.LoginUtils;
-import com.android.biubiu.utils.SharePreferanceUtils;
+import com.android.biubiu.component.util.SharePreferanceUtils;
 import com.avos.avoscloud.LogUtil.log;
 
 import android.content.Intent;

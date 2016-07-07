@@ -1,22 +1,18 @@
 package com.android.biubiu.ui.discovery;
 
 import android.content.Context;
-import android.content.Intent;
 import android.support.v4.view.PagerAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-import com.android.biubiu.activity.mine.UserPhotoScanActivity;
-import com.android.biubiu.bean.UserPhotoBean;
-import com.android.biubiu.utils.DensityUtil;
-import com.android.biubiu.utils.DisplayUtils;
+import com.android.biubiu.component.util.DensityUtil;
+import com.android.biubiu.component.util.DisplayUtils;
 
 import org.xutils.image.ImageOptions;
 import org.xutils.x;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 
 import cc.imeetu.iu.R;

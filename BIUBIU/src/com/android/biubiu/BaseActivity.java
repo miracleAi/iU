@@ -3,8 +3,8 @@ package com.android.biubiu;
 import cc.imeetu.iu.R;
 
 import com.android.biubiu.application.BiubiuApplication;
-import com.android.biubiu.utils.DensityUtil;
-import com.android.biubiu.utils.SharePreferanceUtils;
+import com.android.biubiu.component.util.DensityUtil;
+import com.android.biubiu.component.util.SharePreferanceUtils;
 import com.ant.liao.GifView;
 import com.ant.liao.GifView.GifImageType;
 import com.umeng.analytics.MobclickAgent;

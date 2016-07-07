@@ -2,7 +2,6 @@ package com.android.biubiu;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.List;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -19,35 +18,25 @@ import com.android.biubiu.bean.SettingBean;
 import com.android.biubiu.bean.UserInfoBean;
 import com.android.biubiu.chat.MyHintDialog;
 import com.android.biubiu.chat.MyHintDialog.OnDialogClick;
-import com.android.biubiu.common.Constant;
-import com.android.biubiu.utils.Constants;
-import com.android.biubiu.utils.HttpContants;
-import com.android.biubiu.utils.LogUtil;
-import com.android.biubiu.utils.NetUtils;
-import com.android.biubiu.utils.SharePreferanceUtils;
-import com.android.biubiu.utils.Utils;
+import com.android.biubiu.component.util.Constants;
+import com.android.biubiu.transport.http.HttpContants;
+import com.android.biubiu.component.util.LogUtil;
+import com.android.biubiu.component.util.NetUtils;
+import com.android.biubiu.component.util.SharePreferanceUtils;
 import com.android.biubiu.view.MyGridView;
 import com.android.biubiu.view.RangeSeekBar;
 import com.android.biubiu.view.RangeSeekBar.OnRangeSeekBarChangeListener;
-import com.avos.avoscloud.LogUtil.log;
-import com.baidu.android.pushservice.PushManager;
 import com.google.gson.Gson;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.animation.BounceInterpolator;
-import android.widget.CompoundButton;
-import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.ToggleButton;
 
 public class MatchSettingActivity extends BaseActivity implements OnClickListener{
 	private static final int PERSONAL_TAG = 1001;

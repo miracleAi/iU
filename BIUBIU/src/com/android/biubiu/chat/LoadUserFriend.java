@@ -6,15 +6,14 @@ import java.util.List;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.xutils.x;
-import org.xutils.common.Callback.CancelledException;
 import org.xutils.common.Callback.CommonCallback;
 import org.xutils.http.RequestParams;
 
 import com.android.biubiu.bean.UserFriends;
 import com.android.biubiu.sqlite.UserDao;
-import com.android.biubiu.utils.HttpContants;
-import com.android.biubiu.utils.LogUtil;
-import com.android.biubiu.utils.SharePreferanceUtils;
+import com.android.biubiu.transport.http.HttpContants;
+import com.android.biubiu.component.util.LogUtil;
+import com.android.biubiu.component.util.SharePreferanceUtils;
 import com.avos.avoscloud.LogUtil.log;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;

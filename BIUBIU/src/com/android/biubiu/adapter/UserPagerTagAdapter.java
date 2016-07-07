@@ -5,15 +5,12 @@ import java.util.ArrayList;
 import cc.imeetu.iu.R;
 
 import com.android.biubiu.bean.PersonalTagBean;
-import com.android.biubiu.utils.LogUtil;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.GridView;
 import android.widget.TextView;
 
 public class UserPagerTagAdapter extends BaseAdapter{

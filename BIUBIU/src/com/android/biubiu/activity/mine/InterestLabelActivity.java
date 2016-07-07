@@ -2,54 +2,41 @@ package com.android.biubiu.activity.mine;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.xutils.x;
-import org.xutils.common.Callback.CancelledException;
 import org.xutils.common.Callback.CommonCallback;
 import org.xutils.http.RequestParams;
 
 import cc.imeetu.iu.R;
 
 import com.android.biubiu.BaseActivity;
-import com.android.biubiu.MainActivity;
 import com.android.biubiu.adapter.GridViewLableAdapter;
-import com.android.biubiu.adapter.InterestLableListViewAdapter;
 
 
-
-import com.android.biubiu.utils.Constants;
-import com.android.biubiu.utils.DensityUtil;
-import com.android.biubiu.utils.HttpContants;
-import com.android.biubiu.utils.HttpUtils;
-import com.android.biubiu.utils.LogUtil;
-import com.android.biubiu.utils.NetUtils;
-import com.android.biubiu.utils.SharePreferanceUtils;
-import com.android.biubiu.utils.Utils;
+import com.android.biubiu.component.util.Constants;
+import com.android.biubiu.component.util.DensityUtil;
+import com.android.biubiu.transport.http.HttpContants;
+import com.android.biubiu.component.util.LogUtil;
+import com.android.biubiu.component.util.NetUtils;
+import com.android.biubiu.component.util.SharePreferanceUtils;
 import com.android.biubiu.bean.InterestByCateBean;
 import com.android.biubiu.bean.InterestTagBean;
 
 
-import com.android.biubiu.bean.PersonalTagBean;
 import com.android.biubiu.bean.UserInfoBean;
-import com.avos.avoscloud.LogUtil.log;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -61,7 +48,6 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 
 public class InterestLabelActivity extends BaseActivity {

@@ -1,12 +1,8 @@
-package com.android.biubiu.utils;
+package com.android.biubiu.component.util;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
+
 import com.android.biubiu.bean.DotBean;
-import android.graphics.SumPathEffect;
-import android.util.Log;
 
 public class BiuUtil {
 	/**

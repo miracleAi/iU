@@ -35,13 +35,13 @@ import com.android.biubiu.fragment.DiscoveryFragment;
 import com.android.biubiu.fragment.MenuRightFragment;
 import com.android.biubiu.sqlite.PushMatchDao;
 import com.android.biubiu.transport.xg.utils.XGUtils;
-import com.android.biubiu.utils.Constants;
-import com.android.biubiu.utils.HttpContants;
-import com.android.biubiu.utils.HttpRequestUtils;
-import com.android.biubiu.utils.LocationUtils;
-import com.android.biubiu.utils.LogUtil;
-import com.android.biubiu.utils.LoginUtils;
-import com.android.biubiu.utils.SharePreferanceUtils;
+import com.android.biubiu.component.util.Constants;
+import com.android.biubiu.transport.http.HttpContants;
+import com.android.biubiu.component.util.HttpRequestUtils;
+import com.android.biubiu.component.util.LocationUtils;
+import com.android.biubiu.component.util.LogUtil;
+import com.android.biubiu.component.util.LoginUtils;
+import com.android.biubiu.component.util.SharePreferanceUtils;
 import com.umeng.analytics.MobclickAgent;
 import com.umeng.update.UmengUpdateAgent;
 import com.umeng.update.UmengUpdateListener;
@@ -218,7 +218,7 @@ public class MainActivity extends FragmentActivity implements AMapLocationListen
         }
         /*PushManager.startWork(getApplicationContext(), PushConstants.LOGIN_TYPE_API_KEY, "v3FkYC4w53w46uuvw9L6qBF1");
         pushDao = new PushMatchDao(getApplicationContext());
-        if (!com.android.biubiu.utils.NetUtils.isNetworkConnected(getApplicationContext())) {
+        if (!com.android.biubiu.component.util.NetUtils.isNetworkConnected(getApplicationContext())) {
             Toast.makeText(getApplicationContext(), "网络未连接", Toast.LENGTH_SHORT).show();
         }*/
     }

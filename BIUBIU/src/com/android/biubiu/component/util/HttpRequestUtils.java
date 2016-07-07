@@ -1,11 +1,10 @@
-package com.android.biubiu.utils;
+package com.android.biubiu.component.util;
 
 import android.content.Context;
 import android.util.Log;
 import android.widget.Toast;
 
 import com.android.biubiu.callback.HttpCallback;
-import com.android.biubiu.common.Constant;
 
 import org.json.JSONException;
 import org.json.JSONObject;

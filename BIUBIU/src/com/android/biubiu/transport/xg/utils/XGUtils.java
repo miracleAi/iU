@@ -4,7 +4,7 @@ import android.content.Context;
 import android.util.Log;
 
 import com.android.biubiu.transport.xg.constant.XGConstant;
-import com.android.biubiu.utils.SharePreferanceUtils;
+import com.android.biubiu.component.util.SharePreferanceUtils;
 import com.tencent.android.tpush.XGIOperateCallback;
 import com.tencent.android.tpush.XGPushManager;
 

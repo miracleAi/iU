@@ -3,7 +3,7 @@ package com.android.biubiu.bean;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-import com.android.biubiu.utils.Constants;
+import com.android.biubiu.component.util.Constants;
 import com.google.gson.annotations.SerializedName;
 
 public class UserInfoBean implements Serializable{

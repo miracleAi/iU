@@ -2,51 +2,32 @@ package com.android.biubiu.activity.mine;
 
 
 
-import java.io.IOException;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Locale;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.xutils.x;
-import org.xutils.common.Callback.CancelledException;
 import org.xutils.common.Callback.CommonCallback;
 import org.xutils.http.RequestParams;
 
 import cc.imeetu.iu.R;
 
 import com.android.biubiu.BaseActivity;
-import com.android.biubiu.activity.RegisterOneActivity;
 import com.android.biubiu.bean.UserInfoBean;
-import com.android.biubiu.common.MyDatePicker;
 import com.android.biubiu.common.city.ArrayWheelAdapter;
 import com.android.biubiu.common.city.OnWheelChangedListener;
 import com.android.biubiu.common.city.WheelView;
-import com.android.biubiu.utils.CaculateDateUtils;
-import com.android.biubiu.utils.DateUtils;
-import com.android.biubiu.utils.HttpContants;
-import com.android.biubiu.utils.HttpUtils;
-import com.android.biubiu.utils.LogUtil;
-import com.android.biubiu.utils.SharePreferanceUtils;
-import com.avos.avoscloud.okhttp.Callback;
-import com.avos.avoscloud.okhttp.Request;
-import com.avos.avoscloud.okhttp.Response;
+import com.android.biubiu.component.util.CaculateDateUtils;
+import com.android.biubiu.component.util.DateUtils;
+import com.android.biubiu.transport.http.HttpContants;
+import com.android.biubiu.component.util.LogUtil;
+import com.android.biubiu.component.util.SharePreferanceUtils;
 
 import android.os.Bundle;
-import android.app.Activity;
-import android.app.DatePickerDialog;
-import android.app.DatePickerDialog.OnDateSetListener;
 import android.content.Intent;
-import android.text.format.Time;
-import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.DatePicker;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class ChangeBrithdayActivity extends BaseActivity implements OnClickListener,OnWheelChangedListener{
 	// 控件相关

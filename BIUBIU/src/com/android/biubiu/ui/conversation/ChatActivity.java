@@ -8,17 +8,20 @@ import android.widget.ListView;
 import com.android.biubiu.BaseActivity;
 import com.android.biubiu.component.ChatInput;
 import com.android.biubiu.component.title.TopTitleView;
+import com.tencent.TIMConversationType;
 import com.tencent.TIMMessage;
 
 import java.util.List;
 
 import cc.imeetu.iu.R;
+import cc.imeetu.iu.timlibrary.presentation.presenter.ChatPresenter;
 import cc.imeetu.iu.timlibrary.presentation.viewfeatures.ChatView;
 
 public class ChatActivity extends BaseActivity implements ChatView {
     private TopTitleView mToptitle;
     private ChatInput mChatinput;
     private ListView mChatListview;
+    private ChatPresenter mPresenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +51,7 @@ public class ChatActivity extends BaseActivity implements ChatView {
 
     private void initData() {
         mChatinput.setChatView(this);
+        mPresenter = new ChatPresenter(this, "", TIMConversationType.C2C);
     }
 
     @Override

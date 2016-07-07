@@ -28,10 +28,10 @@ import com.android.biubiu.transport.http.response.community.SimpleRespData;
 import com.android.biubiu.chat.MyHintDialog;
 import com.android.biubiu.common.Constant;
 import com.android.biubiu.sqlite.SchoolDao;
-import com.android.biubiu.utils.CommonUtils;
-import com.android.biubiu.utils.DateUtils;
-import com.android.biubiu.utils.HttpContants;
-import com.android.biubiu.utils.SharePreferanceUtils;
+import com.android.biubiu.component.util.CommonUtils;
+import com.android.biubiu.component.util.DateUtils;
+import com.android.biubiu.transport.http.HttpContants;
+import com.android.biubiu.component.util.SharePreferanceUtils;
 import com.google.gson.reflect.TypeToken;
 import com.squareup.picasso.Picasso;
 

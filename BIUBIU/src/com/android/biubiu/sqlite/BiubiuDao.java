@@ -6,10 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.android.biubiu.bean.BiuBean;
-import com.android.biubiu.bean.UserBean;
-import com.android.biubiu.common.Constant;
-import com.android.biubiu.utils.Constants;
-import com.android.biubiu.utils.SharePreferanceUtils;
+import com.android.biubiu.component.util.Constants;
 
 import java.util.ArrayList;
 import java.util.List;

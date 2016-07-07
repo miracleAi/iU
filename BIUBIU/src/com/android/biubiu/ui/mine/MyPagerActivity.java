@@ -81,12 +81,12 @@ import com.android.biubiu.common.CommonDialog;
 import com.android.biubiu.sqlite.CityDao;
 import com.android.biubiu.sqlite.SchoolDao;
 import com.android.biubiu.sqlite.UserDao;
-import com.android.biubiu.utils.Constants;
-import com.android.biubiu.utils.DensityUtil;
-import com.android.biubiu.utils.HttpContants;
-import com.android.biubiu.utils.LogUtil;
-import com.android.biubiu.utils.NetUtils;
-import com.android.biubiu.utils.SharePreferanceUtils;
+import com.android.biubiu.component.util.Constants;
+import com.android.biubiu.component.util.DensityUtil;
+import com.android.biubiu.transport.http.HttpContants;
+import com.android.biubiu.component.util.LogUtil;
+import com.android.biubiu.component.util.NetUtils;
+import com.android.biubiu.component.util.SharePreferanceUtils;
 import com.android.biubiu.view.MyGridView;
 import com.google.gson.Gson;
 

@@ -13,8 +13,8 @@ import com.android.biubiu.BeginGuiderActivity;
 import com.android.biubiu.activity.LoginOrRegisterActivity;
 import com.android.biubiu.ui.mine.MyPagerActivity;
 import com.android.biubiu.activity.mine.MainSetActivity;
-import com.android.biubiu.utils.LoginUtils;
-import com.android.biubiu.utils.SharePreferanceUtils;
+import com.android.biubiu.component.util.LoginUtils;
+import com.android.biubiu.component.util.SharePreferanceUtils;
 
 import android.content.Intent;
 import android.os.Bundle;

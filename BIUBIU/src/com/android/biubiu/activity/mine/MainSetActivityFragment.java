@@ -18,9 +18,9 @@ import com.android.biubiu.common.CommonDialog;
 import com.android.biubiu.common.Constant;
 import com.android.biubiu.component.title.TopTitleView;
 import com.android.biubiu.transport.xg.utils.XGUtils;
-import com.android.biubiu.utils.HttpContants;
-import com.android.biubiu.utils.NetUtils;
-import com.android.biubiu.utils.SharePreferanceUtils;
+import com.android.biubiu.transport.http.HttpContants;
+import com.android.biubiu.component.util.NetUtils;
+import com.android.biubiu.component.util.SharePreferanceUtils;
 import com.avos.avoscloud.LogUtil;
 import com.baidu.android.pushservice.PushManager;
 import com.google.gson.Gson;
@@ -240,8 +240,8 @@ public class MainSetActivityFragment extends Fragment implements View.OnClickLis
             public void onError(Throwable ex, boolean arg1) {
                 // TODO Auto-generated method stub
                 Toast.makeText(x.app(), "保存失败", Toast.LENGTH_SHORT).show();
-                com.android.biubiu.utils.LogUtil.d("mytest", ex.getMessage() + "");
-                com.android.biubiu.utils.LogUtil.d("mytest", ex.getCause() + "");
+                com.android.biubiu.component.util.LogUtil.d("mytest", ex.getMessage() + "");
+                com.android.biubiu.component.util.LogUtil.d("mytest", ex.getCause() + "");
             }
 
             @Override
@@ -253,7 +253,7 @@ public class MainSetActivityFragment extends Fragment implements View.OnClickLis
             @Override
             public void onSuccess(String arg0) {
                 // TODO Auto-generated method stub
-                com.android.biubiu.utils.LogUtil.d("mytest", "updateset--" + arg0);
+                com.android.biubiu.component.util.LogUtil.d("mytest", "updateset--" + arg0);
                 try {
                     JSONObject jsons = new JSONObject(arg0);
                     String state = jsons.getString("state");
@@ -357,7 +357,7 @@ public class MainSetActivityFragment extends Fragment implements View.OnClickLis
                 try {
                     jsons = new JSONObject(arg0);
                     String code = jsons.getString("state");
-                    com.android.biubiu.utils.LogUtil.d("set", "" + code);
+                    com.android.biubiu.component.util.LogUtil.d("set", "" + code);
                     if (!code.equals("200")) {
                         String error = jsons.getString("error");
                         Toast.makeText(x.app(), error, Toast.LENGTH_SHORT).show();

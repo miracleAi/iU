@@ -8,7 +8,7 @@ import com.android.biubiu.MainActivity;
 import com.android.biubiu.adapter.GuildAdapter;
 import com.android.biubiu.fragment.GuildFragment;
 import com.android.biubiu.otherview.PageIndicator;
-import com.android.biubiu.utils.SharePreferanceUtils;
+import com.android.biubiu.component.util.SharePreferanceUtils;
 
 import android.content.Intent;
 import android.os.Bundle;

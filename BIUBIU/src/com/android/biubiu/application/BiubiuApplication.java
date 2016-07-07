@@ -7,9 +7,9 @@ import cn.beecloud.BCPay;
 import cn.beecloud.BeeCloud;
 
 import com.android.biubiu.crashhandle.UEHandler;
-import com.android.biubiu.utils.CommonUtils;
+import com.android.biubiu.component.util.CommonUtils;
 import com.avos.avoscloud.AVOSCloud;
-import com.android.biubiu.utils.LogUtil;
+import com.android.biubiu.component.util.LogUtil;
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.Application;

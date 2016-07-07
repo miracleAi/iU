@@ -5,22 +5,20 @@ package com.android.biubiu.activity;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.xutils.x;
-import org.xutils.common.Callback.CancelledException;
 import org.xutils.common.Callback.CommonCallback;
 import org.xutils.http.RequestParams;
 
 import cc.imeetu.iu.R;
 
 import com.android.biubiu.BaseActivity;
-import com.android.biubiu.MainActivity;
 import com.android.biubiu.UserAgreementActivity;
 import com.android.biubiu.common.Constant;
 import com.android.biubiu.transport.xg.utils.XGUtils;
-import com.android.biubiu.utils.HttpContants;
-import com.android.biubiu.utils.LogUtil;
-import com.android.biubiu.utils.NetUtils;
-import com.android.biubiu.utils.SharePreferanceUtils;
-import com.android.biubiu.utils.Utils;
+import com.android.biubiu.transport.http.HttpContants;
+import com.android.biubiu.component.util.LogUtil;
+import com.android.biubiu.component.util.NetUtils;
+import com.android.biubiu.component.util.SharePreferanceUtils;
+import com.android.biubiu.component.util.Utils;
 import com.avos.avoscloud.LogUtil.log;
 import com.umeng.analytics.MobclickAgent;
 

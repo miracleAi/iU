@@ -1,4 +1,4 @@
-package com.android.biubiu.utils;
+package com.android.biubiu.transport.http;
 
 public class HttpContants {
     //正式服务器

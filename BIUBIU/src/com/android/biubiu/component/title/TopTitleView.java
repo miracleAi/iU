@@ -15,7 +15,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.android.biubiu.utils.DensityUtil;
+import com.android.biubiu.component.util.DensityUtil;
 
 import cc.imeetu.iu.R;
 

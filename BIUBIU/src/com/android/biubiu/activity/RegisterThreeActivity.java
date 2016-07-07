@@ -1,9 +1,5 @@
 package com.android.biubiu.activity;
 
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.xutils.x;
@@ -17,8 +13,8 @@ import cc.imeetu.iu.R;
 
 import com.android.biubiu.BaseActivity;
 import com.android.biubiu.common.Umutils;
-import com.android.biubiu.utils.HttpContants;
-import com.android.biubiu.utils.NetUtils;
+import com.android.biubiu.transport.http.HttpContants;
+import com.android.biubiu.component.util.NetUtils;
 import com.avos.avoscloud.AVException;
 import com.avos.avoscloud.AVMobilePhoneVerifyCallback;
 import com.avos.avoscloud.AVOSCloud;

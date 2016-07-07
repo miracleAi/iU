@@ -1,4 +1,4 @@
-package com.android.biubiu.utils;
+package com.android.biubiu.component.util;
 
 import com.amap.api.location.AMapLocation;
 
