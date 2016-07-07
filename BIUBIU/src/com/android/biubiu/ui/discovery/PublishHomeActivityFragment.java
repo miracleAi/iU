@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
-import com.android.biubiu.BaseFragment;
+import com.android.biubiu.ui.overall.BaseFragment;
 import com.android.biubiu.common.Constant;
 
 import java.util.ArrayList;

@@ -6,7 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.android.biubiu.BaseFragment;
+import com.android.biubiu.ui.overall.BaseFragment;
 
 import cc.imeetu.iu.R;
 

@@ -8,13 +8,13 @@ import cc.imeetu.iu.R;
 import cn.sharesdk.framework.ShareSDK;
 import cn.sharesdk.onekeyshare.OnekeyShare;
 
-import com.android.biubiu.AboutOurActivity;
-import com.android.biubiu.BeginGuiderActivity;
-import com.android.biubiu.activity.LoginOrRegisterActivity;
+import com.android.biubiu.ui.mine.child.AboutOurActivity;
+import com.android.biubiu.ui.overall.BeginGuiderActivity;
+import com.android.biubiu.ui.overall.LoginOrRegisterActivity;
 import com.android.biubiu.ui.mine.MyPagerActivity;
-import com.android.biubiu.activity.mine.MainSetActivity;
 import com.android.biubiu.component.util.LoginUtils;
 import com.android.biubiu.component.util.SharePreferanceUtils;
+import com.android.biubiu.ui.mine.child.MainSetActivity;
 
 import android.content.Intent;
 import android.os.Bundle;

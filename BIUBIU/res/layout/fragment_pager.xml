@@ -935,7 +935,7 @@
                         android:background="@color/white"
                         android:paddingBottom="14dp">
 
-                        <com.android.biubiu.view.MyGridView
+                        <com.android.biubiu.component.customview.MyGridView
                             android:id="@+id/personal_tag_gv"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -1014,7 +1014,7 @@
                         android:background="@color/white"
                         android:paddingBottom="14dp">
 
-                        <com.android.biubiu.view.MyGridView
+                        <com.android.biubiu.component.customview.MyGridView
                             android:id="@+id/interest_tag_gv"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"

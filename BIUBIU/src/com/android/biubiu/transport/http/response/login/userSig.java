@@ -3,7 +3,7 @@ package com.android.biubiu.transport.http.response.login;
 /**
  * Created by yanghj on 16/7/1.
  */
-public class UserSig {
+class UserSig {
     private String sig;
     private long expire;
     private long init;

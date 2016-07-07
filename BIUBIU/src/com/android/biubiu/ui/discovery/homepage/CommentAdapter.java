@@ -25,11 +25,11 @@ import com.android.biubiu.transport.http.response.base.Data;
 import com.android.biubiu.transport.http.response.community.Comment;
 import com.android.biubiu.transport.http.response.community.SimpleRespData;
 import com.android.biubiu.chat.MyHintDialog;
-import com.android.biubiu.sqlite.SchoolDao;
 import com.android.biubiu.component.util.CommonUtils;
 import com.android.biubiu.component.util.DateUtils;
 import com.android.biubiu.transport.http.HttpContants;
 import com.android.biubiu.component.util.SharePreferanceUtils;
+import com.android.biubiu.persistence.SchoolDao;
 import com.google.gson.reflect.TypeToken;
 
 import org.json.JSONException;

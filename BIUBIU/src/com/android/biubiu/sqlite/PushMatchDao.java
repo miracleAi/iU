@@ -5,6 +5,9 @@ import java.util.List;
 
 import com.android.biubiu.bean.UserBean;
 import com.android.biubiu.bean.UserFriends;
+import com.android.biubiu.persistence.base.DbConstents;
+import com.android.biubiu.persistence.base.MySqliteDBHelper;
+
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -19,7 +22,7 @@ public class PushMatchDao {
 	public void insertOrReplacePush(UserBean user) {
 		SQLiteDatabase db = helper.getReadableDatabase();
 		db.execSQL(
-				"insert or replace into "+DbConstents.PUSH_MATCH+" values("
+				"insert or replace into "+ DbConstents.PUSH_MATCH+" values("
 						+ "?,?)",
 						new Object[] {user.getChatId(),System.currentTimeMillis()});
 		db.close();

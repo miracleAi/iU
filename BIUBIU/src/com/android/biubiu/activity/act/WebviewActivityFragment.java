@@ -1,6 +1,5 @@
 package com.android.biubiu.activity.act;
 
-import android.app.Fragment;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -10,7 +9,7 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
-import com.android.biubiu.BaseFragment;
+import com.android.biubiu.ui.overall.BaseFragment;
 import com.android.biubiu.common.Constant;
 import com.android.biubiu.component.title.TopTitleView;
 

@@ -8,10 +8,10 @@ import org.xutils.image.ImageOptions;
 
 import cc.imeetu.iu.R;
 
-import com.android.biubiu.activity.mine.UserPhotoScanActivity;
 import com.android.biubiu.bean.UserPhotoBean;
 import com.android.biubiu.component.util.DensityUtil;
 import com.android.biubiu.component.util.DisplayUtils;
+import com.android.biubiu.ui.mine.child.UserPhotoScanActivity;
 
 import android.content.Context;
 import android.content.Intent;

@@ -381,7 +381,7 @@
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
 
         <activity
-            android:name="com.android.biubiu.WelcomeActivity"
+            android:name="com.android.biubiu.ui.overall.WelcomeActivity"
             android:label="@string/app_name"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
@@ -393,32 +393,32 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.android.biubiu.MainActivity"
+            android:name="com.android.biubiu.ui.overall.MainActivity"
             android:label="@string/app_name"
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.android.biubiu.activity.GuildActivity"
+            android:name="com.android.biubiu.ui.overall.GuildActivity"
             android:label="@string/title_activity_biu_biu_send"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.android.biubiu.activity.LoginOrRegisterActivity"
+            android:name="com.android.biubiu.ui.overall.LoginOrRegisterActivity"
             android:label="@string/title_activity_biu_biu_send"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.android.biubiu.activity.LoginActivity"
+            android:name="com.android.biubiu.ui.overall.LoginActivity"
             android:label="@string/title_activity_biu_biu_send"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.android.biubiu.activity.RegisterOneActivity"
+            android:name="com.android.biubiu.ui.overall.RegisterOneActivity"
             android:label="@string/title_activity_biu_biu_send"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.android.biubiu.activity.RegisterTwoActivity"
+            android:name="com.android.biubiu.ui.overall.RegisterTwoActivity"
             android:label="@string/title_activity_biu_biu_send"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.android.biubiu.activity.RegisterThreeActivity"
+            android:name="com.android.biubiu.ui.overall.RegisterThreeActivity"
             android:label="@string/title_activity_biu_biu_send"
             android:screenOrientation="portrait" />
         <activity
@@ -430,47 +430,47 @@
             android:label="@string/title_activity_biu_biu_send"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.android.biubiu.activity.mine.ChangeSchoolActivity"
+            android:name="com.android.biubiu.ui.mine.child.ChangeSchoolActivity"
             android:label="@string/title_activity_change_school"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.android.biubiu.activity.mine.ChangeBrithdayActivity"
+            android:name="com.android.biubiu.ui.mine.child.ChangeBrithdayActivity"
             android:label="@string/title_activity_change_brithday"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.android.biubiu.activity.mine.ScanUserHeadActivity"
+            android:name="com.android.biubiu.ui.mine.child.ScanUserHeadActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.android.biubiu.activity.mine.ChangeCityActivity"
+            android:name="com.android.biubiu.ui.mine.child.ChangeCityActivity"
             android:label="@string/title_activity_change_city_main"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.android.biubiu.activity.mine.ChangeCompanyActivity"
+            android:name="com.android.biubiu.ui.mine.child.ChangeCompanyActivity"
             android:label="@string/title_activity_change_city_main"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.android.biubiu.activity.mine.ChangeConstellationActivity"
+            android:name="com.android.biubiu.ui.mine.child.ChangeConstellationActivity"
             android:label="@string/title_activity_change_constellation"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.android.biubiu.activity.mine.ChangeHeightWeightActivity"
+            android:name="com.android.biubiu.ui.mine.child.ChangeHeightWeightActivity"
             android:label="@string/title_activity_height_weight"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.android.biubiu.activity.mine.ChangeIdentityProfessionActivity"
+            android:name="com.android.biubiu.ui.mine.child.ChangeIdentityProfessionActivity"
             android:label="@string/title_activity_change_identity_profession"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.android.biubiu.activity.mine.UserPhotoScanActivity"
+            android:name="com.android.biubiu.ui.mine.child.UserPhotoScanActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.android.biubiu.activity.mine.AboutMeActivity"
+            android:name="com.android.biubiu.ui.mine.child.AboutMeActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.android.biubiu.activity.mine.MainSetActivity"
+            android:name="com.android.biubiu.ui.mine.child.MainSetActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait" />
         <activity
@@ -478,7 +478,7 @@
             android:label="@string/title_activity_match_setting"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.android.biubiu.BeginGuiderActivity"
+            android:name="com.android.biubiu.ui.overall.BeginGuiderActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait" />
         <activity
@@ -486,27 +486,27 @@
             android:label="@string/title_activity_match_setting"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.android.biubiu.activity.mine.PersonalityTagActivity"
+            android:name="com.android.biubiu.ui.mine.child.PersonalityTagActivity"
             android:label="@string/title_activity_personality_tag"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.android.biubiu.activity.mine.InterestLabelActivity"
+            android:name="com.android.biubiu.ui.mine.child.InterestLabelActivity"
             android:label="@string/title_activity_interest_label"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.android.biubiu.activity.mine.SuperMainInfoActivity"
+            android:name="com.android.biubiu.ui.mine.child.SuperMainInfoActivity"
             android:label="@string/title_activity_interest_label"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.android.biubiu.activity.mine.ChangeHomeTwonActivity"
+            android:name="com.android.biubiu.ui.mine.child.ChangeHomeTwonActivity"
             android:label="@string/title_activity_change_home_twon"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.android.biubiu.activity.mine.ChangeNameActivity"
+            android:name="com.android.biubiu.ui.mine.child.ChangeNameActivity"
             android:label="@string/title_activity_change_name"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.android.biubiu.activity.ForgetPasswordActivity"
+            android:name="com.android.biubiu.ui.overall.ForgetPasswordActivity"
             android:label="@string/title_activity_forget_password"
             android:screenOrientation="portrait" />
         <activity
@@ -514,11 +514,11 @@
             android:label="@string/title_activity_user_list"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.android.biubiu.AboutOurActivity"
+            android:name="com.android.biubiu.ui.mine.child.AboutOurActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.android.biubiu.UserAgreementActivity"
+            android:name="com.android.biubiu.ui.overall.UserAgreementActivity"
             android:label="@string/title_activity_user_agreement" />
         <activity
             android:name="com.android.biubiu.activity.act.ActivityListActivity"
@@ -550,7 +550,7 @@
             android:name="com.android.biubiu.ui.discovery.homepage.PostsListByTagActivity"
             android:label="@string/title_activity_posts_list_by_tag" />
         <activity
-            android:name="com.android.biubiu.activity.mine.UserDynamicActivity"
+            android:name="com.android.biubiu.ui.mine.child.UserDynamicActivity"
             android:label="@string/title_activity_user_dynamic" />
         <activity
             android:name="com.android.biubiu.ui.discovery.CommNotifyActivity"
