@@ -26,6 +26,8 @@ import com.amap.api.location.AMapLocationClient;
 import com.amap.api.location.AMapLocationClientOption;
 import com.amap.api.location.AMapLocationClientOption.AMapLocationMode;
 import com.amap.api.location.AMapLocationListener;
+import com.android.biubiu.ui.conversation.ConversationFragment;
+import com.android.biubiu.ui.half.HalfFragment;
 import com.android.biubiu.ui.mine.PagerFragment;
 import com.android.biubiu.callback.HttpCallback;
 import com.android.biubiu.component.indicator.FragmentIndicator;
@@ -74,7 +76,7 @@ public class MainActivity extends FragmentActivity implements AMapLocationListen
     //点击后需要显示的引导页
     int guidIndex = 2;
     UpdateResponse updateInfoAll;
-    PushMatchDao pushDao;
+    //    PushMatchDao pushDao;
     private ReceiveBroadCast receiveBroadCast;  //广播实例
 
     private FragmentIndicator mIndicator;
@@ -87,23 +89,10 @@ public class MainActivity extends FragmentActivity implements AMapLocationListen
             FragmentTransaction transaction = mFragmentManager.beginTransaction();
             for (Indicator i : mIndicators) {
                 if (id == i.getId()) {
-                    Fragment f = null;
-                    if (i.getTitle() == R.string.left_menu_biubiu) {
-                       /* if (mReverse) {
-                            f = mFragmentManager.findFragmentByTag(getResources().getString(R.string.tab_history));
-                        } else {*/
-                            f = mFragmentManager.findFragmentByTag(getResources().getString(R.string.left_menu_biubiu));
-                       // }
-                    } else {
-                        f = mFragmentManager.findFragmentByTag(getResources().getString(i.getTitle()));
-                    }
+                    Fragment f = mFragmentManager.findFragmentByTag(getResources().getString(i.getTitle()));
                     if (f != null) {
-                       /* if (mReverse && id == R.id.tab_biu) {
-                            transaction.show(f);
-                        } else {*/
-                            transaction.show(i.getFragment());
-                            i.setClickTime(i.getClickTime() + 1);
-                        //}
+                        transaction.show(i.getFragment());
+                        i.setClickTime(i.getClickTime() + 1);
                         if (id == R.id.tab_mine) {
                             ((PagerFragment) f).updateHeadStatus();
                         }
@@ -114,23 +103,10 @@ public class MainActivity extends FragmentActivity implements AMapLocationListen
                         }
                     }
                 } else {
-                    Fragment f = null;
-                    if (i.getTitle() == R.string.left_menu_biubiu) {
-                        /*if (mReverse && i.getId() == R.id.tab_biu) {
-                            f = mFragmentManager.findFragmentByTag(getResources().getString(R.string.tab_history));
-                        } else {*/
-                            f = mFragmentManager.findFragmentByTag(getResources().getString(R.string.left_menu_biubiu));
-                       // }
-                    } else {
-                        f = mFragmentManager.findFragmentByTag(getResources().getString(i.getTitle()));
-                    }
+                    Fragment f = mFragmentManager.findFragmentByTag(getResources().getString(i.getTitle()));
                     if (f != null) {
-                        /*if (mReverse && i.getId() == R.id.tab_biu) {
-                            transaction.hide(f);
-                        } else {*/
-                            transaction.hide(i.getFragment());
-                            i.setClickTime(0);
-                       // }
+                        transaction.hide(i.getFragment());
+                        i.setClickTime(0);
                     }
                 }
             }
@@ -141,7 +117,6 @@ public class MainActivity extends FragmentActivity implements AMapLocationListen
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_main);
         initView();
         initData();
@@ -178,18 +153,20 @@ public class MainActivity extends FragmentActivity implements AMapLocationListen
     private void initFragments() {
         mFragmentManager = getSupportFragmentManager();
 
-        Indicator message = new Indicator(R.id.tab_message, R.string.left_menu_message, R.drawable.main_tab_icon_mes_nor,
-                R.drawable.main_tab_icon_mes_light, new MenuRightFragment());
-        Indicator biu = new Indicator(R.id.tab_biu, R.string.left_menu_biubiu, R.drawable.main_tab_icon_biu_nor,
-                R.drawable.main_tab_icon_biu_light, new BiuFragment());
-        Indicator mine = new Indicator(R.id.tab_mine, R.string.mine, R.drawable.main_tab_icon_mine_nor,
-                R.drawable.main_tab_icon_mine_light, new PagerFragment());
+        Indicator half = new Indicator(R.id.tab_half, R.string.half, R.drawable.tab_icon_found_nor,
+                R.drawable.tab_icon_found_light, new HalfFragment());
         Indicator discovery = new Indicator(R.id.tab_discovery, R.string.discovery, R.drawable.tab_icon_found_nor,
                 R.drawable.tab_icon_found_light, new DiscoveryFragment());
+        Indicator conversation = new Indicator(R.id.tab_message, R.string.left_menu_message, R.drawable.main_tab_icon_mes_nor,
+                R.drawable.main_tab_icon_mes_light, new ConversationFragment());
+        /*Indicator biu = new Indicator(R.id.tab_biu, R.string.left_menu_biubiu, R.drawable.main_tab_icon_biu_nor,
+                R.drawable.main_tab_icon_biu_light, new BiuFragment());*/
+        Indicator mine = new Indicator(R.id.tab_mine, R.string.mine, R.drawable.main_tab_icon_mine_nor,
+                R.drawable.main_tab_icon_mine_light, new PagerFragment());
 
-        mIndicators.add(biu);
+        mIndicators.add(half);
         mIndicators.add(discovery);
-        mIndicators.add(message);
+        mIndicators.add(conversation);
         mIndicators.add(mine);
 
         for (Indicator i : mIndicators) {
@@ -197,16 +174,16 @@ public class MainActivity extends FragmentActivity implements AMapLocationListen
         }
 
         mFragmentManager.beginTransaction()
-                .add(R.id.layout_body, message.getFragment(), getResources().getString(R.string.left_menu_message))
-                .add(R.id.layout_body, biu.getFragment(), getResources().getString(R.string.left_menu_biubiu))
+                .add(R.id.layout_body, conversation.getFragment(), getResources().getString(R.string.left_menu_message))
+                .add(R.id.layout_body, half.getFragment(), getResources().getString(R.string.half))
                 .add(R.id.layout_body, discovery.getFragment(), getResources().getString(R.string.discovery))
                 .commit();
         mFragmentManager.executePendingTransactions();
 
-        mIndicator.setDefaultView(R.id.tab_biu);
-        mIndicator.setIndicator(R.id.tab_biu);
+        mIndicator.setDefaultView(R.id.tab_half);
+        mIndicator.setIndicator(R.id.tab_half);
         mIndicator.setOnIndicateListener(mOnIndicateListener);
-        mOnIndicateListener.onIndicate(R.id.tab_biu);
+        mOnIndicateListener.onIndicate(R.id.tab_half);
     }
 
     /**
@@ -290,7 +267,6 @@ public class MainActivity extends FragmentActivity implements AMapLocationListen
             requestObject.put("activity_time", System.currentTimeMillis());
             requestObject.put("parameters", "activity_time");
         } catch (JSONException e) {
-
             e.printStackTrace();
         }
         params.addBodyParameter("data", requestObject.toString());
@@ -353,7 +329,7 @@ public class MainActivity extends FragmentActivity implements AMapLocationListen
                         case 4:
                             SharePreferanceUtils.getInstance().putShared(getApplicationContext(), SharePreferanceUtils.IS_SCAN_BEGINGUID, true);
                             beginGuidLayout.setVisibility(View.GONE);
-                            ((BiuFragment) mIndicators.get(0).getFragment()).getAd();
+//                            ((BiuFragment) mIndicators.get(0).getFragment()).getAd();
                             break;
                         default:
                             break;
@@ -388,11 +364,11 @@ public class MainActivity extends FragmentActivity implements AMapLocationListen
             @Override
             public void callback(JSONObject object, String error) {
                 if (object != null) {
-                   // Fragment fMsg = mFragmentManager.findFragmentByTag(getResources().getString(R.string.left_menu_message));
+                    // Fragment fMsg = mFragmentManager.findFragmentByTag(getResources().getString(R.string.left_menu_message));
                     Fragment fCom = mFragmentManager.findFragmentByTag(getResources().getString(R.string.discovery));
                     try {
                         int notifyNum = object.getInt("noticeCount");
-                       // int biuNum = object.getInt("comBiuCount");
+                        // int biuNum = object.getInt("comBiuCount");
                         if (fCom != null) {
                             ((DiscoveryFragment) fCom).updateNotify(notifyNum);
                         } else {
@@ -405,12 +381,7 @@ public class MainActivity extends FragmentActivity implements AMapLocationListen
                             fMsg = new MenuRightFragment();
                             ((MenuRightFragment) fMsg).updateNewMsg(biuNum);
                         }*/
-                        int cntUnread = notifyNum ;
-                        if (cntUnread > 0) {
-                            ShortcutBadger.applyCount(MainActivity.this, cntUnread);
-                        } else {
-                            ShortcutBadger.applyCount(MainActivity.this, cntUnread);
-                        }
+                        ShortcutBadger.applyCount(MainActivity.this, notifyNum);
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -548,7 +519,7 @@ public class MainActivity extends FragmentActivity implements AMapLocationListen
             locationClient = null;
             locationOption = null;
         }
-        pushDao.deleteAllPush();
+//        pushDao.deleteAllPush();
         unregisterReceiver(receiveBroadCast);
 //		EMClient.getInstance().chatManager().removeMessageListener(msgListener);
     }

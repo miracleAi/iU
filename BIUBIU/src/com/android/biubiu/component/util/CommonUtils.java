@@ -10,11 +10,14 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
 import com.android.biubiu.common.Constant;
+import com.android.biubiu.transport.xg.utils.XGUtils;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import java.text.DecimalFormat;
 import java.util.List;
+
+import cc.imeetu.iu.timlibrary.presentation.event.MessageEvent;
 
 /**
  * Created by meetu on 2016/5/17.
@@ -89,5 +92,19 @@ public class CommonUtils {
             return false;
         }
         return true;
+    }
+
+    /**
+     * 退出登录
+     * @param con
+     */
+    public static void logout(Context con){
+        SharePreferanceUtils.getInstance().putShared(con, SharePreferanceUtils.USER_NAME, "");
+        SharePreferanceUtils.getInstance().putShared(con, SharePreferanceUtils.USER_HEAD, "");
+        SharePreferanceUtils.getInstance().putShared(con, SharePreferanceUtils.USER_CODE, "");
+        SharePreferanceUtils.getInstance().putShared(con, SharePreferanceUtils.TOKEN, "");
+        XGUtils.getInstance(con).unRegisterPush();
+        MessageEvent.getInstance().clear();
+//        FriendshipInfo.getInstance().clear();
     }
 }

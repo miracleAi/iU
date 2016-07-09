@@ -8,13 +8,14 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.android.biubiu.BaseFragment;
+import com.android.biubiu.component.indicator.FragmentIndicator;
 
 import cc.imeetu.iu.R;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class HalfFragment extends BaseFragment {
+public class HalfFragment extends BaseFragment implements FragmentIndicator.OnClickListener{
 
 
     public HalfFragment() {
@@ -29,4 +30,13 @@ public class HalfFragment extends BaseFragment {
         return inflater.inflate(R.layout.fragment_half, container, false);
     }
 
+    @Override
+    public void onTabClick() {
+
+    }
+
+    @Override
+    public void onLeaveTab() {
+
+    }
 }

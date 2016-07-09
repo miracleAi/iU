@@ -7,4 +7,5 @@
     <item name="tab_mine" type="id" />
     <item name="tab_history" type="id" />
     <item name="tab_discovery" type="id" />
+    <item name="tab_half" type="id" />
 </resources>

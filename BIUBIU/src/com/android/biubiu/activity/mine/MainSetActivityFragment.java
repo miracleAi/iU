@@ -17,6 +17,8 @@ import com.android.biubiu.bean.SettingBean;
 import com.android.biubiu.common.CommonDialog;
 import com.android.biubiu.common.Constant;
 import com.android.biubiu.component.title.TopTitleView;
+import com.android.biubiu.component.util.CommonUtils;
+import com.android.biubiu.transport.http.response.base.SimpleData;
 import com.android.biubiu.transport.xg.utils.XGUtils;
 import com.android.biubiu.transport.http.HttpContants;
 import com.android.biubiu.component.util.NetUtils;
@@ -24,6 +26,7 @@ import com.android.biubiu.component.util.SharePreferanceUtils;
 import com.avos.avoscloud.LogUtil;
 import com.baidu.android.pushservice.PushManager;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -334,47 +337,28 @@ public class MainSetActivityFragment extends Fragment implements View.OnClickLis
 
             @Override
             public void onCancelled(CancelledException arg0) {
-                // TODO Auto-generated method stub
 
             }
 
             @Override
             public void onError(Throwable arg0, boolean arg1) {
-                // TODO Auto-generated method stub
                 Toast.makeText(x.app(), arg0.getMessage(), Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onFinished() {
-                // TODO Auto-generated method stub
 
             }
 
             @Override
             public void onSuccess(String arg0) {
-                PushManager.stopWork(getActivity());
-                JSONObject jsons;
-                try {
-                    jsons = new JSONObject(arg0);
-                    String code = jsons.getString("state");
-                    com.android.biubiu.component.util.LogUtil.d("set", "" + code);
-                    if (!code.equals("200")) {
-                        String error = jsons.getString("error");
-                        Toast.makeText(x.app(), error, Toast.LENGTH_SHORT).show();
-                        return;
-                    }
-                    SharePreferanceUtils.getInstance().putShared(getActivity(), SharePreferanceUtils.USER_NAME, "");
-                    SharePreferanceUtils.getInstance().putShared(getActivity(), SharePreferanceUtils.USER_HEAD, "");
-                    SharePreferanceUtils.getInstance().putShared(getActivity(), SharePreferanceUtils.USER_CODE, "");
-                    SharePreferanceUtils.getInstance().putShared(getActivity(), SharePreferanceUtils.TOKEN, "");
-                    XGUtils.getInstance(getActivity()).unRegisterPush();
+                SimpleData response = CommonUtils.parseJsonToObj(arg0, new TypeToken<SimpleData>() {
+                });
+                if (CommonUtils.unifyResponse(Integer.parseInt(response.getState()), getActivity())) {
+                    CommonUtils.logout(getActivity());
                     getActivity().setResult(Constant.EXIT_APP_SUCCESS);
                     getActivity().finish();
-                } catch (JSONException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
                 }
-
             }
         });
 

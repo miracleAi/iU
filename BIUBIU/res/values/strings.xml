@@ -336,6 +336,7 @@
     <string name="male">男</string>
     <string name="female">女</string>
     <string name="age">%1$d岁</string>
+    <!--app2.2开发-->
     <!--chat start-->
     <string name="chat_image">图片</string>
     <string name="chat_file">文件</string>
@@ -346,4 +347,6 @@
     <string name="chat_up_finger">手指上滑，取消发送</string>
     <string name="chat_audio_too_short">录音过短，请重试</string>
     <!--chat end-->
+    <string name="half">一半</string>
+    <!--app2.2开发-->
 </resources>
