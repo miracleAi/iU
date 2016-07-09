@@ -1,6 +1,6 @@
 package com.android.biubiu.adapter;
 
-import com.android.biubiu.ui.overall.GuildFragment;
+import com.android.biubiu.ui.launch.GuildFragment;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;

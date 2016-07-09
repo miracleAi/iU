@@ -15,8 +15,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.android.biubiu.ui.overall.BaseFragment;
-import com.android.biubiu.ui.overall.MainActivity;
+import com.android.biubiu.ui.base.BaseFragment;
+import com.android.biubiu.ui.base.MainActivity;
 import com.android.biubiu.common.Constant;
 import com.android.biubiu.ui.discovery.CardTagActivity;
 import com.android.biubiu.ui.discovery.CommNotifyActivity;

@@ -14,7 +14,7 @@ import android.support.v4.app.NotificationCompat;
 import android.text.TextUtils;
 import android.util.Log;
 
-import com.android.biubiu.ui.overall.MainActivity;
+import com.android.biubiu.ui.base.MainActivity;
 import com.android.biubiu.bean.BiuBean;
 import com.android.biubiu.bean.UserFriends;
 import com.android.biubiu.common.Constant;

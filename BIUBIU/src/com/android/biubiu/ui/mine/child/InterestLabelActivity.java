@@ -21,7 +21,7 @@ import com.android.biubiu.transport.http.HttpContants;
 import com.android.biubiu.component.util.LogUtil;
 import com.android.biubiu.component.util.NetUtils;
 import com.android.biubiu.component.util.SharePreferanceUtils;
-import com.android.biubiu.ui.overall.BaseActivity;
+import com.android.biubiu.ui.base.BaseActivity;
 import com.android.biubiu.bean.InterestByCateBean;
 import com.android.biubiu.bean.InterestTagBean;
 

@@ -4,7 +4,7 @@ import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.Window;
 
-import com.android.biubiu.ui.overall.BaseActivity;
+import com.android.biubiu.ui.base.BaseActivity;
 
 import cc.imeetu.iu.R;
 

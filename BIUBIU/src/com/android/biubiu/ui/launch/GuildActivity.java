@@ -1,4 +1,4 @@
-package com.android.biubiu.ui.overall;
+package com.android.biubiu.ui.launch;
 
 
 
@@ -7,6 +7,7 @@ import cc.imeetu.iu.R;
 import com.android.biubiu.adapter.GuildAdapter;
 import com.android.biubiu.component.util.SharePreferanceUtils;
 import com.android.biubiu.component.circleindecator.PageIndicator;
+import com.android.biubiu.ui.base.MainActivity;
 
 import android.content.Intent;
 import android.os.Bundle;

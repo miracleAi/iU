@@ -1,4 +1,4 @@
-package com.android.biubiu.ui.overall;
+package com.android.biubiu.ui.launch;
 
 
 import java.util.ArrayList;
@@ -29,6 +29,7 @@ import com.alibaba.sdk.android.oss.model.PutObjectRequest;
 import com.alibaba.sdk.android.oss.model.PutObjectResult;
 
 
+import com.android.biubiu.ui.base.MainActivity;
 import com.android.biubiu.ui.mine.child.ChangeSchoolActivity;
 import com.android.biubiu.bean.Citybean;
 import com.android.biubiu.bean.Schools;

@@ -12,7 +12,7 @@ import org.xutils.image.ImageOptions;
 
 import cc.imeetu.iu.R;
 
-import com.android.biubiu.ui.overall.BaseActivity;
+import com.android.biubiu.ui.base.BaseActivity;
 import com.android.biubiu.bean.UserFriends;
 import com.android.biubiu.chat.MyHintDialog.OnDialogClick;
 import com.android.biubiu.sqlite.UserDao;

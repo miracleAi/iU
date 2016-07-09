@@ -1,4 +1,4 @@
-package com.android.biubiu.ui.overall;
+package com.android.biubiu.ui.launch;
 
 import java.io.FileNotFoundException;
 import java.io.Serializable;
@@ -15,6 +15,7 @@ import com.android.biubiu.component.util.CaculateDateUtils;
 import com.android.biubiu.component.util.CloseJianpan;
 import com.android.biubiu.component.util.DateUtils;
 import com.android.biubiu.component.util.Utils;
+import com.android.biubiu.ui.base.BaseActivity;
 
 import android.content.DialogInterface;
 import android.content.Intent;

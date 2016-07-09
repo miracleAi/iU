@@ -53,7 +53,7 @@ import com.alibaba.sdk.android.oss.internal.OSSAsyncTask;
 import com.alibaba.sdk.android.oss.model.PutObjectRequest;
 import com.alibaba.sdk.android.oss.model.PutObjectResult;
 import com.android.biubiu.sqlite.UserDao;
-import com.android.biubiu.ui.overall.BaseActivity;
+import com.android.biubiu.ui.base.BaseActivity;
 import com.android.biubiu.ui.mine.child.AboutMeActivity;
 import com.android.biubiu.ui.mine.child.ChangeBrithdayActivity;
 import com.android.biubiu.ui.mine.child.ChangeCityActivity;

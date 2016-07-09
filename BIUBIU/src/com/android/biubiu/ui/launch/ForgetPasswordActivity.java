@@ -1,4 +1,4 @@
-package com.android.biubiu.ui.overall;
+package com.android.biubiu.ui.launch;
 
 import org.xutils.x;
 import org.xutils.common.Callback.CommonCallback;
@@ -12,6 +12,8 @@ import com.android.biubiu.transport.http.HttpContants;
 import com.android.biubiu.component.util.LogUtil;
 import com.android.biubiu.component.util.NetUtils;
 import com.android.biubiu.component.util.SharePreferanceUtils;
+import com.android.biubiu.ui.base.BaseActivity;
+import com.android.biubiu.ui.base.MainActivity;
 import com.avos.avoscloud.AVException;
 import com.avos.avoscloud.AVMobilePhoneVerifyCallback;
 import com.avos.avoscloud.AVOSCloud;

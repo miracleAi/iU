@@ -7,7 +7,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.android.biubiu.ui.overall.BaseActivity;
+import com.android.biubiu.ui.base.BaseActivity;
 import com.android.biubiu.transport.http.response.community.Posts;
 import com.android.biubiu.callback.HttpCallback;
 import com.android.biubiu.common.Constant;

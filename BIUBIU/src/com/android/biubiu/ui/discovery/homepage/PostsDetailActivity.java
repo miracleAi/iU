@@ -22,7 +22,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.biubiu.ui.overall.BaseActivity;
+import com.android.biubiu.ui.base.BaseActivity;
 import com.android.biubiu.ui.mine.MyPagerActivity;
 import com.android.biubiu.ui.mine.child.UserPhotoScanActivity;
 import com.android.biubiu.bean.UserPhotoBean;

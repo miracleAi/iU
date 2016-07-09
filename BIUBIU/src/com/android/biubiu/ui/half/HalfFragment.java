@@ -6,9 +6,8 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import com.android.biubiu.component.indicator.FragmentIndicator;
-import com.android.biubiu.ui.overall.BaseFragment;
+import com.android.biubiu.ui.base.BaseFragment;
 
 
 import cc.imeetu.iu.R;
