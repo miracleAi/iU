@@ -25,7 +25,7 @@
             android:background="@drawable/guid_start_btn_bg"
             android:visibility="invisible" />
 
-        <com.android.biubiu.otherview.CirclePageIndicator
+        <com.android.biubiu.component.circleindecator.CirclePageIndicator
             android:id="@+id/indicator"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"

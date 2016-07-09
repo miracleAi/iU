@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.android.biubiu.activity.mine.MainSetActivityFragment">
+    tools:context="com.android.biubiu.ui.mine.child.MainSetActivityFragment">
 
     <com.android.biubiu.component.title.TopTitleView
         android:id="@+id/top_title_view"

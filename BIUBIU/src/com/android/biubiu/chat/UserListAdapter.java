@@ -10,7 +10,7 @@ import cc.imeetu.iu.R;
 
 import com.android.biubiu.ui.mine.MyPagerActivity;
 import com.android.biubiu.bean.UserFriends;
-import com.android.biubiu.sqlite.SchoolDao;
+import com.android.biubiu.persistence.SchoolDao;
 
 import android.annotation.SuppressLint;
 import android.content.Context;

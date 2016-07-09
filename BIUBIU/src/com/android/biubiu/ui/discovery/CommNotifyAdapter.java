@@ -13,8 +13,8 @@ import android.widget.TextView;
 
 import com.android.biubiu.ui.mine.MyPagerActivity;
 import com.android.biubiu.transport.http.response.community.CommNotify;
-import com.android.biubiu.sqlite.SchoolDao;
 import com.android.biubiu.component.util.DateUtils;
+import com.android.biubiu.persistence.SchoolDao;
 
 import org.xutils.image.ImageOptions;
 import org.xutils.x;

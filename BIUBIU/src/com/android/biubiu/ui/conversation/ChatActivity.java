@@ -1,11 +1,10 @@
 package com.android.biubiu.ui.conversation;
 
 import android.os.Bundle;
-import android.app.Activity;
 import android.view.View;
 import android.widget.ListView;
 
-import com.android.biubiu.BaseActivity;
+import com.android.biubiu.ui.overall.BaseActivity;
 import com.android.biubiu.component.ChatInput;
 import com.android.biubiu.component.title.TopTitleView;
 import com.tencent.TIMConversationType;

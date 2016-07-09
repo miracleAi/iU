@@ -3,7 +3,7 @@ package com.android.biubiu.activity.act;
 import android.os.Bundle;
 import android.view.Window;
 
-import com.android.biubiu.BaseActivity;
+import com.android.biubiu.ui.overall.BaseActivity;
 import com.android.biubiu.common.Umutils;
 
 import cc.imeetu.iu.R;

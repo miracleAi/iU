@@ -18,7 +18,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.biubiu.ui.mine.MyPagerActivity;
-import com.android.biubiu.activity.mine.UserPhotoScanActivity;
+import com.android.biubiu.ui.mine.child.UserPhotoScanActivity;
 import com.android.biubiu.bean.UserPhotoBean;
 import com.android.biubiu.transport.http.response.base.Data;
 import com.android.biubiu.transport.http.response.community.Img;
@@ -27,11 +27,11 @@ import com.android.biubiu.transport.http.response.community.PraiseData;
 import com.android.biubiu.transport.http.response.community.SimpleRespData;
 import com.android.biubiu.chat.MyHintDialog;
 import com.android.biubiu.common.Constant;
-import com.android.biubiu.sqlite.SchoolDao;
 import com.android.biubiu.component.util.CommonUtils;
 import com.android.biubiu.component.util.DateUtils;
 import com.android.biubiu.transport.http.HttpContants;
 import com.android.biubiu.component.util.SharePreferanceUtils;
+import com.android.biubiu.persistence.SchoolDao;
 import com.google.gson.reflect.TypeToken;
 import com.squareup.picasso.Picasso;
 

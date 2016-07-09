@@ -1,10 +1,9 @@
 package com.android.biubiu.ui.discovery;
 
 import android.os.Bundle;
-import android.app.Activity;
 import android.view.Window;
 
-import com.android.biubiu.BaseActivity;
+import com.android.biubiu.ui.overall.BaseActivity;
 
 import cc.imeetu.iu.R;
 

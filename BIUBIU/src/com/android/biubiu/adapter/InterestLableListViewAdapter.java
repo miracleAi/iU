@@ -4,10 +4,10 @@ import java.util.List;
 
 import cc.imeetu.iu.R;
 
-import com.android.biubiu.activity.mine.InterestLabelActivity;
 import com.android.biubiu.bean.InterestByCateBean;
 import com.android.biubiu.bean.InterestTagBean;
 import com.android.biubiu.component.util.DensityUtil;
+import com.android.biubiu.ui.mine.child.InterestLabelActivity;
 import com.avos.avoscloud.LogUtil.log;
 
 import android.content.Context;

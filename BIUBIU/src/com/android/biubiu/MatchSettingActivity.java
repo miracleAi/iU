@@ -11,7 +11,7 @@ import org.xutils.http.RequestParams;
 
 import cc.imeetu.iu.R;
 
-import com.android.biubiu.activity.mine.PersonalityTagActivity;
+import com.android.biubiu.ui.mine.child.PersonalityTagActivity;
 import com.android.biubiu.adapter.UserPagerTagAdapter;
 import com.android.biubiu.bean.PersonalTagBean;
 import com.android.biubiu.bean.SettingBean;
@@ -23,9 +23,10 @@ import com.android.biubiu.transport.http.HttpContants;
 import com.android.biubiu.component.util.LogUtil;
 import com.android.biubiu.component.util.NetUtils;
 import com.android.biubiu.component.util.SharePreferanceUtils;
-import com.android.biubiu.view.MyGridView;
-import com.android.biubiu.view.RangeSeekBar;
-import com.android.biubiu.view.RangeSeekBar.OnRangeSeekBarChangeListener;
+import com.android.biubiu.ui.overall.BaseActivity;
+import com.android.biubiu.component.customview.MyGridView;
+import com.android.biubiu.component.customview.RangeSeekBar;
+import com.android.biubiu.component.customview.RangeSeekBar.OnRangeSeekBarChangeListener;
 import com.google.gson.Gson;
 
 import android.content.Intent;

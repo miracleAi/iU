@@ -26,11 +26,11 @@ import cn.beecloud.async.BCCallback;
 import cn.beecloud.async.BCResult;
 import cn.beecloud.entity.BCPayResult;
 
-import com.android.biubiu.BaseActivity;
 import com.android.biubiu.component.util.Constants;
 import com.android.biubiu.transport.http.HttpContants;
 import com.android.biubiu.component.util.LogUtil;
 import com.android.biubiu.component.util.SharePreferanceUtils;
+import com.android.biubiu.ui.overall.BaseActivity;
 
 public class BiuChargeActivity extends BaseActivity implements OnClickListener{
 	private RelativeLayout backRl;

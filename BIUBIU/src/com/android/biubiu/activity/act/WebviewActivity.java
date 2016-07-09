@@ -5,7 +5,7 @@ import android.view.Window;
 
 import cc.imeetu.iu.R;
 
-import com.android.biubiu.BaseActivity;
+import com.android.biubiu.ui.overall.BaseActivity;
 import com.android.biubiu.common.Constant;
 
 public class WebviewActivity extends BaseActivity {

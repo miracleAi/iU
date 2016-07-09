@@ -9,13 +9,12 @@ import java.util.Map;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
-import com.android.biubiu.BaseActivity;
+import com.android.biubiu.ui.overall.BaseActivity;
 import com.android.biubiu.bean.Citybean;
 
 
-import com.android.biubiu.sqlite.CityDao;
+import com.android.biubiu.persistence.CityDao;
 
-import android.app.Activity;
 import android.content.res.AssetManager;
 
 public class BaseCityActivity extends BaseActivity {

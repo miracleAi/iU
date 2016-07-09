@@ -3,16 +3,13 @@ package com.android.biubiu.sqlite;
 import java.util.ArrayList;
 import java.util.List;
 
-import android.R.string;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
-import com.android.biubiu.bean.UserBean;
 import com.android.biubiu.bean.UserFriends;
-import com.avos.avoscloud.AVException;
-import com.avos.avoscloud.AVObject;
-import com.avos.avoscloud.LogUtil.log;
+import com.android.biubiu.persistence.base.DbConstents;
+import com.android.biubiu.persistence.base.MySqliteDBHelper;
 
 
 public class UserDao {
@@ -36,11 +33,14 @@ public class UserDao {
 		db.close();
 	}
 
-	/**
+/*
+*
 	 * 查询某用户
 	 * @param userCode 用户id
 	 * @return
-	 */
+*/
+
+
 	public List<UserFriends> queryUser(String userCode) {
 		SQLiteDatabase db = helper.getReadableDatabase();
 		Cursor c = db.rawQuery("select * from userfriends where "
@@ -65,11 +65,12 @@ public class UserDao {
 		db.close();
 		return list;
 	}
-	/**
+/**
 	 * 获取所有好友
-	 * @param userCode
 	 * @return
-	 */
+ * */
+
+
 	public List<UserFriends> queryUserAll() {
 		SQLiteDatabase db = helper.getReadableDatabase();
 		Cursor c = db.rawQuery("select * from userfriends", null);
@@ -94,9 +95,10 @@ public class UserDao {
 		return list;
 	}
 	
-	/**
-	 * 删除所有好友
-	 */
+/**
+	 * 删除所有好友*/
+
+
 	public void deleteAllUser(){
 		SQLiteDatabase db=helper.getReadableDatabase();
 		db.execSQL("delete from userfriends");

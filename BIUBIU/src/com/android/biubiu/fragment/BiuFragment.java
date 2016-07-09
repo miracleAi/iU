@@ -8,7 +8,7 @@ import org.xutils.http.RequestParams;
 import org.xutils.image.ImageOptions;
 
 import com.android.biubiu.MatchSettingActivity;
-import com.android.biubiu.activity.LoginOrRegisterActivity;
+import com.android.biubiu.ui.overall.LoginOrRegisterActivity;
 import com.android.biubiu.activity.act.ActivityListActivity;
 import com.android.biubiu.activity.act.WebviewActivity;
 import com.android.biubiu.callback.BiuBooleanCallback;
