@@ -217,7 +217,17 @@ public class PagerFragment extends BaseFragment implements View.OnClickListener,
 
     private boolean mRequestSuccess;
 
-//    private int currentPhotoIndex = -1;
+    //    private int currentPhotoIndex = -1;
+    private BroadcastReceiver mReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (intent != null) {
+                if (Constant.HEAD_VERIFY_ACTION.equals(intent.getAction())) {
+                    updateHeadStatus();
+                }
+            }
+        }
+    };
 
     public PagerFragment() {
     }
@@ -373,6 +383,11 @@ public class PagerFragment extends BaseFragment implements View.OnClickListener,
                 isMyself = false;
                 switchView();
             }
+        }
+        if (isMyself) {
+            IntentFilter filter = new IntentFilter();
+            filter.addAction(Constant.HEAD_VERIFY_ACTION);
+            getActivity().registerReceiver(mReceiver, filter);
         }
     }
 
@@ -1099,6 +1114,7 @@ public class PagerFragment extends BaseFragment implements View.OnClickListener,
                 infoBean.setIconCircle(thumUrl);
                 infoBean.setIconOrigin(headUrl);
                 x.image().bind(userheadImv, thumUrl, imageOptions);
+                updateHeadStatus();
                 break;
             case UPDATE_INTEREST_TAG:
                 if (resultCode != Activity.RESULT_OK) {
@@ -1136,9 +1152,10 @@ public class PagerFragment extends BaseFragment implements View.OnClickListener,
             case TO_SETTING:
                 if (resultCode == Constant.EXIT_APP_SUCCESS) {
 //                    mRequestSuccess = false;
-                    if (mTopTitle.getVisibility() == View.VISIBLE) {
+                    /*if (mTopTitle.getVisibility() == View.VISIBLE) {
                         mTopTitle.setVisibility(View.GONE);
-                    }
+                    }*/
+                    mTopTitle.setTitle("");
                     switchView();
                 }
                 break;
@@ -1371,6 +1388,9 @@ public class PagerFragment extends BaseFragment implements View.OnClickListener,
     @Override
     public void onDestroy() {
         super.onDestroy();
+        if(isMyself){
+            getActivity().unregisterReceiver(mReceiver);
+        }
     }
 
     @Override

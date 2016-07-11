@@ -53,6 +53,7 @@
 
 #BIUBIU
 -keep class com.android.biubiu.bean.**{*;}
+-keep class com.android.biubiu.transport.**{*;}
 
 #jar
 -keep class com.alipay.**{*;}
@@ -95,6 +96,10 @@
 -keep class u.upd.**{*;}
 -keep class android.backport.webp.**{*;}
 -keep class org.xutils.**{*;}
+-keep class com.tencent.android.tpush.**{*;}
+-keep class com.tencent.mid.**{*;}
+-keep class com.qq.taf.jce.**{*;}
+-keep class com.jg.**{*;}
 #依赖工程 EaseUI jar
 -keep class com.hyphenate.**{*;}
 -keep class internal.org.apache.http.entity.mime.**{*;}
@@ -107,6 +112,7 @@
 #依赖工程 BQMM_Lib jar
 -keep class com.melink.** {*;}
 -keep class com.thirdparty.** {*;}
+
 
 -keepattributes *Annotation*
 -keepattributes *JavascriptInterface*
@@ -217,3 +223,7 @@
 -dontwarn  com.hyphenate.**
 -dontwarn com.melink.**
 -dontwarn com.thirdparty.**
+-dontwarn com.tencent.android.tpush.**
+-dontwarn com.tencent.mid.**
+-dontwarn com.qq.taf.jce.**
+-dontwarn com.jg.**

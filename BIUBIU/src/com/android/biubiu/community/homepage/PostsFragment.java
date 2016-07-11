@@ -31,6 +31,7 @@ import com.android.biubiu.component.viewflipper.ViewFlipperForListview;
 import com.android.biubiu.utils.CommonUtils;
 import com.android.biubiu.utils.HttpContants;
 import com.android.biubiu.utils.LogUtil;
+import com.android.biubiu.utils.LoginUtils;
 import com.android.biubiu.utils.NetUtils;
 import com.android.biubiu.utils.SharePreferanceUtils;
 import com.google.gson.reflect.TypeToken;
@@ -532,11 +533,13 @@ public class PostsFragment extends BaseFragment implements PullToRefreshBase.OnR
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        Posts posts = mData.get(position - mListview.getHeaderViewsCount());
-        if (posts != null) {
-            Intent i = new Intent(getActivity(), PostsDetailActivity.class);
-            i.putExtra(Constant.POSTS, posts);
-            startActivityForResult(i, TO_DETAIL_PAGE);
+        if(LoginUtils.isLogin(getActivity())){
+            Posts posts = mData.get(position - mListview.getHeaderViewsCount());
+            if (posts != null) {
+                Intent i = new Intent(getActivity(), PostsDetailActivity.class);
+                i.putExtra(Constant.POSTS, posts);
+                startActivityForResult(i, TO_DETAIL_PAGE);
+            }
         }
     }
 
