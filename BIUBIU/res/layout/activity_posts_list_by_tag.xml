@@ -11,7 +11,8 @@
         android:layout_alignParentTop="true"
         android:background="@color/main_green"
         top:bothSideSize="44dp"
-        top:leftDrawable="@drawable/back_main" />
+        top:leftDrawable="@drawable/back_main"
+        top:rightDrawable="@drawable/found_btn_publish"/>
 
     <com.handmark.pulltorefresh.library.PullToRefreshListView
         android:id="@+id/pull_refresh_list"

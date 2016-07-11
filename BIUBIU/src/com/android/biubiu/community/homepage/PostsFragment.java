@@ -21,6 +21,7 @@ import android.widget.Toast;
 
 import com.android.biubiu.BaseFragment;
 import com.android.biubiu.activity.act.WebviewActivity;
+import com.android.biubiu.bean.TagBean;
 import com.android.biubiu.bean.community.Banner;
 import com.android.biubiu.bean.base.Data;
 import com.android.biubiu.bean.community.DiscoveryData;
@@ -232,11 +233,21 @@ public class PostsFragment extends BaseFragment implements PullToRefreshBase.OnR
             public boolean onSingleTapUp(MotionEvent e) {
                 ImageView iv = (ImageView) mFlipper.getCurrentView();
                 Banner ad = (Banner) iv.getTag();
-                Intent i = new Intent(getActivity(), WebviewActivity.class);
-                i.putExtra(Constant.ACTIVITY_NAME, ad.getTitle());
-                i.putExtra(Constant.ACTIVITY_COVER, ad.getCover());
-                i.putExtra(Constant.ACTIVITY_URL, ad.getUrl());
-                startActivity(i);
+                if(ad.getUrl().contains("http")){
+                    Intent i = new Intent(getActivity(), WebviewActivity.class);
+                    i.putExtra(Constant.ACTIVITY_NAME, ad.getTitle());
+                    i.putExtra(Constant.ACTIVITY_COVER, ad.getCover());
+                    i.putExtra(Constant.ACTIVITY_URL, ad.getUrl());
+                    startActivity(i);
+                }else{
+                    String[] tag = ad.getUrl().split(",");
+                    TagBean tagBean = new TagBean();
+                    tagBean.setId(Integer.parseInt(tag[0]));
+                    tagBean.setContent(tag[1]);
+                    Intent i = new Intent(getActivity(), PostsListByTagActivity.class);
+                    i.putExtra(Constant.TAG, tagBean);
+                    startActivity(i);
+                }
                 return false;
             }
         });

@@ -53,6 +53,9 @@ public class PublishHomeActivityFragment extends BaseFragment {
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(),PublishEditActivity.class);
                 intent.putExtra(Constant.PUBLISH_TYPE,Constant.PUBLISH_TEXT);
+                if(getArguments() != null){
+                    intent.putExtra(Constant.TAG,getArguments().getSerializable(Constant.TAG));
+                }
                 startActivityForResult(intent,TO_PUBLISH);
             }
         });
@@ -96,6 +99,9 @@ public class PublishHomeActivityFragment extends BaseFragment {
                     Intent intent = new Intent(getActivity(),PublishEditActivity.class);
                     intent.putExtra(Constant.PUBLISH_TYPE,Constant.PUBLISH_IMG);
                     intent.putStringArrayListExtra(Constant.PUBLISH_IMG_PATH,mSelectPath);
+                    if(getArguments() != null){
+                        intent.putExtra(Constant.TAG,getArguments().getSerializable(Constant.TAG));
+                    }
                     startActivityForResult(intent,TO_PUBLISH);
                 }
                 break;

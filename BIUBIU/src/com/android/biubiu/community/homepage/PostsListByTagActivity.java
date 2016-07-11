@@ -65,6 +65,13 @@ public class PostsListByTagActivity extends BaseActivity implements PullToRefres
         mPTRLV.setScrollingWhileRefreshingEnabled(true);
         mListview = mPTRLV.getRefreshableView();
         mListview.setOnItemClickListener(this);
+
+        mTopTitle.setRightOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
     }
 
     private void initData() {

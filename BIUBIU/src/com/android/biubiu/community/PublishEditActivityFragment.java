@@ -226,6 +226,13 @@ public class PublishEditActivityFragment extends Fragment {
         } else {
             photoLayout.setVisibility(View.GONE);
         }
+        if(null != b.getSerializable(Constant.TAG)){
+            TagBean publishTag = (TagBean) b.getSerializable(Constant.TAG);
+            tagTv.setText(publishTag.getContent());
+            tagIdList.clear();
+            tagIdList.add(publishTag.getId());
+            completeState();
+        }
     }
 
     @Override

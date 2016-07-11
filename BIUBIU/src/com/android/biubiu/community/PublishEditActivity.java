@@ -22,6 +22,9 @@ public class PublishEditActivity extends Activity {
         if(typeStr.equals(Constant.PUBLISH_IMG)){
             b.putStringArrayList(Constant.PUBLISH_IMG_PATH,getIntent().getStringArrayListExtra(Constant.PUBLISH_IMG_PATH));
         }
+        if(null != getIntent().getSerializableExtra(Constant.TAG)){
+            b.putSerializable(Constant.TAG,getIntent().getSerializableExtra(Constant.TAG));
+        }
         fragment.setArguments(b);
         getFragmentManager().beginTransaction().add(R.id.layout_body,fragment).commit();
     }
