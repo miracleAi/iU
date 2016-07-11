@@ -346,7 +346,7 @@ public class PostsFragment extends BaseFragment implements PullToRefreshBase.OnR
                         mAdapter = new PostsAdapter(mData, getActivity());
                         mAdapter.setIRefreshUi(PostsFragment.this);
                     }
-                    banners = data.getBanner();
+                    banners = data.getBannerTag();
                     if (banners != null && banners.size() > 0) {
                         if (!mAddHeadBanner) {
                             mListview.addHeaderView(mHeadAdBanner);

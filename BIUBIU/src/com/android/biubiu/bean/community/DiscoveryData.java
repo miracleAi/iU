@@ -7,10 +7,19 @@ import java.util.ArrayList;
  */
 public class DiscoveryData {
     private ArrayList<Banner> banner;
+    private ArrayList<Banner> bannerTag;
     private ArrayList<Posts> postList;
     private int hasNext;
     private long time;
     private String token;
+
+    public ArrayList<Banner> getBannerTag() {
+        return bannerTag;
+    }
+
+    public void setBannerTag(ArrayList<Banner> bannerTag) {
+        this.bannerTag = bannerTag;
+    }
 
     public ArrayList<Banner> getBanner() {
         return banner;
