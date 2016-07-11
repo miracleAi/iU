@@ -14,6 +14,8 @@ import com.android.biubiu.bean.base.Data;
 import com.android.biubiu.bean.community.Posts;
 import com.android.biubiu.bean.community.PostsListTagData;
 import com.android.biubiu.common.Constant;
+import com.android.biubiu.community.PublishEditActivity;
+import com.android.biubiu.community.PublishHomeActivity;
 import com.android.biubiu.component.title.TopTitleView;
 import com.android.biubiu.utils.CommonUtils;
 import com.android.biubiu.utils.HttpContants;
@@ -66,12 +68,6 @@ public class PostsListByTagActivity extends BaseActivity implements PullToRefres
         mListview = mPTRLV.getRefreshableView();
         mListview.setOnItemClickListener(this);
 
-        mTopTitle.setRightOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
     }
 
     private void initData() {
@@ -82,6 +78,14 @@ public class PostsListByTagActivity extends BaseActivity implements PullToRefres
         mTag = (TagBean) getIntent().getSerializableExtra(Constant.TAG);
         if (mTag != null) {
             mTopTitle.setTitle(mTag.getContent());
+            mTopTitle.setRightOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(PostsListByTagActivity.this, PublishHomeActivity.class);
+                    intent.putExtra(Constant.TAG,mTag);
+                    startActivity(intent);
+                }
+            });
         }
         getPostsList(0l);
     }

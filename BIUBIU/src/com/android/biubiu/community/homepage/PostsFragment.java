@@ -325,6 +325,7 @@ public class PostsFragment extends BaseFragment implements PullToRefreshBase.OnR
                 stopLoad();
                 dismissLoadingLayout();
                 LogUtil.d(TAG, "getPostlist-- mType = " + mType + result);
+                List<Banner> banners = null;
                 Data<DiscoveryData> response = CommonUtils.parseJsonToObj(result, new TypeToken<Data<DiscoveryData>>() {
                 });
                 if (!CommonUtils.unifyResponse(Integer.parseInt(response.getState()), getActivity())) {
@@ -345,7 +346,7 @@ public class PostsFragment extends BaseFragment implements PullToRefreshBase.OnR
                         mAdapter = new PostsAdapter(mData, getActivity());
                         mAdapter.setIRefreshUi(PostsFragment.this);
                     }
-                    List<Banner> banners = data.getBanner();
+                    banners = data.getBanner();
                     if (banners != null && banners.size() > 0) {
                         if (!mAddHeadBanner) {
                             mListview.addHeaderView(mHeadAdBanner);
@@ -368,7 +369,9 @@ public class PostsFragment extends BaseFragment implements PullToRefreshBase.OnR
                     mAdapter.notifyDataSetChanged();
                 } else {
                     if (time == 0) {
-                        showDataEmpty(null, mDataNullTips);
+                        if(null == banners || banners.size() == 0){
+                            showDataEmpty(null, mDataNullTips);
+                        }
                     }
                 }
             }
