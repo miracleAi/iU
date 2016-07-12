@@ -14,6 +14,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.provider.Settings;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
@@ -587,12 +588,12 @@ public class PagerFragment extends BaseFragment implements View.OnClickListener,
             } else {
                 locationTv.setText(bean.getDistance() + "m");
             }
-            if (((System.currentTimeMillis() - bean.getActivityTime()) / 1000) > (24 * 60 * 60 * 1000)) {
-                timeTv.setText(((System.currentTimeMillis() - bean.getActivityTime()) / 1000) / 60 % 60 % 24 + "day");
-            } else if (((System.currentTimeMillis() - bean.getActivityTime()) / 1000) > (60 * 60 * 1000)) {
-                timeTv.setText(((System.currentTimeMillis() - bean.getActivityTime()) / 1000) / 60 % 60 + "h");
+            if (((System.currentTimeMillis() - bean.getActivityTime()) / 1000) > (24 * 60 * 60)) {
+                timeTv.setText(((System.currentTimeMillis() - bean.getActivityTime()) / 1000) / 60 / 60 / 24 + "day");
+            } else if (((System.currentTimeMillis() - bean.getActivityTime()) / 1000) > (60 * 60)) {
+                timeTv.setText(((System.currentTimeMillis() - bean.getActivityTime()) / 1000) / 60 / 60 + "h");
             } else {
-                timeTv.setText(((System.currentTimeMillis() - bean.getActivityTime()) / 1000) % 60 + "min");
+                timeTv.setText(((System.currentTimeMillis() - bean.getActivityTime()) / 1000) / 60 + "min");
             }
             matchTv.setText("" + bean.getMatchScore() + "%");
             addPhotoImv.setVisibility(View.GONE);
