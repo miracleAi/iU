@@ -23,7 +23,6 @@ import com.android.biubiu.transport.http.HttpContants;
 import com.android.biubiu.component.util.NetUtils;
 import com.android.biubiu.component.util.SharePreferanceUtils;
 import com.avos.avoscloud.LogUtil;
-import com.baidu.android.pushservice.PushManager;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 

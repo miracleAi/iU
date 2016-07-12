@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:top="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/entire_view"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#eeeeee"
+    android:orientation="vertical">
+
+    <com.android.biubiu.component.title.TopTitleView
+        android:id="@+id/top_title_view"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/top_title_height"
+        android:background="@color/main_green"
+        top:bothSideSize="@dimen/top_title_height"
+        top:leftDrawable="@drawable/back_main"
+        top:rightPadding="10dp"
+        top:rightText="@string/complete"
+        top:title="@string/cp_setting"
+        top:topTitleColor="@android:color/white"
+        top:topTitleSize="@dimen/top_title_size" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:background="@android:color/white">
+
+        <TextView
+            android:id="@+id/agreement"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:paddingLeft="10dp"
+            android:text="@string/agreement"
+            android:textColor="@android:color/black"
+            android:textSize="18sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:layout_toRightOf="@+id/agreement"
+            android:text="@string/attitude"
+            android:textColor="#999999" />
+
+        <RelativeLayout
+            android:id="@+id/agree_toggle_layout"
+            android:layout_width="60dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:paddingBottom="20dp"
+            android:paddingTop="20dp">
+
+            <ImageView
+                android:id="@+id/agree_toggle"
+                android:layout_width="34dp"
+                android:layout_height="23dp"
+                android:layout_centerInParent="true"
+                android:src="@drawable/setting_btn_no" />
+        </RelativeLayout>
+    </RelativeLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:lineSpacingExtra="8dp"
+        android:padding="10dp"
+        android:text="@string/agreement_detail"
+        android:textColor="@android:color/black"
+        android:textSize="15sp" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:background="@android:color/white">
+
+        <TextView
+            android:id="@+id/charge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="10dp"
+            android:layout_centerVertical="true"
+            android:text="@string/charge_setting"
+            android:textColor="@android:color/black"
+            android:textSize="18sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:layout_toRightOf="@+id/charge"
+            android:text="@string/charm"
+            android:textColor="#999999" />
+
+        <RelativeLayout
+            android:id="@+id/charge_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:paddingBottom="20dp"
+            android:paddingTop="20dp"
+            android:layout_alignParentRight="true">
+
+            <TextView
+                android:id="@+id/ucoin_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="10dp"
+                android:layout_toLeftOf="@+id/indicator"
+                android:text="20U米"
+                android:textColor="@android:color/black"
+                android:textSize="15sp" />
+
+            <ImageView
+                android:id="@+id/indicator"
+                android:layout_width="5dp"
+                android:layout_height="11dp"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="20dp"
+                android:src="@drawable/about_us_btn"
+                android:textSize="12sp" />
+        </RelativeLayout>
+    </RelativeLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:lineSpacingExtra="8dp"
+        android:padding="10dp"
+        android:text="@string/charge_detail"
+        android:textColor="@android:color/black"
+        android:textSize="15sp" />
+</LinearLayout>

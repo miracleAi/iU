@@ -346,6 +346,23 @@
     <string name="chat_release_send">松开 结束</string>
     <string name="chat_up_finger">手指上滑，取消发送</string>
     <string name="chat_audio_too_short">录音过短，请重试</string>
+    <string name="cp_apply">CP申请</string>
+    <string name="cp_apply_null">还没有收到CP申请呢，去一半和社区转转吧</string>
+    <string name="cp_setting">CP设置</string>
+    <string name="agreement">合约金设置</string>
+    <string name="attitude">只是表明态度</string>
+    <string name="agreement_detail">1、合约金开启后，组成CP的双方需每天各自存入10U米到小屋，作为双方的CP基金；\n2、若一方未完成任务或者中途退出，则U米全归另一方；\n3、若上方正常完成任务，则U米退还给彼此。</string>
+    <string name="charge_setting">CP收费设置</string>
+    <string name="charm">只是体现魅力</string>
+    <string name="charge_detail">1、开启CP收费后，对方需支付相应费用才能申请CP；\n2、对方支付的费用在双方组成CP后开始生效，以天为单位分批计入你的账户；\n3、收费上限随魅力等级而增加，男生达到Lv10可开启。</string>
+    <array name="u_coin_array">
+        <item>免费</item>
+        <item>10U米</item>
+        <item>20U米</item>
+        <item>30U米</item>
+        <item>40U米</item>
+    </array>
+    <string name="charm_level">我的魅力等级：%1$s</string>
     <!--chat end-->
     <string name="half">一半</string>
     <!--app2.2开发-->

@@ -113,6 +113,7 @@
             android:value="A284KRB8C1DF" />
         <!-- 定位需要的服务 -->
         <service android:name="com.amap.api.location.APSService" />
+
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"
             android:value="3ecea51f560650b1ed8a4b99808f52e8" />
@@ -126,6 +127,7 @@
             android:name="com.umeng.update.UpdateDialogActivity"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
         <!-- umeng sdk end -->
+
 
         <!-- 开机自启动服务 -->
         <!-- 信鸽用到的广播和服务 start -->
@@ -260,7 +262,6 @@
             android:exported="true"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
-
         <activity
             android:name="com.android.biubiu.ui.overall.WelcomeActivity"
             android:label="@string/app_name"
@@ -439,8 +440,13 @@
             android:theme="@android:style/Theme.NoTitleBar" />
         <activity
             android:name="com.android.biubiu.ui.conversation.ChatActivity"
-            android:label="@string/title_activity_chat"
-            />
+            android:label="@string/title_activity_chat" />
+        <activity
+            android:name="com.android.biubiu.ui.conversation.activity.CPApplyActivity"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name="com.android.biubiu.ui.conversation.activity.CPSettingActivity"
+            android:theme="@style/AppTheme" />
     </application>
 
 </manifest>

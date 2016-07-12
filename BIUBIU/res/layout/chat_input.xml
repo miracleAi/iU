@@ -18,14 +18,14 @@
         android:gravity="center_vertical"
         android:orientation="horizontal">
 
-        <ImageButton
+        <!--<ImageButton
             android:id="@+id/btn_voice"
             android:layout_width="25dp"
             android:layout_height="25dp"
             android:layout_marginLeft="15dp"
             android:layout_marginRight="15dp"
             android:background="@drawable/ic_voice_input"
-            android:visibility="visible" />
+            android:visibility="gone" />-->
 
         <ImageButton
             android:id="@+id/btn_keyboard"
@@ -53,6 +53,7 @@
             android:id="@+id/text_panel"
             android:layout_width="0dp"
             android:layout_height="40dp"
+            android:layout_marginLeft="15dp"
             android:layout_weight="1"
             android:background="@drawable/bg_inputbox"
             android:gravity="center_vertical"
@@ -68,13 +69,14 @@
                 android:paddingRight="10dp"
                 android:textCursorDrawable="@null" />
 
-            <ImageButton
+            <!--<ImageButton
                 android:id="@+id/btnEmoticon"
                 android:layout_width="25dp"
                 android:layout_height="25dp"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="8dp"
-                android:background="@drawable/ic_face_input" />
+                android:background="@drawable/ic_face_input"
+                android:visibility="gone" />-->
         </LinearLayout>
 
         <ImageButton
@@ -83,7 +85,8 @@
             android:layout_height="25dp"
             android:layout_marginLeft="15dp"
             android:layout_marginRight="15dp"
-            android:background="@drawable/ic_add_input" />
+            android:background="@drawable/ic_add_input"
+            android:visibility="gone" />
 
         <ImageButton
             android:id="@+id/btn_send"
@@ -92,6 +95,69 @@
             android:layout_marginLeft="6dp"
             android:layout_marginRight="5dp"
             android:background="@drawable/btn_send" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/send_option_layout"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:background="#EBEBEB"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <ImageButton
+                android:id="@+id/btn_voice"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:background="@drawable/ic_voice_input" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <ImageButton
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:src="@drawable/ic_photography" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:src="@drawable/ic_image" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <ImageButton
+                android:id="@+id/btnEmoticon"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:src="@drawable/ic_face_input" />
+        </LinearLayout>
+
     </LinearLayout>
 
     <LinearLayout
