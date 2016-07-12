@@ -3,12 +3,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@color/white">
+    android:background="@color/main_bg">
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="35dp"
         android:background="@color/set_tag_bg"
-        android:orientation="vertical" >
+        android:orientation="vertical"
+        >
 
         <TextView
             android:layout_width="wrap_content"
@@ -97,14 +98,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/set_tag_text"
-                android:textSize="12sp" />
+                android:textSize="12sp"
+                android:text="0-"/>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="m-"
-                android:textColor="@color/set_tag_text"
-                android:textSize="12sp" />
 
             <TextView
                 android:id="@+id/distance_max_tv"
@@ -116,9 +112,28 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="m"
+                android:text="km"
                 android:textColor="@color/set_tag_text"
                 android:textSize="12sp" />
         </LinearLayout>
     </RelativeLayout>
+    <LinearLayout
+        android:id="@+id/diatance_seek_linear"
+        android:layout_width="match_parent"
+        android:layout_height="67dp"
+        android:background="@color/white"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp" >
+        <SeekBar
+            android:id="@+id/distance_bar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:max="100"
+            android:progress="50"
+            android:maxHeight="5dp"
+            android:progressDrawable="@drawable/seek_single_style"
+            android:thumb="@drawable/setting_btn_chose" />
+    </LinearLayout>
 </LinearLayout>

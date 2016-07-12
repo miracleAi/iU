@@ -4,6 +4,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
     <RelativeLayout
+        android:id="@+id/title_layout"
         android:layout_width="match_parent"
         android:layout_height="56dp"
         android:background="@color/main_green">
@@ -27,7 +28,9 @@
                 android:src="@drawable/nav_btn_choose"/>
         </LinearLayout>
     </RelativeLayout>
-    <FrameLayout
+
+    <RelativeLayout
+        android:id="@+id/body_layout"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1">
@@ -42,6 +45,6 @@
             android:layout_height="match_parent"
             android:background="#88000000"
             android:visibility="gone"/>
-    </FrameLayout>
+    </RelativeLayout>
 
 </LinearLayout>
