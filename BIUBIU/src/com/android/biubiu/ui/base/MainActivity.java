@@ -1,4 +1,4 @@
-package com.android.biubiu.ui.overall;
+package com.android.biubiu.ui.base;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -153,8 +153,8 @@ public class MainActivity extends FragmentActivity implements AMapLocationListen
     private void initFragments() {
         mFragmentManager = getSupportFragmentManager();
 
-        Indicator half = new Indicator(R.id.tab_half, R.string.half, R.drawable.tab_icon_found_nor,
-                R.drawable.tab_icon_found_light, new HalfFragment());
+        Indicator half = new Indicator(R.id.tab_half, R.string.half, R.drawable.tab_btn_cp_nor,
+                R.drawable.tab_btn_cp_light, new HalfFragment());
         Indicator discovery = new Indicator(R.id.tab_discovery, R.string.discovery, R.drawable.tab_icon_found_nor,
                 R.drawable.tab_icon_found_light, new DiscoveryFragment());
         Indicator conversation = new Indicator(R.id.tab_message, R.string.left_menu_message, R.drawable.main_tab_icon_mes_nor,

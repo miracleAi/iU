@@ -9,8 +9,8 @@ import cn.sharesdk.framework.ShareSDK;
 import cn.sharesdk.onekeyshare.OnekeyShare;
 
 import com.android.biubiu.ui.mine.child.AboutOurActivity;
-import com.android.biubiu.ui.overall.BeginGuiderActivity;
-import com.android.biubiu.ui.overall.LoginOrRegisterActivity;
+import com.android.biubiu.ui.launch.BeginGuiderActivity;
+import com.android.biubiu.ui.launch.LoginOrRegisterActivity;
 import com.android.biubiu.ui.mine.MyPagerActivity;
 import com.android.biubiu.component.util.LoginUtils;
 import com.android.biubiu.component.util.SharePreferanceUtils;

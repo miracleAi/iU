@@ -4,7 +4,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ListView;
 
-import com.android.biubiu.ui.overall.BaseActivity;
+import com.android.biubiu.ui.base.BaseActivity;
 import com.android.biubiu.component.ChatInput;
 import com.android.biubiu.component.title.TopTitleView;
 import com.tencent.TIMConversationType;

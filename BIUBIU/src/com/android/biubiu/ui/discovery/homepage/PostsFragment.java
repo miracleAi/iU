@@ -19,7 +19,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.android.biubiu.ui.overall.BaseFragment;
+import com.android.biubiu.ui.base.BaseFragment;
 import com.android.biubiu.activity.act.WebviewActivity;
 import com.android.biubiu.transport.http.response.community.Banner;
 import com.android.biubiu.transport.http.response.base.Data;

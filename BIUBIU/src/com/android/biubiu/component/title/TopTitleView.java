@@ -219,6 +219,9 @@ public class TopTitleView extends LinearLayout {
     public void setLeftImage(int resId) {
         mImgLeft.setImageResource(resId);
     }
+    public void setCenterImage(int resId){
+        mImageViewCenter.setImageResource(resId);
+    }
 
     public void setLeftText(int resId) {
         mTvLeft.setText(resId);

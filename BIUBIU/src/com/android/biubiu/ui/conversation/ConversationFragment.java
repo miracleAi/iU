@@ -13,7 +13,7 @@ import android.widget.RelativeLayout;
 import com.android.biubiu.ui.conversation.activity.CPApplyActivity;
 import com.android.biubiu.ui.conversation.activity.CPSettingActivity;
 import com.android.biubiu.ui.discovery.CommNotifyActivity;
-import com.android.biubiu.ui.overall.BaseFragment;
+import com.android.biubiu.ui.base.BaseFragment;
 
 import cc.imeetu.iu.R;
 

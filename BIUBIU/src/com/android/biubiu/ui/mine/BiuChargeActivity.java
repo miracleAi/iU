@@ -30,7 +30,7 @@ import com.android.biubiu.component.util.Constants;
 import com.android.biubiu.transport.http.HttpContants;
 import com.android.biubiu.component.util.LogUtil;
 import com.android.biubiu.component.util.SharePreferanceUtils;
-import com.android.biubiu.ui.overall.BaseActivity;
+import com.android.biubiu.ui.base.BaseActivity;
 
 public class BiuChargeActivity extends BaseActivity implements OnClickListener{
 	private RelativeLayout backRl;

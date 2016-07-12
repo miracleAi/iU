@@ -10,7 +10,7 @@ import org.xutils.http.RequestParams;
 
 import cc.imeetu.iu.R;
 
-import com.android.biubiu.ui.overall.BaseActivity;
+import com.android.biubiu.ui.base.BaseActivity;
 import com.android.biubiu.bean.UserInfoBean;
 import com.android.biubiu.common.city.ArrayWheelAdapter;
 import com.android.biubiu.common.city.OnWheelChangedListener;

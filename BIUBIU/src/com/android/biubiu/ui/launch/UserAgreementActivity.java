@@ -1,4 +1,4 @@
-package com.android.biubiu.ui.overall;
+package com.android.biubiu.ui.launch;
 
 import cc.imeetu.iu.R;
 
@@ -8,7 +8,7 @@ import android.view.View.OnClickListener;
 import android.webkit.WebView;
 import android.widget.RelativeLayout;
 
-import com.android.biubiu.ui.overall.BaseActivity;
+import com.android.biubiu.ui.base.BaseActivity;
 
 public class UserAgreementActivity extends BaseActivity {
 	private RelativeLayout backLayout;

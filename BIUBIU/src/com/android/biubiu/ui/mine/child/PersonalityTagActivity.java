@@ -12,7 +12,7 @@ import org.xutils.http.RequestParams;
 
 import cc.imeetu.iu.R;
 
-import com.android.biubiu.ui.overall.BaseActivity;
+import com.android.biubiu.ui.base.BaseActivity;
 import com.android.biubiu.adapter.GridRecycleTagAdapter;
 import com.android.biubiu.adapter.GridRecycleTagAdapter.OnTagsItemClickCallBack;
 import com.android.biubiu.bean.PersonalTagBean;

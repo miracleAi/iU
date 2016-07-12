@@ -1,4 +1,4 @@
-package com.android.biubiu.ui.overall;
+package com.android.biubiu.ui.launch;
 
 
 import cc.imeetu.iu.R;
@@ -11,7 +11,10 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.LinearLayout;
 
-public class LoginOrRegisterActivity extends BaseActivity{
+import com.android.biubiu.ui.base.BaseActivity;
+import com.android.biubiu.ui.base.MainActivity;
+
+public class LoginOrRegisterActivity extends BaseActivity {
 	private Button loginBtn;
 	private Button registerBtn;
 	private LinearLayout backLayout;

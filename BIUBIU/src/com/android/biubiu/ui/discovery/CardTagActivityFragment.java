@@ -16,7 +16,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.biubiu.ui.overall.BaseFragment;
+import com.android.biubiu.ui.base.BaseFragment;
 import com.android.biubiu.bean.TagBean;
 import com.android.biubiu.callback.HttpCallback;
 import com.android.biubiu.common.Constant;

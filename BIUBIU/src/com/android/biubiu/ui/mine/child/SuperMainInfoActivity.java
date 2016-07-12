@@ -10,7 +10,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import cc.imeetu.iu.R;
 
-import com.android.biubiu.ui.overall.BaseActivity;
+import com.android.biubiu.ui.base.BaseActivity;
 
 public class SuperMainInfoActivity extends BaseActivity{
 	LinearLayout weixinLayout;

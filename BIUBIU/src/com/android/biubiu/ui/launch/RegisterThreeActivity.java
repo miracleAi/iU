@@ -1,4 +1,4 @@
-package com.android.biubiu.ui.overall;
+package com.android.biubiu.ui.launch;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -14,6 +14,7 @@ import cc.imeetu.iu.R;
 import com.android.biubiu.common.Umutils;
 import com.android.biubiu.transport.http.HttpContants;
 import com.android.biubiu.component.util.NetUtils;
+import com.android.biubiu.ui.base.BaseActivity;
 import com.avos.avoscloud.AVException;
 import com.avos.avoscloud.AVMobilePhoneVerifyCallback;
 import com.avos.avoscloud.AVOSCloud;

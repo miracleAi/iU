@@ -87,4 +87,7 @@
     <color name="send_biu_tag_hint">#999999</color>
     <color name="send_biu_tag">#333333</color>
     <color name="search_tag_bg">#f8f6f4</color>
+    <!-- 一半 -->
+    <color name="half_child_line">#dddddd</color>
+    <color name="half_child_bg">#f3f2f1</color>
 </resources>

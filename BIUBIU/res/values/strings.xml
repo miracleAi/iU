@@ -117,6 +117,7 @@
     <string name="setting_city_common">同城</string>
     <string name="setting_unlimited">不限</string>
     <string name="setting_age_range_in">年龄范围</string>
+    <string name="setting_diatance_range_in">距离范围</string>
     <string name="setting_character_tags">个性标签</string>
     <string name="setting_character_tags_her">Ta的个性标签</string>
     <string name="setting_new_message_notice">新消息通知</string>

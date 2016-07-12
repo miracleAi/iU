@@ -9,7 +9,7 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
-import com.android.biubiu.ui.overall.BaseFragment;
+import com.android.biubiu.ui.base.BaseFragment;
 import com.android.biubiu.common.Constant;
 import com.android.biubiu.component.title.TopTitleView;
 

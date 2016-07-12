@@ -1,4 +1,4 @@
-package com.android.biubiu.ui.overall;
+package com.android.biubiu.ui.launch;
 
 
 
@@ -17,6 +17,7 @@ import com.android.biubiu.component.util.LogUtil;
 import com.android.biubiu.component.util.NetUtils;
 import com.android.biubiu.component.util.SharePreferanceUtils;
 import com.android.biubiu.component.util.Utils;
+import com.android.biubiu.ui.base.BaseActivity;
 import com.avos.avoscloud.LogUtil.log;
 import com.umeng.analytics.MobclickAgent;
 
@@ -37,7 +38,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class LoginActivity extends BaseActivity{
+public class LoginActivity extends BaseActivity {
 	private String TAG="LoginActivity";
 	private EditText phoneEt;
 	private EditText passwordEt;

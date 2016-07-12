@@ -1,4 +1,4 @@
-package com.android.biubiu.ui.overall;
+package com.android.biubiu.ui.launch;
 
 import cc.imeetu.iu.R;
 
@@ -6,6 +6,8 @@ import cc.imeetu.iu.R;
 import com.android.biubiu.component.util.SharePreferanceUtils;
 import com.android.biubiu.persistence.base.DBManager;
 import com.android.biubiu.persistence.DBManagerCity;
+import com.android.biubiu.ui.base.BaseActivity;
+import com.android.biubiu.ui.base.MainActivity;
 import com.avos.avoscloud.LogUtil.log;
 
 import android.content.Intent;

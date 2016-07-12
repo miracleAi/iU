@@ -8,7 +8,7 @@ import org.xutils.http.RequestParams;
 
 import cc.imeetu.iu.R;
 
-import com.android.biubiu.ui.overall.BaseActivity;
+import com.android.biubiu.ui.base.BaseActivity;
 import com.android.biubiu.bean.UserInfoBean;
 import com.android.biubiu.transport.http.HttpContants;
 import com.android.biubiu.component.util.LogUtil;
