@@ -4,7 +4,7 @@
     package="cc.imeetu.iu"
     android:installLocation="preferExternal"
     android:versionCode="20160625"
-    android:versionName="2.0.2">
+    android:versionName="2.0.3">
 
 
     <uses-sdk
