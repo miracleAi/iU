@@ -447,6 +447,9 @@
         <activity
             android:name="com.android.biubiu.ui.conversation.activity.CPSettingActivity"
             android:theme="@style/AppTheme" />
+        <activity
+            android:name="com.android.biubiu.ui.mine.child.MyVoiceActivity"
+            android:label="@string/title_activity_my_voice"></activity>
     </application>
 
 </manifest>
