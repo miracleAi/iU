@@ -2,6 +2,7 @@ package com.android.biubiu.ui.half;
 
 
 import android.content.Intent;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -11,6 +12,7 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AlphaAnimation;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
@@ -48,6 +50,10 @@ public class HalfFragment extends BaseFragment implements FragmentIndicator.OnCl
     TextView ageMinTv;
     TextView ageMaxTv;
     TextView distanceMaxTv;
+
+    private AlphaAnimation mHideAnimation= null;
+
+    private AlphaAnimation mShowAnimation= null;
 
     public HalfFragment() {
         // Required empty public constructor
@@ -95,9 +101,10 @@ public class HalfFragment extends BaseFragment implements FragmentIndicator.OnCl
                         popupWindow.dismiss();
                         popBg.setVisibility(View.GONE);
                     }else{
-                       // popupWindow.showAsDropDown(titleLayout);
+                        //popupWindow.showAsDropDown(titleLayout);
                         popupWindow.showAtLocation(bodyLayout,Gravity.TOP,0, (int)DensityUtil.dip2px(getActivity(),76));
                         popBg.setVisibility(View.VISIBLE);
+                        setShowAnimation(popBg,500);
                     }
                 }
             }
@@ -146,6 +153,11 @@ public class HalfFragment extends BaseFragment implements FragmentIndicator.OnCl
         // 创建PopupWindow实例,200,150分别是宽度和高度
         popupWindow = new PopupWindow(customView, LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT,true);
+        popupWindow.setOutsideTouchable(true);
+        popupWindow.setFocusable(true);
+        // 如果不设置PopupWindow的背景，无论是点击外部区域还是Back键都无法dismiss弹框
+        // 我觉得这里是API的一个bug
+        popupWindow.setBackgroundDrawable(new ColorDrawable(0x00000000));
         popupWindow.setAnimationStyle(R.style.mystyle);
     }
     private void initPager() {
@@ -212,5 +224,68 @@ public class HalfFragment extends BaseFragment implements FragmentIndicator.OnCl
         public int getCount() {
             return fragments.size();
         }
+    }
+
+    /**
+
+     * View渐隐动画效果
+
+     *
+
+     */
+
+    private void setHideAnimation( View view, int duration ){
+
+        if( null == view || duration < 0 ){
+
+            return;
+
+        }
+
+        if( null != mHideAnimation ){
+
+            mHideAnimation.cancel( );
+
+        }
+
+        mHideAnimation = new AlphaAnimation(1.0f, 0.0f);
+
+        mHideAnimation.setDuration( duration );
+
+        mHideAnimation.setFillAfter( true );
+
+        view.startAnimation( mHideAnimation );
+
+    }
+
+    /**
+
+     * View渐现动画效果
+
+     *
+
+     */
+
+    private void setShowAnimation( View view, int duration ){
+
+        if( null == view || duration < 0 ){
+
+            return;
+
+        }
+
+        if( null != mShowAnimation ){
+
+            mShowAnimation.cancel( );
+
+        }
+
+        mShowAnimation = new AlphaAnimation(0.0f, 1.0f);
+
+        mShowAnimation.setDuration( duration );
+
+        mShowAnimation.setFillAfter( true );
+
+        view.startAnimation( mShowAnimation );
     }
 }
