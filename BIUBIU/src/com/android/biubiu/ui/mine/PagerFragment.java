@@ -575,6 +575,7 @@ public class PagerFragment extends BaseFragment implements View.OnClickListener,
             } else {
                 locationTv.setText(bean.getDistance() + "m");
             }
+            Log.d("mytest","time"+bean.getActivityTime());
             if (((System.currentTimeMillis() - bean.getActivityTime()) / 1000) > (24 * 60 * 60 * 1000)) {
                 timeTv.setText(((System.currentTimeMillis() - bean.getActivityTime()) / 1000) / 60 % 60 % 24 + "day");
             } else if (((System.currentTimeMillis() - bean.getActivityTime()) / 1000) > (60 * 60 * 1000)) {
