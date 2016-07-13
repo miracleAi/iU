@@ -6,13 +6,11 @@ import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.LinearInterpolator;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import com.android.biubiu.ui.conversation.activity.CPApplyActivity;
 import com.android.biubiu.ui.conversation.activity.CPSettingActivity;
-import com.android.biubiu.ui.discovery.CommNotifyActivity;
 import com.android.biubiu.ui.base.BaseFragment;
 
 import cc.imeetu.iu.R;

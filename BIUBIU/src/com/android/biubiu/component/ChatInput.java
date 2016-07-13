@@ -27,6 +27,8 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.android.biubiu.component.record.VoiceSendingView;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -42,7 +44,8 @@ public class ChatInput extends RelativeLayout implements TextWatcher, View.OnCli
 
     private static final String TAG = "ChatInput";
 
-    private ImageButton btnAdd, btnSend, btnVoice, btnKeyboard, btnEmotion;
+    private ImageButton btnAdd, btnKeyboard,
+            btnSend, btnVoice, btnEmotion;
     private EditText editText;
     private boolean isSendVisible, isHoldVoiceBtn, isEmoticonReady;
     private InputMode inputMode = InputMode.NONE;
@@ -52,7 +55,10 @@ public class ChatInput extends RelativeLayout implements TextWatcher, View.OnCli
     private LinearLayout emoticonPanel;
     private final int REQUEST_CODE_ASK_PERMISSIONS = 100;
 
+    private LinearLayout mVoiceLayout, mPhotoLayout, mPicLayout, mEmoticonLayout;
+    private LinearLayout mVoicePanelLayout;
 
+    private VoiceSendingView mVoiceSendView;
     public ChatInput(Context context, AttributeSet attrs) {
         super(context, attrs);
         LayoutInflater.from(context).inflate(R.layout.chat_input, this);
@@ -60,27 +66,29 @@ public class ChatInput extends RelativeLayout implements TextWatcher, View.OnCli
     }
 
     private void initView() {
-        textPanel = (LinearLayout) findViewById(R.id.text_panel);
-        btnAdd = (ImageButton) findViewById(R.id.btn_add);
-        btnAdd.setOnClickListener(this);
+        textPanel = (LinearLayout) findViewById(R.id.text_panel);//
+        btnAdd = (ImageButton) findViewById(R.id.btn_add);//
+//        btnAdd.setOnClickListener(this);
         btnSend = (ImageButton) findViewById(R.id.btn_send);
         btnSend.setOnClickListener(this);
-        btnVoice = (ImageButton) findViewById(R.id.btn_voice);
-        btnVoice.setOnClickListener(this);
-        btnEmotion = (ImageButton) findViewById(R.id.btnEmoticon);
-        btnEmotion.setOnClickListener(this);
-        morePanel = (LinearLayout) findViewById(R.id.morePanel);
-        LinearLayout BtnImage = (LinearLayout) findViewById(R.id.btn_photo);
+        btnVoice = (ImageButton) findViewById(R.id.btn_voice);//
+//        btnVoice.setOnClickListener(this);
+        btnEmotion = (ImageButton) findViewById(R.id.btnEmoticon);//
+//        btnEmotion.setOnClickListener(this);
+
+        morePanel = (LinearLayout) findViewById(R.id.morePanel);//
+        LinearLayout BtnImage = (LinearLayout) findViewById(R.id.btn_photo);//
         BtnImage.setOnClickListener(this);
-        LinearLayout BtnPhoto = (LinearLayout) findViewById(R.id.btn_image);
+        LinearLayout BtnPhoto = (LinearLayout) findViewById(R.id.btn_image);//
         BtnPhoto.setOnClickListener(this);
-        LinearLayout btnVideo = (LinearLayout) findViewById(R.id.btn_video);
+        LinearLayout btnVideo = (LinearLayout) findViewById(R.id.btn_video);//
         btnVideo.setOnClickListener(this);
-        LinearLayout btnFile = (LinearLayout) findViewById(R.id.btn_file);
+        LinearLayout btnFile = (LinearLayout) findViewById(R.id.btn_file);//
         btnFile.setOnClickListener(this);
-        setSendBtn();
+//        setSendBtn();
         btnKeyboard = (ImageButton) findViewById(R.id.btn_keyboard);
-        btnKeyboard.setOnClickListener(this);
+//        btnKeyboard.setOnClickListener(this);
+
         voicePanel = (TextView) findViewById(R.id.voice_panel);
         voicePanel.setOnTouchListener(new OnTouchListener() {
             @Override
@@ -111,6 +119,33 @@ public class ChatInput extends RelativeLayout implements TextWatcher, View.OnCli
         isSendVisible = editText.getText().length() != 0;
         emoticonPanel = (LinearLayout) findViewById(R.id.emoticonPanel);
 
+        mVoiceLayout = (LinearLayout) findViewById(R.id.voice_layout);
+        mPhotoLayout = (LinearLayout) findViewById(R.id.photo_layout);
+        mPicLayout = (LinearLayout) findViewById(R.id.pic_layout);
+        mEmoticonLayout = (LinearLayout) findViewById(R.id.emoticon_layout);
+        mVoicePanelLayout = (LinearLayout) findViewById(R.id.voice_panel_layout);
+        mVoiceLayout.setOnClickListener(this);
+        mPhotoLayout.setOnClickListener(this);
+        mPicLayout.setOnClickListener(this);
+        mEmoticonLayout.setOnClickListener(this);
+        mVoicePanelLayout.setOnTouchListener(new OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                switch (event.getAction()) {
+                    case MotionEvent.ACTION_DOWN:
+                        isHoldVoiceBtn = true;
+                        updateVoiceView();
+                        break;
+                    case MotionEvent.ACTION_UP:
+                        isHoldVoiceBtn = false;
+                        updateVoiceView();
+                        break;
+                }
+                return true;
+            }
+        });
+
+        mVoiceSendView = (VoiceSendingView) findViewById(R.id.voice_send_view);
     }
 
     private void updateView(InputMode mode) {
@@ -340,9 +375,35 @@ public class ChatInput extends RelativeLayout implements TextWatcher, View.OnCli
             case R.id.btn_file:
                 chatView.sendFile();
                 break;
+            case R.id.voice_layout:
+                if (activity != null && requestAudio(activity)) {
+
+                }
+                break;
+            case R.id.photo_layout:
+                if (activity != null && requestCamera(activity)) {
+                    chatView.sendPhoto();
+                }
+                break;
+            case R.id.pic_layout:
+                if (activity != null && requestStorage(activity)) {
+                    chatView.sendImage();
+                }
+                break;
+            case R.id.emoticon_layout:
+                break;
         }
     }
 
+    public void startSendVoice(){
+        mVoiceSendView.setVisibility(VISIBLE);
+        mVoiceSendView.showRecording();
+    }
+
+    public void endSendVoice(){
+        mVoiceSendView.release();
+        mVoiceSendView.setVisibility(GONE);
+    }
 
     /**
      * 获取输入框文字
