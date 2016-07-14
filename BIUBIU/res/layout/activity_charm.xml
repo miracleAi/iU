@@ -134,6 +134,7 @@
                     android:paddingRight="2dp">
 
                     <ProgressBar
+                        android:id="@+id/level_bar"
                         style="?android:attr/progressBarStyleHorizontal"
                         android:layout_width="match_parent"
                         android:layout_height="4dp"
