@@ -1,108 +1,122 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:top="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/half_child_bg"
     android:orientation="vertical">
 
-    <com.android.biubiu.component.title.TopTitleView
-        android:id="@+id/top_title_view"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/top_title_height"
-        android:background="@color/main_green"
-        top:bothSideSize="@dimen/top_title_height"
-        top:leftDrawable="@drawable/back_main"
-        top:rightText="@string/complete"
-        top:title="@string/page_voice"
-        top:topTitleColor="@android:color/white"
-        top:topTitleSize="@dimen/top_title_size" />
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="250dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginTop="10dp"
-        android:background="@color/main_green">
+        <com.android.biubiu.component.title.TopTitleView
+            android:id="@+id/top_title_view"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/top_title_height"
+            android:background="@color/main_green"
+            top:bothSideSize="@dimen/top_title_height"
+            top:leftDrawable="@drawable/back_main"
+            top:rightText="@string/complete"
+            top:title="@string/page_voice"
+            top:topTitleColor="@android:color/white"
+            top:topTitleSize="@dimen/top_title_size" />
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:gravity="center_horizontal"
-            android:orientation="vertical">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="250dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="10dp"
+            android:background="@color/main_green">
 
-            <ImageView
-                android:id="@+id/play_voice_imv"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:src="@drawable/mine_me_up_play_btn" />
-
-            <TextView
-                android:id="@+id/play_voice_tv"
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
-                android:text="0S"
-                android:textColor="@color/white"
-                android:textSize="18sp" />
+                android:layout_centerInParent="true"
+                android:gravity="center_horizontal"
+                android:orientation="vertical">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
-                android:text="唱一首歌、讲一个故事或者介绍一下自己呗"
-                android:textColor="@color/white"
-                android:textSize="14sp" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="6dp"
-                android:text="让自己变得更有魅力"
-                android:textColor="@color/white"
-                android:textSize="14sp" />
-        </LinearLayout>
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="243dp"
-        android:layout_marginBottom="7dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginTop="7dp"
-        android:background="@color/white">
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:orientation="vertical"
-            android:gravity="center_horizontal">
-
-            <RelativeLayout
-                android:id="@+id/record_time_layout"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/mine_me_down_time_img">
+                <ImageView
+                    android:id="@+id/play_voice_imv"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:src="@drawable/mine_me_up_play_btn" />
 
                 <TextView
-                    android:id="@+id/record_time_tv"
+                    android:id="@+id/play_voice_tv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="00:12"
-                    android:textColor="@color/main_green"
-                    android:textSize="16sp"
-                    android:layout_centerInParent="true"/>
-            </RelativeLayout>
-            <ImageView
-                android:id="@+id/record_voice_imv"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:layout_marginTop="12dp"
-                android:src="@drawable/mine_me_down_sound_record_btn_nor" />
-        </LinearLayout>
-    </RelativeLayout>
-</LinearLayout>
+                    android:layout_marginTop="12dp"
+                    android:text="0S"
+                    android:textColor="@color/white"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:text="唱一首歌、讲一个故事或者介绍一下自己呗"
+                    android:textColor="@color/white"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="6dp"
+                    android:text="让自己变得更有魅力"
+                    android:textColor="@color/white"
+                    android:textSize="14sp" />
+            </LinearLayout>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="243dp"
+            android:layout_marginBottom="7dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="7dp"
+            android:background="@color/white">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:gravity="center_horizontal"
+                android:orientation="vertical">
+
+                <RelativeLayout
+                    android:id="@+id/record_time_layout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@null">
+
+                    <TextView
+                        android:id="@+id/record_time_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:text="@string/voice_limit_str"
+                        android:textColor="@color/main_green"
+                        android:textSize="16sp" />
+                </RelativeLayout>
+
+                <ImageView
+                    android:id="@+id/record_voice_imv"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_marginTop="12dp"
+                    android:src="@drawable/mine_me_down_sound_record_btn_nor" />
+            </LinearLayout>
+        </RelativeLayout>
+    </LinearLayout>
+    <include
+        layout="@layout/loading_layout"
+        android:visibility="gone" />
+
+    <include
+        layout="@layout/load_error_layout"
+        android:visibility="gone" />
+</RelativeLayout>

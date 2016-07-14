@@ -837,7 +837,6 @@ public class PagerFragment extends BaseFragment implements View.OnClickListener,
                 break;
             case R.id.voice_linear:
                 Intent voiceIntent = new Intent(getActivity(), MyVoiceActivity.class);
-                voiceIntent.putExtra("userCode", userCode);
                 startActivity(voiceIntent);
                 break;
             case R.id.school_linear:

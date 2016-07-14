@@ -108,6 +108,7 @@
     <string name="description_me">在这里介绍一下你自己咯，关于爱情，关于成长，关于生活的种种……你想着什么样的人，最终就会遇到什么样的人。So,给每一个来到这里的TA送上祝福。</string>
     <string name="description_other">TA还没留下关于自己的只言片语呢</string>
     <string name="title_activity_match_setting">MatchSettingActivity</string>
+    <string name="voice_limit_str">录音最长90S</string>
 
     <!-- 设置相关 -->
     <string name="setting_title">设置</string>
