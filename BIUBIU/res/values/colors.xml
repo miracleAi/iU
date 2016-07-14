@@ -68,6 +68,7 @@
     <!-- 个人相关 -->
     <color name="mine_chird_top_bg">#6cd1c9</color>
     <color name="mine_chird_view_bottom">#a0a0a0</color>
+    <color name="mine_charm_value">#fefc9b</color>
 
     <!-- 设置 -->
     <color name="set_tag_bg">#f8f6f4</color>

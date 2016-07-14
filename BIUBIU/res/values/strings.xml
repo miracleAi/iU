@@ -109,6 +109,11 @@
     <string name="description_other">TA还没留下关于自己的只言片语呢</string>
     <string name="title_activity_match_setting">MatchSettingActivity</string>
     <string name="voice_limit_str">录音最长90S</string>
+    <string name="charm_title">个人魅力</string>
+    <string name="charm_value">魅力值</string>
+    <string name="charm_str1">被越多人关心，魅力值越高</string>
+    <string name="charm_str2">根据等级将享有更多CP名额、提现额度等</string>
+    <string name="charm_str3">特权</string>
 
     <!-- 设置相关 -->
     <string name="setting_title">设置</string>
@@ -373,5 +378,6 @@
     <!--chat end-->
     <string name="half">一半</string>
     <string name="title_activity_my_voice">MyVoiceActivity</string>
+    <string name="title_activity_charm">CharmActivity</string>
     <!--app2.2开发-->
 </resources>

@@ -100,7 +100,7 @@ public class HalfFragment extends BaseFragment implements FragmentIndicator.OnCl
         rightLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               /* if(customView != null){
+                if(customView != null){
                     if(customView.getVisibility() == View.VISIBLE){
                         customView.startAnimation(AnimationUtils.loadAnimation(getActivity(),R.anim.up_out_anim));
                         customView.setVisibility(View.GONE);
@@ -113,9 +113,7 @@ public class HalfFragment extends BaseFragment implements FragmentIndicator.OnCl
                         popBg.setVisibility(View.VISIBLE);
                         setShowAnimation(popBg,500);
                     }
-                }*/
-                Intent voiceIntent = new Intent(getActivity(), MyVoiceActivity.class);
-                startActivity(voiceIntent);
+                }
             }
         });
     }
