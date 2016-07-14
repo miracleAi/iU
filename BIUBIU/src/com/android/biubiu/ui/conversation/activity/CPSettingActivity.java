@@ -92,6 +92,9 @@ public class CPSettingActivity extends Activity implements OnWheelChangedListene
                     mPopupWindow.showAtLocation(mEntireView, Gravity.BOTTOM, 0, 0);
                 }
                 break;
+            case R.id.cancel_layout:
+                mPopupWindow.dismiss();
+                break;
         }
     }
 }

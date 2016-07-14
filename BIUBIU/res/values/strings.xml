@@ -347,6 +347,8 @@
     <string name="chat_release_send">松开 结束</string>
     <string name="chat_up_finger">手指上滑，取消发送</string>
     <string name="chat_audio_too_short">录音过短，请重试</string>
+    <string name="chat_file_too_large">文件过大，发送失败</string>
+    <string name="chat_file_not_exist">文件不存在，发送失败</string>
     <string name="cp_apply">CP申请</string>
     <string name="cp_apply_null">还没有收到CP申请呢，去一半和社区转转吧</string>
     <string name="cp_setting">CP设置</string>
@@ -364,6 +366,8 @@
         <item>40U米</item>
     </array>
     <string name="charm_level">我的魅力等级：%1$s</string>
+    <string name="summary_image">[图片]</string>
+    <string name="summary_voice">[语音]</string>
     <!--chat end-->
     <string name="half">一半</string>
     <!--app2.2开发-->
