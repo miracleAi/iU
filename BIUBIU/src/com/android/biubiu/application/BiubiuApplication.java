@@ -10,6 +10,7 @@ import com.android.biubiu.crashhandle.UEHandler;
 import com.android.biubiu.component.util.CommonUtils;
 import com.avos.avoscloud.AVOSCloud;
 import com.android.biubiu.component.util.LogUtil;
+
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.Application;
@@ -34,17 +35,19 @@ public class BiubiuApplication extends Application {
     }*/
     private static BiubiuApplication application;
     private final Stack<Activity> mActStack = new Stack<Activity>();
-    public static BiubiuApplication getInstance(){
-        if(application == null){
+
+    public static BiubiuApplication getInstance() {
+        if (application == null) {
             application = new BiubiuApplication();
         }
         return application;
     }
+
     @Override
     public void onCreate() {
         // TODO Auto-generated method stub
         super.onCreate();
-//        applicationContext = this;
+        application = this;
 //        instance = this;
         final Context context = this;
         new Runnable() {
@@ -87,6 +90,7 @@ public class BiubiuApplication extends Application {
         super.attachBaseContext(base);
         MultiDex.install(this);
     }
+
     /**
      * 添加activity至Stack
      *
@@ -111,7 +115,7 @@ public class BiubiuApplication extends Application {
      * 删除当前指定activity
      *
      * @param aInstance 待删除activity
-     * @param bFinish 是否同时finish掉当前Activity，true为是，false为否
+     * @param bFinish   是否同时finish掉当前Activity，true为是，false为否
      */
     public void delAppInstance(Activity aInstance, boolean bFinish) {
         mActStack.remove(aInstance);
@@ -135,7 +139,7 @@ public class BiubiuApplication extends Application {
      * 删除当前指定activity
      *
      * @param activity 待删除activity类名
-     * @param bFinish 是否同时finish掉当前Activity，true为是，false为否
+     * @param bFinish  是否同时finish掉当前Activity，true为是，false为否
      */
     public void delAppInstance(String activity, boolean bFinish) {
         for (Activity a : mActStack) {
@@ -156,14 +160,16 @@ public class BiubiuApplication extends Application {
         try {
             ActivityManager activityMgr = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
             activityMgr.restartPackage(getPackageName());
-        } catch (Exception e) {}
+        } catch (Exception e) {
+        }
     }
 
     private void exitAppSinceLevel8() {
         try {
             ActivityManager activityMgr = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
             activityMgr.killBackgroundProcesses(getPackageCodePath());
-        } catch (Exception e) {}
+        } catch (Exception e) {
+        }
     }
 
     public void clearAllActivity() {
