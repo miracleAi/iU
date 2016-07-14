@@ -45,6 +45,10 @@
             android:layout_height="match_parent"
             android:background="#88000000"
             android:visibility="gone"/>
+        <include
+            android:id="@+id/half_pop"
+            layout="@layout/fragment_half_pop"
+            android:visibility="gone"/>
     </RelativeLayout>
 
 </LinearLayout>

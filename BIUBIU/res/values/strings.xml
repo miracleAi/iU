@@ -88,6 +88,7 @@
     <string name="page_no_aboutme">关于我的信息不能为空</string>
     <string name="page_userinfo">基本信息</string>
     <string name="page_dynamic">个人动态</string>
+    <string name="page_voice">我的声线</string>
     <string name="page_school">学校</string>
     <string name="page_identity">身份</string>
     <string name="page_tall">身高体重</string>
@@ -370,5 +371,6 @@
     <string name="summary_voice">[语音]</string>
     <!--chat end-->
     <string name="half">一半</string>
+    <string name="title_activity_my_voice">MyVoiceActivity</string>
     <!--app2.2开发-->
 </resources>

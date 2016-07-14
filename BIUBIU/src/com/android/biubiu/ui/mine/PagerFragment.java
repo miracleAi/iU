@@ -58,6 +58,7 @@ import com.android.biubiu.ui.mine.child.ChangeNameActivity;
 import com.android.biubiu.ui.mine.child.ChangeSchoolActivity;
 import com.android.biubiu.ui.mine.child.InterestLabelActivity;
 import com.android.biubiu.ui.mine.child.MainSetActivity;
+import com.android.biubiu.ui.mine.child.MyVoiceActivity;
 import com.android.biubiu.ui.mine.child.PersonalityTagActivity;
 import com.android.biubiu.ui.mine.child.ScanUserHeadActivity;
 import com.android.biubiu.ui.mine.child.SuperMainInfoActivity;
@@ -156,6 +157,7 @@ public class PagerFragment extends BaseFragment implements View.OnClickListener,
     private LinearLayout dynamicLayout;
     private TextView dynamicTv;
     private ImageView dynamicArrow;
+    private LinearLayout voiceLinear;
     private TextView locationTv;
     private TextView matchTv;
     private TextView timeTv;
@@ -291,6 +293,8 @@ public class PagerFragment extends BaseFragment implements View.OnClickListener,
         todayTv = (TextView) mRootview.findViewById(R.id.today_tv);
         dynamicLayout = (LinearLayout) mRootview.findViewById(R.id.dynamic_linear);
         dynamicLayout.setOnClickListener(this);
+        voiceLinear = (LinearLayout) mRootview.findViewById(R.id.voice_linear);
+        voiceLinear.setOnClickListener(this);
         dynamicArrow = (ImageView) mRootview.findViewById(R.id.dynamic_arrow);
         dynamicTv = (TextView) mRootview.findViewById(R.id.dynamic_tv);
         aboutMeArrow = (ImageView) mRootview.findViewById(R.id.about_arrow);
@@ -830,6 +834,11 @@ public class PagerFragment extends BaseFragment implements View.OnClickListener,
                 Intent dynamicIntent = new Intent(getActivity(), UserDynamicActivity.class);
                 dynamicIntent.putExtra("userCode", userCode);
                 startActivity(dynamicIntent);
+                break;
+            case R.id.voice_linear:
+                Intent voiceIntent = new Intent(getActivity(), MyVoiceActivity.class);
+                voiceIntent.putExtra("userCode", userCode);
+                startActivity(voiceIntent);
                 break;
             case R.id.school_linear:
                 //if(infoBean.getIsStudent().equals(Constants.IS_STUDENT_FLAG)){

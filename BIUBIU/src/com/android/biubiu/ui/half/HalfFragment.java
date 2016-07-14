@@ -2,6 +2,7 @@ package com.android.biubiu.ui.half;
 
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -13,6 +14,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
@@ -46,10 +49,10 @@ public class HalfFragment extends BaseFragment implements FragmentIndicator.OnCl
     private View mRootView;
     private int currentIndex = 0;
     private View popBg;
-    private PopupWindow popupWindow;
     TextView ageMinTv;
     TextView ageMaxTv;
     TextView distanceMaxTv;
+    LinearLayout customView;
 
     private AlphaAnimation mHideAnimation= null;
 
@@ -96,13 +99,16 @@ public class HalfFragment extends BaseFragment implements FragmentIndicator.OnCl
         rightLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(popupWindow != null){
-                    if(popupWindow.isShowing()){
-                        popupWindow.dismiss();
+                if(customView != null){
+                    if(customView.getVisibility() == View.VISIBLE){
+                        customView.startAnimation(AnimationUtils.loadAnimation(getActivity(),R.anim.up_out_anim));
+                        customView.setVisibility(View.GONE);
+                        setHideAnimation(popBg,500);
                         popBg.setVisibility(View.GONE);
                     }else{
-                        //popupWindow.showAsDropDown(titleLayout);
-                        popupWindow.showAtLocation(bodyLayout,Gravity.TOP,0, (int)DensityUtil.dip2px(getActivity(),76));
+                        //popupWindow.showAtLocation(bodyLayout,Gravity.TOP,0, (int)DensityUtil.dip2px(getActivity(),76));
+                        customView.setVisibility(View.VISIBLE);
+                        customView.startAnimation(AnimationUtils.loadAnimation(getActivity(),R.anim.up_in_anim));
                         popBg.setVisibility(View.VISIBLE);
                         setShowAnimation(popBg,500);
                     }
@@ -113,21 +119,21 @@ public class HalfFragment extends BaseFragment implements FragmentIndicator.OnCl
     private void initPopWindow() {
         RangeSeekBar<Integer> seekBar;
         // // 获取自定义布局文件pop.xml的视图
-        View customView = LayoutInflater.from(getActivity()).inflate(R.layout.fragment_half_pop,
-                null, false);
+        customView = (LinearLayout) mRootView.findViewById(R.id.half_pop);
         LinearLayout seekLinear = (LinearLayout) customView.findViewById(R.id.age_seek_linear);
         ageMinTv = (TextView) customView.findViewById(R.id.age_min_tv);
         ageMaxTv = (TextView) customView.findViewById(R.id.age_max_tv);
         SeekBar distanceBar = (SeekBar) customView.findViewById(R.id.distance_bar);
         distanceMaxTv = (TextView) customView.findViewById(R.id.distance_max_tv);
         seekBar = new RangeSeekBar<Integer>(16, 40, getActivity());
-
+        ageMinTv.setText("16");
+        ageMaxTv.setText("40");
         seekBar.setOnRangeSeekBarChangeListener(new RangeSeekBar.OnRangeSeekBarChangeListener<Integer>() {
             @Override
             public void onRangeSeekBarValuesChanged(RangeSeekBar<?> bar,
                                                     Integer minValue, Integer maxValue) {
                 ageMinTv.setText(minValue+"");
-                ageMinTv.setText(maxValue+"");
+                ageMaxTv.setText(maxValue+"");
             }
         });
         seekBar.setNotifyWhileDragging(true);
@@ -150,15 +156,6 @@ public class HalfFragment extends BaseFragment implements FragmentIndicator.OnCl
 
             }
         });
-        // 创建PopupWindow实例,200,150分别是宽度和高度
-        popupWindow = new PopupWindow(customView, LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT,true);
-        popupWindow.setOutsideTouchable(true);
-        popupWindow.setFocusable(true);
-        // 如果不设置PopupWindow的背景，无论是点击外部区域还是Back键都无法dismiss弹框
-        // 我觉得这里是API的一个bug
-        popupWindow.setBackgroundDrawable(new ColorDrawable(0x00000000));
-        popupWindow.setAnimationStyle(R.style.mystyle);
     }
     private void initPager() {
         mViewPager.setOffscreenPageLimit(2);
