@@ -10,6 +10,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Bitmap;
+import android.graphics.drawable.AnimationDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -56,8 +57,10 @@ import com.android.biubiu.ui.mine.child.ChangeHomeTwonActivity;
 import com.android.biubiu.ui.mine.child.ChangeIdentityProfessionActivity;
 import com.android.biubiu.ui.mine.child.ChangeNameActivity;
 import com.android.biubiu.ui.mine.child.ChangeSchoolActivity;
+import com.android.biubiu.ui.mine.child.CharmActivity;
 import com.android.biubiu.ui.mine.child.InterestLabelActivity;
 import com.android.biubiu.ui.mine.child.MainSetActivity;
+import com.android.biubiu.ui.mine.child.MyCareActivity;
 import com.android.biubiu.ui.mine.child.MyVoiceActivity;
 import com.android.biubiu.ui.mine.child.PersonalityTagActivity;
 import com.android.biubiu.ui.mine.child.ScanUserHeadActivity;
@@ -159,10 +162,11 @@ public class PagerFragment extends BaseFragment implements View.OnClickListener,
     private ImageView dynamicArrow;
     private LinearLayout voiceLinear;
     private TextView locationTv;
-    private TextView matchTv;
+    //private TextView matchTv;
     private TextView timeTv;
     private TextView iconVerify;
     private ImageView aboutMeArrow;
+    private ImageView voiceArrwo;
     private ImageView nickArrwo;
     private ImageView starArrow;
     private ImageView birthArrow;
@@ -179,6 +183,26 @@ public class PagerFragment extends BaseFragment implements View.OnClickListener,
     private RelativeLayout myInfoLayout;
     private TextView totalTv;
     private TextView todayTv;
+    private LinearLayout careMeLayout;
+    private TextView careMeTv;
+    private LinearLayout myCareLayout;
+    private TextView myCareTv;
+
+    private LinearLayout otherBottemLayout;
+    private TextView chatTv;
+    private TextView cpTv;
+    private LinearLayout otherCareLayout;
+    private ImageView otherCareImv;
+    private boolean isCare = false;
+
+    private RelativeLayout charmLayout;
+    private TextView charmTv;
+    private RelativeLayout voicePlayLayout;
+    private TextView voiceTimeTv;
+    private ImageView voicePlayImv;
+
+    private AnimationDrawable voicePlayAnim;
+    private boolean isVoicePlay = false;
 
     private UserInfoBean infoBean;
     ImageOptions imageOptions;
@@ -206,7 +230,7 @@ public class PagerFragment extends BaseFragment implements View.OnClickListener,
     private FrameLayout mLoginedView;
     private Button register, login;
     Bundle b;
-    private int codeState = -1;
+   // private int codeState = -1;
 
     private boolean mRequestSuccess;
 
@@ -286,18 +310,22 @@ public class PagerFragment extends BaseFragment implements View.OnClickListener,
         backRl.setOnClickListener(this);
         otherInfoLayout = (RelativeLayout) mRootview.findViewById(R.id.other_info_layout);
         locationTv = (TextView) mRootview.findViewById(R.id.location_tv);
-        matchTv = (TextView) mRootview.findViewById(R.id.match_tv);
+        //matchTv = (TextView) mRootview.findViewById(R.id.match_tv);
         timeTv = (TextView) mRootview.findViewById(R.id.time_tv);
         myInfoLayout = (RelativeLayout) mRootview.findViewById(R.id.my_info_layout);
         totalTv = (TextView) mRootview.findViewById(R.id.total_tv);
         todayTv = (TextView) mRootview.findViewById(R.id.today_tv);
+        careMeLayout = (LinearLayout) mRootview.findViewById(R.id.care_me_layout);
+        careMeTv = (TextView) mRootview.findViewById(R.id.care_me_tv);
+        myCareLayout = (LinearLayout) mRootview.findViewById(R.id.my_care_layout);
+        myCareTv = (TextView) mRootview.findViewById(R.id.my_care_tv);
         dynamicLayout = (LinearLayout) mRootview.findViewById(R.id.dynamic_linear);
         dynamicLayout.setOnClickListener(this);
         voiceLinear = (LinearLayout) mRootview.findViewById(R.id.voice_linear);
-        voiceLinear.setOnClickListener(this);
         dynamicArrow = (ImageView) mRootview.findViewById(R.id.dynamic_arrow);
         dynamicTv = (TextView) mRootview.findViewById(R.id.dynamic_tv);
         aboutMeArrow = (ImageView) mRootview.findViewById(R.id.about_arrow);
+        voiceArrwo = (ImageView) mRootview.findViewById(R.id.voice_arrow);
         nickArrwo = (ImageView) mRootview.findViewById(R.id.nickname_arrow);
         birthArrow = (ImageView) mRootview.findViewById(R.id.birth_arrow);
         starArrow = (ImageView) mRootview.findViewById(R.id.star_arrow);
@@ -312,6 +340,18 @@ public class PagerFragment extends BaseFragment implements View.OnClickListener,
         sexArrow = (ImageView) mRootview.findViewById(R.id.sex_arrow);
         superManIv = (ImageView) mRootview.findViewById(R.id.super_man_iv);
         superManIv.setOnClickListener(this);
+        charmLayout = (RelativeLayout) mRootview.findViewById(R.id.charm_layout);
+        charmLayout.setOnClickListener(this);
+        charmTv = (TextView) mRootview.findViewById(R.id.charm_level_tv);
+        voicePlayLayout = (RelativeLayout) mRootview.findViewById(R.id.voice_play_layout);
+        voicePlayLayout.setOnClickListener(this);
+        voicePlayImv = (ImageView) mRootview.findViewById(R.id.voice_play_imv);
+        voiceTimeTv = (TextView) mRootview.findViewById(R.id.voice_time);
+        chatTv = (TextView) mRootview.findViewById(R.id.chat_tv);
+        otherCareLayout = (LinearLayout) mRootview.findViewById(R.id.other_bottom_layout);
+        otherBottemLayout = (LinearLayout) mRootview.findViewById(R.id.other_bottom_layout);
+        otherCareImv = (ImageView) mRootview.findViewById(R.id.care_imv);
+        cpTv = (TextView) mRootview.findViewById(R.id.cp_tv);
 
         imageOptions = new ImageOptions.Builder()
                 .setImageScaleType(ImageView.ScaleType.CENTER_CROP)
@@ -373,6 +413,7 @@ public class PagerFragment extends BaseFragment implements View.OnClickListener,
             } else {
                 mTopTitle.setRightImage(R.drawable.mes_btn_right);
                 isMyself = false;
+                initOtherClick();
                 switchView();
             }
         }
@@ -485,9 +526,9 @@ public class PagerFragment extends BaseFragment implements View.OnClickListener,
                     JSONObject info = data.getJSONObject("userinfo");
                     //					String token = data.getString("token");
                     //					SharePreferanceUtils.getInstance().putShared(getApplicationContext(), SharePreferanceUtils.TOKEN, token);
-                    if (!isMyself) {
+                    /*if (!isMyself) {
                         codeState = info.getInt("code");
-                    }
+                    }*/
                     Gson gson = new Gson();
                     UserInfoBean bean = gson.fromJson(info.toString(), UserInfoBean.class);
                     if (bean == null) {
@@ -559,8 +600,10 @@ public class PagerFragment extends BaseFragment implements View.OnClickListener,
         if (isMyself) {
             addPhotoImv.setVisibility(View.VISIBLE);
             otherInfoLayout.setVisibility(View.GONE);
+            otherBottemLayout.setVisibility(View.GONE);
             aboutMeArrow.setVisibility(View.VISIBLE);
             nickArrwo.setVisibility(View.VISIBLE);
+            voiceArrwo.setVisibility(View.VISIBLE);
             birthArrow.setVisibility(View.VISIBLE);
             starArrow.setVisibility(View.VISIBLE);
             cityArrow.setVisibility(View.VISIBLE);
@@ -571,7 +614,7 @@ public class PagerFragment extends BaseFragment implements View.OnClickListener,
             personalArrow.setVisibility(View.VISIBLE);
             interestArrow.setVisibility(View.VISIBLE);
             myInfoLayout.setVisibility(View.VISIBLE);
-            todayTv.setText(bean.getTodayNum() + "");
+            todayTv.setText( "+"+bean.getTodayNum());
             totalTv.setText(bean.getTotalNum() + "");
         } else {
             if (bean.getDistance() > 1000) {
@@ -581,18 +624,20 @@ public class PagerFragment extends BaseFragment implements View.OnClickListener,
             }
             Log.d("mytest","time"+bean.getActivityTime());
             if (((System.currentTimeMillis() - bean.getActivityTime()) / 1000) > (24 * 60 * 60 * 1000)) {
-                timeTv.setText(((System.currentTimeMillis() - bean.getActivityTime()) / 1000) / 60 % 60 % 24 + "day");
+                timeTv.setText(((System.currentTimeMillis() - bean.getActivityTime()) / 1000) / 60 % 60 % 24 + "天前");
             } else if (((System.currentTimeMillis() - bean.getActivityTime()) / 1000) > (60 * 60 * 1000)) {
-                timeTv.setText(((System.currentTimeMillis() - bean.getActivityTime()) / 1000) / 60 % 60 + "h");
+                timeTv.setText(((System.currentTimeMillis() - bean.getActivityTime()) / 1000) / 60 % 60 + "小时前");
             } else {
-                timeTv.setText(((System.currentTimeMillis() - bean.getActivityTime()) / 1000) % 60 + "min");
+                timeTv.setText(((System.currentTimeMillis() - bean.getActivityTime()) / 1000) % 60 + "分钟前");
             }
-            matchTv.setText("" + bean.getMatchScore() + "%");
+            //matchTv.setText("" + bean.getMatchScore() + "%");
             addPhotoImv.setVisibility(View.GONE);
             otherInfoLayout.setVisibility(View.VISIBLE);
+            otherBottemLayout.setVisibility(View.VISIBLE);
             myInfoLayout.setVisibility(View.GONE);
             aboutMeArrow.setVisibility(View.GONE);
             nickArrwo.setVisibility(View.GONE);
+            voiceArrwo.setVisibility(View.GONE);
             birthArrow.setVisibility(View.GONE);
             starArrow.setVisibility(View.GONE);
             cityArrow.setVisibility(View.GONE);
@@ -761,6 +806,14 @@ public class PagerFragment extends BaseFragment implements View.OnClickListener,
         schoolLinear.setOnClickListener(this);
         personalTagLinear.setOnClickListener(this);
         interestTagLinear.setOnClickListener(this);
+        voiceLinear.setOnClickListener(this);
+        careMeLayout.setOnClickListener(this);
+        myCareLayout.setOnClickListener(this);
+    }
+    private void initOtherClick(){
+        chatTv.setOnClickListener(this);
+        cpTv.setOnClickListener(this);
+        otherCareImv.setOnClickListener(this);
     }
 
     @Override
@@ -850,8 +903,19 @@ public class PagerFragment extends BaseFragment implements View.OnClickListener,
 				startActivityForResult(companyIntent, UPDATE_INFO);
 			}*/
                 break;
+            case R.id.charm_layout:
+                Intent charmIntent = new Intent(getActivity(), CharmActivity.class);
+                startActivity(charmIntent);
+                break;
+            case R.id.voice_play_layout:
+                if(isVoicePlay){
+                    stopVoice();
+                }else{
+                    playVoice();
+                }
+                break;
             case R.id.personal_tag_linear:
-                Intent personalTagIntent = new Intent(getActivity(), PersonalityTagActivity.class);
+                Intent personalTagIntent = new Intent(getActivity(),PersonalityTagActivity.class);
                 personalTagIntent.putExtra("personalTags", infoBean.getPersonalTags());
                 personalTagIntent.putExtra("userInfoBean", infoBean);
                 startActivityForResult(personalTagIntent, UPDATE_PERSONAL_TAG);
@@ -877,11 +941,62 @@ public class PagerFragment extends BaseFragment implements View.OnClickListener,
                 Intent login = new Intent(getActivity(), LoginActivity.class);
                 startActivityForResult(login, TO_LOGIN);
                 break;
+            case R.id.chat_tv:
+                break;
+            case R.id.cp_tv:
+                break;
+            case R.id.care_me_layout:
+                showCareMeDialog();
+                break;
+            case R.id.my_care_layout:
+                Intent myCareIntent = new Intent(getActivity(), MyCareActivity.class);
+                startActivity(myCareIntent);
+                break;
+            case R.id.care_imv:
+                if(isCare){
+                    cancelCare();
+                }else{
+                    doCare();
+                }
+                break;
             default:
                 break;
         }
     }
 
+    private void showCareMeDialog() {
+        CommonDialog.careMeDialog(getActivity(), new DialogInterface.OnClickListener()
+         {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+    }
+
+    //取消关注某人
+    private void cancelCare() {
+        isCare = false;
+        otherCareImv.setImageResource(R.drawable.main_other_btn_care_nor);
+    }
+
+    //关注某人
+    private void doCare() {
+        isCare = true;
+        otherCareImv.setImageResource(R.drawable.main_other_btn_care_light);
+    }
+
+    private void playVoice(){
+        isVoicePlay = true;
+        voicePlayImv.setImageResource(R.drawable.voice_play_anim);
+        voicePlayAnim = (AnimationDrawable) voicePlayImv.getDrawable();
+        voicePlayAnim.start();
+    }
+    private void stopVoice(){
+        isVoicePlay = false;
+        voicePlayAnim = (AnimationDrawable) voicePlayImv.getDrawable();
+        voicePlayAnim.stop();
+    }
 
     /**
      * 更多

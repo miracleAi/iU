@@ -88,6 +88,7 @@
     <string name="page_no_aboutme">关于我的信息不能为空</string>
     <string name="page_userinfo">基本信息</string>
     <string name="page_dynamic">个人动态</string>
+    <string name="page_sign">个性签名</string>
     <string name="page_voice">我的声线</string>
     <string name="page_school">学校</string>
     <string name="page_identity">身份</string>
@@ -114,6 +115,7 @@
     <string name="charm_str1">被越多人关心，魅力值越高</string>
     <string name="charm_str2">根据等级将享有更多CP名额、提现额度等</string>
     <string name="charm_str3">特权</string>
+    <string name="my_care_title">我关心的</string>
 
     <!-- 设置相关 -->
     <string name="setting_title">设置</string>
@@ -379,5 +381,6 @@
     <string name="half">一半</string>
     <string name="title_activity_my_voice">MyVoiceActivity</string>
     <string name="title_activity_charm">CharmActivity</string>
+    <string name="title_activity_my_care">MyCareActivity</string>
     <!--app2.2开发-->
 </resources>

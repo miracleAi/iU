@@ -14,6 +14,7 @@ import android.text.TextUtils;
 import android.view.View;
 import android.view.Window;
 import android.view.View.OnClickListener;
+import android.widget.Button;
 import android.widget.RadioButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -27,8 +28,6 @@ public class CommonDialog {
 
 	/**
 	 * 头像上传说明dialog
-	 * @param context
-	 * @param contentString
 	 * @author miracle
 	 * @date 2015-3-7
 	 */
@@ -62,8 +61,6 @@ public class CommonDialog {
 
 	/**
 	 * dialog singleBtn
-	 * @param context
-	 * @param contentString
 	 * @author miracle
 	 * @date 2015-3-7
 	 */
@@ -98,8 +95,6 @@ public class CommonDialog {
 	}
 	/**
 	 * dialog doubleBtn
-	 * @param context
-	 * @param contentString
 	 * @author miracle
 	 * @date 2015-3-7
 	 */
@@ -137,6 +132,28 @@ public class CommonDialog {
 			@Override
 			public void onClick(View v) {
 				click2.onClick(portraidlg, R.id.ok_dialog_my_rl);
+			}
+		});
+		return portraidlg;
+	}
+	/**
+	 * dialog doubleBtn
+	 * @author miracle
+	 * @date 2015-3-7
+	 */
+	public static AlertDialog careMeDialog(final Context mContext,final DialogInterface.OnClickListener click) {
+
+		final AlertDialog portraidlg = new AlertDialog.Builder(mContext)
+				.create();
+		portraidlg.show();
+		Window win = portraidlg.getWindow();
+		win.setContentView(R.layout.care_me_dialog);
+		Button okBtn = (Button) win.findViewById(R.id.ok_btn);
+		okBtn.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				click.onClick(portraidlg, R.id.ok_btn);
 			}
 		});
 		return portraidlg;

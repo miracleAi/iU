@@ -14,7 +14,8 @@
         top:leftDrawable="@drawable/main_nav_bar_icon_left"
         top:rightDrawable="@drawable/main_nav_bar_icon_right"
         top:topTitleColor="@android:color/white"
-        top:topTitleSize="@dimen/top_title_size" />
+        top:topTitleSize="@dimen/top_title_size"
+        />
 
     <include
         android:id="@+id/login_view"
@@ -39,13 +40,15 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:orientation="vertical"
+               >
 
                 <RelativeLayout
                     android:id="@+id/userhead_rl"
                     android:layout_width="match_parent"
                     android:layout_height="210dp"
-                    android:background="@drawable/main_pho_bg">
+                    android:background="@drawable/main_pho_bg"
+                    >
 
                     <RelativeLayout
                         android:id="@+id/back_rl"
@@ -83,12 +86,15 @@
                             android:padding="6dp"
                             android:src="@drawable/mes_btn_right" />
                     </RelativeLayout>
-
                     <RelativeLayout
                         android:id="@+id/userhead_layout"
-                        android:layout_width="89dp"
+                        android:layout_width="134dp"
                         android:layout_height="112dp"
                         android:layout_centerHorizontal="true"
+                       >
+                    <RelativeLayout
+                        android:layout_width="89dp"
+                        android:layout_height="112dp"
                         android:layout_marginTop="20dp">
 
                         <ImageView
@@ -99,35 +105,72 @@
                             android:padding="3dp"
                             android:scaleType="fitXY" />
 
-                        <RelativeLayout
-                            android:layout_width="89dp"
-                            android:layout_height="89dp"
-                            android:layout_alignParentBottom="true">
-
-                            <ImageView
+                            <RelativeLayout
                                 android:layout_width="89dp"
                                 android:layout_height="89dp"
-                                android:layout_centerInParent="true"
-                                android:src="@drawable/main_imageview_photo" />
+                                android:layout_alignParentBottom="true" >
 
+                                <ImageView
+                                    android:layout_width="89dp"
+                                    android:layout_height="89dp"
+                                    android:layout_centerInParent="true"
+                                    android:src="@drawable/main_imageview_photo" />
+
+                                <ImageView
+                                    android:id="@+id/userhead_imv"
+                                    android:layout_width="85dp"
+                                    android:layout_height="85dp"
+                                    android:layout_centerInParent="true"
+                                    android:src="@drawable/photo_fail" />
+
+                                <TextView
+                                    android:id="@+id/virify_tv"
+                                    android:layout_width="58.5dp"
+                                    android:layout_height="22dp"
+                                    android:layout_alignParentBottom="true"
+                                    android:layout_centerHorizontal="true"
+                                    android:background="@drawable/register_birthday_imageview_bg"
+                                    android:gravity="center"
+                                    android:text="审核中"
+                                    android:textColor="@color/white"
+                                    android:textSize="12sp" />
+                            </RelativeLayout>
+                        </RelativeLayout>
+                        <RelativeLayout
+                            android:id="@+id/charm_layout"
+                            android:layout_width="65dp"
+                            android:layout_height="20dp"
+                            android:layout_alignParentRight="true"
+                            android:layout_alignParentBottom="true"
+                            android:layout_marginBottom="5dp">
                             <ImageView
-                                android:id="@+id/userhead_imv"
-                                android:layout_width="85dp"
-                                android:layout_height="85dp"
-                                android:layout_centerInParent="true"
-                                android:src="@drawable/photo_fail" />
-
+                                android:layout_width="65dp"
+                                android:layout_height="18dp"
+                                android:layout_centerVertical="true"
+                                android:src="@drawable/charm_icon_bg"/>
+                        <LinearLayout
+                            android:layout_width="65dp"
+                            android:layout_height="20dp"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal"
+                            android:background="@null">
                             <TextView
-                                android:id="@+id/virify_tv"
-                                android:layout_width="58.5dp"
-                                android:layout_height="22dp"
-                                android:layout_alignParentBottom="true"
-                                android:layout_centerHorizontal="true"
-                                android:background="@drawable/register_birthday_imageview_bg"
+                                android:layout_width="20dp"
+                                android:layout_height="20dp"
+                                android:text="魅"
+                                android:textSize="10sp"
+                                android:textColor="#555555"
                                 android:gravity="center"
-                                android:text="审核中"
-                                android:textColor="@color/white"
-                                android:textSize="12sp" />
+                                android:background="@drawable/charm_icon_circle"
+                                />
+                            <TextView
+                                android:id="@+id/charm_value_tv"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="2dp"
+                                android:textColor="@color/yello_text"
+                                android:text="Lv.22"/>
+                        </LinearLayout>
                         </RelativeLayout>
                     </RelativeLayout>
 
@@ -148,13 +191,14 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_alignParentBottom="true"
-                        android:layout_marginBottom="11dp"
+                        android:layout_marginBottom="4dp"
                         android:visibility="gone">
 
                         <LinearLayout
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_centerHorizontal="true"
+                            android:layout_alignParentRight="true"
+                            android:layout_marginRight="14dp"
                             android:gravity="center_vertical"
                             android:orientation="horizontal">
 
@@ -167,111 +211,170 @@
                                 android:id="@+id/location_tv"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_marginLeft="5.5dp"
+                                android:layout_marginLeft="4dp"
+                                android:text="114"
                                 android:textColor="@color/white"
-                                android:textSize="11sp" />
-
-                            <View
-                                android:layout_width="1dp"
-                                android:layout_height="11dp"
-                                android:layout_marginLeft="11dp"
-                                android:background="@drawable/main_imageview_line" />
+                                android:textSize="13sp" />
 
                             <ImageView
-                                android:layout_width="11dp"
-                                android:layout_height="11dp"
-                                android:layout_marginLeft="11dp"
-                                android:src="@drawable/main_imageview_fit" />
-
-                            <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_marginLeft="5dp"
-                                android:text="匹配度"
-                                android:textColor="@color/white"
-                                android:textSize="11sp" />
-
-                            <TextView
-                                android:id="@+id/match_tv"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginLeft="5.5dp"
-                                android:textColor="@color/white"
-                                android:textSize="11sp" />
-
-                            <View
-                                android:layout_width="1dp"
-                                android:layout_height="11dp"
-                                android:layout_marginLeft="11dp"
-                                android:background="@drawable/main_imageview_line" />
-
-                            <ImageView
-                                android:layout_width="11dp"
-                                android:layout_height="11dp"
-                                android:layout_marginLeft="11dp"
-                                android:src="@drawable/main_imageview_time" />
+                                android:layout_margin="4dp"
+                                android:src="@drawable/main_icon_separator_time" />
 
                             <TextView
                                 android:id="@+id/time_tv"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_marginLeft="5.5dp"
+                                android:text="11分钟前"
                                 android:textColor="@color/white"
-                                android:textSize="11sp" />
+                                android:textSize="13sp" />
+                            <!--匹配度，已经去掉-->
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal"
+                                android:visibility="gone">
+
+                                <ImageView
+                                    android:layout_width="11dp"
+                                    android:layout_height="11dp"
+                                    android:layout_marginLeft="11dp"
+                                    android:src="@drawable/main_imageview_fit" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginLeft="5dp"
+                                    android:text="匹配度"
+                                    android:textColor="@color/white"
+                                    android:textSize="11sp" />
+
+                                <TextView
+                                    android:id="@+id/match_tv"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginLeft="5.5dp"
+                                    android:textColor="@color/white"
+                                    android:textSize="11sp" />
+                            </LinearLayout>
                         </LinearLayout>
                     </RelativeLayout>
 
                     <RelativeLayout
                         android:id="@+id/my_info_layout"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="54dp"
                         android:layout_alignParentBottom="true"
-                        android:layout_marginBottom="15dp">
+                        android:layout_marginBottom="15dp"
+                        >
 
                         <LinearLayout
-                            android:layout_width="wrap_content"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_centerInParent="true"
                             android:orientation="horizontal">
 
-                            <TextView
-                                android:layout_width="wrap_content"
+                            <LinearLayout
+                                android:id="@+id/care_me_layout"
+                                android:layout_width="0dp"
                                 android:layout_height="wrap_content"
-                                android:text="今日访问："
-                                android:textColor="@color/yello_text"
-                                android:textSize="11sp" />
+                                android:layout_weight="1"
+                                android:gravity="center_horizontal"
+                                android:orientation="vertical">
 
-                            <TextView
-                                android:id="@+id/today_tv"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginLeft="5.5dp"
-                                android:text="154"
-                                android:textColor="@color/white"
-                                android:textSize="11sp" />
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="关心我的"
+                                    android:textColor="@color/yello_text"
+                                    android:textSize="12sp" />
+
+                                <TextView
+                                    android:id="@+id/care_me_tv"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="10dp"
+                                    android:text="154"
+                                    android:textColor="@color/white"
+                                    android:textSize="12sp" />
+                            </LinearLayout>
 
                             <View
                                 android:layout_width="1dp"
-                                android:layout_height="11dp"
+                                android:layout_height="34dp"
                                 android:layout_marginLeft="11dp"
                                 android:background="@drawable/main_imageview_line" />
 
-                            <TextView
-                                android:layout_width="wrap_content"
+                            <LinearLayout
+                                android:id="@+id/my_care_layout"
+                                android:layout_width="0dp"
                                 android:layout_height="wrap_content"
-                                android:layout_marginLeft="11dp"
-                                android:text="总访问："
-                                android:textColor="@color/yello_text"
-                                android:textSize="11sp" />
+                                android:layout_weight="1"
+                                android:gravity="center_horizontal"
+                                android:orientation="vertical">
 
-                            <TextView
-                                android:id="@+id/total_tv"
-                                android:layout_width="wrap_content"
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="我关心的"
+                                    android:textColor="@color/yello_text"
+                                    android:textSize="12sp" />
+
+                                <TextView
+                                    android:id="@+id/my_care_tv"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="10dp"
+                                    android:text="154"
+                                    android:textColor="@color/white"
+                                    android:textSize="12sp" />
+                            </LinearLayout>
+
+                            <View
+                                android:layout_width="1dp"
+                                android:layout_height="34dp"
+                                android:layout_marginLeft="11dp"
+                                android:background="@drawable/main_imageview_line" />
+
+                            <LinearLayout
+                                android:layout_width="0dp"
                                 android:layout_height="wrap_content"
-                                android:layout_marginLeft="5.5dp"
-                                android:text="154"
-                                android:textColor="@color/white"
-                                android:textSize="11sp" />
+                                android:layout_weight="1"
+                                android:gravity="center_horizontal"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginLeft="11dp"
+                                    android:text="主页访问"
+                                    android:textColor="@color/yello_text"
+                                    android:textSize="12sp" />
+
+                                <LinearLayout
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="10dp"
+                                    android:orientation="horizontal">
+
+                                    <TextView
+                                        android:id="@+id/total_tv"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginLeft="5.5dp"
+                                        android:text="154"
+                                        android:textColor="@color/white"
+                                        android:textSize="12sp" />
+
+                                    <TextView
+                                        android:id="@+id/today_tv"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="+5"
+                                        android:textColor="@color/yello_text"
+                                        android:textSize="12sp" />
+                                </LinearLayout>
+                            </LinearLayout>
                         </LinearLayout>
                     </RelativeLayout>
                 </RelativeLayout>
@@ -327,7 +430,49 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
                     android:background="@drawable/main_line_long" />
+                <LinearLayout
+                    android:id="@+id/dynamic_linear"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="20dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
 
+                    <ImageView
+                        android:layout_width="22dp"
+                        android:layout_height="22dp"
+                        android:src="@drawable/main_img_personal" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="8dp"
+                        android:text="@string/page_dynamic"
+                        android:textColor="@color/page_text4"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        android:id="@+id/dynamic_tv"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="right"
+                        android:textColor="@color/black"
+                        android:textSize="14sp" />
+
+                    <ImageView
+                        android:id="@+id/dynamic_arrow"
+                        android:layout_width="5dp"
+                        android:layout_height="11dp"
+                        android:layout_marginLeft="19dp"
+                        android:src="@drawable/main_btn_in" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/main_line_long" />
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="32dp"
@@ -337,7 +482,30 @@
                     android:text="@string/page_aboutme"
                     android:textColor="@color/page_text1"
                     android:textSize="12sp" />
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="48dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="20dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+                    <ImageView
+                        android:layout_width="22dp"
+                        android:layout_height="22dp"
+                        android:src="@drawable/main_icon_sign" />
 
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="8dp"
+                        android:text="@string/page_sign"
+                        android:textColor="@color/page_text4"
+                        android:textSize="14sp" />
+                </LinearLayout>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/main_line_long" />
                 <RelativeLayout
                     android:id="@+id/userinfo_linear"
                     android:layout_width="match_parent"
@@ -405,49 +573,6 @@
                     android:background="@drawable/main_line_long" />
 
                 <LinearLayout
-                    android:id="@+id/dynamic_linear"
-                    android:layout_width="match_parent"
-                    android:layout_height="48dp"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="20dp"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal">
-
-                    <ImageView
-                        android:layout_width="22dp"
-                        android:layout_height="22dp"
-                        android:src="@drawable/main_img_personal" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="8dp"
-                        android:text="@string/page_dynamic"
-                        android:textColor="@color/page_text4"
-                        android:textSize="14sp" />
-
-                    <TextView
-                        android:id="@+id/dynamic_tv"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:gravity="right"
-                        android:textColor="@color/black"
-                        android:textSize="14sp" />
-
-                    <ImageView
-                        android:id="@+id/dynamic_arrow"
-                        android:layout_width="5dp"
-                        android:layout_height="11dp"
-                        android:layout_marginLeft="19dp"
-                        android:src="@drawable/main_btn_in" />
-                </LinearLayout>
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/main_line_long" />
-
-                <LinearLayout
                     android:id="@+id/voice_linear"
                     android:layout_width="match_parent"
                     android:layout_height="48dp"
@@ -459,7 +584,7 @@
                     <ImageView
                         android:layout_width="22dp"
                         android:layout_height="22dp"
-                        android:src="@drawable/main_img_personal" />
+                        android:src="@drawable/main_icon_voice" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -477,12 +602,34 @@
                         android:gravity="right"
                         android:textColor="@color/black"
                         android:textSize="14sp" />
-
+                    <RelativeLayout
+                        android:id="@+id/voice_play_layout"
+                        android:layout_width="72dp"
+                        android:layout_height="22dp"
+                        android:layout_marginRight="20dp"
+                        android:background="@drawable/biu_btn_normal">
+                        <ImageView
+                            android:id="@+id/voice_play_imv"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="10dp"
+                            android:layout_centerVertical="true"
+                            android:src="@drawable/main_icon_voice_gif3"/>
+                        <TextView
+                            android:id="@+id/voice_time"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="12sp"
+                            android:textColor="@color/white"
+                            android:text="30s"
+                            android:layout_alignParentRight="true"
+                            android:layout_centerVertical="true"
+                            android:layout_marginRight="10dp"/>
+                    </RelativeLayout>
                     <ImageView
                         android:id="@+id/voice_arrow"
                         android:layout_width="5dp"
                         android:layout_height="11dp"
-                        android:layout_marginLeft="19dp"
                         android:src="@drawable/main_btn_in" />
                 </LinearLayout>
 
@@ -1098,21 +1245,59 @@
             android:visibility="gone" />
     </FrameLayout>
 
-    <RelativeLayout
-        android:id="@+id/grab_biu_layout"
+    <LinearLayout
+        android:id="@+id/other_bottom_layout"
         android:layout_width="match_parent"
         android:layout_height="49dp"
         android:layout_alignParentBottom="true"
         android:background="@color/main_green"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
         android:visibility="gone">
 
         <TextView
-            android:id="@+id/grab_biu_tv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:id="@+id/chat_tv"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
             android:layout_centerInParent="true"
-            android:text="biu"
+            android:gravity="center"
+            android:text="聊天"
             android:textColor="@color/white"
             android:textSize="14sp" />
-    </RelativeLayout>
+        <View
+            android:layout_width="1dp"
+            android:layout_height="16dp"
+            android:background="@color/white"/>
+        <LinearLayout
+            android:id="@+id/other_care_layout"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="horizontal">
+        <ImageView
+            android:id="@+id/care_imv"
+            android:layout_width="18dp"
+            android:layout_height="18dp"
+            android:layout_centerInParent="true"
+            android:gravity="center"
+            android:src="@drawable/main_other_btn_care_nor"
+             />
+        </LinearLayout>
+        <View
+            android:layout_width="1dp"
+            android:layout_height="16dp"
+            android:background="@color/white"/>
+        <TextView
+            android:id="@+id/cp_tv"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:layout_centerInParent="true"
+            android:text="合约CP"
+            android:gravity="center"
+            android:textColor="@color/white"
+            android:textSize="14sp" />
+    </LinearLayout>
 </RelativeLayout>

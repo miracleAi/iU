@@ -31,6 +31,7 @@ public class TopTitleView extends LinearLayout {
     private ImageView mImageViewCenter;
     private ImageView mImgLeft, mUnReadImg, mLeftUnReadImg, mRightUnreadImg;
     private TextView mTvLeft;
+    private TextView toImgLeftTv;
     private ImageView mImgRight;
     private TextView mTvRight;
     private ImageView mImgCenter;
@@ -57,6 +58,7 @@ public class TopTitleView extends LinearLayout {
         mImgLeft = (ImageView) top.findViewById(R.id.top_title_left_image);
         mLeftUnReadImg = (ImageView) top.findViewById(R.id.left_unread_image);
         mTvLeft = (TextView) top.findViewById(R.id.top_title_left_text);
+        toImgLeftTv = (TextView) top.findViewById(R.id.top_title_imgleft_text);
         mImgRight = (ImageView) top.findViewById(R.id.top_title_right_image);
         mTvRight = (TextView) top.findViewById(R.id.top_title_right_text);
         mRightUnreadImg = (ImageView) top.findViewById(R.id.right_unread_image);
@@ -81,6 +83,10 @@ public class TopTitleView extends LinearLayout {
         CharSequence leftText = a.getText(R.styleable.TopTitleView_leftText);
         if (leftText != null) {
             mTvLeft.setText(leftText);
+        }
+        CharSequence imgleftText = a.getText(R.styleable.TopTitleView_imgleftText);
+        if (leftText != null) {
+            toImgLeftTv.setText(imgleftText);
         }
         CharSequence rightText = a.getText(R.styleable.TopTitleView_rightText);
         if (rightText != null) {
@@ -226,7 +232,13 @@ public class TopTitleView extends LinearLayout {
     public void setLeftText(int resId) {
         mTvLeft.setText(resId);
     }
+    public void setimgLeftText(String leftstr) {
+        toImgLeftTv.setText(leftstr);
+    }
 
+    public void setimgLeftText(Spanned title) {
+        toImgLeftTv.setText(title);
+    }
     public void setRightImage(int resId) {
         mImgRight.setImageResource(resId);
     }
