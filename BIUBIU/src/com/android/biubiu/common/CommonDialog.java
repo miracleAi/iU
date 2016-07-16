@@ -141,19 +141,55 @@ public class CommonDialog {
 	 * @author miracle
 	 * @date 2015-3-7
 	 */
-	public static AlertDialog careMeDialog(final Context mContext,final DialogInterface.OnClickListener click) {
+	public static AlertDialog careMeDialog(final Context mContext,String msg,final DialogInterface.OnClickListener click) {
 
 		final AlertDialog portraidlg = new AlertDialog.Builder(mContext)
 				.create();
 		portraidlg.show();
 		Window win = portraidlg.getWindow();
 		win.setContentView(R.layout.care_me_dialog);
+		TextView msgTv = (TextView) win.findViewById(R.id.msg_tv);
+		msgTv.setText(msg);
 		Button okBtn = (Button) win.findViewById(R.id.ok_btn);
 		okBtn.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
 				click.onClick(portraidlg, R.id.ok_btn);
+			}
+		});
+		return portraidlg;
+	}
+	public static AlertDialog cpDialog(final Context mContext,final DialogInterface.OnClickListener click1,final DialogInterface.OnClickListener click2,final DialogInterface.OnClickListener click3) {
+
+		final AlertDialog portraidlg = new AlertDialog.Builder(mContext)
+				.create();
+		portraidlg.show();
+		Window win = portraidlg.getWindow();
+		win.setContentView(R.layout.cp_dialog);
+		TextView cpTv = (TextView) win.findViewById(R.id.textview5);
+		TextView cancelTv = (TextView) win.findViewById(R.id.canecl_tv);
+		TextView okTv = (TextView) win.findViewById(R.id.ok_tv);
+		cpTv.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				click1.onClick(portraidlg, R.id.textview5);
+			}
+		});
+		cancelTv.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				click2.onClick(portraidlg, R.id.canecl_tv);
+			}
+		});
+		okTv.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				click3.onClick(portraidlg,R.id.ok_tv);
 			}
 		});
 		return portraidlg;

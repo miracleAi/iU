@@ -337,6 +337,7 @@
                                 android:background="@drawable/main_imageview_line" />
 
                             <LinearLayout
+                                android:id="@+id/scan_linear"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
@@ -1058,7 +1059,49 @@
                         android:layout_marginLeft="19dp"
                         android:src="@drawable/main_btn_in" />
                 </LinearLayout>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="40dp"
+                    android:background="@drawable/main_line_long" />
+                <LinearLayout
+                    android:id="@+id/verify_linear"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="20dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
 
+                    <ImageView
+                        android:layout_width="22dp"
+                        android:layout_height="22dp"
+                        android:src="@drawable/main_icon_voice" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="8dp"
+                        android:text="@string/page_verify"
+                        android:textColor="@color/page_text4"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        android:id="@+id/verify_tv"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="right"
+                        android:text="未认证"
+                        android:textColor="@color/black"
+                        android:textSize="14sp" />
+                    <ImageView
+                        android:id="@+id/verify_arrow"
+                        android:layout_width="5dp"
+                        android:layout_height="11dp"
+                        android:layout_marginLeft="19dp"
+                        android:src="@drawable/main_btn_in" />
+                </LinearLayout>
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

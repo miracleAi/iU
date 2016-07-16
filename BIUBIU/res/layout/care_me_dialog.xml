@@ -20,12 +20,13 @@
             android:text="小秘密"
             android:textStyle="bold"/>
         <TextView
+            android:id="@+id/msg_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="29dp"
             android:textSize="15sp"
             android:textColor="#808080"
-            android:text="匿名关心，不能告诉你TA是谁哦"
+            android:text="@string/charm_value"
             />
         <Button
             android:id="@+id/ok_btn"

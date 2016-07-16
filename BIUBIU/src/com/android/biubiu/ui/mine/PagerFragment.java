@@ -91,6 +91,7 @@ import com.android.biubiu.component.util.LoginUtils;
 import com.android.biubiu.component.util.NetUtils;
 import com.android.biubiu.component.util.SharePreferanceUtils;
 import com.android.biubiu.component.customview.MyGridView;
+import com.android.biubiu.ui.mine.child.VerifyActivity;
 import com.google.gson.Gson;
 
 import org.json.JSONException;
@@ -184,9 +185,12 @@ public class PagerFragment extends BaseFragment implements View.OnClickListener,
     private TextView totalTv;
     private TextView todayTv;
     private LinearLayout careMeLayout;
+    private LinearLayout scanLayout;
     private TextView careMeTv;
     private LinearLayout myCareLayout;
     private TextView myCareTv;
+    private LinearLayout verifyLinear;
+    private TextView verifyTv;
 
     private LinearLayout otherBottemLayout;
     private TextView chatTv;
@@ -315,9 +319,13 @@ public class PagerFragment extends BaseFragment implements View.OnClickListener,
         myInfoLayout = (RelativeLayout) mRootview.findViewById(R.id.my_info_layout);
         totalTv = (TextView) mRootview.findViewById(R.id.total_tv);
         todayTv = (TextView) mRootview.findViewById(R.id.today_tv);
+        scanLayout = (LinearLayout) mRootview.findViewById(R.id.scan_linear);
         careMeLayout = (LinearLayout) mRootview.findViewById(R.id.care_me_layout);
         careMeTv = (TextView) mRootview.findViewById(R.id.care_me_tv);
         myCareLayout = (LinearLayout) mRootview.findViewById(R.id.my_care_layout);
+        verifyLinear = (LinearLayout) mRootview.findViewById(R.id.verify_linear);
+        verifyLinear.setOnClickListener(this);
+        verifyTv = (TextView) mRootview.findViewById(R.id.verify_tv);
         myCareTv = (TextView) mRootview.findViewById(R.id.my_care_tv);
         dynamicLayout = (LinearLayout) mRootview.findViewById(R.id.dynamic_linear);
         dynamicLayout.setOnClickListener(this);
@@ -614,6 +622,7 @@ public class PagerFragment extends BaseFragment implements View.OnClickListener,
             personalArrow.setVisibility(View.VISIBLE);
             interestArrow.setVisibility(View.VISIBLE);
             myInfoLayout.setVisibility(View.VISIBLE);
+            verifyLinear.setVisibility(View.VISIBLE);
             todayTv.setText( "+"+bean.getTodayNum());
             totalTv.setText(bean.getTotalNum() + "");
         } else {
@@ -635,6 +644,7 @@ public class PagerFragment extends BaseFragment implements View.OnClickListener,
             otherInfoLayout.setVisibility(View.VISIBLE);
             otherBottemLayout.setVisibility(View.VISIBLE);
             myInfoLayout.setVisibility(View.GONE);
+            verifyLinear.setVisibility(View.GONE);
             aboutMeArrow.setVisibility(View.GONE);
             nickArrwo.setVisibility(View.GONE);
             voiceArrwo.setVisibility(View.GONE);
@@ -808,6 +818,7 @@ public class PagerFragment extends BaseFragment implements View.OnClickListener,
         interestTagLinear.setOnClickListener(this);
         voiceLinear.setOnClickListener(this);
         careMeLayout.setOnClickListener(this);
+        scanLayout.setOnClickListener(this);
         myCareLayout.setOnClickListener(this);
     }
     private void initOtherClick(){
@@ -914,6 +925,10 @@ public class PagerFragment extends BaseFragment implements View.OnClickListener,
                     playVoice();
                 }
                 break;
+            case R.id.verify_linear:
+                Intent verifyIntent = new Intent(getActivity(), VerifyActivity.class);
+                startActivity(verifyIntent);
+                break;
             case R.id.personal_tag_linear:
                 Intent personalTagIntent = new Intent(getActivity(),PersonalityTagActivity.class);
                 personalTagIntent.putExtra("personalTags", infoBean.getPersonalTags());
@@ -944,9 +959,13 @@ public class PagerFragment extends BaseFragment implements View.OnClickListener,
             case R.id.chat_tv:
                 break;
             case R.id.cp_tv:
+                showCpDialog();
                 break;
             case R.id.care_me_layout:
-                showCareMeDialog();
+                showCareMeDialog(getString(R.string.care_msg));
+                break;
+            case R.id.scan_linear:
+                showCareMeDialog(getString(R.string.scan_msg));
                 break;
             case R.id.my_care_layout:
                 Intent myCareIntent = new Intent(getActivity(), MyCareActivity.class);
@@ -964,8 +983,30 @@ public class PagerFragment extends BaseFragment implements View.OnClickListener,
         }
     }
 
-    private void showCareMeDialog() {
-        CommonDialog.careMeDialog(getActivity(), new DialogInterface.OnClickListener()
+    private void showCpDialog() {
+        CommonDialog.cpDialog(getActivity(), new DialogInterface.OnClickListener()
+        {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+            }
+        }, new DialogInterface.OnClickListener()
+        {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        }, new DialogInterface.OnClickListener()
+        {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+            }
+        });
+    }
+
+    private void showCareMeDialog(String msg) {
+        CommonDialog.careMeDialog(getActivity(), msg,new DialogInterface.OnClickListener()
          {
             @Override
             public void onClick(DialogInterface dialog, int which) {

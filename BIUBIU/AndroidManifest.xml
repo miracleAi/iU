@@ -455,7 +455,10 @@
             android:label="@string/title_activity_charm" />
         <activity
             android:name="com.android.biubiu.ui.mine.child.MyCareActivity"
-            android:label="@string/title_activity_my_care"></activity>
+            android:label="@string/title_activity_my_care" />
+        <activity
+            android:name="com.android.biubiu.ui.mine.child.VerifyActivity"
+            android:label="@string/title_activity_verify"></activity>
     </application>
 
 </manifest>

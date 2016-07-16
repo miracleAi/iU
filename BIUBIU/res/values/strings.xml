@@ -91,6 +91,7 @@
     <string name="page_sign">个性签名</string>
     <string name="page_voice">我的声线</string>
     <string name="page_school">学校</string>
+    <string name="page_verify">个人认证</string>
     <string name="page_identity">身份</string>
     <string name="page_tall">身高体重</string>
     <string name="page_nickname">昵称</string>
@@ -116,7 +117,22 @@
     <string name="charm_str2">根据等级将享有更多CP名额、提现额度等</string>
     <string name="charm_str3">特权</string>
     <string name="my_care_title">我关心的</string>
-
+    <string name="cp_dialog_title">申请合约CP</string>
+    <string name="cp_dialog_title2">本次申请需要付出20U米，若对方24小时内未接受，将退还U米</string>
+    <string name="cp_dialog_text1">● 对方使用了魅力特权，付出10U米才能和TA组成合约CP</string>
+    <string name="cp_dialog_text2">● 对方开启了CP合约金，CP期间双方需每天投入10U米作为C合约金</string>
+    <string name="cp_dialog_text3">看看CP合约>></string>
+    <string name="verify_title">身份验证</string>
+    <string name="verify_txt1">拍照上传</string>
+    <string name="verify_txt2">为了给iUser创造更友好的氛围，需要进行身份认证</string>
+    <string name="verify_txt3">-认证方式-</string>
+    <string name="verify_txt4">学生证、校园卡或者录取通知书认证</string>
+    <string name="verify_txt5">-认证要求-</string>
+    <string name="verify_txt6">上传正面照片，清无遮拦相关信息</string>
+    <string name="verify_txt7">如有邀请码</string>
+    <string name="verify_txt8">也可以输入邀请码验证</string>
+    <string name="care_msg">匿名关心，不能告诉你TA是谁哦</string>
+    <string name="scan_msg">匿名访问，不能告诉你TA是谁哦</string>
     <!-- 设置相关 -->
     <string name="setting_title">设置</string>
     <string name="setting_setting">个性标签</string>
@@ -382,5 +398,6 @@
     <string name="title_activity_my_voice">MyVoiceActivity</string>
     <string name="title_activity_charm">CharmActivity</string>
     <string name="title_activity_my_care">MyCareActivity</string>
+    <string name="title_activity_verify">VerifyActivity</string>
     <!--app2.2开发-->
 </resources>
