@@ -8,6 +8,7 @@
         <attr name="leftDrawable" format="reference" />
         <attr name="rightDrawable" format="reference" />
         <attr name="leftText" format="reference" />
+        <attr name="imgleftText" format="reference" />
         <attr name="rightText" format="reference" />
         <attr name="rightTextColor" format="reference"/>
         <attr name="rightPadding" format="dimension"/>

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<animation-list xmlns:android="http://schemas.android.com/apk/res/android"
+    android:repeatCount="infinite"
+    >
+    <item android:drawable="@drawable/mine_me_voice_img01" android:duration="300"></item>
+    <item android:drawable="@drawable/mine_me_voice_img02" android:duration="300"></item>
+    <item android:drawable="@drawable/mine_me_voice_img03" android:duration="300"></item>
+
+</animation-list>

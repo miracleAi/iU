@@ -451,6 +451,12 @@
         <activity
             android:name="com.android.biubiu.ui.mine.child.MyVoiceActivity"
             android:label="@string/title_activity_my_voice" />
+        <activity
+            android:name="com.android.biubiu.ui.mine.child.CharmActivity"
+            android:label="@string/title_activity_charm" />
+        <activity
+            android:name="com.android.biubiu.ui.mine.child.MyCareActivity"
+            android:label="@string/title_activity_my_care"></activity>
     </application>
 
 </manifest>

@@ -29,6 +29,7 @@ import com.android.biubiu.component.indicator.FragmentIndicator;
 import com.android.biubiu.component.title.TopTitleView;
 import com.android.biubiu.component.util.DensityUtil;
 import com.android.biubiu.ui.base.BaseFragment;
+import com.android.biubiu.ui.mine.child.MyVoiceActivity;
 
 
 import java.lang.reflect.Array;
