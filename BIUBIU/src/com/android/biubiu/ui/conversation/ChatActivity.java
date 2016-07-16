@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.android.biubiu.component.record.AudioRecordLayout;
 import com.android.biubiu.component.util.FileUtil;
 import com.android.biubiu.ui.base.BaseActivity;
 import com.android.biubiu.component.ChatInput;
@@ -24,7 +25,7 @@ import cc.imeetu.iu.R;
 import cc.imeetu.iu.timlibrary.presentation.presenter.ChatPresenter;
 import cc.imeetu.iu.timlibrary.presentation.viewfeatures.ChatView;
 
-public class ChatActivity extends BaseActivity implements ChatView {
+public class ChatActivity extends BaseActivity implements ChatView ,AudioRecordLayout.onRecordStatusListener {
     private final String TAG = ChatActivity.class.getSimpleName();
     private static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 100;
     private static final int IMAGE_STORE = 200;
@@ -34,6 +35,7 @@ public class ChatActivity extends BaseActivity implements ChatView {
     private ListView mChatListview;
     private ChatPresenter mPresenter;
     private Uri mFileUri;
+//    private RecorderUtil mRecorder = new RecorderUtil();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,6 +65,7 @@ public class ChatActivity extends BaseActivity implements ChatView {
 
     private void initData() {
         mChatinput.setChatView(this);
+        mChatinput.setRecordStatusListener(this);
         mPresenter = new ChatPresenter(this, "", TIMConversationType.C2C);
     }
 
@@ -88,7 +91,9 @@ public class ChatActivity extends BaseActivity implements ChatView {
 
     @Override
     public void sendImage() {
-
+        Intent intent_album = new Intent("android.intent.action.GET_CONTENT");
+        intent_album.setType("image/*");
+        startActivityForResult(intent_album, IMAGE_STORE);
     }
 
     @Override
@@ -106,7 +111,9 @@ public class ChatActivity extends BaseActivity implements ChatView {
 
     @Override
     public void sendText() {
-
+        /*Message message = new TextMessage(mChatinput.getText());
+        mPresenter.sendMessage(message.getMessage());
+        mChatinput.setText("");*/
     }
 
     @Override
@@ -156,11 +163,26 @@ public class ChatActivity extends BaseActivity implements ChatView {
                 Toast.makeText(this, getString(R.string.chat_file_too_large), Toast.LENGTH_SHORT).show();
             } else {
                 Message message = new ImageMessage(path);
-                mPresenter.sendMessage(message.getMessage());
+//                mPresenter.sendMessage(message.getMessage());
             }
         } else {
             Toast.makeText(this, getString(R.string.chat_file_not_exist), Toast.LENGTH_SHORT).show();
         }
+
+    }
+
+    @Override
+    public void onRecordStart() {
+
+    }
+
+    @Override
+    public void onRecordComplete() {
+
+    }
+
+    @Override
+    public void onRecordCancle() {
 
     }
 }

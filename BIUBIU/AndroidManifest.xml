@@ -440,7 +440,8 @@
             android:theme="@android:style/Theme.NoTitleBar" />
         <activity
             android:name="com.android.biubiu.ui.conversation.ChatActivity"
-            android:label="@string/title_activity_chat" />
+            android:label="@string/title_activity_chat"
+            android:windowSoftInputMode="adjustResize|stateHidden" />
         <activity
             android:name="com.android.biubiu.ui.conversation.activity.CPApplyActivity"
             android:theme="@style/AppTheme" />
@@ -449,7 +450,7 @@
             android:theme="@style/AppTheme" />
         <activity
             android:name="com.android.biubiu.ui.mine.child.MyVoiceActivity"
-            android:label="@string/title_activity_my_voice"></activity>
+            android:label="@string/title_activity_my_voice" />
     </application>
 
 </manifest>
