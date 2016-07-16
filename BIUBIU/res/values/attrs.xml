@@ -69,4 +69,12 @@
         <attr name="pstsShouldExpand" format="boolean" />
         <attr name="pstsTextAllCaps" format="boolean" />
     </declare-styleable>
+
+    <declare-styleable name="FluctuateView">
+        <attr name="line_count" format="integer" />
+        <attr name="line_color" format="color" />
+        <attr name="line_spacing" format="dimension" />
+        <attr name="line_width" format="dimension" />
+    </declare-styleable>
+
 </resources>

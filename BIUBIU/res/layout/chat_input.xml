@@ -13,47 +13,18 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="56dp"
+        android:layout_height="wrap_content"
         android:background="#EBEBEB"
         android:gravity="center_vertical"
         android:orientation="horizontal">
 
-        <!--<ImageButton
-            android:id="@+id/btn_voice"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:layout_marginLeft="15dp"
-            android:layout_marginRight="15dp"
-            android:background="@drawable/ic_voice_input"
-            android:visibility="gone" />
-
-        <ImageButton
-            android:id="@+id/btn_keyboard"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:layout_marginLeft="15dp"
-            android:layout_marginRight="15dp"
-            android:background="@drawable/ic_keyboard_input"
-            android:visibility="gone" />
-
-        <TextView
-            android:id="@+id/voice_panel"
-            android:layout_width="0dp"
-            android:layout_height="40dp"
-            android:layout_weight="1"
-            android:background="@drawable/btn_voice_normal"
-            android:clickable="true"
-            android:gravity="center"
-            android:text="@string/chat_press_talk"
-            android:textColor="#777777"
-            android:textSize="16sp"
-            android:visibility="gone" />-->
-
         <LinearLayout
             android:id="@+id/text_panel"
             android:layout_width="0dp"
-            android:layout_height="40dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
             android:layout_marginLeft="15dp"
+            android:layout_marginTop="8dp"
             android:layout_weight="1"
             android:background="@drawable/bg_inputbox"
             android:gravity="center_vertical"
@@ -61,37 +32,22 @@
 
             <EditText
                 android:id="@+id/input"
-                android:layout_width="0dp"
-                android:layout_height="30dp"
-                android:layout_weight="1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:background="@null"
+                android:inputType="textMultiLine"
+                android:minHeight="40dp"
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp"
                 android:textCursorDrawable="@null" />
 
-            <!--<ImageButton
-                android:id="@+id/btnEmoticon"
-                android:layout_width="25dp"
-                android:layout_height="25dp"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="8dp"
-                android:background="@drawable/ic_face_input"
-                android:visibility="gone" />-->
         </LinearLayout>
-
-        <!--<ImageButton
-            android:id="@+id/btn_add"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:layout_marginLeft="15dp"
-            android:layout_marginRight="15dp"
-            android:background="@drawable/ic_add_input"
-            android:visibility="gone" />-->
 
         <ImageButton
             android:id="@+id/btn_send"
             android:layout_width="44dp"
             android:layout_height="40dp"
+            android:layout_gravity="center_vertical"
             android:layout_marginLeft="6dp"
             android:layout_marginRight="5dp"
             android:background="@drawable/btn_send" />
@@ -168,148 +124,12 @@
 
     </LinearLayout>
 
-    <!--
-        <LinearLayout
-            android:id="@+id/morePanel"
-            android:layout_width="match_parent"
-            android:layout_height="110dp"
-            android:background="#EBEBEB"
-            android:orientation="vertical"
-            android:visibility="gone">
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1px"
-                android:background="#DDDDDD" />
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="15dp">
-
-                <LinearLayout
-                    android:id="@+id/btn_image"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true"
-                    android:layout_marginLeft="40dp"
-                    android:gravity="center_horizontal"
-                    android:orientation="vertical">
-
-                    <ImageView
-                        android:layout_width="60dp"
-                        android:layout_height="60dp"
-                        android:src="@drawable/ic_image" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                        android:text="@string/chat_image"
-                        android:textColor="#777777" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/btn_photo"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerInParent="true"
-                    android:gravity="center_horizontal"
-                    android:orientation="vertical">
-
-                    <ImageView
-                        android:layout_width="60dp"
-                        android:layout_height="60dp"
-                        android:src="@drawable/ic_photography" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                        android:text="@string/chat_photo"
-                        android:textColor="#777777" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/btn_video"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_marginRight="40dp"
-                    android:gravity="center_horizontal"
-                    android:orientation="vertical">
-
-                    <ImageView
-                        android:layout_width="60dp"
-                        android:layout_height="60dp"
-                        android:src="@drawable/ic_video" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                        android:text="@string/chat_video"
-                        android:textColor="#777777" />
-                </LinearLayout>
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
-                android:visibility="gone">
-
-                <LinearLayout
-                    android:id="@+id/btn_file"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true"
-                    android:layout_marginLeft="40dp"
-                    android:gravity="center_horizontal"
-                    android:orientation="vertical">
-
-                    <ImageView
-                        android:layout_width="60dp"
-                        android:layout_height="60dp"
-                        android:src="@drawable/ic_image" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                        android:text="@string/chat_file"
-                        android:textColor="#777777" />
-                </LinearLayout>
-            </RelativeLayout>
-
-        </LinearLayout>-->
-    <FrameLayout
-        android:id="@+id/voice_panel_layout"
+    <include
+        android:id="@+id/recording_layout"
+        layout="@layout/voice_layout"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:visibility="gone">
-
-        <LinearLayout
-            android:id="@+id/voice_prepare_layout"
-            android:layout_width="match_parent"
-            android:layout_height="200dip"
-            android:gravity="center"
-            android:orientation="horizontal">
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/ic_voice_input" />
-        </LinearLayout>
-
-        <com.android.biubiu.component.record.VoiceSendingView
-            android:id="@+id/voice_send_view"
-            android:layout_width="match_parent"
-            android:layout_height="200dp"
-            android:background="#EBEBEB"
-            android:visibility="gone" />
-    </FrameLayout>
-
+        android:layout_height="240dp"
+        android:visibility="gone" />
 
     <LinearLayout
         android:id="@+id/all_emoticon_layout"
@@ -318,34 +138,53 @@
         android:orientation="vertical"
         android:visibility="gone">
 
-        <LinearLayout
-            android:id="@+id/emoticonPanel"
+        <android.support.v4.view.ViewPager
+            android:id="@+id/emoticon_viewpager"
             android:layout_width="match_parent"
             android:layout_height="200dp"
-            android:background="#EBEBEB"
-            android:orientation="vertical" />
+            android:background="@android:color/white" />
+
+        <LinearLayout
+            android:id="@+id/indicator_layout"
+            android:layout_width="match_parent"
+            android:layout_height="20dp"
+            android:background="@android:color/white"
+            android:gravity="center"
+            android:orientation="horizontal" />
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="40dp"
+            android:layout_height="wrap_content"
             android:background="#EBEBEB"
             android:orientation="horizontal">
 
-            <ImageButton
-                android:id="@+id/more_emoticon_btn"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:layout_gravity="center_vertical"
-                android:layout_marginLeft="16dp"
-                android:src="@drawable/main_btn_intopicture" />
+            <LinearLayout
+                android:id="@+id/emoji_layout"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:gravity="center"
+                android:orientation="horizontal">
 
-            <ImageButton
-                android:id="@+id/collect_emoticon_btn"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:layout_gravity="center_vertical"
-                android:layout_marginLeft="16dp"
-                android:src="@drawable/found_btn_like_normal" />
+                <ImageButton
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:background="@android:color/transparent"
+                    android:src="@drawable/ic_face_input" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/collect_layout"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <ImageButton
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:background="@android:color/transparent"
+                    android:src="@drawable/found_btn_like_normal" />
+            </LinearLayout>
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>

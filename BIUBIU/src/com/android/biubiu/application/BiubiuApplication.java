@@ -6,6 +6,7 @@ import org.xutils.x;
 import cn.beecloud.BCPay;
 import cn.beecloud.BeeCloud;
 
+import com.android.biubiu.component.util.EmoticonUtil;
 import com.android.biubiu.crashhandle.UEHandler;
 import com.android.biubiu.component.util.CommonUtils;
 import com.avos.avoscloud.AVOSCloud;
@@ -59,6 +60,7 @@ public class BiubiuApplication extends Application {
     }
 
     private void initContext(Context context) {
+        EmoticonUtil.init(context);
         x.Ext.init((Application) context);
 
         x.Ext.setDebug(BuildConfig.DEBUG);

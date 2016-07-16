@@ -18,6 +18,8 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 文件工具类
@@ -228,6 +230,18 @@ public class FileUtil {
         return "com.android.providers.media.documents".equals(uri.getAuthority());
     }
 
+    public static List<File> getCollectFiles() {
+        List<File> files = new ArrayList<>();
+        File f = new File(cacheDir, pathDiv + "collect");
+        if (!f.exists()) {
+            f.mkdir();
+        }
+        File[] fileArray = f.listFiles();
+        for (File file : fileArray) {
+            files.add(file);
+        }
+        return files;
+    }
 
     public enum FileType {
         IMG,

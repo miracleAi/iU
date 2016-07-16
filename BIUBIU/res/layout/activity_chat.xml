@@ -12,7 +12,8 @@
         android:layout_alignParentTop="true"
         android:background="@color/main_green"
         top:leftDrawable="@drawable/back_main"
-        top:rightDrawable="@drawable/mes_btn_right" />
+        top:rightDrawable="@drawable/mes_btn_right"
+        />
 
     <ListView
         android:id="@+id/chat_listview"
