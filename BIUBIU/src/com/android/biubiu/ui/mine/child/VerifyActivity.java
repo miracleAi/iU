@@ -97,6 +97,7 @@ public class VerifyActivity extends BaseActivity {
     }
 
     private void uploadPhoto() {
+        showLoadingLayout("正在上传……");
         String endpoint = HttpContants.A_LI_YUN;
         OSSCredentialProvider credentialProvider = new OSSPlainTextAKSKCredentialProvider("XWp6VLND94vZ8WNJ", "DSi9RRCv4bCmJQZOOlnEqCefW4l1eP");
         ClientConfiguration conf = new ClientConfiguration();
