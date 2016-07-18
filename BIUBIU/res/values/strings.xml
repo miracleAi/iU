@@ -118,9 +118,12 @@
     <string name="charm_str3">特权</string>
     <string name="my_care_title">我关心的</string>
     <string name="cp_dialog_title">申请合约CP</string>
-    <string name="cp_dialog_title2">本次申请需要付出20U米，若对方24小时内未接受，将退还U米</string>
-    <string name="cp_dialog_text1">● 对方使用了魅力特权，付出10U米才能和TA组成合约CP</string>
-    <string name="cp_dialog_text2">● 对方开启了CP合约金，CP期间双方需每天投入10U米作为C合约金</string>
+    <string name="cp_dialog_title2_start">本次申请需要付出</string>
+    <string name="cp_dialog_title2_end">U米，若对方24小时内未接受，将退还U米</string>
+    <string name="cp_dialog_text1_start">● 对方使用了魅力特权，付出</string>
+    <string name="cp_dialog_text1_end">U米才能和TA组成合约CP</string>
+    <string name="cp_dialog_text2_start">● 对方开启了CP合约金，CP期间双方需每天投入</string>
+    <string name="cp_dialog_text2_end">U米作为C合约金</string>
     <string name="cp_dialog_text3">看看CP合约>></string>
     <string name="verify_title">身份验证</string>
     <string name="verify_txt1">拍照上传</string>

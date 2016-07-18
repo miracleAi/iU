@@ -10,7 +10,9 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.graphics.drawable.AnimationDrawable;
+import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -45,9 +47,16 @@ import com.alibaba.sdk.android.oss.common.auth.OSSFederationToken;
 import com.alibaba.sdk.android.oss.internal.OSSAsyncTask;
 import com.alibaba.sdk.android.oss.model.PutObjectRequest;
 import com.alibaba.sdk.android.oss.model.PutObjectResult;
+import com.android.biubiu.component.util.CommonUtils;
+import com.android.biubiu.transport.http.response.base.Data;
+import com.android.biubiu.transport.http.response.conversation.CPApply;
 import com.android.biubiu.ui.base.BaseFragment;
+import com.android.biubiu.ui.half.bean.CareData;
+import com.android.biubiu.ui.half.bean.HalfData;
 import com.android.biubiu.ui.launch.LoginActivity;
 import com.android.biubiu.ui.launch.RegisterThreeActivity;
+import com.android.biubiu.ui.mine.bean.CpApplyData;
+import com.android.biubiu.ui.mine.bean.CpTermData;
 import com.android.biubiu.ui.mine.child.AboutMeActivity;
 import com.android.biubiu.ui.mine.child.ChangeBrithdayActivity;
 import com.android.biubiu.ui.mine.child.ChangeCityActivity;
@@ -93,6 +102,7 @@ import com.android.biubiu.component.util.SharePreferanceUtils;
 import com.android.biubiu.component.customview.MyGridView;
 import com.android.biubiu.ui.mine.child.VerifyActivity;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -207,6 +217,7 @@ public class PagerFragment extends BaseFragment implements View.OnClickListener,
 
     private AnimationDrawable voicePlayAnim;
     private boolean isVoicePlay = false;
+    private MediaPlayer mPlayer;
 
     private UserInfoBean infoBean;
     ImageOptions imageOptions;
@@ -257,6 +268,7 @@ public class PagerFragment extends BaseFragment implements View.OnClickListener,
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         mRootview = inflater.inflate(R.layout.fragment_pager, container, false);
         b = getArguments();
+        mPlayer = new MediaPlayer();
         initView();
         initData();
         return mRootview;
@@ -397,6 +409,13 @@ public class PagerFragment extends BaseFragment implements View.OnClickListener,
                 }
             }
         });
+        mPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+            @Override
+            public void onCompletion(MediaPlayer mp) {
+                voiceTimeTv.setText(infoBean.getVoiceTimeNum());
+                stopVoice();
+            }
+        });
     }
 
     private void initData() {
@@ -534,9 +553,6 @@ public class PagerFragment extends BaseFragment implements View.OnClickListener,
                     JSONObject info = data.getJSONObject("userinfo");
                     //					String token = data.getString("token");
                     //					SharePreferanceUtils.getInstance().putShared(getApplicationContext(), SharePreferanceUtils.TOKEN, token);
-                    /*if (!isMyself) {
-                        codeState = info.getInt("code");
-                    }*/
                     Gson gson = new Gson();
                     UserInfoBean bean = gson.fromJson(info.toString(), UserInfoBean.class);
                     if (bean == null) {
@@ -625,6 +641,9 @@ public class PagerFragment extends BaseFragment implements View.OnClickListener,
             verifyLinear.setVisibility(View.VISIBLE);
             todayTv.setText( "+"+bean.getTodayNum());
             totalTv.setText(bean.getTotalNum() + "");
+            careMeTv.setText(bean.getWhoCareNum()+"");
+            myCareTv.setText(bean.getCareNum()+"");
+            mTopTitle.setimgLeftText(bean.getVc()+"");
         } else {
             if (bean.getDistance() > 1000) {
                 locationTv.setText(Math.round(bean.getDistance() / 1000) / 10.0 + "km");
@@ -658,6 +677,25 @@ public class PagerFragment extends BaseFragment implements View.OnClickListener,
             personalArrow.setVisibility(View.GONE);
             interestArrow.setVisibility(View.GONE);
             sexArrow.setVisibility(View.GONE);
+            if(bean.getCared() == 0){
+                otherCareImv.setImageResource(R.drawable.main_other_btn_care_nor);
+            }else{
+                otherCareImv.setImageResource(R.drawable.main_other_btn_care_light);
+            }
+        }
+        voiceTimeTv.setText(bean.getVoiceTimeNum()+"s");
+        if(bean.getIdStatus() == 0){
+            verifyTv.setTextColor(Color.parseColor("#565656"));
+            verifyTv.setText("未认证");
+        }else if(bean.getIdStatus() == 1){
+            verifyTv.setTextColor(Color.parseColor(" #73d1c7"));
+            verifyTv.setText("认证审核中");
+        }else if(bean.getIdStatus() == 2){
+            verifyTv.setTextColor(Color.parseColor("#f07182"));
+            verifyTv.setText("认证失败，请重新认证");
+        }else{
+            verifyTv.setTextColor(Color.parseColor(" #565656"));
+            verifyTv.setText("已认证");
         }
         x.image().bind(userheadImv, bean.getIconCircle(), imageOptions);
 
@@ -919,15 +957,20 @@ public class PagerFragment extends BaseFragment implements View.OnClickListener,
                 startActivity(charmIntent);
                 break;
             case R.id.voice_play_layout:
-                if(isVoicePlay){
-                    stopVoice();
-                }else{
-                    playVoice();
+                if(infoBean.getVoiceTimeNum() >0){
+                    String url = "http://protect-app.oss-cn-beijing.aliyuncs.com/user/"+userCode+"/mine/voice/myVoice.acc";
+                    if(isVoicePlay){
+                        stopVoice();
+                    }else{
+                        playVoice(url);
+                    }
                 }
                 break;
             case R.id.verify_linear:
-                Intent verifyIntent = new Intent(getActivity(), VerifyActivity.class);
-                startActivity(verifyIntent);
+                if(infoBean.getIdStatus() != 3){
+                    Intent verifyIntent = new Intent(getActivity(), VerifyActivity.class);
+                    startActivity(verifyIntent);
+                }
                 break;
             case R.id.personal_tag_linear:
                 Intent personalTagIntent = new Intent(getActivity(),PersonalityTagActivity.class);
@@ -957,9 +1000,19 @@ public class PagerFragment extends BaseFragment implements View.OnClickListener,
                 startActivityForResult(login, TO_LOGIN);
                 break;
             case R.id.chat_tv:
+                //0 未聊过 1 聊过
+                if(infoBean.getTalked() == 1){
+
+                }
                 break;
             case R.id.cp_tv:
-                showCpDialog();
+                if(infoBean.getCp() == 0){
+                    getCpInfo();
+                }else if(infoBean.getCp() == 1){
+                    toastShort("你们已经是cp啦");
+                }else{
+                    toastShort("你们已经是iu恋人啦");
+                }
                 break;
             case R.id.care_me_layout:
                 showCareMeDialog(getString(R.string.care_msg));
@@ -972,7 +1025,7 @@ public class PagerFragment extends BaseFragment implements View.OnClickListener,
                 startActivity(myCareIntent);
                 break;
             case R.id.care_imv:
-                if(isCare){
+                if(infoBean.getCared() == 1){
                     cancelCare();
                 }else{
                     doCare();
@@ -982,13 +1035,60 @@ public class PagerFragment extends BaseFragment implements View.OnClickListener,
                 break;
         }
     }
+    //申请cp条件
+    public void getCpInfo() {
+        showLoadingLayout("正在加载……");
+        RequestParams params = new RequestParams(HttpContants.CP_TERM);
+        JSONObject requestObject = new JSONObject();
+        try {
+            requestObject.put("token", SharePreferanceUtils.getInstance().getToken(getActivity(), SharePreferanceUtils.TOKEN, ""));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        params.addBodyParameter("data", requestObject.toString());
+        x.http().post(params, new Callback.CommonCallback<String>() {
+            @Override
+            public void onSuccess(String result) {
+                dismissLoadingLayout();
+                Data<CpTermData> response = CommonUtils.parseJsonToObj(result, new TypeToken<Data<CpTermData>>() {
+                });
+                if (!CommonUtils.unifyResponse(Integer.parseInt(response.getState()), getActivity())) {
+                    return;
+                }
+                CpTermData data = response.getData();
+                if (!TextUtils.isEmpty(data.getToken())) {
+                    SharePreferanceUtils.getInstance().putShared(getActivity(), SharePreferanceUtils.TOKEN, data.getToken());
+                }
+                if((data.getCharge()+data.getFund())>0){
+                    showCpDialog(data.getCharge(),data.getFund());
+                }else{
+                    applyCp(data.getCharge(),data.getFund());
+                }
+            }
 
-    private void showCpDialog() {
-        CommonDialog.cpDialog(getActivity(), new DialogInterface.OnClickListener()
+            @Override
+            public void onError(Throwable ex, boolean isOnCallback) {
+                toastShort("申请失败");
+            }
+
+            @Override
+            public void onCancelled(CancelledException cex) {
+
+            }
+
+            @Override
+            public void onFinished() {
+
+            }
+        });
+    }
+    private void showCpDialog(final int charge, final int found) {
+        CommonDialog.cpDialog(getActivity(), charge,found,new DialogInterface.OnClickListener()
         {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-
+                applyCp(charge,found);
+                dialog.dismiss();
             }
         }, new DialogInterface.OnClickListener()
         {
@@ -1001,6 +1101,76 @@ public class PagerFragment extends BaseFragment implements View.OnClickListener,
             @Override
             public void onClick(DialogInterface dialog, int which) {
 
+            }
+        });
+    }
+
+    private void applyCp(int charge,int fund) {
+        showLoadingLayout("正在申请……");
+        RequestParams params = new RequestParams(HttpContants.CP_APPLY);
+        JSONObject requestObject = new JSONObject();
+        try {
+            requestObject.put("token", SharePreferanceUtils.getInstance().getToken(getActivity(), SharePreferanceUtils.TOKEN, ""));
+            requestObject.put("userCode", infoBean.getUserCode());
+            requestObject.put("fund",fund);
+            requestObject.put("charge",charge);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        params.addBodyParameter("data", requestObject.toString());
+        x.http().post(params, new Callback.CommonCallback<String>() {
+            @Override
+            public void onSuccess(String result) {
+                dismissLoadingLayout();
+                Data<CpApplyData> response = CommonUtils.parseJsonToObj(result, new TypeToken<Data<CpApplyData>>() {
+                });
+                if (!CommonUtils.unifyResponse(Integer.parseInt(response.getState()), getActivity())) {
+                    return;
+                }
+                CpApplyData data = response.getData();
+                if (!TextUtils.isEmpty(data.getToken())) {
+                    SharePreferanceUtils.getInstance().putShared(getActivity(), SharePreferanceUtils.TOKEN, data.getToken());
+                }
+                if(data.getCode() == 0){
+                    toastShort("biu币不足");
+                }else if(data.getCode() == 1){
+                    toastShort("申请成功");
+                }else{
+                    toastShort("上次的申请未失效");
+                }
+            }
+
+            @Override
+            public void onError(Throwable ex, boolean isOnCallback) {
+                dismissLoadingLayout();
+                toastShort("申请失败");
+            }
+
+            @Override
+            public void onCancelled(CancelledException cex) {
+
+            }
+
+            @Override
+            public void onFinished() {
+
+            }
+        });
+    }
+
+    private void umDialog(){
+        CommonDialog.doubleBtnDialog(getActivity(),"U米不足","你的U米不够了，先去兑换U米吧","取消","兑换U米",new DialogInterface.OnClickListener()
+        {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        },new DialogInterface.OnClickListener()
+        {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Intent intent = new Intent(getActivity(),BiuChargeActivity.class);
+                startActivity(intent);
             }
         });
     }
@@ -1019,26 +1189,90 @@ public class PagerFragment extends BaseFragment implements View.OnClickListener,
     private void cancelCare() {
         isCare = false;
         otherCareImv.setImageResource(R.drawable.main_other_btn_care_nor);
+        careAbout();
     }
 
     //关注某人
     private void doCare() {
         isCare = true;
         otherCareImv.setImageResource(R.drawable.main_other_btn_care_light);
+        careAbout();
     }
+    private void careAbout(){
+        RequestParams params = new RequestParams(HttpContants.PAGER_CARE);
+        JSONObject requestObject = new JSONObject();
+        try {
+            requestObject.put("token", SharePreferanceUtils.getInstance().getToken(getActivity(), SharePreferanceUtils.TOKEN, ""));
+            requestObject.put("userCode", infoBean.getUserCode());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        params.addBodyParameter("data", requestObject.toString());
+        x.http().post(params, new Callback.CommonCallback<String>() {
+            @Override
+            public void onSuccess(String result) {
+                Data<CareData> response = CommonUtils.parseJsonToObj(result, new TypeToken<Data<CareData>>() {
+                });
+                if (!CommonUtils.unifyResponse(Integer.parseInt(response.getState()), getActivity())) {
+                    return;
+                }
+                CareData data = response.getData();
+                if (!TextUtils.isEmpty(data.getToken())) {
+                    SharePreferanceUtils.getInstance().putShared(getActivity(), SharePreferanceUtils.TOKEN, data.getToken());
+                }
+                infoBean.setCared(data.getStatus());
+            }
 
-    private void playVoice(){
+            @Override
+            public void onError(Throwable ex, boolean isOnCallback) {
+
+            }
+
+            @Override
+            public void onCancelled(CancelledException cex) {
+
+            }
+
+            @Override
+            public void onFinished() {
+
+            }
+        });
+    }
+    private void playVoice(String url){
         isVoicePlay = true;
         voicePlayImv.setImageResource(R.drawable.voice_play_anim);
         voicePlayAnim = (AnimationDrawable) voicePlayImv.getDrawable();
         voicePlayAnim.start();
+        audioStart(url);
     }
     private void stopVoice(){
         isVoicePlay = false;
         voicePlayAnim = (AnimationDrawable) voicePlayImv.getDrawable();
         voicePlayAnim.stop();
+        audioPause();
     }
-
+    public void audioStart(String audioPath){
+        Log.d("mytest","-----"+audioPath);
+        try {
+            mPlayer.reset();
+            //设置要播放的文件
+            mPlayer.setDataSource(audioPath);
+            mPlayer.prepare();
+            //播放
+            mPlayer.start();
+        }catch(Exception e){
+            Log.e(TAG, "prepare() failed");
+        }
+    }
+    public void audioPause(){
+        mPlayer.pause();
+    }
+    public void audioStop(){
+        mPlayer.stop();
+        mPlayer.release();
+        mPlayer = null;
+    }
     /**
      * 更多
      */
@@ -1499,6 +1733,9 @@ public class PagerFragment extends BaseFragment implements View.OnClickListener,
         if(isMyself){
             getActivity().unregisterReceiver(mReceiver);
         }
+        if(mPlayer != null){
+            audioStop();
+        }
     }
 
     @Override
@@ -1513,4 +1750,5 @@ public class PagerFragment extends BaseFragment implements View.OnClickListener,
     public void onLeaveTab() {
 
     }
+
 }

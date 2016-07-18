@@ -61,6 +61,96 @@ public class UserInfoBean implements Serializable{
 	private int todayNum;
 	@SerializedName("total_num")
 	private int totalNum;
+	private int talked ;
+	private int cared ;
+	private int cp ;//与这个人的关系 0 不是cp 1 是cp 2是iu恋人
+	private int careNum;
+	private int whoCareNum ;
+	private int charm;
+	private int charmLevel ;
+	private int voiceTimeNum ;
+	private int idStatus;//是否通过了校验
+	private int vc;
+
+	public int getVc() {
+		return vc;
+	}
+
+	public void setVc(int vc) {
+		this.vc = vc;
+	}
+
+	public int getTalked() {
+		return talked;
+	}
+
+	public void setTalked(int talked) {
+		this.talked = talked;
+	}
+
+	public int getCared() {
+		return cared;
+	}
+
+	public void setCared(int cared) {
+		this.cared = cared;
+	}
+
+	public int getCp() {
+		return cp;
+	}
+
+	public void setCp(int cp) {
+		this.cp = cp;
+	}
+
+	public int getCareNum() {
+		return careNum;
+	}
+
+	public void setCareNum(int careNum) {
+		this.careNum = careNum;
+	}
+
+	public int getWhoCareNum() {
+		return whoCareNum;
+	}
+
+	public void setWhoCareNum(int whoCareNum) {
+		this.whoCareNum = whoCareNum;
+	}
+
+	public int getCharm() {
+		return charm;
+	}
+
+	public void setCharm(int charm) {
+		this.charm = charm;
+	}
+
+	public int getCharmLevel() {
+		return charmLevel;
+	}
+
+	public void setCharmLevel(int charmLevel) {
+		this.charmLevel = charmLevel;
+	}
+
+	public int getVoiceTimeNum() {
+		return voiceTimeNum;
+	}
+
+	public void setVoiceTimeNum(int voiceTimeNum) {
+		this.voiceTimeNum = voiceTimeNum;
+	}
+
+	public int getIdStatus() {
+		return idStatus;
+	}
+
+	public void setIdStatus(int idStatus) {
+		this.idStatus = idStatus;
+	}
 
 	public int getTodayNum() {
 		return todayNum;

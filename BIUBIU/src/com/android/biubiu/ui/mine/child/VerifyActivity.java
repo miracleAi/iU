@@ -12,6 +12,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.provider.MediaStore;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
@@ -35,10 +36,20 @@ import com.alibaba.sdk.android.oss.common.auth.OSSPlainTextAKSKCredentialProvide
 import com.alibaba.sdk.android.oss.internal.OSSAsyncTask;
 import com.alibaba.sdk.android.oss.model.PutObjectRequest;
 import com.alibaba.sdk.android.oss.model.PutObjectResult;
+import com.android.biubiu.component.util.CommonUtils;
+import com.android.biubiu.component.util.LogUtil;
 import com.android.biubiu.component.util.SharePreferanceUtils;
 import com.android.biubiu.transport.http.HttpContants;
+import com.android.biubiu.transport.http.response.base.Data;
 import com.android.biubiu.ui.base.BaseActivity;
+import com.android.biubiu.ui.half.bean.HalfData;
+import com.android.biubiu.ui.mine.bean.VerifyCodeData;
+import com.google.gson.reflect.TypeToken;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.xutils.common.Callback;
+import org.xutils.http.RequestParams;
 import org.xutils.x;
 
 import java.io.File;
@@ -59,8 +70,7 @@ public class VerifyActivity extends BaseActivity {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
-            toastShort("上传成功");
-            finish();
+            updateIdStatus();
         }
     };
 
@@ -88,12 +98,127 @@ public class VerifyActivity extends BaseActivity {
         completeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(null != photoPath && !"".equals(photoPath)){
+                if(codeEt.getText() != null && codeEt.getText().length()>0){
+                    verifyCode();
+                }else if(null != photoPath && !"".equals(photoPath)){
                     uploadPhoto();
                 }
             }
         });
 
+    }
+    private void updateIdStatus() {
+            RequestParams params = new RequestParams(HttpContants.HTTP_ADDRESS+HttpContants.UPDATE_USETINFO);
+            String token = SharePreferanceUtils.getInstance().getToken(getApplicationContext(), SharePreferanceUtils.TOKEN, "");
+            String deviceId = SharePreferanceUtils.getInstance().getDeviceId(getApplicationContext(), SharePreferanceUtils.DEVICE_ID, "");
+            JSONObject requestObject = new JSONObject();
+            try {
+                requestObject.put("token", token);
+                requestObject.put("device_code", deviceId);
+                requestObject.put("idStatus ",1);
+                requestObject.put("parameters", "idStatus ");
+            } catch (JSONException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+            params.addBodyParameter("data", requestObject.toString());
+            x.http().post(params, new Callback.CommonCallback<String>() {
+
+                @Override
+                public void onCancelled(Callback.CancelledException arg0) {
+                    // TODO Auto-generated method stub
+
+                }
+
+                @Override
+                public void onError(Throwable ex, boolean arg1) {
+                    // TODO Auto-generated method stub
+                    LogUtil.d("mytest", "error--"+ex.getMessage());
+                    LogUtil.d("mytest", "error--"+ex.getCause());
+                }
+
+                @Override
+                public void onFinished() {
+                    // TODO Auto-generated method stub
+
+                }
+
+                @Override
+                public void onSuccess(String result) {
+                    // TODO Auto-generated method stub
+                    dismissLoadingLayout();
+                    LogUtil.d("mytest", "idstatus=="+result);
+                    try {
+                        JSONObject jsons = new JSONObject(result);
+                        String state = jsons.getString("state");
+                        if(!state.equals("200")){
+                            dismissLoadingLayout();
+                            toastShort("上传失败");
+                            return ;
+                        }
+                        JSONObject data = jsons.getJSONObject("data");
+                        toastShort("上传成功");
+                        finish();
+                    } catch (JSONException e) {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
+                    }
+                }
+            });
+        }
+    private void verifyCode() {
+        showLoadingLayout("正在验证……");
+        RequestParams params = new RequestParams(HttpContants.HTTP_ADDRESS+HttpContants.VERIFY_REQUEST);
+        String token = SharePreferanceUtils.getInstance().getToken(getApplicationContext(), SharePreferanceUtils.TOKEN, "");
+        JSONObject requestObject = new JSONObject();
+        try {
+            requestObject.put("token", token);
+            requestObject.put("code",codeEt.getText().toString());
+        } catch (JSONException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        params.addBodyParameter("data", requestObject.toString());
+        x.http().post(params, new Callback.CommonCallback<String>() {
+            @Override
+            public void onSuccess(String result) {
+                dismissLoadingLayout();
+                Data<VerifyCodeData> response = CommonUtils.parseJsonToObj(result, new TypeToken<Data<VerifyCodeData>>() {
+                });
+                if (!CommonUtils.unifyResponse(Integer.parseInt(response.getState()),VerifyActivity.this)) {
+                    return;
+                }
+                VerifyCodeData data = response.getData();
+                if (!TextUtils.isEmpty(data.getToken())) {
+                    SharePreferanceUtils.getInstance().putShared(VerifyActivity.this, SharePreferanceUtils.TOKEN, data.getToken());
+                }
+                if(data.getVerifyRes() == 0){
+                    if(null != photoPath && !"".equals(photoPath)){
+                        uploadPhoto();
+                    }else{
+                        toastShort("验证失败");
+                    }
+                }else{
+                    toastShort("验证成功");
+                }
+            }
+
+            @Override
+            public void onError(Throwable ex, boolean isOnCallback) {
+                dismissLoadingLayout();
+                toastShort("验证失败……");
+            }
+
+            @Override
+            public void onCancelled(CancelledException cex) {
+
+            }
+
+            @Override
+            public void onFinished() {
+
+            }
+        });
     }
 
     private void uploadPhoto() {
@@ -107,8 +232,9 @@ public class VerifyActivity extends BaseActivity {
         conf.setMaxErrorRetry(2); // 失败后最大重试次数，默认2次
         OSSLog.enableLog();
         OSS oss = new OSSClient(getApplicationContext(), endpoint, credentialProvider, conf);
-        String deviceId = SharePreferanceUtils.getInstance().getDeviceId(getApplicationContext(), SharePreferanceUtils.DEVICE_ID, "");
-        final String fileName = "profile/" + System.currentTimeMillis() + deviceId + ".jpeg";
+        String user_code = SharePreferanceUtils.getInstance().getDeviceId(getApplicationContext(), SharePreferanceUtils.USER_CODE, "");
+        final String fileName = "profile/" + "user/"+user_code+"/mine/images/VerifyIdentity.jpeg";
+
         // 构造上传请求
         PutObjectRequest put = new PutObjectRequest("protect-app", fileName, photoPath);
 
