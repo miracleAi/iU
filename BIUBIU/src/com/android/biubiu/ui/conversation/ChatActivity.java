@@ -10,6 +10,7 @@ import android.widget.Toast;
 
 import com.android.biubiu.component.record.AudioRecordLayout;
 import com.android.biubiu.component.util.FileUtil;
+import com.android.biubiu.component.util.RecorderUtil;
 import com.android.biubiu.ui.base.BaseActivity;
 import com.android.biubiu.component.ChatInput;
 import com.android.biubiu.component.title.TopTitleView;
@@ -25,7 +26,7 @@ import cc.imeetu.iu.R;
 import cc.imeetu.iu.timlibrary.presentation.presenter.ChatPresenter;
 import cc.imeetu.iu.timlibrary.presentation.viewfeatures.ChatView;
 
-public class ChatActivity extends BaseActivity implements ChatView ,AudioRecordLayout.onRecordStatusListener {
+public class ChatActivity extends BaseActivity implements ChatView, AudioRecordLayout.onRecordStatusListener {
     private final String TAG = ChatActivity.class.getSimpleName();
     private static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 100;
     private static final int IMAGE_STORE = 200;
@@ -35,7 +36,7 @@ public class ChatActivity extends BaseActivity implements ChatView ,AudioRecordL
     private ListView mChatListview;
     private ChatPresenter mPresenter;
     private Uri mFileUri;
-//    private RecorderUtil mRecorder = new RecorderUtil();
+    private RecorderUtil mRecorder;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,6 +68,7 @@ public class ChatActivity extends BaseActivity implements ChatView ,AudioRecordL
         mChatinput.setChatView(this);
         mChatinput.setRecordStatusListener(this);
         mPresenter = new ChatPresenter(this, "", TIMConversationType.C2C);
+        mRecorder = new RecorderUtil();
     }
 
     @Override
@@ -173,16 +175,23 @@ public class ChatActivity extends BaseActivity implements ChatView ,AudioRecordL
 
     @Override
     public void onRecordStart() {
-
+        mRecorder.startRecording();
     }
 
     @Override
     public void onRecordComplete() {
-
+        mRecorder.stopRecording();
+        //发送
     }
 
     @Override
     public void onRecordCancle() {
 
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mChatinput.releaseResource();
     }
 }
