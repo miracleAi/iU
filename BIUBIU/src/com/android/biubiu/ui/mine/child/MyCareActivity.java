@@ -30,7 +30,7 @@ public class MyCareActivity extends BaseActivity implements PullToRefreshBase.On
         pulltoRefreshListview.setScrollingWhileRefreshingEnabled(true);
         mListview = pulltoRefreshListview.getRefreshableView();
 
-        halfChildAdapter = new HalfChildAdapter(MyCareActivity.this);
+        //halfChildAdapter = new HalfChildAdapter(MyCareActivity.this);
         mListview.setAdapter(halfChildAdapter);
     }
     @Override

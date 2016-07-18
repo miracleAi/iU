@@ -257,5 +257,12 @@ public class HttpContants {
      * 清空通知
      */
     public static final String NOTIFY_DELETNOTIFIES = HTTP_COMMUNITY_ADDRESS + "app/community/notify/deletNotifies";
-
+    /**
+     * 一半
+     */
+    public static final String HALF_USERS = HTTP_COMMUNITY_ADDRESS + "app/cp/getOtherHalf/v1";
+    /**
+     * 广场
+     */
+    public static final String SQUARE_REQUEST = HTTP_COMMUNITY_ADDRESS + "app/cp/dutytype/getSquareInfo/v1";
 }
