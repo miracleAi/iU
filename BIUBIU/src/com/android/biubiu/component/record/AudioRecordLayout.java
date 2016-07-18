@@ -13,6 +13,13 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.android.biubiu.component.util.MediaUtil;
+import com.android.biubiu.component.util.RecorderUtil;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+
 import cc.imeetu.iu.R;
 
 
@@ -113,6 +120,8 @@ public class AudioRecordLayout extends RelativeLayout implements View.OnClickLis
 
     private LinearLayout mCancelSendLyt;
     private TextView mCancelTv, mSendTv;
+    private RecorderUtil mRecorder;
+    private MediaUtil mMediaUtil;
 
     @Override
     public void onClick(View v) {
@@ -131,11 +140,20 @@ public class AudioRecordLayout extends RelativeLayout implements View.OnClickLis
     private void cancleAudition() {
         Status = RecordStatus.CANCLE_RECORD;
         updateButton();
+        imgbtn_record.setImageResource(R.drawable.record_selector);
         mCancelSendLyt.setVisibility(GONE);
         tv_time.setVisibility(GONE);
         tv_hintText.setVisibility(VISIBLE);
         tv_hintText.setText("按住说话");
         resetTime();
+    }
+
+    public void release() {
+        if (mMediaUtil != null) {
+            if(mMediaUtil.getPlayer()!=null){
+                mMediaUtil.getPlayer().release();
+            }
+        }
     }
 
     /**
@@ -189,6 +207,8 @@ public class AudioRecordLayout extends RelativeLayout implements View.OnClickLis
 
     public AudioRecordLayout(Context context, AttributeSet attrs) {
         super(context, attrs);
+        mRecorder = new RecorderUtil();
+        mMediaUtil = MediaUtil.getInstance();
     }
 
     public AudioRecordLayout(Context context, AttributeSet attrs, int defStyleAttr) {
@@ -212,7 +232,6 @@ public class AudioRecordLayout extends RelativeLayout implements View.OnClickLis
         mCancelTv.setOnClickListener(this);
         mSendTv.setOnClickListener(this);
         onMeasureWidthAndHeight();
-
     }
 
 
@@ -267,19 +286,35 @@ public class AudioRecordLayout extends RelativeLayout implements View.OnClickLis
             case MotionEvent.ACTION_DOWN:
                 //判断当前按下的坐标是否在按钮范围里面
                 if (containRecordBtn()) {
-                    //开始录制
-                    Status = RecordStatus.STARTE_RECORD;
-                    updateButton();
-                    tv_time.setText("00:00");
-                    mHandler.sendEmptyMessageDelayed(UPDATETIME, 1000);
-                    if (mOnRecordStatusListener != null) {
-                        mOnRecordStatusListener.onRecordStart();
-                    }
-                    if (isflag) {
-                        onCenterCoordinates();
-                        distance1 = getCoordinateDistance(auditionX, auditionY, currenX, currenY);
-                        distance2 = getCoordinateDistance(currenX, currenY, deleteX, deleteY);
-                        isflag = false;
+                    if (Status == RecordStatus.AUDITION_RECORD) {
+                        try {
+                            File f = new File(mRecorder.getFilePath());
+                            f.setReadable(true,false);
+                            mMediaUtil.setEventListener(new MediaUtil.EventListener() {
+                                @Override
+                                public void onStop() {
+
+                                }
+                            });
+                            mMediaUtil.play(new FileInputStream(f));
+                        } catch (FileNotFoundException e) {
+                            e.printStackTrace();
+                        }
+                    } else {
+                        //开始录制
+                        Status = RecordStatus.STARTE_RECORD;
+                        updateButton();
+                        tv_time.setText("00:00");
+                        mHandler.sendEmptyMessageDelayed(UPDATETIME, 1000);
+                        if (mOnRecordStatusListener != null) {
+                            mOnRecordStatusListener.onRecordStart();
+                        }
+                        if (isflag) {
+                            onCenterCoordinates();
+                            distance1 = getCoordinateDistance(auditionX, auditionY, currenX, currenY);
+                            distance2 = getCoordinateDistance(currenX, currenY, deleteX, deleteY);
+                            isflag = false;
+                        }
                     }
                 }
                 break;
@@ -387,6 +422,7 @@ public class AudioRecordLayout extends RelativeLayout implements View.OnClickLis
             mFluctuateView1.setVisibility(GONE);
             mFluctuateView2.setVisibility(GONE);
 
+            imgbtn_record.setImageResource(R.drawable.mine_me_up_play_btn);
             mCancelSendLyt.setVisibility(VISIBLE);
         } else {
             tv_hintText.setVisibility(VISIBLE);

@@ -596,4 +596,9 @@ public class ChatInput extends RelativeLayout implements TextWatcher, View.OnCli
         return Build.VERSION.SDK_INT >= Build.VERSION_CODES.M;
     }
 
+    public void releaseResource(){
+        mRecordingLayout.release();
+
+    }
+
 }

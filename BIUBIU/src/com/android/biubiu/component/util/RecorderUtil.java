@@ -68,7 +68,7 @@ public class RecorderUtil {
     /**
      * 获取录音文件
      */
-    public byte[] getDate() {
+    public byte[] getData() {
         if (mFileName == null) return null;
         try{
             return readFile(new File(mFileName));
@@ -116,7 +116,4 @@ public class RecorderUtil {
             f.close();
         }
     }
-
-
-
 }
