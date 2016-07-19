@@ -1,10 +1,6 @@
 package com.android.biubiu.ui.half;
 
-import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,13 +24,13 @@ public class HalfChildFragment extends BaseFragment implements PullToRefreshBase
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        mRootview = inflater.inflate(R.layout.fragment_half_child, container, false);
+        mRootView = inflater.inflate(R.layout.fragment_half_child, container, false);
         initView();
-        return mRootview;
+        return mRootView;
     }
 
     private void initView() {
-        pulltoRefreshListview = (PullToRefreshListView) mRootview.findViewById(R.id.pull_refresh_list);
+        pulltoRefreshListview = (PullToRefreshListView) mRootView.findViewById(R.id.pull_refresh_list);
         pulltoRefreshListview.setSexFlag(getActivity(), SharePreferanceUtils.getInstance().getUserSex(getActivity(),SharePreferanceUtils.USER_SEX,0));
         pulltoRefreshListview.setMode(PullToRefreshBase.Mode.BOTH);
         pulltoRefreshListview.setOnRefreshListener(this);

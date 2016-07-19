@@ -53,8 +53,13 @@ public class MediaUtil {
             }
             player.reset();
             player.setDataSource(inputStream.getFD());
+            player.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+                @Override
+                public void onPrepared(MediaPlayer mp) {
+                    player.start();
+                }
+            });
             player.prepare();
-            player.start();
         }catch (IOException e){
             Log.e(TAG, "play error:" + e);
         }

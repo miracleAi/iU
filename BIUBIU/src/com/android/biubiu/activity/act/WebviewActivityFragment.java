@@ -28,9 +28,9 @@ public class WebviewActivityFragment extends BaseFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        mRootview = inflater.inflate(R.layout.fragment_webview, container, false);
-        mWebview = (WebView) mRootview.findViewById(R.id.webview);
-        mToptitle = (TopTitleView) mRootview.findViewById(R.id.top_title_view);
+        mRootView = inflater.inflate(R.layout.fragment_webview, container, false);
+        mWebview = (WebView) mRootView.findViewById(R.id.webview);
+        mToptitle = (TopTitleView) mRootView.findViewById(R.id.top_title_view);
         mToptitle.setLeftOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -85,7 +85,7 @@ public class WebviewActivityFragment extends BaseFragment {
             });
 
         }
-        return mRootview;
+        return mRootView;
     }
 
     @Override

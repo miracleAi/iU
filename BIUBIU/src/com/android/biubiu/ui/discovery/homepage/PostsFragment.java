@@ -103,14 +103,14 @@ public class PostsFragment extends BaseFragment implements PullToRefreshBase.OnR
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        mRootview = inflater.inflate(R.layout.fragment_posts, container, false);
+        mRootView = inflater.inflate(R.layout.fragment_posts, container, false);
         mHeadAdBanner = inflater.inflate(R.layout.home_header_adbanner, null);
         initView();
         initData();
-        return mRootview;
+        return mRootView;
     }
     private void initView() {
-        mPullToRefreshListview = (PullToRefreshListView) mRootview.findViewById(R.id.pull_refresh_list);
+        mPullToRefreshListview = (PullToRefreshListView) mRootView.findViewById(R.id.pull_refresh_list);
         sexFlag = SharePreferanceUtils.getInstance().getUserSex(getActivity(),SharePreferanceUtils.USER_SEX,0);
         mPullToRefreshListview.setSexFlag(getActivity(),sexFlag);
         mPullToRefreshListview.setMode(PullToRefreshBase.Mode.BOTH);

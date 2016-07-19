@@ -67,10 +67,10 @@ public class DiscoveryFragment extends BaseFragment implements FragmentIndicator
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        mRootview = inflater.inflate(R.layout.fragment_discovery, container, false);
+        mRootView = inflater.inflate(R.layout.fragment_discovery, container, false);
         initView();
         initData();
-        return mRootview;
+        return mRootView;
     }
 
     @Override
@@ -91,7 +91,7 @@ public class DiscoveryFragment extends BaseFragment implements FragmentIndicator
         }
     }
     private void initView() {
-        mTopTitle = (TopTitleView) mRootview.findViewById(R.id.top_title_view);
+        mTopTitle = (TopTitleView) mRootView.findViewById(R.id.top_title_view);
         mTopTitle.setLeftOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -123,8 +123,8 @@ public class DiscoveryFragment extends BaseFragment implements FragmentIndicator
                 }
             }
         });
-        mIndicator = (PagerSlidingTabStrip) mRootview.findViewById(R.id.indicator);
-        mViewPager = (ViewPager) mRootview.findViewById(R.id.pager);
+        mIndicator = (PagerSlidingTabStrip) mRootView.findViewById(R.id.indicator);
+        mViewPager = (ViewPager) mRootView.findViewById(R.id.pager);
         mViewPager.setOffscreenPageLimit(2);
     }
 

@@ -87,11 +87,11 @@ public class CardTagActivityFragment extends BaseFragment implements PullToRefre
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        mRootview = inflater.inflate(R.layout.fragment_card_tag, container, false);
+        mRootView = inflater.inflate(R.layout.fragment_card_tag, container, false);
         getInfo();
         initView();
         getTagList(true);
-        return mRootview;
+        return mRootView;
     }
 
     public void getInfo() {
@@ -104,26 +104,26 @@ public class CardTagActivityFragment extends BaseFragment implements PullToRefre
     }
 
     private void initView() {
-        backRl = (RelativeLayout) mRootview.findViewById(R.id.back_rl);
-        allTagLayout = (LinearLayout) mRootview.findViewById(R.id.all_tag_layout);
+        backRl = (RelativeLayout) mRootView.findViewById(R.id.back_rl);
+        allTagLayout = (LinearLayout) mRootView.findViewById(R.id.all_tag_layout);
         allTagLayout.setVisibility(View.GONE);
-        searchEt = (EditText) mRootview.findViewById(R.id.search_tag_et);
+        searchEt = (EditText) mRootView.findViewById(R.id.search_tag_et);
         if (toTagType.equals(Constant.TAG_TYPE_PUBLISH)) {
             searchEt.setHint(getResources().getString(R.string.publish_tag_hint));
         } else {
             searchEt.setHint(getResources().getString(R.string.scan_tag_hint));
         }
-        countTv = (TextView) mRootview.findViewById(R.id.count_tv);
-        cancelBtn = (Button) mRootview.findViewById(R.id.cancel_btn);
-        searchTagLayout = (LinearLayout) mRootview.findViewById(R.id.search_tag_layout);
+        countTv = (TextView) mRootView.findViewById(R.id.count_tv);
+        cancelBtn = (Button) mRootView.findViewById(R.id.cancel_btn);
+        searchTagLayout = (LinearLayout) mRootView.findViewById(R.id.search_tag_layout);
         searchTagLayout.setVisibility(View.GONE);
-        createTagLayout = (LinearLayout) mRootview.findViewById(R.id.create_tag_layout);
-        noTagTv = (TextView) mRootview.findViewById(R.id.no_tag_tv);
-        searchLv = (ListView) mRootview.findViewById(R.id.search_tag_lv);
+        createTagLayout = (LinearLayout) mRootView.findViewById(R.id.create_tag_layout);
+        noTagTv = (TextView) mRootView.findViewById(R.id.no_tag_tv);
+        searchLv = (ListView) mRootView.findViewById(R.id.search_tag_lv);
         headerView = LayoutInflater.from(getActivity()).inflate(R.layout.tag_head_view, null);
         recommendLv = (ListView) headerView.findViewById(R.id.recommend_tag_lv);
         hotLv = (ListView) headerView.findViewById(R.id.hot_tag_lv);
-        mPullToRefreshListview = (PullToRefreshListView) mRootview.findViewById(R.id.pull_refresh_list);
+        mPullToRefreshListview = (PullToRefreshListView) mRootView.findViewById(R.id.pull_refresh_list);
         mPullToRefreshListview.setSexFlag(getActivity(),SharePreferanceUtils.getInstance().getUserSex(getActivity(),SharePreferanceUtils.USER_SEX,0));
         mPullToRefreshListview.setMode(PullToRefreshBase.Mode.PULL_UP_TO_REFRESH);
         mPullToRefreshListview.setOnRefreshListener(this);

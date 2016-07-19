@@ -1,38 +1,27 @@
 package com.android.biubiu.ui.half;
 
 
-import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AlphaAnimation;
-import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
-import com.android.biubiu.MatchSettingActivity;
 import com.android.biubiu.component.customview.RangeSeekBar;
 import com.android.biubiu.component.indicator.FragmentIndicator;
-import com.android.biubiu.component.title.TopTitleView;
-import com.android.biubiu.component.util.DensityUtil;
 import com.android.biubiu.ui.base.BaseFragment;
-import com.android.biubiu.ui.mine.child.MyVoiceActivity;
 
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 import cc.imeetu.iu.R;

@@ -32,12 +32,12 @@ public class SquareFragment extends BaseFragment implements PullToRefreshBase.On
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        mRootview = inflater.inflate(R.layout.fragment_square, container, false);
+        mRootView = inflater.inflate(R.layout.fragment_square, container, false);
         initView();
-        return mRootview;
+        return mRootView;
     }
     private void initView() {
-        pulltoRefreshListview = (PullToRefreshListView) mRootview.findViewById(R.id.pull_refresh_list);
+        pulltoRefreshListview = (PullToRefreshListView) mRootView.findViewById(R.id.pull_refresh_list);
         pulltoRefreshListview.setSexFlag(getActivity(), SharePreferanceUtils.getInstance().getUserSex(getActivity(),SharePreferanceUtils.USER_SEX,0));
         pulltoRefreshListview.setMode(PullToRefreshBase.Mode.BOTH);
         pulltoRefreshListview.setOnRefreshListener(this);

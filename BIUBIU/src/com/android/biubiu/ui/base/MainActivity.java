@@ -65,7 +65,7 @@ import me.leolin.shortcutbadger.ShortcutBadger;
 
 import com.android.biubiu.component.indicator.FragmentIndicator.OnIndicateListener;
 
-public class MainActivity extends FragmentActivity implements AMapLocationListener {
+public class MainActivity extends BaseActivity implements AMapLocationListener {
     //定位相关
     private AMapLocationClient locationClient = null;
     private AMapLocationClientOption locationOption = null;
