@@ -622,7 +622,7 @@
                             android:layout_height="wrap_content"
                             android:textSize="12sp"
                             android:textColor="@color/white"
-                            android:text="30s"
+                            android:text="0s"
                             android:layout_alignParentRight="true"
                             android:layout_centerVertical="true"
                             android:layout_marginRight="10dp"/>

@@ -59,7 +59,7 @@ public class MyVoiceActivity extends BaseActivity {
     private Handler playHandler;
     private int currentTime = 0;
 
-    Handler stopHandler = new Handler(){
+    Handler stopHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             updateVoiceTime(recordTime);
@@ -107,7 +107,7 @@ public class MyVoiceActivity extends BaseActivity {
                 if (isPlaying) {
                     updatePauseView();
                 } else {
-                   updatePlayView();
+                    updatePlayView();
                 }
             }
         });
@@ -129,14 +129,15 @@ public class MyVoiceActivity extends BaseActivity {
         isPlaying = true;
         playTv.setText("0S");
         playImv.setImageResource(R.drawable.mine_me_up_play_btn);
-        if(mPlayer != null){
+        if (mPlayer != null) {
             audioStart();
-        }else{
+        } else {
             mPlayer = new MediaPlayer();
             audioStart();
         }
         playHandler.post(playTask);
     }
+
     private void updatePauseView() {
         playHandler.removeCallbacks(playTask);
         isPlaying = false;
@@ -194,9 +195,9 @@ public class MyVoiceActivity extends BaseActivity {
         conf.setMaxErrorRetry(2); // 失败后最大重试次数，默认2次
         OSSLog.enableLog();
         OSS oss = new OSSClient(getApplicationContext(), endpoint, credentialProvider, conf);
-        String userCode = SharePreferanceUtils.getInstance().getUserCode(MyVoiceActivity.this,SharePreferanceUtils.USER_CODE,"");
-        String fileName = "user/"+userCode+"/mine/voice/myVoice.acc";
-        Log.d("mytest","http://protect-app.oss-cn-beijing.aliyuncs.com/"+fileName);
+        String userCode = SharePreferanceUtils.getInstance().getUserCode(MyVoiceActivity.this, SharePreferanceUtils.USER_CODE, "");
+        String fileName = "user/" + userCode + "/mine/voice/myVoice.acc";
+        Log.d("mytest", "http://protect-app.oss-cn-beijing.aliyuncs.com/" + fileName);
         // 构造上传请求
         PutObjectRequest put = new PutObjectRequest("protect-app", fileName, path);
 
@@ -219,7 +220,7 @@ public class MyVoiceActivity extends BaseActivity {
             @Override
             public void onFailure(PutObjectRequest request, ClientException clientExcepion, ServiceException serviceException) {
                 dismissLoadingLayout();
-                Toast.makeText(MyVoiceActivity.this,"上传失败",Toast.LENGTH_SHORT).show();
+                Toast.makeText(MyVoiceActivity.this, "上传失败", Toast.LENGTH_SHORT).show();
                 // 请求异常
                 if (clientExcepion != null) {
                     // 本地异常如网络异常等
@@ -235,33 +236,35 @@ public class MyVoiceActivity extends BaseActivity {
             }
         });
     }
+
     Runnable recoreTask = new Runnable() {
         @Override
         public void run() {
-            recordTime ++;
-            if(recordTime<=90){
-                if(recordTime<10){
-                    recordTv.setText("00:0"+recordTime);
-                }else{
-                    recordTv.setText("00:"+recordTime);
+            recordTime++;
+            if (recordTime <= 90) {
+                if (recordTime < 10) {
+                    recordTv.setText("00:0" + recordTime);
+                } else {
+                    recordTv.setText("00:" + recordTime);
                 }
-            }else{
+            } else {
                 updateVoiceViewStop();
                 return;
             }
-            recordHandler.postDelayed(recoreTask,1000);
+            recordHandler.postDelayed(recoreTask, 1000);
         }
     };
     Runnable playTask = new Runnable() {
         @Override
         public void run() {
-            currentTime ++;
-            playTv.setText(currentTime+"S");
-            playHandler.postDelayed(playTask,1000);
+            currentTime++;
+            playTv.setText(currentTime + "S");
+            playHandler.postDelayed(playTask, 1000);
         }
     };
-    public void audioStart(){
-        Log.d("mytest","-----"+audioPath);
+
+    public void audioStart() {
+        Log.d("mytest", "-----" + audioPath);
         try {
             mPlayer.reset();
             //设置要播放的文件
@@ -269,83 +272,87 @@ public class MyVoiceActivity extends BaseActivity {
             mPlayer.prepare();
             //播放
             mPlayer.start();
-        }catch(Exception e){
+        } catch (Exception e) {
             Log.e(TAG, "prepare() failed");
         }
     }
-    public void audioPause(){
+
+    public void audioPause() {
         mPlayer.pause();
     }
-    public void audioStop(){
+
+    public void audioStop() {
         mPlayer.stop();
         mPlayer.release();
         mPlayer = null;
     }
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if(mPlayer != null){
+        if (mPlayer != null) {
             audioStop();
         }
     }
+
     private void updateVoiceTime(int recordTime) {
-        RequestParams params = new RequestParams(HttpContants.HTTP_ADDRESS+HttpContants.UPDATE_USETINFO);
+        RequestParams params = new RequestParams(HttpContants.HTTP_ADDRESS + HttpContants.UPDATE_USETINFO);
         String token = SharePreferanceUtils.getInstance().getToken(getApplicationContext(), SharePreferanceUtils.TOKEN, "");
         String deviceId = SharePreferanceUtils.getInstance().getDeviceId(getApplicationContext(), SharePreferanceUtils.DEVICE_ID, "");
         JSONObject requestObject = new JSONObject();
         try {
             requestObject.put("token", token);
             requestObject.put("device_code", deviceId);
-            requestObject.put("voiceTimeNum ",recordTime);
+            requestObject.put("voiceTimeNum", recordTime);
             requestObject.put("parameters", "voiceTimeNum");
         } catch (JSONException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
         params.addBodyParameter("data", requestObject.toString());
-    x.http().post(params, new Callback.CommonCallback<String>() {
+        x.http().post(params, new Callback.CommonCallback<String>() {
 
-        @Override
-        public void onCancelled(Callback.CancelledException arg0) {
-            // TODO Auto-generated method stub
+            @Override
+            public void onCancelled(Callback.CancelledException arg0) {
+                // TODO Auto-generated method stub
 
-        }
-
-        @Override
-        public void onError(Throwable ex, boolean arg1) {
-            // TODO Auto-generated method stub
-            LogUtil.d("mytest", "error--"+ex.getMessage());
-            LogUtil.d("mytest", "error--"+ex.getCause());
-        }
-
-        @Override
-        public void onFinished() {
-            // TODO Auto-generated method stub
-
-        }
-
-        @Override
-        public void onSuccess(String result) {
-            // TODO Auto-generated method stub
-            dismissLoadingLayout();
-            LogUtil.d("mytest", "voice=="+result);
-            try {
-                JSONObject jsons = new JSONObject(result);
-                String state = jsons.getString("state");
-                if(!state.equals("200")){
-                    dismissLoadingLayout();
-                    toastShort("上传失败");
-                    return ;
-                }
-                JSONObject data = jsons.getJSONObject("data");
-                toastShort("上传成功");
-                finish();
-            } catch (JSONException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
             }
-        }
-    });
-}
+
+            @Override
+            public void onError(Throwable ex, boolean arg1) {
+                // TODO Auto-generated method stub
+                LogUtil.d("mytest", "error--" + ex.getMessage());
+                LogUtil.d("mytest", "error--" + ex.getCause());
+            }
+
+            @Override
+            public void onFinished() {
+                // TODO Auto-generated method stub
+
+            }
+
+            @Override
+            public void onSuccess(String result) {
+                // TODO Auto-generated method stub
+                dismissLoadingLayout();
+                LogUtil.d("mytest", "voice==" + result);
+                try {
+                    JSONObject jsons = new JSONObject(result);
+                    String state = jsons.getString("state");
+                    if (!state.equals("200")) {
+                        dismissLoadingLayout();
+                        toastShort("上传失败");
+                        return;
+                    }
+                    JSONObject data = jsons.getJSONObject("data");
+                    toastShort("上传成功");
+                    finish();
+                } catch (JSONException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
 
 }
