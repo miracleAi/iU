@@ -160,7 +160,7 @@ public class CommonDialog {
 		});
 		return portraidlg;
 	}
-	public static AlertDialog cpDialog(final Context mContext,final DialogInterface.OnClickListener click1,final DialogInterface.OnClickListener click2,final DialogInterface.OnClickListener click3) {
+	public static AlertDialog cpDialog(final Context mContext,int charge,int found,final DialogInterface.OnClickListener click1,final DialogInterface.OnClickListener click2,final DialogInterface.OnClickListener click3) {
 
 		final AlertDialog portraidlg = new AlertDialog.Builder(mContext)
 				.create();
@@ -170,6 +170,20 @@ public class CommonDialog {
 		TextView cpTv = (TextView) win.findViewById(R.id.textview5);
 		TextView cancelTv = (TextView) win.findViewById(R.id.canecl_tv);
 		TextView okTv = (TextView) win.findViewById(R.id.ok_tv);
+		TextView chargeTv = (TextView) win.findViewById(R.id.textview3);
+		TextView foundTv = (TextView) win.findViewById(R.id.textview4);
+		TextView titleTv = (TextView) win.findViewById(R.id.textView2);
+		titleTv.setText((charge+found)+"");
+		if(charge == 0){
+			chargeTv.setVisibility(View.GONE);
+		}else{
+			chargeTv.setText(mContext.getResources().getString(R.string.cp_dialog_text1_start)+charge+mContext.getResources().getString(R.string.cp_dialog_text1_end));
+		}
+		if(found == 0){
+			foundTv.setVisibility(View.GONE);
+		}else{
+			foundTv.setText(mContext.getResources().getString(R.string.cp_dialog_text2_start)+found+mContext.getResources().getString(R.string.cp_dialog_text2_end));
+		}
 		cpTv.setOnClickListener(new OnClickListener() {
 
 			@Override

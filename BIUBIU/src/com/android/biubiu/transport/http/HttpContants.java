@@ -257,5 +257,33 @@ public class HttpContants {
      * 清空通知
      */
     public static final String NOTIFY_DELETNOTIFIES = HTTP_COMMUNITY_ADDRESS + "app/community/notify/deletNotifies";
+    /**
+     * 一半
+     */
+    public static final String HALF_USERS = HTTP_COMMUNITY_ADDRESS + "app/cp/getOtherHalf/v1";
+    /**
+     * 广场
+     */
+    public static final String SQUARE_REQUEST = HTTP_COMMUNITY_ADDRESS + "app/cp/dutytype/getSquareInfo/v1";
+    /**
+     * 我关心的人
+     */
+    public static final String MY_CARE_REQUEST = HTTP_COMMUNITY_ADDRESS + "app/cp/care/getCareList/v1";
+    /**
+     * 身份认证
+     */
+    public static final String VERIFY_REQUEST = HTTP_COMMUNITY_ADDRESS + "app/cp/verifyUserIdentity/v1";
+    /**
+     * 获取cp条件
+     */
+    public static final String CP_TERM = HTTP_COMMUNITY_ADDRESS + "app/cp/checkCp/v1";
+    /**
+     * 申请cp
+     */
+    public static final String CP_APPLY = HTTP_COMMUNITY_ADDRESS + "app/cp/applyCp/v1";
+    /**
+     * 关心和取消关心
+     */
+    public static final String PAGER_CARE = HTTP_COMMUNITY_ADDRESS + "app/cp/care/doCare/v1";
 
 }

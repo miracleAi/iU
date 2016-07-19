@@ -1,5 +1,6 @@
 package com.android.biubiu.ui.mine.child;
 
+import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
@@ -26,10 +27,17 @@ import com.alibaba.sdk.android.oss.internal.OSSAsyncTask;
 import com.alibaba.sdk.android.oss.model.PutObjectRequest;
 import com.alibaba.sdk.android.oss.model.PutObjectResult;
 import com.android.biubiu.component.title.TopTitleView;
+import com.android.biubiu.component.util.LogUtil;
 import com.android.biubiu.component.util.RecorderUtil;
 import com.android.biubiu.component.util.SharePreferanceUtils;
 import com.android.biubiu.transport.http.HttpContants;
 import com.android.biubiu.ui.base.BaseActivity;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.xutils.common.Callback;
+import org.xutils.http.RequestParams;
+import org.xutils.x;
 
 import cc.imeetu.iu.R;
 
@@ -54,11 +62,10 @@ public class MyVoiceActivity extends BaseActivity {
     Handler stopHandler = new Handler(){
         @Override
         public void handleMessage(Message msg) {
-            dismissLoadingLayout();
-            toastShort("上传成功");
-            MyVoiceActivity.this.finish();
+            updateVoiceTime(recordTime);
         }
     };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -281,4 +288,64 @@ public class MyVoiceActivity extends BaseActivity {
             audioStop();
         }
     }
+    private void updateVoiceTime(int recordTime) {
+        RequestParams params = new RequestParams(HttpContants.HTTP_ADDRESS+HttpContants.UPDATE_USETINFO);
+        String token = SharePreferanceUtils.getInstance().getToken(getApplicationContext(), SharePreferanceUtils.TOKEN, "");
+        String deviceId = SharePreferanceUtils.getInstance().getDeviceId(getApplicationContext(), SharePreferanceUtils.DEVICE_ID, "");
+        JSONObject requestObject = new JSONObject();
+        try {
+            requestObject.put("token", token);
+            requestObject.put("device_code", deviceId);
+            requestObject.put("voiceTimeNum ",recordTime);
+            requestObject.put("parameters", "voiceTimeNum");
+        } catch (JSONException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        params.addBodyParameter("data", requestObject.toString());
+    x.http().post(params, new Callback.CommonCallback<String>() {
+
+        @Override
+        public void onCancelled(Callback.CancelledException arg0) {
+            // TODO Auto-generated method stub
+
+        }
+
+        @Override
+        public void onError(Throwable ex, boolean arg1) {
+            // TODO Auto-generated method stub
+            LogUtil.d("mytest", "error--"+ex.getMessage());
+            LogUtil.d("mytest", "error--"+ex.getCause());
+        }
+
+        @Override
+        public void onFinished() {
+            // TODO Auto-generated method stub
+
+        }
+
+        @Override
+        public void onSuccess(String result) {
+            // TODO Auto-generated method stub
+            dismissLoadingLayout();
+            LogUtil.d("mytest", "voice=="+result);
+            try {
+                JSONObject jsons = new JSONObject(result);
+                String state = jsons.getString("state");
+                if(!state.equals("200")){
+                    dismissLoadingLayout();
+                    toastShort("上传失败");
+                    return ;
+                }
+                JSONObject data = jsons.getJSONObject("data");
+                toastShort("上传成功");
+                finish();
+            } catch (JSONException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        }
+    });
+}
+
 }
